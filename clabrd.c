@@ -1,0 +1,111 @@
+#include "rb_lapack.h"
+
+static VALUE
+rb_clabrd(int argc, VALUE *argv, VALUE self){
+  VALUE rb_m;
+  integer m; 
+  VALUE rb_nb;
+  integer nb; 
+  VALUE rb_a;
+  complex *a; 
+  VALUE rb_d;
+  real *d; 
+  VALUE rb_e;
+  real *e; 
+  VALUE rb_tauq;
+  complex *tauq; 
+  VALUE rb_taup;
+  complex *taup; 
+  VALUE rb_x;
+  complex *x; 
+  VALUE rb_y;
+  complex *y; 
+  VALUE rb_a_out__;
+  complex *a_out__;
+
+  integer lda;
+  integer n;
+  integer ldx;
+  integer ldy;
+
+  if (argc == 0) {
+    printf("%s\n", "USAGE:\n  d, e, tauq, taup, x, y, a = NumRu::Lapack.clabrd( m, nb, a)\n    or\n  NumRu::Lapack.clabrd  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE CLABRD( M, N, NB, A, LDA, D, E, TAUQ, TAUP, X, LDX, Y, LDY )\n\n*  Purpose\n*  =======\n*\n*  CLABRD reduces the first NB rows and columns of a complex general\n*  m by n matrix A to upper or lower real bidiagonal form by a unitary\n*  transformation Q' * A * P, and returns the matrices X and Y which\n*  are needed to apply the transformation to the unreduced part of A.\n*\n*  If m >= n, A is reduced to upper bidiagonal form; if m < n, to lower\n*  bidiagonal form.\n*\n*  This is an auxiliary routine called by CGEBRD\n*\n\n*  Arguments\n*  =========\n*\n*  M       (input) INTEGER\n*          The number of rows in the matrix A.\n*\n*  N       (input) INTEGER\n*          The number of columns in the matrix A.\n*\n*  NB      (input) INTEGER\n*          The number of leading rows and columns of A to be reduced.\n*\n*  A       (input/output) COMPLEX array, dimension (LDA,N)\n*          On entry, the m by n general matrix to be reduced.\n*          On exit, the first NB rows and columns of the matrix are\n*          overwritten; the rest of the array is unchanged.\n*          If m >= n, elements on and below the diagonal in the first NB\n*            columns, with the array TAUQ, represent the unitary\n*            matrix Q as a product of elementary reflectors; and\n*            elements above the diagonal in the first NB rows, with the\n*            array TAUP, represent the unitary matrix P as a product\n*            of elementary reflectors.\n*          If m < n, elements below the diagonal in the first NB\n*            columns, with the array TAUQ, represent the unitary\n*            matrix Q as a product of elementary reflectors, and\n*            elements on and above the diagonal in the first NB rows,\n*            with the array TAUP, represent the unitary matrix P as\n*            a product of elementary reflectors.\n*          See Further Details.\n*\n*  LDA     (input) INTEGER\n*          The leading dimension of the array A.  LDA >= max(1,M).\n*\n*  D       (output) REAL array, dimension (NB)\n*          The diagonal elements of the first NB rows and columns of\n*          the reduced matrix.  D(i) = A(i,i).\n*\n*  E       (output) REAL array, dimension (NB)\n*          The off-diagonal elements of the first NB rows and columns of\n*          the reduced matrix.\n*\n*  TAUQ    (output) COMPLEX array dimension (NB)\n*          The scalar factors of the elementary reflectors which\n*          represent the unitary matrix Q. See Further Details.\n*\n*  TAUP    (output) COMPLEX array, dimension (NB)\n*          The scalar factors of the elementary reflectors which\n*          represent the unitary matrix P. See Further Details.\n*\n*  X       (output) COMPLEX array, dimension (LDX,NB)\n*          The m-by-nb matrix X required to update the unreduced part\n*          of A.\n*\n*  LDX     (input) INTEGER\n*          The leading dimension of the array X. LDX >= max(1,M).\n*\n*  Y       (output) COMPLEX array, dimension (LDY,NB)\n*          The n-by-nb matrix Y required to update the unreduced part\n*          of A.\n*\n*  LDY     (input) INTEGER\n*          The leading dimension of the array Y. LDY >= max(1,N).\n*\n\n*  Further Details\n*  ===============\n*\n*  The matrices Q and P are represented as products of elementary\n*  reflectors:\n*\n*     Q = H(1) H(2) . . . H(nb)  and  P = G(1) G(2) . . . G(nb)\n*\n*  Each H(i) and G(i) has the form:\n*\n*     H(i) = I - tauq * v * v'  and G(i) = I - taup * u * u'\n*\n*  where tauq and taup are complex scalars, and v and u are complex\n*  vectors.\n*\n*  If m >= n, v(1:i-1) = 0, v(i) = 1, and v(i:m) is stored on exit in\n*  A(i:m,i); u(1:i) = 0, u(i+1) = 1, and u(i+1:n) is stored on exit in\n*  A(i,i+1:n); tauq is stored in TAUQ(i) and taup in TAUP(i).\n*\n*  If m < n, v(1:i) = 0, v(i+1) = 1, and v(i+1:m) is stored on exit in\n*  A(i+2:m,i); u(1:i-1) = 0, u(i) = 1, and u(i:n) is stored on exit in\n*  A(i,i+1:n); tauq is stored in TAUQ(i) and taup in TAUP(i).\n*\n*  The elements of the vectors v and u together form the m-by-nb matrix\n*  V and the nb-by-n matrix U' which are needed, with X and Y, to apply\n*  the transformation to the unreduced part of the matrix, using a block\n*  update of the form:  A := A - V*Y' - X*U'.\n*\n*  The contents of A on exit are illustrated by the following examples\n*  with nb = 2:\n*\n*  m = 6 and n = 5 (m > n):          m = 5 and n = 6 (m < n):\n*\n*    (  1   1   u1  u1  u1 )           (  1   u1  u1  u1  u1  u1 )\n*    (  v1  1   1   u2  u2 )           (  1   1   u2  u2  u2  u2 )\n*    (  v1  v2  a   a   a  )           (  v1  1   a   a   a   a  )\n*    (  v1  v2  a   a   a  )           (  v1  v2  a   a   a   a  )\n*    (  v1  v2  a   a   a  )           (  v1  v2  a   a   a   a  )\n*    (  v1  v2  a   a   a  )\n*\n*  where a denotes an element of the original matrix which is unchanged,\n*  vi denotes an element of the vector defining H(i), and ui an element\n*  of the vector defining G(i).\n*\n*  =====================================================================\n*\n\n");
+    return Qnil;
+  }
+  if (argc != 3)
+    rb_raise(rb_eArgError,"wrong number of arguments (%d for 3)", argc);
+  rb_m = argv[0];
+  rb_nb = argv[1];
+  rb_a = argv[2];
+
+  m = NUM2INT(rb_m);
+  nb = NUM2INT(rb_nb);
+  if (!NA_IsNArray(rb_a))
+    rb_raise(rb_eArgError, "a (3th argument) must be NArray");
+  if (NA_RANK(rb_a) != 2)
+    rb_raise(rb_eArgError, "rank of a (3th argument) must be %d", 2);
+  lda = NA_SHAPE0(rb_a);
+  n = NA_SHAPE1(rb_a);
+  if (NA_TYPE(rb_a) != NA_SCOMPLEX)
+    rb_a = na_change_type(rb_a, NA_SCOMPLEX);
+  a = NA_PTR_TYPE(rb_a, complex*);
+  {
+    int shape[1];
+    shape[0] = MAX(1,nb);
+    rb_d = na_make_object(NA_SFLOAT, 1, shape, cNArray);
+  }
+  d = NA_PTR_TYPE(rb_d, real*);
+  {
+    int shape[1];
+    shape[0] = MAX(1,nb);
+    rb_e = na_make_object(NA_SFLOAT, 1, shape, cNArray);
+  }
+  e = NA_PTR_TYPE(rb_e, real*);
+  {
+    int shape[1];
+    shape[0] = MAX(1,nb);
+    rb_tauq = na_make_object(NA_SCOMPLEX, 1, shape, cNArray);
+  }
+  tauq = NA_PTR_TYPE(rb_tauq, complex*);
+  {
+    int shape[1];
+    shape[0] = MAX(1,nb);
+    rb_taup = na_make_object(NA_SCOMPLEX, 1, shape, cNArray);
+  }
+  taup = NA_PTR_TYPE(rb_taup, complex*);
+  ldx = MAX(1,m);
+  {
+    int shape[2];
+    shape[0] = ldx;
+    shape[1] = MAX(1,nb);
+    rb_x = na_make_object(NA_SCOMPLEX, 2, shape, cNArray);
+  }
+  x = NA_PTR_TYPE(rb_x, complex*);
+  ldy = MAX(1,n);
+  {
+    int shape[2];
+    shape[0] = ldy;
+    shape[1] = MAX(1,nb);
+    rb_y = na_make_object(NA_SCOMPLEX, 2, shape, cNArray);
+  }
+  y = NA_PTR_TYPE(rb_y, complex*);
+  {
+    int shape[2];
+    shape[0] = lda;
+    shape[1] = n;
+    rb_a_out__ = na_make_object(NA_SCOMPLEX, 2, shape, cNArray);
+  }
+  a_out__ = NA_PTR_TYPE(rb_a_out__, complex*);
+  MEMCPY(a_out__, a, complex, NA_TOTAL(rb_a));
+  rb_a = rb_a_out__;
+  a = a_out__;
+
+  clabrd_(&m, &n, &nb, a, &lda, d, e, tauq, taup, x, &ldx, y, &ldy);
+
+  return rb_ary_new3(7, rb_d, rb_e, rb_tauq, rb_taup, rb_x, rb_y, rb_a);
+}
+
+void
+init_lapack_clabrd(VALUE mLapack){
+  rb_define_module_function(mLapack, "clabrd", rb_clabrd, -1);
+}

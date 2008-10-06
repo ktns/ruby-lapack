@@ -1,0 +1,116 @@
+#include "rb_lapack.h"
+
+static VALUE
+rb_dsbgv(int argc, VALUE *argv, VALUE self){
+  VALUE rb_jobz;
+  char jobz; 
+  VALUE rb_uplo;
+  char uplo; 
+  VALUE rb_ka;
+  integer ka; 
+  VALUE rb_kb;
+  integer kb; 
+  VALUE rb_ab;
+  doublereal *ab; 
+  VALUE rb_bb;
+  doublereal *bb; 
+  VALUE rb_w;
+  doublereal *w; 
+  VALUE rb_z;
+  doublereal *z; 
+  VALUE rb_info;
+  integer info; 
+  VALUE rb_ab_out__;
+  doublereal *ab_out__;
+  VALUE rb_bb_out__;
+  doublereal *bb_out__;
+  doublereal *work;
+
+  integer ldab;
+  integer n;
+  integer ldbb;
+  integer ldz;
+
+  if (argc == 0) {
+    printf("%s\n", "USAGE:\n  w, z, info, ab, bb = NumRu::Lapack.dsbgv( jobz, uplo, ka, kb, ab, bb)\n    or\n  NumRu::Lapack.dsbgv  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DSBGV( JOBZ, UPLO, N, KA, KB, AB, LDAB, BB, LDBB, W, Z, LDZ, WORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  DSBGV computes all the eigenvalues, and optionally, the eigenvectors\n*  of a real generalized symmetric-definite banded eigenproblem, of\n*  the form A*x=(lambda)*B*x. Here A and B are assumed to be symmetric\n*  and banded, and B is also positive definite.\n*\n\n*  Arguments\n*  =========\n*\n*  JOBZ    (input) CHARACTER*1\n*          = 'N':  Compute eigenvalues only;\n*          = 'V':  Compute eigenvalues and eigenvectors.\n*\n*  UPLO    (input) CHARACTER*1\n*          = 'U':  Upper triangles of A and B are stored;\n*          = 'L':  Lower triangles of A and B are stored.\n*\n*  N       (input) INTEGER\n*          The order of the matrices A and B.  N >= 0.\n*\n*  KA      (input) INTEGER\n*          The number of superdiagonals of the matrix A if UPLO = 'U',\n*          or the number of subdiagonals if UPLO = 'L'. KA >= 0.\n*\n*  KB      (input) INTEGER\n*          The number of superdiagonals of the matrix B if UPLO = 'U',\n*          or the number of subdiagonals if UPLO = 'L'. KB >= 0.\n*\n*  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB, N)\n*          On entry, the upper or lower triangle of the symmetric band\n*          matrix A, stored in the first ka+1 rows of the array.  The\n*          j-th column of A is stored in the j-th column of the array AB\n*          as follows:\n*          if UPLO = 'U', AB(ka+1+i-j,j) = A(i,j) for max(1,j-ka)<=i<=j;\n*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+ka).\n*\n*          On exit, the contents of AB are destroyed.\n*\n*  LDAB    (input) INTEGER\n*          The leading dimension of the array AB.  LDAB >= KA+1.\n*\n*  BB      (input/output) DOUBLE PRECISION array, dimension (LDBB, N)\n*          On entry, the upper or lower triangle of the symmetric band\n*          matrix B, stored in the first kb+1 rows of the array.  The\n*          j-th column of B is stored in the j-th column of the array BB\n*          as follows:\n*          if UPLO = 'U', BB(kb+1+i-j,j) = B(i,j) for max(1,j-kb)<=i<=j;\n*          if UPLO = 'L', BB(1+i-j,j)    = B(i,j) for j<=i<=min(n,j+kb).\n*\n*          On exit, the factor S from the split Cholesky factorization\n*          B = S**T*S, as returned by DPBSTF.\n*\n*  LDBB    (input) INTEGER\n*          The leading dimension of the array BB.  LDBB >= KB+1.\n*\n*  W       (output) DOUBLE PRECISION array, dimension (N)\n*          If INFO = 0, the eigenvalues in ascending order.\n*\n*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)\n*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of\n*          eigenvectors, with the i-th column of Z holding the\n*          eigenvector associated with W(i). The eigenvectors are\n*          normalized so that Z**T*B*Z = I.\n*          If JOBZ = 'N', then Z is not referenced.\n*\n*  LDZ     (input) INTEGER\n*          The leading dimension of the array Z.  LDZ >= 1, and if\n*          JOBZ = 'V', LDZ >= N.\n*\n*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*          > 0:  if INFO = i, and i is:\n*             <= N:  the algorithm failed to converge:\n*                    i off-diagonal elements of an intermediate\n*                    tridiagonal form did not converge to zero;\n*             > N:   if INFO = N + i, for 1 <= i <= N, then DPBSTF\n*                    returned INFO = i: B is not positive definite.\n*                    The factorization of B could not be completed and\n*                    no eigenvalues or eigenvectors were computed.\n*\n\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      LOGICAL            UPPER, WANTZ\n      CHARACTER          VECT\n      INTEGER            IINFO, INDE, INDWRK\n*     ..\n*     .. External Functions ..\n      LOGICAL            LSAME\n      EXTERNAL           LSAME\n*     ..\n*     .. External Subroutines ..\n      EXTERNAL           DPBSTF, DSBGST, DSBTRD, DSTEQR, DSTERF, XERBLA\n*     ..\n\n");
+    return Qnil;
+  }
+  if (argc != 6)
+    rb_raise(rb_eArgError,"wrong number of arguments (%d for 6)", argc);
+  rb_jobz = argv[0];
+  rb_uplo = argv[1];
+  rb_ka = argv[2];
+  rb_kb = argv[3];
+  rb_ab = argv[4];
+  rb_bb = argv[5];
+
+  jobz = StringValueCStr(rb_jobz)[0];
+  uplo = StringValueCStr(rb_uplo)[0];
+  ka = NUM2INT(rb_ka);
+  kb = NUM2INT(rb_kb);
+  if (!NA_IsNArray(rb_ab))
+    rb_raise(rb_eArgError, "ab (5th argument) must be NArray");
+  if (NA_RANK(rb_ab) != 2)
+    rb_raise(rb_eArgError, "rank of ab (5th argument) must be %d", 2);
+  ldab = NA_SHAPE0(rb_ab);
+  n = NA_SHAPE1(rb_ab);
+  if (NA_TYPE(rb_ab) != NA_DFLOAT)
+    rb_ab = na_change_type(rb_ab, NA_DFLOAT);
+  ab = NA_PTR_TYPE(rb_ab, doublereal*);
+  if (!NA_IsNArray(rb_bb))
+    rb_raise(rb_eArgError, "bb (6th argument) must be NArray");
+  if (NA_RANK(rb_bb) != 2)
+    rb_raise(rb_eArgError, "rank of bb (6th argument) must be %d", 2);
+  ldbb = NA_SHAPE0(rb_bb);
+  if (NA_SHAPE1(rb_bb) != n)
+    rb_raise(rb_eRuntimeError, "shape 1 of bb must be the same as shape 1 of ab");
+  if (NA_TYPE(rb_bb) != NA_DFLOAT)
+    rb_bb = na_change_type(rb_bb, NA_DFLOAT);
+  bb = NA_PTR_TYPE(rb_bb, doublereal*);
+  {
+    int shape[1];
+    shape[0] = n;
+    rb_w = na_make_object(NA_DFLOAT, 1, shape, cNArray);
+  }
+  w = NA_PTR_TYPE(rb_w, doublereal*);
+  ldz = lsame_(&jobz,"V") ? n : 1;
+  {
+    int shape[2];
+    shape[0] = ldz;
+    shape[1] = n;
+    rb_z = na_make_object(NA_DFLOAT, 2, shape, cNArray);
+  }
+  z = NA_PTR_TYPE(rb_z, doublereal*);
+  {
+    int shape[2];
+    shape[0] = ldab;
+    shape[1] = n;
+    rb_ab_out__ = na_make_object(NA_DFLOAT, 2, shape, cNArray);
+  }
+  ab_out__ = NA_PTR_TYPE(rb_ab_out__, doublereal*);
+  MEMCPY(ab_out__, ab, doublereal, NA_TOTAL(rb_ab));
+  rb_ab = rb_ab_out__;
+  ab = ab_out__;
+  {
+    int shape[2];
+    shape[0] = ldbb;
+    shape[1] = n;
+    rb_bb_out__ = na_make_object(NA_DFLOAT, 2, shape, cNArray);
+  }
+  bb_out__ = NA_PTR_TYPE(rb_bb_out__, doublereal*);
+  MEMCPY(bb_out__, bb, doublereal, NA_TOTAL(rb_bb));
+  rb_bb = rb_bb_out__;
+  bb = bb_out__;
+  work = ALLOC_N(doublereal, (3*n));
+
+  dsbgv_(&jobz, &uplo, &n, &ka, &kb, ab, &ldab, bb, &ldbb, w, z, &ldz, work, &info);
+
+  free(work);
+  rb_info = INT2NUM(info);
+  return rb_ary_new3(5, rb_w, rb_z, rb_info, rb_ab, rb_bb);
+}
+
+void
+init_lapack_dsbgv(VALUE mLapack){
+  rb_define_module_function(mLapack, "dsbgv", rb_dsbgv, -1);
+}

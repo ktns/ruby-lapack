@@ -1,0 +1,35 @@
+#include "rb_lapack.h"
+
+extern VOID slapy2_(real *__out__, real *x, real *y);
+static VALUE
+rb_slapy2(int argc, VALUE *argv, VALUE self){
+  VALUE rb_x;
+  real x; 
+  VALUE rb_y;
+  real y; 
+  VALUE rb___out__;
+  real __out__; 
+
+
+  if (argc == 0) {
+    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.slapy2( x, y)\n    or\n  NumRu::Lapack.slapy2  # print help\n\n\nFORTRAN MANUAL\n      REAL             FUNCTION SLAPY2( X, Y )\n\n*  Purpose\n*  =======\n*\n*  SLAPY2 returns sqrt(x**2+y**2), taking care not to cause unnecessary\n*  overflow.\n*\n\n*  Arguments\n*  =========\n*\n*  X       (input) REAL\n*  Y       (input) REAL\n*          X and Y specify the values x and y.\n*\n\n*  =====================================================================\n*\n\n");
+    return Qnil;
+  }
+  if (argc != 2)
+    rb_raise(rb_eArgError,"wrong number of arguments (%d for 2)", argc);
+  rb_x = argv[0];
+  rb_y = argv[1];
+
+  x = (real)NUM2DBL(rb_x);
+  y = (real)NUM2DBL(rb_y);
+
+  slapy2_(&__out__, &x, &y);
+
+  rb___out__ = rb_float_new((double)__out__);
+  return rb___out__;
+}
+
+void
+init_lapack_slapy2(VALUE mLapack){
+  rb_define_module_function(mLapack, "slapy2", rb_slapy2, -1);
+}
