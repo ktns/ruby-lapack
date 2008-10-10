@@ -1,0 +1,721 @@
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX routines for symmetric or Hermitian positive definite tridiagonal matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX routines for symmetric or Hermitian positive definite tridiagonal matrix</H1>
+    <UL>
+      <LI><A HREF="#cptts2">cptts2</A></LI>
+      <LI><A HREF="#cpttrf">cpttrf</A></LI>
+      <LI><A HREF="#cptrfs">cptrfs</A></LI>
+      <LI><A HREF="#cptsv">cptsv</A></LI>
+      <LI><A HREF="#cptsvx">cptsvx</A></LI>
+      <LI><A HREF="#cpteqr">cpteqr</A></LI>
+      <LI><A HREF="#cpttrs">cpttrs</A></LI>
+      <LI><A HREF="#cptcon">cptcon</A></LI>
+    </UL>
+
+  <A NAME="cptts2"></A>
+  <H2>cptts2</H2>
+  <PRE>
+USAGE:
+  b = NumRu::Lapack.cptts2( iuplo, d, e, b)
+    or
+  NumRu::Lapack.cptts2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPTTS2( IUPLO, N, NRHS, D, E, B, LDB )
+
+*  Purpose
+*  =======
+*
+*  CPTTS2 solves a tridiagonal system of the form
+*     A * X = B
+*  using the factorization A = U'*D*U or A = L*D*L' computed by CPTTRF.
+*  D is a diagonal matrix specified in the vector D, U (or L) is a unit
+*  bidiagonal matrix whose superdiagonal (subdiagonal) is specified in
+*  the vector E, and X and B are N by NRHS matrices.
+*
+
+*  Arguments
+*  =========
+*
+*  IUPLO   (input) INTEGER
+*          Specifies the form of the factorization and whether the
+*          vector E is the superdiagonal of the upper bidiagonal factor
+*          U or the subdiagonal of the lower bidiagonal factor L.
+*          = 1:  A = U'*D*U, E is the superdiagonal of U
+*          = 0:  A = L*D*L', E is the subdiagonal of L
+*
+*  N       (input) INTEGER
+*          The order of the tridiagonal matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  D       (input) REAL array, dimension (N)
+*          The n diagonal elements of the diagonal matrix D from the
+*          factorization A = U'*D*U or A = L*D*L'.
+*
+*  E       (input) COMPLEX array, dimension (N-1)
+*          If IUPLO = 1, the (n-1) superdiagonal elements of the unit
+*          bidiagonal factor U from the factorization A = U'*D*U.
+*          If IUPLO = 0, the (n-1) subdiagonal elements of the unit
+*          bidiagonal factor L from the factorization A = L*D*L'.
+*
+*  B       (input/output) REAL array, dimension (LDB,NRHS)
+*          On entry, the right hand side vectors B for the system of
+*          linear equations.
+*          On exit, the solution vectors, X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      INTEGER            I, J
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CSSCAL
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          CONJG
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cpttrf"></A>
+  <H2>cpttrf</H2>
+  <PRE>
+USAGE:
+  info, d, e = NumRu::Lapack.cpttrf( d, e)
+    or
+  NumRu::Lapack.cpttrf  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPTTRF( N, D, E, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPTTRF computes the L*D*L' factorization of a complex Hermitian
+*  positive definite tridiagonal matrix A.  The factorization may also
+*  be regarded as having the form A = U'*D*U.
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  D       (input/output) REAL array, dimension (N)
+*          On entry, the n diagonal elements of the tridiagonal matrix
+*          A.  On exit, the n diagonal elements of the diagonal matrix
+*          D from the L*D*L' factorization of A.
+*
+*  E       (input/output) COMPLEX array, dimension (N-1)
+*          On entry, the (n-1) subdiagonal elements of the tridiagonal
+*          matrix A.  On exit, the (n-1) subdiagonal elements of the
+*          unit bidiagonal factor L from the L*D*L' factorization of A.
+*          E can also be regarded as the superdiagonal of the unit
+*          bidiagonal factor U from the U'*D*U factorization of A.
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*          > 0: if INFO = k, the leading minor of order k is not
+*               positive definite; if k < N, the factorization could not
+*               be completed, while if k = N, the factorization was
+*               completed, but D(N) <= 0.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cptrfs"></A>
+  <H2>cptrfs</H2>
+  <PRE>
+USAGE:
+  ferr, berr, info, x = NumRu::Lapack.cptrfs( uplo, d, e, df, ef, b, x)
+    or
+  NumRu::Lapack.cptrfs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPTRFS( UPLO, N, NRHS, D, E, DF, EF, B, LDB, X, LDX, FERR, BERR, WORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPTRFS improves the computed solution to a system of linear
+*  equations when the coefficient matrix is Hermitian positive definite
+*  and tridiagonal, and provides error bounds and backward error
+*  estimates for the solution.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the superdiagonal or the subdiagonal of the
+*          tridiagonal matrix A is stored and the form of the
+*          factorization:
+*          = 'U':  E is the superdiagonal of A, and A = U**H*D*U;
+*          = 'L':  E is the subdiagonal of A, and A = L*D*L**H.
+*          (The two forms are equivalent if A is real.)
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  D       (input) REAL array, dimension (N)
+*          The n real diagonal elements of the tridiagonal matrix A.
+*
+*  E       (input) COMPLEX array, dimension (N-1)
+*          The (n-1) off-diagonal elements of the tridiagonal matrix A
+*          (see UPLO).
+*
+*  DF      (input) REAL array, dimension (N)
+*          The n diagonal elements of the diagonal matrix D from
+*          the factorization computed by CPTTRF.
+*
+*  EF      (input) COMPLEX array, dimension (N-1)
+*          The (n-1) off-diagonal elements of the unit bidiagonal
+*          factor U or L from the factorization computed by CPTTRF
+*          (see UPLO).
+*
+*  B       (input) COMPLEX array, dimension (LDB,NRHS)
+*          The right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (input/output) COMPLEX array, dimension (LDX,NRHS)
+*          On entry, the solution matrix X, as computed by CPTTRS.
+*          On exit, the improved solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  FERR    (output) REAL array, dimension (NRHS)
+*          The forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).
+*
+*  BERR    (output) REAL array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX array, dimension (N)
+*
+*  RWORK   (workspace) REAL array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+*  Internal Parameters
+*  ===================
+*
+*  ITMAX is the maximum number of steps of iterative refinement.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cptsv"></A>
+  <H2>cptsv</H2>
+  <PRE>
+USAGE:
+  info, d, e, b = NumRu::Lapack.cptsv( d, e, b)
+    or
+  NumRu::Lapack.cptsv  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPTSV( N, NRHS, D, E, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPTSV computes the solution to a complex system of linear equations
+*  A*X = B, where A is an N-by-N Hermitian positive definite tridiagonal
+*  matrix, and X and B are N-by-NRHS matrices.
+*
+*  A is factored as A = L*D*L**H, and the factored form of A is then
+*  used to solve the system of equations.
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  D       (input/output) REAL array, dimension (N)
+*          On entry, the n diagonal elements of the tridiagonal matrix
+*          A.  On exit, the n diagonal elements of the diagonal matrix
+*          D from the factorization A = L*D*L**H.
+*
+*  E       (input/output) COMPLEX array, dimension (N-1)
+*          On entry, the (n-1) subdiagonal elements of the tridiagonal
+*          matrix A.  On exit, the (n-1) subdiagonal elements of the
+*          unit bidiagonal factor L from the L*D*L**H factorization of
+*          A.  E can also be regarded as the superdiagonal of the unit
+*          bidiagonal factor U from the U**H*D*U factorization of A.
+*
+*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)
+*          On entry, the N-by-NRHS right hand side matrix B.
+*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the leading minor of order i is not
+*                positive definite, and the solution has not been
+*                computed.  The factorization has not been completed
+*                unless i = N.
+*
+
+*  =====================================================================
+*
+*     .. External Subroutines ..
+      EXTERNAL           CPTTRF, CPTTRS, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cptsvx"></A>
+  <H2>cptsvx</H2>
+  <PRE>
+USAGE:
+  x, rcond, ferr, berr, info, df, ef = NumRu::Lapack.cptsvx( fact, d, e, df, ef, b)
+    or
+  NumRu::Lapack.cptsvx  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPTSVX( FACT, N, NRHS, D, E, DF, EF, B, LDB, X, LDX, RCOND, FERR, BERR, WORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPTSVX uses the factorization A = L*D*L**H to compute the solution
+*  to a complex system of linear equations A*X = B, where A is an
+*  N-by-N Hermitian positive definite tridiagonal matrix and X and B
+*  are N-by-NRHS matrices.
+*
+*  Error bounds on the solution and a condition estimate are also
+*  provided.
+*
+*  Description
+*  ===========
+*
+*  The following steps are performed:
+*
+*  1. If FACT = 'N', the matrix A is factored as A = L*D*L**H, where L
+*     is a unit lower bidiagonal matrix and D is diagonal.  The
+*     factorization can also be regarded as having the form
+*     A = U**H*D*U.
+*
+*  2. If the leading i-by-i principal minor is not positive definite,
+*     then the routine returns with INFO = i. Otherwise, the factored
+*     form of A is used to estimate the condition number of the matrix
+*     A.  If the reciprocal of the condition number is less than machine
+*     precision, INFO = N+1 is returned as a warning, but the routine
+*     still goes on to solve for X and compute error bounds as
+*     described below.
+*
+*  3. The system of equations is solved for X using the factored form
+*     of A.
+*
+*  4. Iterative refinement is applied to improve the computed solution
+*     matrix and calculate error bounds and backward error estimates
+*     for it.
+*
+
+*  Arguments
+*  =========
+*
+*  FACT    (input) CHARACTER*1
+*          Specifies whether or not the factored form of the matrix
+*          A is supplied on entry.
+*          = 'F':  On entry, DF and EF contain the factored form of A.
+*                  D, E, DF, and EF will not be modified.
+*          = 'N':  The matrix A will be copied to DF and EF and
+*                  factored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrices B and X.  NRHS >= 0.
+*
+*  D       (input) REAL array, dimension (N)
+*          The n diagonal elements of the tridiagonal matrix A.
+*
+*  E       (input) COMPLEX array, dimension (N-1)
+*          The (n-1) subdiagonal elements of the tridiagonal matrix A.
+*
+*  DF      (input or output) REAL array, dimension (N)
+*          If FACT = 'F', then DF is an input argument and on entry
+*          contains the n diagonal elements of the diagonal matrix D
+*          from the L*D*L**H factorization of A.
+*          If FACT = 'N', then DF is an output argument and on exit
+*          contains the n diagonal elements of the diagonal matrix D
+*          from the L*D*L**H factorization of A.
+*
+*  EF      (input or output) COMPLEX array, dimension (N-1)
+*          If FACT = 'F', then EF is an input argument and on entry
+*          contains the (n-1) subdiagonal elements of the unit
+*          bidiagonal factor L from the L*D*L**H factorization of A.
+*          If FACT = 'N', then EF is an output argument and on exit
+*          contains the (n-1) subdiagonal elements of the unit
+*          bidiagonal factor L from the L*D*L**H factorization of A.
+*
+*  B       (input) COMPLEX array, dimension (LDB,NRHS)
+*          The N-by-NRHS right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (output) COMPLEX array, dimension (LDX,NRHS)
+*          If INFO = 0 or INFO = N+1, the N-by-NRHS solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  RCOND   (output) REAL
+*          The reciprocal condition number of the matrix A.  If RCOND
+*          is less than the machine precision (in particular, if
+*          RCOND = 0), the matrix is singular to working precision.
+*          This condition is indicated by a return code of INFO > 0.
+*
+*  FERR    (output) REAL array, dimension (NRHS)
+*          The forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).
+*
+*  BERR    (output) REAL array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in any
+*          element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX array, dimension (N)
+*
+*  RWORK   (workspace) REAL array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is
+*                <= N:  the leading minor of order i of A is
+*                       not positive definite, so the factorization
+*                       could not be completed, and the solution has not
+*                       been computed. RCOND = 0 is returned.
+*                = N+1: U is nonsingular, but RCOND is less than machine
+*                       precision, meaning that the matrix is singular
+*                       to working precision.  Nevertheless, the
+*                       solution and error bounds are computed because
+*                       there are a number of situations where the
+*                       computed solution can be more accurate than the
+*                       value of RCOND would suggest.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cpteqr"></A>
+  <H2>cpteqr</H2>
+  <PRE>
+USAGE:
+  info, d, e, z = NumRu::Lapack.cpteqr( compz, d, e, z)
+    or
+  NumRu::Lapack.cpteqr  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPTEQR( COMPZ, N, D, E, Z, LDZ, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPTEQR computes all eigenvalues and, optionally, eigenvectors of a
+*  symmetric positive definite tridiagonal matrix by first factoring the
+*  matrix using SPTTRF and then calling CBDSQR to compute the singular
+*  values of the bidiagonal factor.
+*
+*  This routine computes the eigenvalues of the positive definite
+*  tridiagonal matrix to high relative accuracy.  This means that if the
+*  eigenvalues range over many orders of magnitude in size, then the
+*  small eigenvalues and corresponding eigenvectors will be computed
+*  more accurately than, for example, with the standard QR method.
+*
+*  The eigenvectors of a full or band positive definite Hermitian matrix
+*  can also be found if CHETRD, CHPTRD, or CHBTRD has been used to
+*  reduce this matrix to tridiagonal form.  (The reduction to
+*  tridiagonal form, however, may preclude the possibility of obtaining
+*  high relative accuracy in the small eigenvalues of the original
+*  matrix, if these eigenvalues range over many orders of magnitude.)
+*
+
+*  Arguments
+*  =========
+*
+*  COMPZ   (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only.
+*          = 'V':  Compute eigenvectors of original Hermitian
+*                  matrix also.  Array Z contains the unitary matrix
+*                  used to reduce the original matrix to tridiagonal
+*                  form.
+*          = 'I':  Compute eigenvectors of tridiagonal matrix also.
+*
+*  N       (input) INTEGER
+*          The order of the matrix.  N >= 0.
+*
+*  D       (input/output) REAL array, dimension (N)
+*          On entry, the n diagonal elements of the tridiagonal matrix.
+*          On normal exit, D contains the eigenvalues, in descending
+*          order.
+*
+*  E       (input/output) REAL array, dimension (N-1)
+*          On entry, the (n-1) subdiagonal elements of the tridiagonal
+*          matrix.
+*          On exit, E has been destroyed.
+*
+*  Z       (input/output) COMPLEX array, dimension (LDZ, N)
+*          On entry, if COMPZ = 'V', the unitary matrix used in the
+*          reduction to tridiagonal form.
+*          On exit, if COMPZ = 'V', the orthonormal eigenvectors of the
+*          original Hermitian matrix;
+*          if COMPZ = 'I', the orthonormal eigenvectors of the
+*          tridiagonal matrix.
+*          If INFO > 0 on exit, Z contains the eigenvectors associated
+*          with only the stored eigenvalues.
+*          If  COMPZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          COMPZ = 'V' or 'I', LDZ >= max(1,N).
+*
+*  WORK    (workspace) REAL array, dimension (4*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, and i is:
+*                <= N  the Cholesky factorization of the matrix could
+*                      not be performed because the i-th principal minor
+*                      was not positive definite.
+*                > N   the SVD algorithm failed to converge;
+*                      if INFO = N+i, i off-diagonal elements of the
+*                      bidiagonal factor did not converge to zero.
+*
+
+*  ====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cpttrs"></A>
+  <H2>cpttrs</H2>
+  <PRE>
+USAGE:
+  info, b = NumRu::Lapack.cpttrs( uplo, d, e, b)
+    or
+  NumRu::Lapack.cpttrs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPTTRS( UPLO, N, NRHS, D, E, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPTTRS solves a tridiagonal system of the form
+*     A * X = B
+*  using the factorization A = U'*D*U or A = L*D*L' computed by CPTTRF.
+*  D is a diagonal matrix specified in the vector D, U (or L) is a unit
+*  bidiagonal matrix whose superdiagonal (subdiagonal) is specified in
+*  the vector E, and X and B are N by NRHS matrices.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies the form of the factorization and whether the
+*          vector E is the superdiagonal of the upper bidiagonal factor
+*          U or the subdiagonal of the lower bidiagonal factor L.
+*          = 'U':  A = U'*D*U, E is the superdiagonal of U
+*          = 'L':  A = L*D*L', E is the subdiagonal of L
+*
+*  N       (input) INTEGER
+*          The order of the tridiagonal matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  D       (input) REAL array, dimension (N)
+*          The n diagonal elements of the diagonal matrix D from the
+*          factorization A = U'*D*U or A = L*D*L'.
+*
+*  E       (input) COMPLEX array, dimension (N-1)
+*          If UPLO = 'U', the (n-1) superdiagonal elements of the unit
+*          bidiagonal factor U from the factorization A = U'*D*U.
+*          If UPLO = 'L', the (n-1) subdiagonal elements of the unit
+*          bidiagonal factor L from the factorization A = L*D*L'.
+*
+*  B       (input/output) REAL array, dimension (LDB,NRHS)
+*          On entry, the right hand side vectors B for the system of
+*          linear equations.
+*          On exit, the solution vectors, X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            UPPER
+      INTEGER            IUPLO, J, JB, NB
+*     ..
+*     .. External Functions ..
+      INTEGER            ILAENV
+      EXTERNAL           ILAENV
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CPTTS2, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX, MIN
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cptcon"></A>
+  <H2>cptcon</H2>
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.cptcon( d, e, anorm)
+    or
+  NumRu::Lapack.cptcon  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPTCON( N, D, E, ANORM, RCOND, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPTCON computes the reciprocal of the condition number (in the
+*  1-norm) of a complex Hermitian positive definite tridiagonal matrix
+*  using the factorization A = L*D*L**H or A = U**H*D*U computed by
+*  CPTTRF.
+*
+*  Norm(inv(A)) is computed by a direct method, and the reciprocal of
+*  the condition number is computed as
+*                   RCOND = 1 / (ANORM * norm(inv(A))).
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  D       (input) REAL array, dimension (N)
+*          The n diagonal elements of the diagonal matrix D from the
+*          factorization of A, as computed by CPTTRF.
+*
+*  E       (input) COMPLEX array, dimension (N-1)
+*          The (n-1) off-diagonal elements of the unit bidiagonal factor
+*          U or L from the factorization of A, as computed by CPTTRF.
+*
+*  ANORM   (input) REAL
+*          The 1-norm of the original matrix A.
+*
+*  RCOND   (output) REAL
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is the
+*          1-norm of inv(A) computed in this routine.
+*
+*  RWORK   (workspace) REAL array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  Further Details
+*  ===============
+*
+*  The method used is described in Nicholas J. Higham, "Efficient
+*  Algorithms for Computing the Condition Number of a Tridiagonal
+*  Matrix", SIAM J. Sci. Stat. Comput., Vol. 7, No. 1, January 1986.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+    <HR />
+    <A HREF="c.html">back to matrix types</A>
+  </BODY>
+</HTML>

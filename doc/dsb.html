@@ -1,0 +1,1010 @@
+<HTML>
+  <HEAD>
+    <TITLE>DOUBLE PRECISION routines for (real) symmetric band matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>DOUBLE PRECISION routines for (real) symmetric band matrix</H1>
+    <UL>
+      <LI><A HREF="#dsbgvx">dsbgvx</A></LI>
+      <LI><A HREF="#dsbgv">dsbgv</A></LI>
+      <LI><A HREF="#dsbgst">dsbgst</A></LI>
+      <LI><A HREF="#dsbevx">dsbevx</A></LI>
+      <LI><A HREF="#dsbevd">dsbevd</A></LI>
+      <LI><A HREF="#dsbev">dsbev</A></LI>
+      <LI><A HREF="#dsbtrd">dsbtrd</A></LI>
+      <LI><A HREF="#dsbgvd">dsbgvd</A></LI>
+    </UL>
+
+  <A NAME="dsbgvx"></A>
+  <H2>dsbgvx</H2>
+  <PRE>
+USAGE:
+  q, m, w, z, work, iwork, ifail, info, ab, bb = NumRu::Lapack.dsbgvx( jobz, range, uplo, ka, kb, ab, bb, vl, vu, il, iu, abstol)
+    or
+  NumRu::Lapack.dsbgvx  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSBGVX( JOBZ, RANGE, UPLO, N, KA, KB, AB, LDAB, BB, LDBB, Q, LDQ, VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, IWORK, IFAIL, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSBGVX computes selected eigenvalues, and optionally, eigenvectors
+*  of a real generalized symmetric-definite banded eigenproblem, of
+*  the form A*x=(lambda)*B*x.  Here A and B are assumed to be symmetric
+*  and banded, and B is also positive definite.  Eigenvalues and
+*  eigenvectors can be selected by specifying either all eigenvalues,
+*  a range of values or a range of indices for the desired eigenvalues.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  RANGE   (input) CHARACTER*1
+*          = 'A': all eigenvalues will be found.
+*          = 'V': all eigenvalues in the half-open interval (VL,VU]
+*                 will be found.
+*          = 'I': the IL-th through IU-th eigenvalues will be found.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangles of A and B are stored;
+*          = 'L':  Lower triangles of A and B are stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  KA      (input) INTEGER
+*          The number of superdiagonals of the matrix A if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KA >= 0.
+*
+*  KB      (input) INTEGER
+*          The number of superdiagonals of the matrix B if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KB >= 0.
+*
+*  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB, N)
+*          On entry, the upper or lower triangle of the symmetric band
+*          matrix A, stored in the first ka+1 rows of the array.  The
+*          j-th column of A is stored in the j-th column of the array AB
+*          as follows:
+*          if UPLO = 'U', AB(ka+1+i-j,j) = A(i,j) for max(1,j-ka)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+ka).
+*
+*          On exit, the contents of AB are destroyed.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KA+1.
+*
+*  BB      (input/output) DOUBLE PRECISION array, dimension (LDBB, N)
+*          On entry, the upper or lower triangle of the symmetric band
+*          matrix B, stored in the first kb+1 rows of the array.  The
+*          j-th column of B is stored in the j-th column of the array BB
+*          as follows:
+*          if UPLO = 'U', BB(ka+1+i-j,j) = B(i,j) for max(1,j-kb)<=i<=j;
+*          if UPLO = 'L', BB(1+i-j,j)    = B(i,j) for j<=i<=min(n,j+kb).
+*
+*          On exit, the factor S from the split Cholesky factorization
+*          B = S**T*S, as returned by DPBSTF.
+*
+*  LDBB    (input) INTEGER
+*          The leading dimension of the array BB.  LDBB >= KB+1.
+*
+*  Q       (output) DOUBLE PRECISION array, dimension (LDQ, N)
+*          If JOBZ = 'V', the n-by-n matrix used in the reduction of
+*          A*x = (lambda)*B*x to standard form, i.e. C*x = (lambda)*x,
+*          and consequently C to tridiagonal form.
+*          If JOBZ = 'N', the array Q is not referenced.
+*
+*  LDQ     (input) INTEGER
+*          The leading dimension of the array Q.  If JOBZ = 'N',
+*          LDQ >= 1. If JOBZ = 'V', LDQ >= max(1,N).
+*
+*  VL      (input) DOUBLE PRECISION
+*  VU      (input) DOUBLE PRECISION
+*          If RANGE='V', the lower and upper bounds of the interval to
+*          be searched for eigenvalues. VL < VU.
+*          Not referenced if RANGE = 'A' or 'I'.
+*
+*  IL      (input) INTEGER
+*  IU      (input) INTEGER
+*          If RANGE='I', the indices (in ascending order) of the
+*          smallest and largest eigenvalues to be returned.
+*          1 <= IL <= IU <= N, if N > 0; IL = 1 and IU = 0 if N = 0.
+*          Not referenced if RANGE = 'A' or 'V'.
+*
+*  ABSTOL  (input) DOUBLE PRECISION
+*          The absolute error tolerance for the eigenvalues.
+*          An approximate eigenvalue is accepted as converged
+*          when it is determined to lie in an interval [a,b]
+*          of width less than or equal to
+*
+*                  ABSTOL + EPS *   max( |a|,|b| ) ,
+*
+*          where EPS is the machine precision.  If ABSTOL is less than
+*          or equal to zero, then  EPS*|T|  will be used in its place,
+*          where |T| is the 1-norm of the tridiagonal matrix obtained
+*          by reducing A to tridiagonal form.
+*
+*          Eigenvalues will be computed most accurately when ABSTOL is
+*          set to twice the underflow threshold 2*DLAMCH('S'), not zero.
+*          If this routine returns with INFO>0, indicating that some
+*          eigenvectors did not converge, try setting ABSTOL to
+*          2*DLAMCH('S').
+*
+*  M       (output) INTEGER
+*          The total number of eigenvalues found.  0 <= M <= N.
+*          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
+*          eigenvectors, with the i-th column of Z holding the
+*          eigenvector associated with W(i).  The eigenvectors are
+*          normalized so Z**T*B*Z = I.
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace/output) DOUBLE PRECISION array, dimension (7*N)
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (5*N)
+*
+*  IFAIL   (output) INTEGER array, dimension (M)
+*          If JOBZ = 'V', then if INFO = 0, the first M elements of
+*          IFAIL are zero.  If INFO > 0, then IFAIL contains the
+*          indices of the eigenvalues that failed to converge.
+*          If JOBZ = 'N', then IFAIL is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0 : successful exit
+*          < 0 : if INFO = -i, the i-th argument had an illegal value
+*          <= N: if INFO = i, then i eigenvectors failed to converge.
+*                  Their indices are stored in IFAIL.
+*          > N : DPBSTF returned an error code; i.e.,
+*                if INFO = N + i, for 1 <= i <= N, then the leading
+*                minor of order i of B is not positive definite.
+*                The factorization of B could not be completed and
+*                no eigenvalues or eigenvectors were computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dsbgv"></A>
+  <H2>dsbgv</H2>
+  <PRE>
+USAGE:
+  w, z, info, ab, bb = NumRu::Lapack.dsbgv( jobz, uplo, ka, kb, ab, bb)
+    or
+  NumRu::Lapack.dsbgv  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSBGV( JOBZ, UPLO, N, KA, KB, AB, LDAB, BB, LDBB, W, Z, LDZ, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSBGV computes all the eigenvalues, and optionally, the eigenvectors
+*  of a real generalized symmetric-definite banded eigenproblem, of
+*  the form A*x=(lambda)*B*x. Here A and B are assumed to be symmetric
+*  and banded, and B is also positive definite.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangles of A and B are stored;
+*          = 'L':  Lower triangles of A and B are stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  KA      (input) INTEGER
+*          The number of superdiagonals of the matrix A if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'. KA >= 0.
+*
+*  KB      (input) INTEGER
+*          The number of superdiagonals of the matrix B if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'. KB >= 0.
+*
+*  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB, N)
+*          On entry, the upper or lower triangle of the symmetric band
+*          matrix A, stored in the first ka+1 rows of the array.  The
+*          j-th column of A is stored in the j-th column of the array AB
+*          as follows:
+*          if UPLO = 'U', AB(ka+1+i-j,j) = A(i,j) for max(1,j-ka)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+ka).
+*
+*          On exit, the contents of AB are destroyed.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KA+1.
+*
+*  BB      (input/output) DOUBLE PRECISION array, dimension (LDBB, N)
+*          On entry, the upper or lower triangle of the symmetric band
+*          matrix B, stored in the first kb+1 rows of the array.  The
+*          j-th column of B is stored in the j-th column of the array BB
+*          as follows:
+*          if UPLO = 'U', BB(kb+1+i-j,j) = B(i,j) for max(1,j-kb)<=i<=j;
+*          if UPLO = 'L', BB(1+i-j,j)    = B(i,j) for j<=i<=min(n,j+kb).
+*
+*          On exit, the factor S from the split Cholesky factorization
+*          B = S**T*S, as returned by DPBSTF.
+*
+*  LDBB    (input) INTEGER
+*          The leading dimension of the array BB.  LDBB >= KB+1.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
+*          eigenvectors, with the i-th column of Z holding the
+*          eigenvector associated with W(i). The eigenvectors are
+*          normalized so that Z**T*B*Z = I.
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= N.
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is:
+*             <= N:  the algorithm failed to converge:
+*                    i off-diagonal elements of an intermediate
+*                    tridiagonal form did not converge to zero;
+*             > N:   if INFO = N + i, for 1 <= i <= N, then DPBSTF
+*                    returned INFO = i: B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            UPPER, WANTZ
+      CHARACTER          VECT
+      INTEGER            IINFO, INDE, INDWRK
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           DPBSTF, DSBGST, DSBTRD, DSTEQR, DSTERF, XERBLA
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dsbgst"></A>
+  <H2>dsbgst</H2>
+  <PRE>
+USAGE:
+  x, info, ab = NumRu::Lapack.dsbgst( vect, uplo, ka, kb, ab, bb)
+    or
+  NumRu::Lapack.dsbgst  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSBGST( VECT, UPLO, N, KA, KB, AB, LDAB, BB, LDBB, X, LDX, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSBGST reduces a real symmetric-definite banded generalized
+*  eigenproblem  A*x = lambda*B*x  to standard form  C*y = lambda*y,
+*  such that C has the same bandwidth as A.
+*
+*  B must have been previously factorized as S**T*S by DPBSTF, using a
+*  split Cholesky factorization. A is overwritten by C = X**T*A*X, where
+*  X = S**(-1)*Q and Q is an orthogonal matrix chosen to preserve the
+*  bandwidth of A.
+*
+
+*  Arguments
+*  =========
+*
+*  VECT    (input) CHARACTER*1
+*          = 'N':  do not form the transformation matrix X;
+*          = 'V':  form X.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  KA      (input) INTEGER
+*          The number of superdiagonals of the matrix A if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KA >= 0.
+*
+*  KB      (input) INTEGER
+*          The number of superdiagonals of the matrix B if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KA >= KB >= 0.
+*
+*  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB,N)
+*          On entry, the upper or lower triangle of the symmetric band
+*          matrix A, stored in the first ka+1 rows of the array.  The
+*          j-th column of A is stored in the j-th column of the array AB
+*          as follows:
+*          if UPLO = 'U', AB(ka+1+i-j,j) = A(i,j) for max(1,j-ka)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+ka).
+*
+*          On exit, the transformed matrix X**T*A*X, stored in the same
+*          format as A.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KA+1.
+*
+*  BB      (input) DOUBLE PRECISION array, dimension (LDBB,N)
+*          The banded factor S from the split Cholesky factorization of
+*          B, as returned by DPBSTF, stored in the first KB+1 rows of
+*          the array.
+*
+*  LDBB    (input) INTEGER
+*          The leading dimension of the array BB.  LDBB >= KB+1.
+*
+*  X       (output) DOUBLE PRECISION array, dimension (LDX,N)
+*          If VECT = 'V', the n-by-n matrix X.
+*          If VECT = 'N', the array X is not referenced.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.
+*          LDX >= max(1,N) if VECT = 'V'; LDX >= 1 otherwise.
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (2*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dsbevx"></A>
+  <H2>dsbevx</H2>
+  <PRE>
+USAGE:
+  q, m, w, z, ifail, info, ab = NumRu::Lapack.dsbevx( jobz, range, uplo, kd, ab, vl, vu, il, iu, abstol)
+    or
+  NumRu::Lapack.dsbevx  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSBEVX( JOBZ, RANGE, UPLO, N, KD, AB, LDAB, Q, LDQ, VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, IWORK, IFAIL, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSBEVX computes selected eigenvalues and, optionally, eigenvectors
+*  of a real symmetric band matrix A.  Eigenvalues and eigenvectors can
+*  be selected by specifying either a range of values or a range of
+*  indices for the desired eigenvalues.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  RANGE   (input) CHARACTER*1
+*          = 'A': all eigenvalues will be found;
+*          = 'V': all eigenvalues in the half-open interval (VL,VU]
+*                 will be found;
+*          = 'I': the IL-th through IU-th eigenvalues will be found.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  KD      (input) INTEGER
+*          The number of superdiagonals of the matrix A if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.
+*
+*  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB, N)
+*          On entry, the upper or lower triangle of the symmetric band
+*          matrix A, stored in the first KD+1 rows of the array.  The
+*          j-th column of A is stored in the j-th column of the array AB
+*          as follows:
+*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
+*
+*          On exit, AB is overwritten by values generated during the
+*          reduction to tridiagonal form.  If UPLO = 'U', the first
+*          superdiagonal and the diagonal of the tridiagonal matrix T
+*          are returned in rows KD and KD+1 of AB, and if UPLO = 'L',
+*          the diagonal and first subdiagonal of T are returned in the
+*          first two rows of AB.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KD + 1.
+*
+*  Q       (output) DOUBLE PRECISION array, dimension (LDQ, N)
+*          If JOBZ = 'V', the N-by-N orthogonal matrix used in the
+*                         reduction to tridiagonal form.
+*          If JOBZ = 'N', the array Q is not referenced.
+*
+*  LDQ     (input) INTEGER
+*          The leading dimension of the array Q.  If JOBZ = 'V', then
+*          LDQ >= max(1,N).
+*
+*  VL      (input) DOUBLE PRECISION
+*  VU      (input) DOUBLE PRECISION
+*          If RANGE='V', the lower and upper bounds of the interval to
+*          be searched for eigenvalues. VL < VU.
+*          Not referenced if RANGE = 'A' or 'I'.
+*
+*  IL      (input) INTEGER
+*  IU      (input) INTEGER
+*          If RANGE='I', the indices (in ascending order) of the
+*          smallest and largest eigenvalues to be returned.
+*          1 <= IL <= IU <= N, if N > 0; IL = 1 and IU = 0 if N = 0.
+*          Not referenced if RANGE = 'A' or 'V'.
+*
+*  ABSTOL  (input) DOUBLE PRECISION
+*          The absolute error tolerance for the eigenvalues.
+*          An approximate eigenvalue is accepted as converged
+*          when it is determined to lie in an interval [a,b]
+*          of width less than or equal to
+*
+*                  ABSTOL + EPS *   max( |a|,|b| ) ,
+*
+*          where EPS is the machine precision.  If ABSTOL is less than
+*          or equal to zero, then  EPS*|T|  will be used in its place,
+*          where |T| is the 1-norm of the tridiagonal matrix obtained
+*          by reducing AB to tridiagonal form.
+*
+*          Eigenvalues will be computed most accurately when ABSTOL is
+*          set to twice the underflow threshold 2*DLAMCH('S'), not zero.
+*          If this routine returns with INFO>0, indicating that some
+*          eigenvectors did not converge, try setting ABSTOL to
+*          2*DLAMCH('S').
+*
+*          See "Computing Small Singular Values of Bidiagonal Matrices
+*          with Guaranteed High Relative Accuracy," by Demmel and
+*          Kahan, LAPACK Working Note #3.
+*
+*  M       (output) INTEGER
+*          The total number of eigenvalues found.  0 <= M <= N.
+*          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          The first M elements contain the selected eigenvalues in
+*          ascending order.
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, max(1,M))
+*          If JOBZ = 'V', then if INFO = 0, the first M columns of Z
+*          contain the orthonormal eigenvectors of the matrix A
+*          corresponding to the selected eigenvalues, with the i-th
+*          column of Z holding the eigenvector associated with W(i).
+*          If an eigenvector fails to converge, then that column of Z
+*          contains the latest approximation to the eigenvector, and the
+*          index of the eigenvector is returned in IFAIL.
+*          If JOBZ = 'N', then Z is not referenced.
+*          Note: the user must ensure that at least max(1,M) columns are
+*          supplied in the array Z; if RANGE = 'V', the exact value of M
+*          is not known in advance and an upper bound must be used.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (7*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (5*N)
+*
+*  IFAIL   (output) INTEGER array, dimension (N)
+*          If JOBZ = 'V', then if INFO = 0, the first M elements of
+*          IFAIL are zero.  If INFO > 0, then IFAIL contains the
+*          indices of the eigenvectors that failed to converge.
+*          If JOBZ = 'N', then IFAIL is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, then i eigenvectors failed to converge.
+*                Their indices are stored in array IFAIL.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dsbevd"></A>
+  <H2>dsbevd</H2>
+  <PRE>
+USAGE:
+  w, z, work, iwork, info, ab = NumRu::Lapack.dsbevd( jobz, uplo, kd, ab, lwork, liwork)
+    or
+  NumRu::Lapack.dsbevd  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSBEVD( JOBZ, UPLO, N, KD, AB, LDAB, W, Z, LDZ, WORK, LWORK, IWORK, LIWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSBEVD computes all the eigenvalues and, optionally, eigenvectors of
+*  a real symmetric band matrix A. If eigenvectors are desired, it uses
+*  a divide and conquer algorithm.
+*
+*  The divide and conquer algorithm makes very mild assumptions about
+*  floating point arithmetic. It will work on machines with a guard
+*  digit in add/subtract, or on those binary machines without guard
+*  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
+*  Cray-2. It could conceivably fail on hexadecimal or decimal machines
+*  without guard digits, but we know of none.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  KD      (input) INTEGER
+*          The number of superdiagonals of the matrix A if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.
+*
+*  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB, N)
+*          On entry, the upper or lower triangle of the symmetric band
+*          matrix A, stored in the first KD+1 rows of the array.  The
+*          j-th column of A is stored in the j-th column of the array AB
+*          as follows:
+*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
+*
+*          On exit, AB is overwritten by values generated during the
+*          reduction to tridiagonal form.  If UPLO = 'U', the first
+*          superdiagonal and the diagonal of the tridiagonal matrix T
+*          are returned in rows KD and KD+1 of AB, and if UPLO = 'L',
+*          the diagonal and first subdiagonal of T are returned in the
+*          first two rows of AB.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KD + 1.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
+*          eigenvectors of the matrix A, with the i-th column of Z
+*          holding the eigenvector associated with W(i).
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace/output) DOUBLE PRECISION array,
+*                                         dimension (LWORK)
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          IF N <= 1,                LWORK must be at least 1.
+*          If JOBZ  = 'N' and N > 2, LWORK must be at least 2*N.
+*          If JOBZ  = 'V' and N > 2, LWORK must be at least
+*                         ( 1 + 5*N + 2*N**2 ).
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal sizes of the WORK and IWORK
+*          arrays, returns these values as the first entries of the WORK
+*          and IWORK arrays, and no error message related to LWORK or
+*          LIWORK is issued by XERBLA.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
+*          On exit, if INFO = 0, IWORK(1) returns the optimal LIWORK.
+*
+*  LIWORK  (input) INTEGER
+*          The dimension of the array LIWORK.
+*          If JOBZ  = 'N' or N <= 1, LIWORK must be at least 1.
+*          If JOBZ  = 'V' and N > 2, LIWORK must be at least 3 + 5*N.
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal sizes of the WORK and
+*          IWORK arrays, returns these values as the first entries of
+*          the WORK and IWORK arrays, and no error message related to
+*          LWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the algorithm failed to converge; i
+*                off-diagonal elements of an intermediate tridiagonal
+*                form did not converge to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dsbev"></A>
+  <H2>dsbev</H2>
+  <PRE>
+USAGE:
+  w, z, info, ab = NumRu::Lapack.dsbev( jobz, uplo, kd, ab)
+    or
+  NumRu::Lapack.dsbev  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSBEV( JOBZ, UPLO, N, KD, AB, LDAB, W, Z, LDZ, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSBEV computes all the eigenvalues and, optionally, eigenvectors of
+*  a real symmetric band matrix A.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  KD      (input) INTEGER
+*          The number of superdiagonals of the matrix A if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.
+*
+*  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB, N)
+*          On entry, the upper or lower triangle of the symmetric band
+*          matrix A, stored in the first KD+1 rows of the array.  The
+*          j-th column of A is stored in the j-th column of the array AB
+*          as follows:
+*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
+*
+*          On exit, AB is overwritten by values generated during the
+*          reduction to tridiagonal form.  If UPLO = 'U', the first
+*          superdiagonal and the diagonal of the tridiagonal matrix T
+*          are returned in rows KD and KD+1 of AB, and if UPLO = 'L',
+*          the diagonal and first subdiagonal of T are returned in the
+*          first two rows of AB.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KD + 1.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
+*          eigenvectors of the matrix A, with the i-th column of Z
+*          holding the eigenvector associated with W(i).
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (max(1,3*N-2))
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the algorithm failed to converge; i
+*                off-diagonal elements of an intermediate tridiagonal
+*                form did not converge to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dsbtrd"></A>
+  <H2>dsbtrd</H2>
+  <PRE>
+USAGE:
+  d, e, info, ab, q = NumRu::Lapack.dsbtrd( vect, uplo, kd, ab, q)
+    or
+  NumRu::Lapack.dsbtrd  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSBTRD( VECT, UPLO, N, KD, AB, LDAB, D, E, Q, LDQ, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSBTRD reduces a real symmetric band matrix A to symmetric
+*  tridiagonal form T by an orthogonal similarity transformation:
+*  Q**T * A * Q = T.
+*
+
+*  Arguments
+*  =========
+*
+*  VECT    (input) CHARACTER*1
+*          = 'N':  do not form Q;
+*          = 'V':  form Q;
+*          = 'U':  update a matrix X, by forming X*Q.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  KD      (input) INTEGER
+*          The number of superdiagonals of the matrix A if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.
+*
+*  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB,N)
+*          On entry, the upper or lower triangle of the symmetric band
+*          matrix A, stored in the first KD+1 rows of the array.  The
+*          j-th column of A is stored in the j-th column of the array AB
+*          as follows:
+*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
+*          On exit, the diagonal elements of AB are overwritten by the
+*          diagonal elements of the tridiagonal matrix T; if KD > 0, the
+*          elements on the first superdiagonal (if UPLO = 'U') or the
+*          first subdiagonal (if UPLO = 'L') are overwritten by the
+*          off-diagonal elements of T; the rest of AB is overwritten by
+*          values generated during the reduction.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KD+1.
+*
+*  D       (output) DOUBLE PRECISION array, dimension (N)
+*          The diagonal elements of the tridiagonal matrix T.
+*
+*  E       (output) DOUBLE PRECISION array, dimension (N-1)
+*          The off-diagonal elements of the tridiagonal matrix T:
+*          E(i) = T(i,i+1) if UPLO = 'U'; E(i) = T(i+1,i) if UPLO = 'L'.
+*
+*  Q       (input/output) DOUBLE PRECISION array, dimension (LDQ,N)
+*          On entry, if VECT = 'U', then Q must contain an N-by-N
+*          matrix X; if VECT = 'N' or 'V', then Q need not be set.
+*
+*          On exit:
+*          if VECT = 'V', Q contains the N-by-N orthogonal matrix Q;
+*          if VECT = 'U', Q contains the product X*Q;
+*          if VECT = 'N', the array Q is not referenced.
+*
+*  LDQ     (input) INTEGER
+*          The leading dimension of the array Q.
+*          LDQ >= 1, and LDQ >= N if VECT = 'V' or 'U'.
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  Further Details
+*  ===============
+*
+*  Modified by Linda Kaufman, Bell Labs.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dsbgvd"></A>
+  <H2>dsbgvd</H2>
+  <PRE>
+USAGE:
+  w, z, work, iwork, info, ab, bb = NumRu::Lapack.dsbgvd( jobz, uplo, ka, kb, ab, bb, lwork, liwork)
+    or
+  NumRu::Lapack.dsbgvd  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSBGVD( JOBZ, UPLO, N, KA, KB, AB, LDAB, BB, LDBB, W, Z, LDZ, WORK, LWORK, IWORK, LIWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSBGVD computes all the eigenvalues, and optionally, the eigenvectors
+*  of a real generalized symmetric-definite banded eigenproblem, of the
+*  form A*x=(lambda)*B*x.  Here A and B are assumed to be symmetric and
+*  banded, and B is also positive definite.  If eigenvectors are
+*  desired, it uses a divide and conquer algorithm.
+*
+*  The divide and conquer algorithm makes very mild assumptions about
+*  floating point arithmetic. It will work on machines with a guard
+*  digit in add/subtract, or on those binary machines without guard
+*  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
+*  Cray-2. It could conceivably fail on hexadecimal or decimal machines
+*  without guard digits, but we know of none.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangles of A and B are stored;
+*          = 'L':  Lower triangles of A and B are stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  KA      (input) INTEGER
+*          The number of superdiagonals of the matrix A if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KA >= 0.
+*
+*  KB      (input) INTEGER
+*          The number of superdiagonals of the matrix B if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KB >= 0.
+*
+*  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB, N)
+*          On entry, the upper or lower triangle of the symmetric band
+*          matrix A, stored in the first ka+1 rows of the array.  The
+*          j-th column of A is stored in the j-th column of the array AB
+*          as follows:
+*          if UPLO = 'U', AB(ka+1+i-j,j) = A(i,j) for max(1,j-ka)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+ka).
+*
+*          On exit, the contents of AB are destroyed.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KA+1.
+*
+*  BB      (input/output) DOUBLE PRECISION array, dimension (LDBB, N)
+*          On entry, the upper or lower triangle of the symmetric band
+*          matrix B, stored in the first kb+1 rows of the array.  The
+*          j-th column of B is stored in the j-th column of the array BB
+*          as follows:
+*          if UPLO = 'U', BB(ka+1+i-j,j) = B(i,j) for max(1,j-kb)<=i<=j;
+*          if UPLO = 'L', BB(1+i-j,j)    = B(i,j) for j<=i<=min(n,j+kb).
+*
+*          On exit, the factor S from the split Cholesky factorization
+*          B = S**T*S, as returned by DPBSTF.
+*
+*  LDBB    (input) INTEGER
+*          The leading dimension of the array BB.  LDBB >= KB+1.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
+*          eigenvectors, with the i-th column of Z holding the
+*          eigenvector associated with W(i).  The eigenvectors are
+*          normalized so Z**T*B*Z = I.
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace/output) DOUBLE PRECISION array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          If N <= 1,               LWORK >= 1.
+*          If JOBZ = 'N' and N > 1, LWORK >= 3*N.
+*          If JOBZ = 'V' and N > 1, LWORK >= 1 + 5*N + 2*N**2.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal sizes of the WORK and IWORK
+*          arrays, returns these values as the first entries of the WORK
+*          and IWORK arrays, and no error message related to LWORK or
+*          LIWORK is issued by XERBLA.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
+*          On exit, if LIWORK > 0, IWORK(1) returns the optimal LIWORK.
+*
+*  LIWORK  (input) INTEGER
+*          The dimension of the array IWORK.
+*          If JOBZ  = 'N' or N <= 1, LIWORK >= 1.
+*          If JOBZ  = 'V' and N > 1, LIWORK >= 3 + 5*N.
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal sizes of the WORK and
+*          IWORK arrays, returns these values as the first entries of
+*          the WORK and IWORK arrays, and no error message related to
+*          LWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is:
+*             <= N:  the algorithm failed to converge:
+*                    i off-diagonal elements of an intermediate
+*                    tridiagonal form did not converge to zero;
+*             > N:   if INFO = N + i, for 1 <= i <= N, then DPBSTF
+*                    returned INFO = i: B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+    <HR />
+    <A HREF="d.html">back to matrix types</A>
+  </BODY>
+</HTML>

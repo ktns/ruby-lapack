@@ -1,0 +1,341 @@
+<HTML>
+  <HEAD>
+    <TITLE>REAL routines for triangular, packed storage matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>REAL routines for triangular, packed storage matrix</H1>
+    <UL>
+      <LI><A HREF="#stptrs">stptrs</A></LI>
+      <LI><A HREF="#stpcon">stpcon</A></LI>
+      <LI><A HREF="#stptri">stptri</A></LI>
+      <LI><A HREF="#stprfs">stprfs</A></LI>
+    </UL>
+
+  <A NAME="stptrs"></A>
+  <H2>stptrs</H2>
+  <PRE>
+USAGE:
+  info, b = NumRu::Lapack.stptrs( uplo, trans, diag, n, ap, b)
+    or
+  NumRu::Lapack.stptrs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE STPTRS( UPLO, TRANS, DIAG, N, NRHS, AP, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  STPTRS solves a triangular system of the form
+*
+*     A * X = B  or  A**T * X = B,
+*
+*  where A is a triangular matrix of order N stored in packed format,
+*  and B is an N-by-NRHS matrix.  A check is made to verify that A is
+*  nonsingular.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  A is upper triangular;
+*          = 'L':  A is lower triangular.
+*
+*  TRANS   (input) CHARACTER*1
+*          Specifies the form of the system of equations:
+*          = 'N':  A * X = B  (No transpose)
+*          = 'T':  A**T * X = B  (Transpose)
+*          = 'C':  A**H * X = B  (Conjugate transpose = Transpose)
+*
+*  DIAG    (input) CHARACTER*1
+*          = 'N':  A is non-unit triangular;
+*          = 'U':  A is unit triangular.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  AP      (input) REAL array, dimension (N*(N+1)/2)
+*          The upper or lower triangular matrix A, packed columnwise in
+*          a linear array.  The j-th column of A is stored in the array
+*          AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*
+*  B       (input/output) REAL array, dimension (LDB,NRHS)
+*          On entry, the right hand side matrix B.
+*          On exit, if INFO = 0, the solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the i-th diagonal element of A is zero,
+*                indicating that the matrix is singular and the
+*                solutions X have not been computed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="stpcon"></A>
+  <H2>stpcon</H2>
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.stpcon( norm, uplo, diag, ap)
+    or
+  NumRu::Lapack.stpcon  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE STPCON( NORM, UPLO, DIAG, N, AP, RCOND, WORK, IWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  STPCON estimates the reciprocal of the condition number of a packed
+*  triangular matrix A, in either the 1-norm or the infinity-norm.
+*
+*  The norm of A is computed and an estimate is obtained for
+*  norm(inv(A)), then the reciprocal of the condition number is
+*  computed as
+*     RCOND = 1 / ( norm(A) * norm(inv(A)) ).
+*
+
+*  Arguments
+*  =========
+*
+*  NORM    (input) CHARACTER*1
+*          Specifies whether the 1-norm condition number or the
+*          infinity-norm condition number is required:
+*          = '1' or 'O':  1-norm;
+*          = 'I':         Infinity-norm.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  A is upper triangular;
+*          = 'L':  A is lower triangular.
+*
+*  DIAG    (input) CHARACTER*1
+*          = 'N':  A is non-unit triangular;
+*          = 'U':  A is unit triangular.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input) REAL array, dimension (N*(N+1)/2)
+*          The upper or lower triangular matrix A, packed columnwise in
+*          a linear array.  The j-th column of A is stored in the array
+*          AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.
+*          If DIAG = 'U', the diagonal elements of A are not referenced
+*          and are assumed to be 1.
+*
+*  RCOND   (output) REAL
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(norm(A) * norm(inv(A))).
+*
+*  WORK    (workspace) REAL array, dimension (3*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="stptri"></A>
+  <H2>stptri</H2>
+  <PRE>
+USAGE:
+  info, ap = NumRu::Lapack.stptri( uplo, diag, n, ap)
+    or
+  NumRu::Lapack.stptri  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE STPTRI( UPLO, DIAG, N, AP, INFO )
+
+*  Purpose
+*  =======
+*
+*  STPTRI computes the inverse of a real upper or lower triangular
+*  matrix A stored in packed format.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  A is upper triangular;
+*          = 'L':  A is lower triangular.
+*
+*  DIAG    (input) CHARACTER*1
+*          = 'N':  A is non-unit triangular;
+*          = 'U':  A is unit triangular.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input/output) REAL array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangular matrix A, stored
+*          columnwise in a linear array.  The j-th column of A is stored
+*          in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*((2*n-j)/2) = A(i,j) for j<=i<=n.
+*          See below for further details.
+*          On exit, the (triangular) inverse of the original matrix, in
+*          the same packed storage format.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, A(i,i) is exactly zero.  The triangular
+*                matrix is singular and its inverse can not be computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  A triangular matrix A can be transferred to packed storage using one
+*  of the following program segments:
+*
+*  UPLO = 'U':                      UPLO = 'L':
+*
+*        JC = 1                           JC = 1
+*        DO 2 J = 1, N                    DO 2 J = 1, N
+*           DO 1 I = 1, J                    DO 1 I = J, N
+*              AP(JC+I-1) = A(I,J)              AP(JC+I-J) = A(I,J)
+*      1    CONTINUE                    1    CONTINUE
+*           JC = JC + J                      JC = JC + N - J + 1
+*      2 CONTINUE                       2 CONTINUE
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="stprfs"></A>
+  <H2>stprfs</H2>
+  <PRE>
+USAGE:
+  ferr, berr, info = NumRu::Lapack.stprfs( uplo, trans, diag, ap, b, x)
+    or
+  NumRu::Lapack.stprfs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE STPRFS( UPLO, TRANS, DIAG, N, NRHS, AP, B, LDB, X, LDX, FERR, BERR, WORK, IWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  STPRFS provides error bounds and backward error estimates for the
+*  solution to a system of linear equations with a triangular packed
+*  coefficient matrix.
+*
+*  The solution matrix X must be computed by STPTRS or some other
+*  means before entering this routine.  STPRFS does not do iterative
+*  refinement because doing so cannot improve the backward error.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  A is upper triangular;
+*          = 'L':  A is lower triangular.
+*
+*  TRANS   (input) CHARACTER*1
+*          Specifies the form of the system of equations:
+*          = 'N':  A * X = B  (No transpose)
+*          = 'T':  A**T * X = B  (Transpose)
+*          = 'C':  A**H * X = B  (Conjugate transpose = Transpose)
+*
+*  DIAG    (input) CHARACTER*1
+*          = 'N':  A is non-unit triangular;
+*          = 'U':  A is unit triangular.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrices B and X.  NRHS >= 0.
+*
+*  AP      (input) REAL array, dimension (N*(N+1)/2)
+*          The upper or lower triangular matrix A, packed columnwise in
+*          a linear array.  The j-th column of A is stored in the array
+*          AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*          If DIAG = 'U', the diagonal elements of A are not referenced
+*          and are assumed to be 1.
+*
+*  B       (input) REAL array, dimension (LDB,NRHS)
+*          The right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (input) REAL array, dimension (LDX,NRHS)
+*          The solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  FERR    (output) REAL array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) REAL array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) REAL array, dimension (3*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+    <HR />
+    <A HREF="s.html">back to matrix types</A>
+  </BODY>
+</HTML>
