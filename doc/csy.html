@@ -6,21 +6,21 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for symmetric matrix</H1>
     <UL>
-      <LI><A HREF="#csycon">csycon</A>: Estimates the reciprocal of the condition number of a</LI>
-      <LI><A HREF="#csymv">csymv</A>: </LI>
-      <LI><A HREF="#csyr">csyr</A>: </LI>
-      <LI><A HREF="#csyrfs">csyrfs</A>: Improves the computed solution to a complex</LI>
-      <LI><A HREF="#csysv">csysv</A>: </LI>
-      <LI><A HREF="#csysvx">csysvx</A>: Solves a complex symmetric</LI>
-      <LI><A HREF="#csytf2">csytf2</A>: </LI>
-      <LI><A HREF="#csytrf">csytrf</A>: Computes the factorization of a complex symmetric-indefinite matrix,</LI>
-      <LI><A HREF="#csytri">csytri</A>: Computes the inverse of a complex symmetric indefinite matrix,</LI>
-      <LI><A HREF="#csytrs">csytrs</A>: Solves a complex symmetric indefinite system of linear equations AX=B,</LI>
+      <LI><A HREF="#csycon">csycon</A> : Estimates the reciprocal of the condition number of acomplex symmetric indefinite matrix,using the factorization computed by CSYTRF.</LI>
+      <LI><A HREF="#csymv">csymv</A> : </LI>
+      <LI><A HREF="#csyr">csyr</A> : </LI>
+      <LI><A HREF="#csyrfs">csyrfs</A> : Improves the computed solution to a complexsymmetric indefinite system of linear equationsAX=B, and provides forward and backward error bounds for thesolution.</LI>
+      <LI><A HREF="#csysv">csysv</A> : </LI>
+      <LI><A HREF="#csysvx">csysvx</A> : Solves a complex symmetricindefinite system  of linear equations AX=B, and provides anestimate of the condition number and error bounds on the solution.</LI>
+      <LI><A HREF="#csytf2">csytf2</A> : </LI>
+      <LI><A HREF="#csytrf">csytrf</A> : Computes the factorization of a complex symmetric-indefinite matrix,using the diagonal pivoting method.</LI>
+      <LI><A HREF="#csytri">csytri</A> : Computes the inverse of a complex symmetric indefinite matrix,using the factorization computed by CSYTRF.</LI>
+      <LI><A HREF="#csytrs">csytrs</A> : Solves a complex symmetric indefinite system of linear equations AX=B,using the factorization computed by CSPTRF.</LI>
     </UL>
 
   <A NAME="csycon"></A>
   <H2>csycon</H2>
-  Estimates the reciprocal of the condition number of a
+  Estimates the reciprocal of the condition number of acomplex symmetric indefinite matrix,using the factorization computed by CSYTRF.
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.csycon( uplo, a, ipiv, anorm)
@@ -278,7 +278,7 @@ FORTRAN MANUAL
 
   <A NAME="csyrfs"></A>
   <H2>csyrfs</H2>
-  Improves the computed solution to a complex
+  Improves the computed solution to a complexsymmetric indefinite system of linear equationsAX=B, and provides forward and backward error bounds for thesolution.
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.csyrfs( uplo, a, af, ipiv, b, x)
@@ -510,7 +510,7 @@ FORTRAN MANUAL
 
   <A NAME="csysvx"></A>
   <H2>csysvx</H2>
-  Solves a complex symmetric
+  Solves a complex symmetricindefinite system  of linear equations AX=B, and provides anestimate of the condition number and error bounds on the solution.
   <PRE>
 USAGE:
   x, rcond, ferr, berr, work, info, af, ipiv = NumRu::Lapack.csysvx( fact, uplo, a, af, ipiv, b, lwork)
@@ -828,7 +828,7 @@ FORTRAN MANUAL
 
   <A NAME="csytrf"></A>
   <H2>csytrf</H2>
-  Computes the factorization of a complex symmetric-indefinite matrix,
+  Computes the factorization of a complex symmetric-indefinite matrix,using the diagonal pivoting method.
   <PRE>
 USAGE:
   ipiv, work, info, a = NumRu::Lapack.csytrf( uplo, a, lwork)
@@ -972,7 +972,7 @@ FORTRAN MANUAL
 
   <A NAME="csytri"></A>
   <H2>csytri</H2>
-  Computes the inverse of a complex symmetric indefinite matrix,
+  Computes the inverse of a complex symmetric indefinite matrix,using the factorization computed by CSYTRF.
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.csytri( uplo, a, ipiv)
@@ -1039,7 +1039,7 @@ FORTRAN MANUAL
 
   <A NAME="csytrs"></A>
   <H2>csytrs</H2>
-  Solves a complex symmetric indefinite system of linear equations AX=B,
+  Solves a complex symmetric indefinite system of linear equations AX=B,using the factorization computed by CSPTRF.
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.csytrs( uplo, a, ipiv, b)

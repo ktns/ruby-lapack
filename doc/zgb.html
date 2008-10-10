@@ -6,20 +6,20 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for general band matrix</H1>
     <UL>
-      <LI><A HREF="#zgbbrd">zgbbrd</A>: </LI>
-      <LI><A HREF="#zgbcon">zgbcon</A>: Estimates the reciprocal of the condition number of a general</LI>
-      <LI><A HREF="#zgbequ">zgbequ</A>: Computes row and column scalings to equilibrate a general band</LI>
-      <LI><A HREF="#zgbrfs">zgbrfs</A>: Improves the computed solution to a general banded system of</LI>
-      <LI><A HREF="#zgbsv">zgbsv</A>: Solves a general banded system of linear equations AX=B.</LI>
-      <LI><A HREF="#zgbsvx">zgbsvx</A>: Solves a general banded system of linear equations AX=B,</LI>
-      <LI><A HREF="#zgbtf2">zgbtf2</A>: </LI>
-      <LI><A HREF="#zgbtrf">zgbtrf</A>: Computes an LU factorization of a general band matrix, using</LI>
-      <LI><A HREF="#zgbtrs">zgbtrs</A>: Solves a general banded system of linear equations AX=B,</LI>
+      <LI><A HREF="#zgbbrd">zgbbrd</A> : Reduces a complex general band matrix to real upper bidiagonal formby a unitary transformation.</LI>
+      <LI><A HREF="#zgbcon">zgbcon</A> : Estimates the reciprocal of the condition number of a generalband matrix, in either the 1-norm or the infinity-norm, usingthe LU factorization computed by ZGBTRF.</LI>
+      <LI><A HREF="#zgbequ">zgbequ</A> : Computes row and column scalings to equilibrate a general bandmatrix and reduce its condition number.</LI>
+      <LI><A HREF="#zgbrfs">zgbrfs</A> : Improves the computed solution to a general banded system oflinear equations AX=B, A**T X=B or A**H X=B, and provides forwardand backward error bounds for the solution.</LI>
+      <LI><A HREF="#zgbsv">zgbsv</A> : Solves a general banded system of linear equations AX=B.</LI>
+      <LI><A HREF="#zgbsvx">zgbsvx</A> : Solves a general banded system of linear equations AX=B,A**T X=B or A**H X=B, and provides an estimate of the conditionnumber and error bounds on the solution.</LI>
+      <LI><A HREF="#zgbtf2">zgbtf2</A> : </LI>
+      <LI><A HREF="#zgbtrf">zgbtrf</A> : Computes an LU factorization of a general band matrix, usingpartial pivoting with row interchanges.</LI>
+      <LI><A HREF="#zgbtrs">zgbtrs</A> : Solves a general banded system of linear equations AX=B,A**T X=B or A**H X=B, using the LU factorization computedby ZGBTRF.</LI>
     </UL>
 
   <A NAME="zgbbrd"></A>
   <H2>zgbbrd</H2>
-  
+  Reduces a complex general band matrix to real upper bidiagonal formby a unitary transformation.
   <PRE>
 USAGE:
   d, e, q, pt, info, ab, c = NumRu::Lapack.zgbbrd( vect, kl, ku, ab, c)
@@ -126,7 +126,7 @@ FORTRAN MANUAL
 
   <A NAME="zgbcon"></A>
   <H2>zgbcon</H2>
-  Estimates the reciprocal of the condition number of a general
+  Estimates the reciprocal of the condition number of a generalband matrix, in either the 1-norm or the infinity-norm, usingthe LU factorization computed by ZGBTRF.
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.zgbcon( norm, kl, ku, ab, ipiv, anorm)
@@ -207,7 +207,7 @@ FORTRAN MANUAL
 
   <A NAME="zgbequ"></A>
   <H2>zgbequ</H2>
-  Computes row and column scalings to equilibrate a general band
+  Computes row and column scalings to equilibrate a general bandmatrix and reduce its condition number.
   <PRE>
 USAGE:
   r, c, rowcnd, colcnd, amax, info = NumRu::Lapack.zgbequ( m, kl, ku, ab)
@@ -297,7 +297,7 @@ FORTRAN MANUAL
 
   <A NAME="zgbrfs"></A>
   <H2>zgbrfs</H2>
-  Improves the computed solution to a general banded system of
+  Improves the computed solution to a general banded system oflinear equations AX=B, A**T X=B or A**H X=B, and provides forwardand backward error bounds for the solution.
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.zgbrfs( trans, kl, ku, ab, afb, ipiv, b, x)
@@ -522,7 +522,7 @@ FORTRAN MANUAL
 
   <A NAME="zgbsvx"></A>
   <H2>zgbsvx</H2>
-  Solves a general banded system of linear equations AX=B,
+  Solves a general banded system of linear equations AX=B,A**T X=B or A**H X=B, and provides an estimate of the conditionnumber and error bounds on the solution.
   <PRE>
 USAGE:
   x, rcond, ferr, berr, rwork, info, ab, afb, ipiv, equed, r, c, b = NumRu::Lapack.zgbsvx( fact, trans, kl, ku, ab, afb, ipiv, equed, r, c, b)
@@ -879,7 +879,7 @@ FORTRAN MANUAL
 
   <A NAME="zgbtrf"></A>
   <H2>zgbtrf</H2>
-  Computes an LU factorization of a general band matrix, using
+  Computes an LU factorization of a general band matrix, usingpartial pivoting with row interchanges.
   <PRE>
 USAGE:
   ipiv, info, ab = NumRu::Lapack.zgbtrf( m, kl, ku, ab)
@@ -971,7 +971,7 @@ FORTRAN MANUAL
 
   <A NAME="zgbtrs"></A>
   <H2>zgbtrs</H2>
-  Solves a general banded system of linear equations AX=B,
+  Solves a general banded system of linear equations AX=B,A**T X=B or A**H X=B, using the LU factorization computedby ZGBTRF.
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.zgbtrs( trans, kl, ku, ab, ipiv, b)

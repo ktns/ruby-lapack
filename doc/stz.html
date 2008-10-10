@@ -6,8 +6,8 @@
     <A NAME="top"></A>
     <H1>REAL routines for trapezoidal matrix</H1>
     <UL>
-      <LI><A HREF="#stzrqf">stzrqf</A>: Computes an RQ factorization of an upper trapezoidal matrix.</LI>
-      <LI><A HREF="#stzrzf">stzrzf</A>: Computes an RZ factorization of an upper trapezoidal matrix</LI>
+      <LI><A HREF="#stzrqf">stzrqf</A> : Computes an RQ factorization of an upper trapezoidal matrix.</LI>
+      <LI><A HREF="#stzrzf">stzrzf</A> : Computes an RZ factorization of an upper trapezoidal matrix(blocked version of STZRQF).</LI>
     </UL>
 
   <A NAME="stzrqf"></A>
@@ -105,7 +105,7 @@ FORTRAN MANUAL
 
   <A NAME="stzrzf"></A>
   <H2>stzrzf</H2>
-  Computes an RZ factorization of an upper trapezoidal matrix
+  Computes an RZ factorization of an upper trapezoidal matrix(blocked version of STZRQF).
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.stzrzf( a, lwork)

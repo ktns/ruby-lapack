@@ -6,8 +6,8 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for trapezoidal matrix</H1>
     <UL>
-      <LI><A HREF="#dtzrqf">dtzrqf</A>: Computes an RQ factorization of an upper trapezoidal matrix.</LI>
-      <LI><A HREF="#dtzrzf">dtzrzf</A>: Computes an RZ factorization of an upper trapezoidal matrix</LI>
+      <LI><A HREF="#dtzrqf">dtzrqf</A> : Computes an RQ factorization of an upper trapezoidal matrix.</LI>
+      <LI><A HREF="#dtzrzf">dtzrzf</A> : Computes an RZ factorization of an upper trapezoidal matrix(blocked version of DTZRQF).</LI>
     </UL>
 
   <A NAME="dtzrqf"></A>
@@ -105,7 +105,7 @@ FORTRAN MANUAL
 
   <A NAME="dtzrzf"></A>
   <H2>dtzrzf</H2>
-  Computes an RZ factorization of an upper trapezoidal matrix
+  Computes an RZ factorization of an upper trapezoidal matrix(blocked version of DTZRQF).
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.dtzrzf( a, lwork)

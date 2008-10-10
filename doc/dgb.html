@@ -6,20 +6,20 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for general band matrix</H1>
     <UL>
-      <LI><A HREF="#dgbbrd">dgbbrd</A>: </LI>
-      <LI><A HREF="#dgbcon">dgbcon</A>: Estimates the reciprocal of the condition number of a general</LI>
-      <LI><A HREF="#dgbequ">dgbequ</A>: Computes row and column scalings to equilibrate a general band</LI>
-      <LI><A HREF="#dgbrfs">dgbrfs</A>: Improves the computed solution to a general banded system of</LI>
-      <LI><A HREF="#dgbsv">dgbsv</A>: Solves a general banded system of linear equations AX=B.</LI>
-      <LI><A HREF="#dgbsvx">dgbsvx</A>: Solves a general banded system of linear equations AX=B,</LI>
-      <LI><A HREF="#dgbtf2">dgbtf2</A>: </LI>
-      <LI><A HREF="#dgbtrf">dgbtrf</A>: Computes an LU factorization of a general band matrix, using</LI>
-      <LI><A HREF="#dgbtrs">dgbtrs</A>: Solves a general banded system of linear equations AX=B,</LI>
+      <LI><A HREF="#dgbbrd">dgbbrd</A> : Reduces a general band matrix to real upper bidiagonal formby an orthogonal transformation.</LI>
+      <LI><A HREF="#dgbcon">dgbcon</A> : Estimates the reciprocal of the condition number of a generalband matrix, in either the 1-norm or the infinity-norm, usingthe LU factorization computed by DGBTRF.</LI>
+      <LI><A HREF="#dgbequ">dgbequ</A> : Computes row and column scalings to equilibrate a general bandmatrix and reduce its condition number.</LI>
+      <LI><A HREF="#dgbrfs">dgbrfs</A> : Improves the computed solution to a general banded system oflinear equations AX=B, A**T X=B or A**H X=B, and provides forwardand backward error bounds for the solution.</LI>
+      <LI><A HREF="#dgbsv">dgbsv</A> : Solves a general banded system of linear equations AX=B.</LI>
+      <LI><A HREF="#dgbsvx">dgbsvx</A> : Solves a general banded system of linear equations AX=B,A**T X=B or A**H X=B, and provides an estimate of the conditionnumber and error bounds on the solution.</LI>
+      <LI><A HREF="#dgbtf2">dgbtf2</A> : </LI>
+      <LI><A HREF="#dgbtrf">dgbtrf</A> : Computes an LU factorization of a general band matrix, usingpartial pivoting with row interchanges.</LI>
+      <LI><A HREF="#dgbtrs">dgbtrs</A> : Solves a general banded system of linear equations AX=B,A**T X=B or A**H X=B, using the LU factorization computedby DGBTRF.</LI>
     </UL>
 
   <A NAME="dgbbrd"></A>
   <H2>dgbbrd</H2>
-  
+  Reduces a general band matrix to real upper bidiagonal formby an orthogonal transformation.
   <PRE>
 USAGE:
   d, e, q, pt, info, ab, c = NumRu::Lapack.dgbbrd( vect, kl, ku, ab, c)
@@ -124,7 +124,7 @@ FORTRAN MANUAL
 
   <A NAME="dgbcon"></A>
   <H2>dgbcon</H2>
-  Estimates the reciprocal of the condition number of a general
+  Estimates the reciprocal of the condition number of a generalband matrix, in either the 1-norm or the infinity-norm, usingthe LU factorization computed by DGBTRF.
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.dgbcon( norm, kl, ku, ab, ipiv, anorm)
@@ -205,7 +205,7 @@ FORTRAN MANUAL
 
   <A NAME="dgbequ"></A>
   <H2>dgbequ</H2>
-  Computes row and column scalings to equilibrate a general band
+  Computes row and column scalings to equilibrate a general bandmatrix and reduce its condition number.
   <PRE>
 USAGE:
   r, c, rowcnd, colcnd, amax, info = NumRu::Lapack.dgbequ( m, kl, ku, ab)
@@ -295,7 +295,7 @@ FORTRAN MANUAL
 
   <A NAME="dgbrfs"></A>
   <H2>dgbrfs</H2>
-  Improves the computed solution to a general banded system of
+  Improves the computed solution to a general banded system oflinear equations AX=B, A**T X=B or A**H X=B, and provides forwardand backward error bounds for the solution.
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.dgbrfs( trans, kl, ku, ab, afb, ipiv, b, x)
@@ -520,7 +520,7 @@ FORTRAN MANUAL
 
   <A NAME="dgbsvx"></A>
   <H2>dgbsvx</H2>
-  Solves a general banded system of linear equations AX=B,
+  Solves a general banded system of linear equations AX=B,A**T X=B or A**H X=B, and provides an estimate of the conditionnumber and error bounds on the solution.
   <PRE>
 USAGE:
   x, rcond, ferr, berr, work, info, ab, afb, ipiv, equed, r, c, b = NumRu::Lapack.dgbsvx( fact, trans, kl, ku, ab, afb, ipiv, equed, r, c, b)
@@ -874,7 +874,7 @@ FORTRAN MANUAL
 
   <A NAME="dgbtrf"></A>
   <H2>dgbtrf</H2>
-  Computes an LU factorization of a general band matrix, using
+  Computes an LU factorization of a general band matrix, usingpartial pivoting with row interchanges.
   <PRE>
 USAGE:
   ipiv, info, ab = NumRu::Lapack.dgbtrf( m, kl, ku, ab)
@@ -966,7 +966,7 @@ FORTRAN MANUAL
 
   <A NAME="dgbtrs"></A>
   <H2>dgbtrs</H2>
-  Solves a general banded system of linear equations AX=B,
+  Solves a general banded system of linear equations AX=B,A**T X=B or A**H X=B, using the LU factorization computedby DGBTRF.
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.dgbtrs( trans, kl, ku, ab, ipiv, b)

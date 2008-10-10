@@ -6,12 +6,12 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for bidiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#zbdsqr">zbdsqr</A>: Computes the singular value decomposition (SVD) of a real bidiagonal</LI>
+      <LI><A HREF="#zbdsqr">zbdsqr</A> : Computes the singular value decomposition (SVD) of a real bidiagonalmatrix, using the bidiagonal QR algorithm.</LI>
     </UL>
 
   <A NAME="zbdsqr"></A>
   <H2>zbdsqr</H2>
-  Computes the singular value decomposition (SVD) of a real bidiagonal
+  Computes the singular value decomposition (SVD) of a real bidiagonalmatrix, using the bidiagonal QR algorithm.
   <PRE>
 USAGE:
   info, d, e, vt, u, c = NumRu::Lapack.zbdsqr( uplo, nru, d, e, vt, u, c)

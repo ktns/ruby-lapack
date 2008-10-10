@@ -6,20 +6,20 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for symmetric or Hermitian positive definite matrix</H1>
     <UL>
-      <LI><A HREF="#zpocon">zpocon</A>: Estimates the reciprocal of the condition number of a</LI>
-      <LI><A HREF="#zpoequ">zpoequ</A>: Computes row and column scalings to equilibrate a Hermitian</LI>
-      <LI><A HREF="#zporfs">zporfs</A>: Improves the computed solution to a Hermitian positive</LI>
-      <LI><A HREF="#zposv">zposv</A>: Solves a Hermitian positive definite system of linear</LI>
-      <LI><A HREF="#zposvx">zposvx</A>: Solves a Hermitian positive definite system of linear</LI>
-      <LI><A HREF="#zpotf2">zpotf2</A>: </LI>
-      <LI><A HREF="#zpotrf">zpotrf</A>: Computes the Cholesky factorization of a Hermitian</LI>
-      <LI><A HREF="#zpotri">zpotri</A>: Computes the inverse of a Hermitian positive definite</LI>
-      <LI><A HREF="#zpotrs">zpotrs</A>: Solves a Hermitian positive definite system of linear</LI>
+      <LI><A HREF="#zpocon">zpocon</A> : Estimates the reciprocal of the condition number of aHermitian positive definite matrix, using theCholesky factorization computed by ZPOTRF.</LI>
+      <LI><A HREF="#zpoequ">zpoequ</A> : Computes row and column scalings to equilibrate a Hermitianpositive definite matrix and reduce its condition number.</LI>
+      <LI><A HREF="#zporfs">zporfs</A> : Improves the computed solution to a Hermitian positivedefinite system of linear equations AX=B, and provides forwardand backward error bounds for the solution.</LI>
+      <LI><A HREF="#zposv">zposv</A> : Solves a Hermitian positive definite system of linearequations AX=B.</LI>
+      <LI><A HREF="#zposvx">zposvx</A> : Solves a Hermitian positive definite system of linearequations AX=B, and provides an estimate of the condition numberand error bounds on the solution.</LI>
+      <LI><A HREF="#zpotf2">zpotf2</A> : </LI>
+      <LI><A HREF="#zpotrf">zpotrf</A> : Computes the Cholesky factorization of a Hermitianpositive definite matrix.</LI>
+      <LI><A HREF="#zpotri">zpotri</A> : Computes the inverse of a Hermitian positive definitematrix, using the Cholesky factorization computed by ZPOTRF.</LI>
+      <LI><A HREF="#zpotrs">zpotrs</A> : Solves a Hermitian positive definite system of linearequations AX=B, using the Cholesky factorization computed byZPOTRF.</LI>
     </UL>
 
   <A NAME="zpocon"></A>
   <H2>zpocon</H2>
-  Estimates the reciprocal of the condition number of a
+  Estimates the reciprocal of the condition number of aHermitian positive definite matrix, using theCholesky factorization computed by ZPOTRF.
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.zpocon( uplo, a, anorm)
@@ -84,7 +84,7 @@ FORTRAN MANUAL
 
   <A NAME="zpoequ"></A>
   <H2>zpoequ</H2>
-  Computes row and column scalings to equilibrate a Hermitian
+  Computes row and column scalings to equilibrate a Hermitianpositive definite matrix and reduce its condition number.
   <PRE>
 USAGE:
   s, scond, amax, info = NumRu::Lapack.zpoequ( a)
@@ -150,7 +150,7 @@ FORTRAN MANUAL
 
   <A NAME="zporfs"></A>
   <H2>zporfs</H2>
-  Improves the computed solution to a Hermitian positive
+  Improves the computed solution to a Hermitian positivedefinite system of linear equations AX=B, and provides forwardand backward error bounds for the solution.
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.zporfs( uplo, a, af, b, x)
@@ -254,7 +254,7 @@ FORTRAN MANUAL
 
   <A NAME="zposv"></A>
   <H2>zposv</H2>
-  Solves a Hermitian positive definite system of linear
+  Solves a Hermitian positive definite system of linearequations AX=B.
   <PRE>
 USAGE:
   info, a, b = NumRu::Lapack.zposv( uplo, a, b)
@@ -345,7 +345,7 @@ FORTRAN MANUAL
 
   <A NAME="zposvx"></A>
   <H2>zposvx</H2>
-  Solves a Hermitian positive definite system of linear
+  Solves a Hermitian positive definite system of linearequations AX=B, and provides an estimate of the condition numberand error bounds on the solution.
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, a, af, equed, s, b = NumRu::Lapack.zposvx( fact, uplo, a, af, equed, s, b)
@@ -625,7 +625,7 @@ FORTRAN MANUAL
 
   <A NAME="zpotrf"></A>
   <H2>zpotrf</H2>
-  Computes the Cholesky factorization of a Hermitian
+  Computes the Cholesky factorization of a Hermitianpositive definite matrix.
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.zpotrf( uplo, a)
@@ -692,7 +692,7 @@ FORTRAN MANUAL
 
   <A NAME="zpotri"></A>
   <H2>zpotri</H2>
-  Computes the inverse of a Hermitian positive definite
+  Computes the inverse of a Hermitian positive definitematrix, using the Cholesky factorization computed by ZPOTRF.
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.zpotri( uplo, a)
@@ -757,7 +757,7 @@ FORTRAN MANUAL
 
   <A NAME="zpotrs"></A>
   <H2>zpotrs</H2>
-  Solves a Hermitian positive definite system of linear
+  Solves a Hermitian positive definite system of linearequations AX=B, using the Cholesky factorization computed byZPOTRF.
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.zpotrs( uplo, a, b)

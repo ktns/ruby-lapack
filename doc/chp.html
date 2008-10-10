@@ -6,26 +6,26 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for (complex) Hermitian, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#chpcon">chpcon</A>: Estimates the reciprocal of the condition number of a</LI>
-      <LI><A HREF="#chpev">chpev</A>: Computes all eigenvalues and, optionally, eigenvectors of a complex</LI>
-      <LI><A HREF="#chpevd">chpevd</A>: Computes all eigenvalues and, optionally, eigenvectors of a complex</LI>
-      <LI><A HREF="#chpevx">chpevx</A>: Computes selected eigenvalues and eigenvectors of a</LI>
-      <LI><A HREF="#chpgst">chpgst</A>: Reduces a Hermitian-definite generalized eigenproblem</LI>
-      <LI><A HREF="#chpgv">chpgv</A>: Computes all eigenvalues and eigenvectors of  a generalized</LI>
-      <LI><A HREF="#chpgvd">chpgvd</A>: Computes all eigenvalues and eigenvectors of  a generalized</LI>
-      <LI><A HREF="#chpgvx">chpgvx</A>: Computes selected eigenvalues, and optionally, the eigenvectors of</LI>
-      <LI><A HREF="#chprfs">chprfs</A>: Improves the computed solution to a complex</LI>
-      <LI><A HREF="#chpsv">chpsv</A>: Solves a complex Hermitian indefinite system of linear equations AX=B,</LI>
-      <LI><A HREF="#chpsvx">chpsvx</A>: Solves a complex Hermitian</LI>
-      <LI><A HREF="#chptrd">chptrd</A>: Reduces a Hermitian matrix in packed storage to real</LI>
-      <LI><A HREF="#chptrf">chptrf</A>: Computes the factorization of a complex</LI>
-      <LI><A HREF="#chptri">chptri</A>: Computes the inverse of a complex</LI>
-      <LI><A HREF="#chptrs">chptrs</A>: Solves a complex Hermitian</LI>
+      <LI><A HREF="#chpcon">chpcon</A> : Estimates the reciprocal of the condition number of acomplex Hermitian indefinitematrix in packed storage, using the factorization computedby CHPTRF.</LI>
+      <LI><A HREF="#chpev">chpev</A> : Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian matrix in packed storage.</LI>
+      <LI><A HREF="#chpevd">chpevd</A> : Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian matrix in packed storage.  If eigenvectors are desired, ituses a divide and conquer algorithm.</LI>
+      <LI><A HREF="#chpevx">chpevx</A> : Computes selected eigenvalues and eigenvectors of aHermitian matrix in packed storage.</LI>
+      <LI><A HREF="#chpgst">chpgst</A> : Reduces a Hermitian-definite generalized eigenproblemAx= lambda Bx,  ABx= lambda x,  or BAx= lambda x, to standardform,  where A and B are held in packed storage, and B has beenfactorized by CPPTRF.</LI>
+      <LI><A HREF="#chpgv">chpgv</A> : Computes all eigenvalues and eigenvectors of  a generalizedHermitian-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.</LI>
+      <LI><A HREF="#chpgvd">chpgvd</A> : Computes all eigenvalues and eigenvectors of  a generalizedHermitian-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.If eigenvectors are desired, it uses a divide and conquer algorithm.</LI>
+      <LI><A HREF="#chpgvx">chpgvx</A> : Computes selected eigenvalues, and optionally, the eigenvectors ofa generalized Hermitian-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.</LI>
+      <LI><A HREF="#chprfs">chprfs</A> : Improves the computed solution to a complexHermitian indefinite system of linear equationsAX=B, where A is held in packed storage, and provides forwardand backward error bounds for the solution.</LI>
+      <LI><A HREF="#chpsv">chpsv</A> : Solves a complex Hermitian indefinite system of linear equations AX=B,where A is held in packed storage.</LI>
+      <LI><A HREF="#chpsvx">chpsvx</A> : Solves a complex Hermitianindefinite system of linear equations AX=B, where A is heldin packed storage, and provides an estimate of the conditionnumber and error bounds on the solution.</LI>
+      <LI><A HREF="#chptrd">chptrd</A> : Reduces a Hermitian matrix in packed storage to realsymmetric tridiagonal form by a unitary similaritytransformation.</LI>
+      <LI><A HREF="#chptrf">chptrf</A> : Computes the factorization of a complexHermitian-indefinite matrix in packed storage,using the diagonal pivoting method.</LI>
+      <LI><A HREF="#chptri">chptri</A> : Computes the inverse of a complexHermitian indefinite matrix in packed storage, using the factorizationcomputed by CHPTRF.</LI>
+      <LI><A HREF="#chptrs">chptrs</A> : Solves a complex Hermitianindefinite system of linear equations AX=B, where A is heldin packed storage, using the factorization computedby CHPTRF.</LI>
     </UL>
 
   <A NAME="chpcon"></A>
   <H2>chpcon</H2>
-  Estimates the reciprocal of the condition number of a
+  Estimates the reciprocal of the condition number of acomplex Hermitian indefinitematrix in packed storage, using the factorization computedby CHPTRF.
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.chpcon( uplo, ap, ipiv, anorm)
@@ -92,7 +92,7 @@ FORTRAN MANUAL
 
   <A NAME="chpev"></A>
   <H2>chpev</H2>
-  Computes all eigenvalues and, optionally, eigenvectors of a complex
+  Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian matrix in packed storage.
   <PRE>
 USAGE:
   w, z, info, ap = NumRu::Lapack.chpev( jobz, uplo, ap)
@@ -172,7 +172,7 @@ FORTRAN MANUAL
 
   <A NAME="chpevd"></A>
   <H2>chpevd</H2>
-  Computes all eigenvalues and, optionally, eigenvectors of a complex
+  Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian matrix in packed storage.  If eigenvectors are desired, ituses a divide and conquer algorithm.
   <PRE>
 USAGE:
   w, z, work, rwork, iwork, info, ap = NumRu::Lapack.chpevd( jobz, uplo, ap, lwork, lrwork, liwork)
@@ -301,7 +301,7 @@ FORTRAN MANUAL
 
   <A NAME="chpevx"></A>
   <H2>chpevx</H2>
-  Computes selected eigenvalues and eigenvectors of a
+  Computes selected eigenvalues and eigenvectors of aHermitian matrix in packed storage.
   <PRE>
 USAGE:
   m, w, z, ifail, info, ap = NumRu::Lapack.chpevx( jobz, range, uplo, ap, vl, vu, il, iu, abstol)
@@ -443,7 +443,7 @@ FORTRAN MANUAL
 
   <A NAME="chpgst"></A>
   <H2>chpgst</H2>
-  Reduces a Hermitian-definite generalized eigenproblem
+  Reduces a Hermitian-definite generalized eigenproblemAx= lambda Bx,  ABx= lambda x,  or BAx= lambda x, to standardform,  where A and B are held in packed storage, and B has beenfactorized by CPPTRF.
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.chpgst( itype, uplo, n, ap, bp)
@@ -513,7 +513,7 @@ FORTRAN MANUAL
 
   <A NAME="chpgv"></A>
   <H2>chpgv</H2>
-  Computes all eigenvalues and eigenvectors of  a generalized
+  Computes all eigenvalues and eigenvectors of  a generalizedHermitian-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.
   <PRE>
 USAGE:
   w, z, info, ap, bp = NumRu::Lapack.chpgv( itype, jobz, uplo, ap, bp)
@@ -626,7 +626,7 @@ FORTRAN MANUAL
 
   <A NAME="chpgvd"></A>
   <H2>chpgvd</H2>
-  Computes all eigenvalues and eigenvectors of  a generalized
+  Computes all eigenvalues and eigenvectors of  a generalizedHermitian-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.If eigenvectors are desired, it uses a divide and conquer algorithm.
   <PRE>
 USAGE:
   w, z, iwork, info, ap, bp = NumRu::Lapack.chpgvd( itype, jobz, uplo, ap, bp, lwork, lrwork, liwork)
@@ -796,7 +796,7 @@ FORTRAN MANUAL
 
   <A NAME="chpgvx"></A>
   <H2>chpgvx</H2>
-  Computes selected eigenvalues, and optionally, the eigenvectors of
+  Computes selected eigenvalues, and optionally, the eigenvectors ofa generalized Hermitian-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.
   <PRE>
 USAGE:
   m, w, z, ifail, info, ap, bp = NumRu::Lapack.chpgvx( itype, jobz, range, uplo, ap, bp, vl, vu, il, iu, abstol, ldz)
@@ -981,7 +981,7 @@ FORTRAN MANUAL
 
   <A NAME="chprfs"></A>
   <H2>chprfs</H2>
-  Improves the computed solution to a complex
+  Improves the computed solution to a complexHermitian indefinite system of linear equationsAX=B, where A is held in packed storage, and provides forwardand backward error bounds for the solution.
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.chprfs( uplo, ap, afp, ipiv, b, x)
@@ -1084,7 +1084,7 @@ FORTRAN MANUAL
 
   <A NAME="chpsv"></A>
   <H2>chpsv</H2>
-  Solves a complex Hermitian indefinite system of linear equations AX=B,
+  Solves a complex Hermitian indefinite system of linear equations AX=B,where A is held in packed storage.
   <PRE>
 USAGE:
   ipiv, info, ap, b = NumRu::Lapack.chpsv( uplo, ap, b)
@@ -1203,7 +1203,7 @@ FORTRAN MANUAL
 
   <A NAME="chpsvx"></A>
   <H2>chpsvx</H2>
-  Solves a complex Hermitian
+  Solves a complex Hermitianindefinite system of linear equations AX=B, where A is heldin packed storage, and provides an estimate of the conditionnumber and error bounds on the solution.
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, afp, ipiv = NumRu::Lapack.chpsvx( fact, uplo, ap, afp, ipiv, b)
@@ -1392,7 +1392,7 @@ FORTRAN MANUAL
 
   <A NAME="chptrd"></A>
   <H2>chptrd</H2>
-  Reduces a Hermitian matrix in packed storage to real
+  Reduces a Hermitian matrix in packed storage to realsymmetric tridiagonal form by a unitary similaritytransformation.
   <PRE>
 USAGE:
   d, e, tau, info, ap = NumRu::Lapack.chptrd( uplo, ap)
@@ -1493,7 +1493,7 @@ FORTRAN MANUAL
 
   <A NAME="chptrf"></A>
   <H2>chptrf</H2>
-  Computes the factorization of a complex
+  Computes the factorization of a complexHermitian-indefinite matrix in packed storage,using the diagonal pivoting method.
   <PRE>
 USAGE:
   ipiv, info, ap = NumRu::Lapack.chptrf( uplo, ap)
@@ -1606,7 +1606,7 @@ FORTRAN MANUAL
 
   <A NAME="chptri"></A>
   <H2>chptri</H2>
-  Computes the inverse of a complex
+  Computes the inverse of a complexHermitian indefinite matrix in packed storage, using the factorizationcomputed by CHPTRF.
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.chptri( uplo, ap, ipiv)
@@ -1671,7 +1671,7 @@ FORTRAN MANUAL
 
   <A NAME="chptrs"></A>
   <H2>chptrs</H2>
-  Solves a complex Hermitian
+  Solves a complex Hermitianindefinite system of linear equations AX=B, where A is heldin packed storage, using the factorization computedby CHPTRF.
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.chptrs( uplo, ap, ipiv, b)

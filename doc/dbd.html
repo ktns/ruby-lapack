@@ -6,13 +6,13 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for bidiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#dbdsdc">dbdsdc</A>: Computes the singular value decomposition (SVD) of a real bidiagonal</LI>
-      <LI><A HREF="#dbdsqr">dbdsqr</A>: Computes the singular value decomposition (SVD) of a real bidiagonal</LI>
+      <LI><A HREF="#dbdsdc">dbdsdc</A> : Computes the singular value decomposition (SVD) of a real bidiagonalmatrix, using a divide and conquer method.</LI>
+      <LI><A HREF="#dbdsqr">dbdsqr</A> : Computes the singular value decomposition (SVD) of a real bidiagonalmatrix, using the bidiagonal QR algorithm.</LI>
     </UL>
 
   <A NAME="dbdsdc"></A>
   <H2>dbdsdc</H2>
-  Computes the singular value decomposition (SVD) of a real bidiagonal
+  Computes the singular value decomposition (SVD) of a real bidiagonalmatrix, using a divide and conquer method.
   <PRE>
 USAGE:
   u, vt, q, iq, info, d, e = NumRu::Lapack.dbdsdc( uplo, compq, d, e, ldu, ldvt)
@@ -150,7 +150,7 @@ FORTRAN MANUAL
 
   <A NAME="dbdsqr"></A>
   <H2>dbdsqr</H2>
-  Computes the singular value decomposition (SVD) of a real bidiagonal
+  Computes the singular value decomposition (SVD) of a real bidiagonalmatrix, using the bidiagonal QR algorithm.
   <PRE>
 USAGE:
   info, d, e, vt, u, c = NumRu::Lapack.dbdsqr( uplo, nru, d, e, vt, u, c)

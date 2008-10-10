@@ -6,20 +6,20 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for symmetric, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#cspcon">cspcon</A>: Estimates the reciprocal of the condition number of a</LI>
-      <LI><A HREF="#cspmv">cspmv</A>: </LI>
-      <LI><A HREF="#cspr">cspr</A>: </LI>
-      <LI><A HREF="#csprfs">csprfs</A>: Improves the computed solution to a complex</LI>
-      <LI><A HREF="#cspsv">cspsv</A>: Solves a complex symmetric indefinite system of linear equations AX=B,</LI>
-      <LI><A HREF="#cspsvx">cspsvx</A>: Solves a complex symmetric</LI>
-      <LI><A HREF="#csptrf">csptrf</A>: Computes the factorization of a complex</LI>
-      <LI><A HREF="#csptri">csptri</A>: Computes the inverse of a complex symmetric</LI>
-      <LI><A HREF="#csptrs">csptrs</A>: Solves a complex symmetric</LI>
+      <LI><A HREF="#cspcon">cspcon</A> : Estimates the reciprocal of the condition number of acomplex symmetric indefinitematrix in packed storage, using the factorization computedby CSPTRF.</LI>
+      <LI><A HREF="#cspmv">cspmv</A> : </LI>
+      <LI><A HREF="#cspr">cspr</A> : </LI>
+      <LI><A HREF="#csprfs">csprfs</A> : Improves the computed solution to a complexsymmetric indefinite system of linear equationsAX=B, where A is held in packed storage, and provides forwardand backward error bounds for the solution.</LI>
+      <LI><A HREF="#cspsv">cspsv</A> : Solves a complex symmetric indefinite system of linear equations AX=B,where A is held in packed storage.</LI>
+      <LI><A HREF="#cspsvx">cspsvx</A> : Solves a complex symmetricindefinite system of linear equations AX=B, where A is heldin packed storage, and provides an estimate of the conditionnumber and error bounds on the solution.</LI>
+      <LI><A HREF="#csptrf">csptrf</A> : Computes the factorization of a complexsymmetric-indefinite matrix in packed storage,using the diagonal pivoting method.</LI>
+      <LI><A HREF="#csptri">csptri</A> : Computes the inverse of a complex symmetricindefinite matrix in packed storage, using the factorizationcomputed by CSPTRF.</LI>
+      <LI><A HREF="#csptrs">csptrs</A> : Solves a complex symmetricindefinite system of linear equations AX=B, where A is heldin packed storage, using the factorization computedby CSPTRF.</LI>
     </UL>
 
   <A NAME="cspcon"></A>
   <H2>cspcon</H2>
-  Estimates the reciprocal of the condition number of a
+  Estimates the reciprocal of the condition number of acomplex symmetric indefinitematrix in packed storage, using the factorization computedby CSPTRF.
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.cspcon( uplo, ap, ipiv, anorm)
@@ -272,7 +272,7 @@ FORTRAN MANUAL
 
   <A NAME="csprfs"></A>
   <H2>csprfs</H2>
-  Improves the computed solution to a complex
+  Improves the computed solution to a complexsymmetric indefinite system of linear equationsAX=B, where A is held in packed storage, and provides forwardand backward error bounds for the solution.
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.csprfs( uplo, ap, afp, ipiv, b, x)
@@ -375,7 +375,7 @@ FORTRAN MANUAL
 
   <A NAME="cspsv"></A>
   <H2>cspsv</H2>
-  Solves a complex symmetric indefinite system of linear equations AX=B,
+  Solves a complex symmetric indefinite system of linear equations AX=B,where A is held in packed storage.
   <PRE>
 USAGE:
   ipiv, info, ap, b = NumRu::Lapack.cspsv( uplo, ap, b)
@@ -494,7 +494,7 @@ FORTRAN MANUAL
 
   <A NAME="cspsvx"></A>
   <H2>cspsvx</H2>
-  Solves a complex symmetric
+  Solves a complex symmetricindefinite system of linear equations AX=B, where A is heldin packed storage, and provides an estimate of the conditionnumber and error bounds on the solution.
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, afp, ipiv = NumRu::Lapack.cspsvx( fact, uplo, ap, afp, ipiv, b)
@@ -683,7 +683,7 @@ FORTRAN MANUAL
 
   <A NAME="csptrf"></A>
   <H2>csptrf</H2>
-  Computes the factorization of a complex
+  Computes the factorization of a complexsymmetric-indefinite matrix in packed storage,using the diagonal pivoting method.
   <PRE>
 USAGE:
   ipiv, info, ap = NumRu::Lapack.csptrf( uplo, ap)
@@ -797,7 +797,7 @@ FORTRAN MANUAL
 
   <A NAME="csptri"></A>
   <H2>csptri</H2>
-  Computes the inverse of a complex symmetric
+  Computes the inverse of a complex symmetricindefinite matrix in packed storage, using the factorizationcomputed by CSPTRF.
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.csptri( uplo, ap, ipiv)
@@ -862,7 +862,7 @@ FORTRAN MANUAL
 
   <A NAME="csptrs"></A>
   <H2>csptrs</H2>
-  Solves a complex symmetric
+  Solves a complex symmetricindefinite system of linear equations AX=B, where A is heldin packed storage, using the factorization computedby CSPTRF.
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.csptrs( uplo, ap, ipiv, b)

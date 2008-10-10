@@ -6,30 +6,30 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for (complex) Hermitian matrix</H1>
     <UL>
-      <LI><A HREF="#zhecon">zhecon</A>: Estimates the reciprocal of the condition number of a</LI>
-      <LI><A HREF="#zheev">zheev</A>: Computes all eigenvalues and, optionally, eigenvectors of a complex</LI>
-      <LI><A HREF="#zheevd">zheevd</A>: Computes all eigenvalues and, optionally, eigenvectors of a complex</LI>
-      <LI><A HREF="#zheevr">zheevr</A>: Computes selected eigenvalues, and optionally, eigenvectors of a complex</LI>
-      <LI><A HREF="#zheevx">zheevx</A>: Computes selected eigenvalues and eigenvectors of a Hermitian matrix.</LI>
-      <LI><A HREF="#zhegs2">zhegs2</A>: </LI>
-      <LI><A HREF="#zhegst">zhegst</A>: Reduces a Hermitian-definite generalized eigenproblem</LI>
-      <LI><A HREF="#zhegv">zhegv</A>: Computes all eigenvalues and the eigenvectors of  a generalized</LI>
-      <LI><A HREF="#zhegvd">zhegvd</A>: Computes all eigenvalues and the eigenvectors of  a generalized</LI>
-      <LI><A HREF="#zhegvx">zhegvx</A>: Computes selected eigenvalues, and optionally, the eigenvectors of</LI>
-      <LI><A HREF="#zherfs">zherfs</A>: Improves the computed solution to a complex</LI>
-      <LI><A HREF="#zhesv">zhesv</A>: Solves a complex Hermitian indefinite system of linear equations AX=B.</LI>
-      <LI><A HREF="#zhesvx">zhesvx</A>: Solves a complex Hermitian</LI>
-      <LI><A HREF="#zhetd2">zhetd2</A>: </LI>
-      <LI><A HREF="#zhetf2">zhetf2</A>: </LI>
-      <LI><A HREF="#zhetrd">zhetrd</A>: Reduces a Hermitian matrix to real symmetric tridiagonal</LI>
-      <LI><A HREF="#zhetrf">zhetrf</A>: Computes the factorization of a complex Hermitian-indefinite matrix,</LI>
-      <LI><A HREF="#zhetri">zhetri</A>: Computes the inverse of a complex Hermitian indefinite matrix,</LI>
-      <LI><A HREF="#zhetrs">zhetrs</A>: Solves a complex Hermitian indefinite system of linear equations AX=B,</LI>
+      <LI><A HREF="#zhecon">zhecon</A> : Estimates the reciprocal of the condition number of acomplex Hermitian indefinite matrix,using the factorization computed by ZHETRF.</LI>
+      <LI><A HREF="#zheev">zheev</A> : Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian matrix.</LI>
+      <LI><A HREF="#zheevd">zheevd</A> : Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian matrix.  If eigenvectors are desired, it uses a divideand conquer algorithm.</LI>
+      <LI><A HREF="#zheevr">zheevr</A> : Computes selected eigenvalues, and optionally, eigenvectors of a complexHermitian matrix.  Eigenvalues are computed by the dqdsalgorithm, and eigenvectors are computed from various "good" LDL^Trepresentations (also known as Relatively Robust Representations).</LI>
+      <LI><A HREF="#zheevx">zheevx</A> : Computes selected eigenvalues and eigenvectors of a Hermitian matrix.</LI>
+      <LI><A HREF="#zhegs2">zhegs2</A> : </LI>
+      <LI><A HREF="#zhegst">zhegst</A> : Reduces a Hermitian-definite generalized eigenproblemAx= lambda Bx,  ABx= lambda x,  or BAx= lambda x, to standardform, where B has been factorized by ZPOTRF.</LI>
+      <LI><A HREF="#zhegv">zhegv</A> : Computes all eigenvalues and the eigenvectors of  a generalizedHermitian-definite generalized eigenproblem,Ax= lambda Bx,  ABx= lambda x,  or BAx= lambda x.</LI>
+      <LI><A HREF="#zhegvd">zhegvd</A> : Computes all eigenvalues and the eigenvectors of  a generalizedHermitian-definite generalized eigenproblem,Ax= lambda Bx,  ABx= lambda x,  or BAx= lambda x.If eigenvectors are desired, it uses a divide and conquer algorithm.</LI>
+      <LI><A HREF="#zhegvx">zhegvx</A> : Computes selected eigenvalues, and optionally, the eigenvectors ofa generalized Hermitian-definite generalized eigenproblem,Ax= lambda Bx,  ABx= lambda x,  or BAx= lambda x.</LI>
+      <LI><A HREF="#zherfs">zherfs</A> : Improves the computed solution to a complexHermitian indefinite system of linear equationsAX=B, and provides forward and backward error bounds for thesolution.</LI>
+      <LI><A HREF="#zhesv">zhesv</A> : Solves a complex Hermitian indefinite system of linear equations AX=B.</LI>
+      <LI><A HREF="#zhesvx">zhesvx</A> : Solves a complex Hermitianindefinite system  of linear equations AX=B, and provides anestimate of the condition number and error bounds on the solution.</LI>
+      <LI><A HREF="#zhetd2">zhetd2</A> : </LI>
+      <LI><A HREF="#zhetf2">zhetf2</A> : </LI>
+      <LI><A HREF="#zhetrd">zhetrd</A> : Reduces a Hermitian matrix to real symmetric tridiagonalform by an orthogonal/unitary similarity transformation.</LI>
+      <LI><A HREF="#zhetrf">zhetrf</A> : Computes the factorization of a complex Hermitian-indefinite matrix,using the diagonal pivoting method.</LI>
+      <LI><A HREF="#zhetri">zhetri</A> : Computes the inverse of a complex Hermitian indefinite matrix,using the factorization computed by ZHETRF.</LI>
+      <LI><A HREF="#zhetrs">zhetrs</A> : Solves a complex Hermitian indefinite system of linear equations AX=B,using the factorization computed by ZHPTRF.</LI>
     </UL>
 
   <A NAME="zhecon"></A>
   <H2>zhecon</H2>
-  Estimates the reciprocal of the condition number of a
+  Estimates the reciprocal of the condition number of acomplex Hermitian indefinite matrix,using the factorization computed by ZHETRF.
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.zhecon( uplo, a, ipiv, anorm)
@@ -98,7 +98,7 @@ FORTRAN MANUAL
 
   <A NAME="zheev"></A>
   <H2>zheev</H2>
-  Computes all eigenvalues and, optionally, eigenvectors of a complex
+  Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian matrix.
   <PRE>
 USAGE:
   w, work, info, a = NumRu::Lapack.zheev( jobz, uplo, a, lwork)
@@ -180,7 +180,7 @@ FORTRAN MANUAL
 
   <A NAME="zheevd"></A>
   <H2>zheevd</H2>
-  Computes all eigenvalues and, optionally, eigenvectors of a complex
+  Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian matrix.  If eigenvectors are desired, it uses a divideand conquer algorithm.
   <PRE>
 USAGE:
   w, work, rwork, iwork, info, a = NumRu::Lapack.zheevd( jobz, uplo, a, lwork, lrwork, liwork)
@@ -314,7 +314,7 @@ FORTRAN MANUAL
 
   <A NAME="zheevr"></A>
   <H2>zheevr</H2>
-  Computes selected eigenvalues, and optionally, eigenvectors of a complex
+  Computes selected eigenvalues, and optionally, eigenvectors of a complexHermitian matrix.  Eigenvalues are computed by the dqdsalgorithm, and eigenvectors are computed from various "good" LDL^Trepresentations (also known as Relatively Robust Representations).
   <PRE>
 USAGE:
   m, w, z, isuppz, work, rwork, iwork, info, a = NumRu::Lapack.zheevr( jobz, range, uplo, a, vl, vu, il, iu, abstol, lwork, lrwork, liwork)
@@ -792,7 +792,7 @@ FORTRAN MANUAL
 
   <A NAME="zhegst"></A>
   <H2>zhegst</H2>
-  Reduces a Hermitian-definite generalized eigenproblem
+  Reduces a Hermitian-definite generalized eigenproblemAx= lambda Bx,  ABx= lambda x,  or BAx= lambda x, to standardform, where B has been factorized by ZPOTRF.
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.zhegst( itype, uplo, a, b)
@@ -870,7 +870,7 @@ FORTRAN MANUAL
 
   <A NAME="zhegv"></A>
   <H2>zhegv</H2>
-  Computes all eigenvalues and the eigenvectors of  a generalized
+  Computes all eigenvalues and the eigenvectors of  a generalizedHermitian-definite generalized eigenproblem,Ax= lambda Bx,  ABx= lambda x,  or BAx= lambda x.
   <PRE>
 USAGE:
   w, work, info, a, b = NumRu::Lapack.zhegv( itype, jobz, uplo, a, b, lwork)
@@ -984,7 +984,7 @@ FORTRAN MANUAL
 
   <A NAME="zhegvd"></A>
   <H2>zhegvd</H2>
-  Computes all eigenvalues and the eigenvectors of  a generalized
+  Computes all eigenvalues and the eigenvectors of  a generalizedHermitian-definite generalized eigenproblem,Ax= lambda Bx,  ABx= lambda x,  or BAx= lambda x.If eigenvectors are desired, it uses a divide and conquer algorithm.
   <PRE>
 USAGE:
   w, work, rwork, iwork, info, a, b = NumRu::Lapack.zhegvd( itype, jobz, uplo, a, b, lwork, lrwork, liwork)
@@ -1150,7 +1150,7 @@ FORTRAN MANUAL
 
   <A NAME="zhegvx"></A>
   <H2>zhegvx</H2>
-  Computes selected eigenvalues, and optionally, the eigenvectors of
+  Computes selected eigenvalues, and optionally, the eigenvectors ofa generalized Hermitian-definite generalized eigenproblem,Ax= lambda Bx,  ABx= lambda x,  or BAx= lambda x.
   <PRE>
 USAGE:
   m, w, z, work, ifail, info, a, b = NumRu::Lapack.zhegvx( itype, jobz, range, uplo, a, b, vl, vu, il, iu, abstol, ldz, lwork)
@@ -1338,7 +1338,7 @@ FORTRAN MANUAL
 
   <A NAME="zherfs"></A>
   <H2>zherfs</H2>
-  Improves the computed solution to a complex
+  Improves the computed solution to a complexHermitian indefinite system of linear equationsAX=B, and provides forward and backward error bounds for thesolution.
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.zherfs( uplo, a, af, ipiv, b, x)
@@ -1570,7 +1570,7 @@ FORTRAN MANUAL
 
   <A NAME="zhesvx"></A>
   <H2>zhesvx</H2>
-  Solves a complex Hermitian
+  Solves a complex Hermitianindefinite system  of linear equations AX=B, and provides anestimate of the condition number and error bounds on the solution.
   <PRE>
 USAGE:
   x, rcond, ferr, berr, work, info, af, ipiv = NumRu::Lapack.zhesvx( fact, uplo, a, af, ipiv, b, lwork)
@@ -2011,7 +2011,7 @@ FORTRAN MANUAL
 
   <A NAME="zhetrd"></A>
   <H2>zhetrd</H2>
-  Reduces a Hermitian matrix to real symmetric tridiagonal
+  Reduces a Hermitian matrix to real symmetric tridiagonalform by an orthogonal/unitary similarity transformation.
   <PRE>
 USAGE:
   d, e, tau, work, info, a = NumRu::Lapack.zhetrd( uplo, a, lwork)
@@ -2144,7 +2144,7 @@ FORTRAN MANUAL
 
   <A NAME="zhetrf"></A>
   <H2>zhetrf</H2>
-  Computes the factorization of a complex Hermitian-indefinite matrix,
+  Computes the factorization of a complex Hermitian-indefinite matrix,using the diagonal pivoting method.
   <PRE>
 USAGE:
   ipiv, work, info, a = NumRu::Lapack.zhetrf( uplo, a, lwork)
@@ -2283,7 +2283,7 @@ FORTRAN MANUAL
 
   <A NAME="zhetri"></A>
   <H2>zhetri</H2>
-  Computes the inverse of a complex Hermitian indefinite matrix,
+  Computes the inverse of a complex Hermitian indefinite matrix,using the factorization computed by ZHETRF.
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.zhetri( uplo, a, ipiv)
@@ -2350,7 +2350,7 @@ FORTRAN MANUAL
 
   <A NAME="zhetrs"></A>
   <H2>zhetrs</H2>
-  Solves a complex Hermitian indefinite system of linear equations AX=B,
+  Solves a complex Hermitian indefinite system of linear equations AX=B,using the factorization computed by ZHPTRF.
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.zhetrs( uplo, a, ipiv, b)

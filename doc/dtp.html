@@ -6,15 +6,15 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for triangular, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#dtpcon">dtpcon</A>: Estimates the reciprocal of the condition number of a triangular</LI>
-      <LI><A HREF="#dtprfs">dtprfs</A>: Provides forward and backward error bounds for the solution</LI>
-      <LI><A HREF="#dtptri">dtptri</A>: Computes the inverse of a triangular matrix in packed storage.</LI>
-      <LI><A HREF="#dtptrs">dtptrs</A>: Solves a triangular system of linear equations AX=B,</LI>
+      <LI><A HREF="#dtpcon">dtpcon</A> : Estimates the reciprocal of the condition number of a triangularmatrix in packed storage, in either the 1-norm or the infinity-norm.</LI>
+      <LI><A HREF="#dtprfs">dtprfs</A> : Provides forward and backward error bounds for the solutionof a triangular system of linear equations AX=B, A**T X=B orA**H X=B, where A is held in packed storage.</LI>
+      <LI><A HREF="#dtptri">dtptri</A> : Computes the inverse of a triangular matrix in packed storage.</LI>
+      <LI><A HREF="#dtptrs">dtptrs</A> : Solves a triangular system of linear equations AX=B,A**T X=B or A**H X=B, where A is held in packed storage.</LI>
     </UL>
 
   <A NAME="dtpcon"></A>
   <H2>dtpcon</H2>
-  Estimates the reciprocal of the condition number of a triangular
+  Estimates the reciprocal of the condition number of a triangularmatrix in packed storage, in either the 1-norm or the infinity-norm.
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.dtpcon( norm, uplo, diag, ap)
@@ -88,7 +88,7 @@ FORTRAN MANUAL
 
   <A NAME="dtprfs"></A>
   <H2>dtprfs</H2>
-  Provides forward and backward error bounds for the solution
+  Provides forward and backward error bounds for the solutionof a triangular system of linear equations AX=B, A**T X=B orA**H X=B, where A is held in packed storage.
   <PRE>
 USAGE:
   ferr, berr, info = NumRu::Lapack.dtprfs( uplo, trans, diag, ap, b, x)
@@ -263,7 +263,7 @@ FORTRAN MANUAL
 
   <A NAME="dtptrs"></A>
   <H2>dtptrs</H2>
-  Solves a triangular system of linear equations AX=B,
+  Solves a triangular system of linear equations AX=B,A**T X=B or A**H X=B, where A is held in packed storage.
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.dtptrs( uplo, trans, diag, n, ap, b)

@@ -6,24 +6,24 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for general matrices, generalized problem (i.e., a pair of general matrices) matrix</H1>
     <UL>
-      <LI><A HREF="#dggbak">dggbak</A>: </LI>
-      <LI><A HREF="#dggbal">dggbal</A>: </LI>
-      <LI><A HREF="#dgges">dgges</A>: Computes the generalized eigenvalues, Schur form, and left and/or</LI>
-      <LI><A HREF="#dggesx">dggesx</A>: Computes the generalized eigenvalues, the real Schur form, and,</LI>
-      <LI><A HREF="#dggev">dggev</A>: Computes the generalized eigenvalues, and left and/or right</LI>
-      <LI><A HREF="#dggevx">dggevx</A>: Computes the generalized eigenvalues, and optionally, the left</LI>
-      <LI><A HREF="#dggglm">dggglm</A>: Solves the GLM (Generalized Linear Regression Model) using</LI>
-      <LI><A HREF="#dgghrd">dgghrd</A>: Reduces a pair of real matrices to generalized upper</LI>
-      <LI><A HREF="#dgglse">dgglse</A>: Solves the LSE (Constrained Linear Least Squares Problem) using</LI>
-      <LI><A HREF="#dggqrf">dggqrf</A>: Computes a generalized QR factorization of a pair of matrices. </LI>
-      <LI><A HREF="#dggrqf">dggrqf</A>: Computes a generalized RQ factorization of a pair of matrices.</LI>
-      <LI><A HREF="#dggsvd">dggsvd</A>: Computes the Generalized Singular Value Decomposition</LI>
-      <LI><A HREF="#dggsvp">dggsvp</A>: Computes orthogonal matrices as a preprocessing step</LI>
+      <LI><A HREF="#dggbak">dggbak</A> : problem by backward transformation on the computed eigenvectors ofthe balanced pair of matrices output by DGGBAL.</LI>
+      <LI><A HREF="#dggbal">dggbal</A> : eigenvalue problem A x = lambda B x.</LI>
+      <LI><A HREF="#dgges">dgges</A> : Computes the generalized eigenvalues, Schur form, and left and/orright Schur vectors for a pair of nonsymmetric matrices</LI>
+      <LI><A HREF="#dggesx">dggesx</A> : Computes the generalized eigenvalues, the real Schur form, and,optionally, the left and/or right matrices of Schur vectors.</LI>
+      <LI><A HREF="#dggev">dggev</A> : Computes the generalized eigenvalues, and left and/or rightgeneralized eigenvectors for a pair of nonsymmetric matrices</LI>
+      <LI><A HREF="#dggevx">dggevx</A> : Computes the generalized eigenvalues, and optionally, the leftand/or right generalized eigenvectors.</LI>
+      <LI><A HREF="#dggglm">dggglm</A> : Solves the GLM (Generalized Linear Regression Model) usingthe GQR (Generalized QR) factorization</LI>
+      <LI><A HREF="#dgghrd">dgghrd</A> : Reduces a pair of real matrices to generalized upperHessenberg form using orthogonal transformations </LI>
+      <LI><A HREF="#dgglse">dgglse</A> : Solves the LSE (Constrained Linear Least Squares Problem) usingthe GRQ (Generalized RQ) factorization</LI>
+      <LI><A HREF="#dggqrf">dggqrf</A> : Computes a generalized QR factorization of a pair of matrices. </LI>
+      <LI><A HREF="#dggrqf">dggrqf</A> : Computes a generalized RQ factorization of a pair of matrices.</LI>
+      <LI><A HREF="#dggsvd">dggsvd</A> : Computes the Generalized Singular Value Decomposition</LI>
+      <LI><A HREF="#dggsvp">dggsvp</A> : Computes orthogonal matrices as a preprocessing stepfor computing the generalized singular value decomposition</LI>
     </UL>
 
   <A NAME="dggbak"></A>
   <H2>dggbak</H2>
-  
+  problem by backward transformation on the computed eigenvectors ofthe balanced pair of matrices output by DGGBAL.
   <PRE>
 USAGE:
   info, v = NumRu::Lapack.dggbak( job, side, ilo, ihi, lscale, rscale, v)
@@ -120,7 +120,7 @@ FORTRAN MANUAL
 
   <A NAME="dggbal"></A>
   <H2>dggbal</H2>
-  
+  eigenvalue problem A x = lambda B x.
   <PRE>
 USAGE:
   ilo, ihi, lscale, rscale, info, a, b = NumRu::Lapack.dggbal( job, a, b)
@@ -229,7 +229,7 @@ FORTRAN MANUAL
 
   <A NAME="dgges"></A>
   <H2>dgges</H2>
-  Computes the generalized eigenvalues, Schur form, and left and/or
+  Computes the generalized eigenvalues, Schur form, and left and/orright Schur vectors for a pair of nonsymmetric matrices
   <PRE>
 USAGE:
   sdim, alphar, alphai, beta, vsl, vsr, work, info, a, b = NumRu::Lapack.dgges( jobvsl, jobvsr, sort, a, b, lwork){|a,b,c| ... }
@@ -412,7 +412,7 @@ FORTRAN MANUAL
 
   <A NAME="dggesx"></A>
   <H2>dggesx</H2>
-  Computes the generalized eigenvalues, the real Schur form, and,
+  Computes the generalized eigenvalues, the real Schur form, and,optionally, the left and/or right matrices of Schur vectors.
   <PRE>
 USAGE:
   sdim, alphar, alphai, beta, vsl, vsr, rconde, rcondv, work, info, a, b = NumRu::Lapack.dggesx( jobvsl, jobvsr, sort, sense, a, b, lwork, liwork){|a,b,c| ... }
@@ -653,7 +653,7 @@ FORTRAN MANUAL
 
   <A NAME="dggev"></A>
   <H2>dggev</H2>
-  Computes the generalized eigenvalues, and left and/or right
+  Computes the generalized eigenvalues, and left and/or rightgeneralized eigenvectors for a pair of nonsymmetric matrices
   <PRE>
 USAGE:
   alphar, alphai, beta, vl, vr, work, info, a, b = NumRu::Lapack.dggev( jobvl, jobvr, a, b, lwork)
@@ -797,7 +797,7 @@ FORTRAN MANUAL
 
   <A NAME="dggevx"></A>
   <H2>dggevx</H2>
-  Computes the generalized eigenvalues, and optionally, the left
+  Computes the generalized eigenvalues, and optionally, the leftand/or right generalized eigenvectors.
   <PRE>
 USAGE:
   alphar, alphai, beta, vl, vr, ilo, ihi, lscale, rscale, abnrm, bbnrm, rconde, rcondv, work, info, a, b = NumRu::Lapack.dggevx( balanc, jobvl, jobvr, sense, a, b, lwork)
@@ -1058,7 +1058,7 @@ FORTRAN MANUAL
 
   <A NAME="dggglm"></A>
   <H2>dggglm</H2>
-  Solves the GLM (Generalized Linear Regression Model) using
+  Solves the GLM (Generalized Linear Regression Model) usingthe GQR (Generalized QR) factorization
   <PRE>
 USAGE:
   x, y, work, info, a, b, d = NumRu::Lapack.dggglm( a, b, d, lwork)
@@ -1175,7 +1175,7 @@ FORTRAN MANUAL
 
   <A NAME="dgghrd"></A>
   <H2>dgghrd</H2>
-  Reduces a pair of real matrices to generalized upper
+  Reduces a pair of real matrices to generalized upperHessenberg form using orthogonal transformations 
   <PRE>
 USAGE:
   info, a, b, q, z = NumRu::Lapack.dgghrd( compq, compz, ilo, ihi, a, b, q, z)
@@ -1307,7 +1307,7 @@ FORTRAN MANUAL
 
   <A NAME="dgglse"></A>
   <H2>dgglse</H2>
-  Solves the LSE (Constrained Linear Least Squares Problem) using
+  Solves the LSE (Constrained Linear Least Squares Problem) usingthe GRQ (Generalized RQ) factorization
   <PRE>
 USAGE:
   x, work, info, a, b, c, d = NumRu::Lapack.dgglse( a, b, c, d, lwork)
@@ -1988,7 +1988,7 @@ FORTRAN MANUAL
 
   <A NAME="dggsvp"></A>
   <H2>dggsvp</H2>
-  Computes orthogonal matrices as a preprocessing step
+  Computes orthogonal matrices as a preprocessing stepfor computing the generalized singular value decomposition
   <PRE>
 USAGE:
   k, l, u, v, q, info, a, b = NumRu::Lapack.dggsvp( jobu, jobv, jobq, p, a, b, tola, tolb)

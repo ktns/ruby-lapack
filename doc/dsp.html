@@ -6,26 +6,26 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for symmetric, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#dspcon">dspcon</A>: Estimates the reciprocal of the condition number of a</LI>
-      <LI><A HREF="#dspev">dspev</A>: Computes all eigenvalues, and optionally, eigenvectors of a real</LI>
-      <LI><A HREF="#dspevd">dspevd</A>: Computes all eigenvalues, and optionally, eigenvectors of a real</LI>
-      <LI><A HREF="#dspevx">dspevx</A>: Computes selected eigenvalues and eigenvectors of a</LI>
-      <LI><A HREF="#dspgst">dspgst</A>: Reduces a symmetric-definite generalized eigenproblem</LI>
-      <LI><A HREF="#dspgv">dspgv</A>: Computes all eigenvalues and eigenvectors of  a generalized</LI>
-      <LI><A HREF="#dspgvd">dspgvd</A>: Computes all eigenvalues and eigenvectors of  a generalized</LI>
-      <LI><A HREF="#dspgvx">dspgvx</A>: Computes selected eigenvalues, and optionally, eigenvectors of</LI>
-      <LI><A HREF="#dsprfs">dsprfs</A>: Improves the computed solution to a real</LI>
-      <LI><A HREF="#dspsv">dspsv</A>: Solves a real symmetric indefinite system of linear equations AX=B,</LI>
-      <LI><A HREF="#dspsvx">dspsvx</A>: Solves a real symmetric</LI>
-      <LI><A HREF="#dsptrd">dsptrd</A>: Reduces a symmetric matrix in packed storage to real</LI>
-      <LI><A HREF="#dsptrf">dsptrf</A>: Computes the factorization of a real</LI>
-      <LI><A HREF="#dsptri">dsptri</A>: Computes the inverse of a real symmetric</LI>
-      <LI><A HREF="#dsptrs">dsptrs</A>: Solves a real symmetric</LI>
+      <LI><A HREF="#dspcon">dspcon</A> : Estimates the reciprocal of the condition number of areal symmetric indefinitematrix in packed storage, using the factorization computedby DSPTRF.</LI>
+      <LI><A HREF="#dspev">dspev</A> : Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric matrix in packed storage.</LI>
+      <LI><A HREF="#dspevd">dspevd</A> : Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric matrix in packed storage.  If eigenvectors are desired,it uses a divide and conquer algorithm.</LI>
+      <LI><A HREF="#dspevx">dspevx</A> : Computes selected eigenvalues and eigenvectors of asymmetric matrix in packed storage.</LI>
+      <LI><A HREF="#dspgst">dspgst</A> : Reduces a symmetric-definite generalized eigenproblemAx= lambda Bx,  ABx= lambda x,  or BAx= lambda x, to standardform,  where A and B are held in packed storage, and B has beenfactorized by DPPTRF.</LI>
+      <LI><A HREF="#dspgv">dspgv</A> : Computes all eigenvalues and eigenvectors of  a generalizedsymmetric-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.</LI>
+      <LI><A HREF="#dspgvd">dspgvd</A> : Computes all eigenvalues and eigenvectors of  a generalizedsymmetric-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.If eigenvectors are desired, it uses a divide and conquer algorithm.</LI>
+      <LI><A HREF="#dspgvx">dspgvx</A> : Computes selected eigenvalues, and optionally, eigenvectors ofa generalized symmetric-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.</LI>
+      <LI><A HREF="#dsprfs">dsprfs</A> : Improves the computed solution to a realsymmetric indefinite system of linear equationsAX=B, where A is held in packed storage, and provides forwardand backward error bounds for the solution.</LI>
+      <LI><A HREF="#dspsv">dspsv</A> : Solves a real symmetric indefinite system of linear equations AX=B,where A is held in packed storage.</LI>
+      <LI><A HREF="#dspsvx">dspsvx</A> : Solves a real symmetricindefinite system of linear equations AX=B, where A is heldin packed storage, and provides an estimate of the conditionnumber and error bounds on the solution.</LI>
+      <LI><A HREF="#dsptrd">dsptrd</A> : Reduces a symmetric matrix in packed storage to realsymmetric tridiagonal form by an orthogonal similaritytransformation.</LI>
+      <LI><A HREF="#dsptrf">dsptrf</A> : Computes the factorization of a realsymmetric-indefinite matrix in packed storage,using the diagonal pivoting method.</LI>
+      <LI><A HREF="#dsptri">dsptri</A> : Computes the inverse of a real symmetricindefinite matrix in packed storage, using the factorizationcomputed by DSPTRF.</LI>
+      <LI><A HREF="#dsptrs">dsptrs</A> : Solves a real symmetricindefinite system of linear equations AX=B, where A is heldin packed storage, using the factorization computedby DSPTRF.</LI>
     </UL>
 
   <A NAME="dspcon"></A>
   <H2>dspcon</H2>
-  Estimates the reciprocal of the condition number of a
+  Estimates the reciprocal of the condition number of areal symmetric indefinitematrix in packed storage, using the factorization computedby DSPTRF.
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.dspcon( uplo, ap, ipiv, anorm)
@@ -94,7 +94,7 @@ FORTRAN MANUAL
 
   <A NAME="dspev"></A>
   <H2>dspev</H2>
-  Computes all eigenvalues, and optionally, eigenvectors of a real
+  Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric matrix in packed storage.
   <PRE>
 USAGE:
   w, z, info, ap = NumRu::Lapack.dspev( jobz, uplo, ap)
@@ -172,7 +172,7 @@ FORTRAN MANUAL
 
   <A NAME="dspevd"></A>
   <H2>dspevd</H2>
-  Computes all eigenvalues, and optionally, eigenvectors of a real
+  Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric matrix in packed storage.  If eigenvectors are desired,it uses a divide and conquer algorithm.
   <PRE>
 USAGE:
   w, z, work, iwork, info, ap = NumRu::Lapack.dspevd( jobz, uplo, ap, lwork, liwork)
@@ -287,7 +287,7 @@ FORTRAN MANUAL
 
   <A NAME="dspevx"></A>
   <H2>dspevx</H2>
-  Computes selected eigenvalues and eigenvectors of a
+  Computes selected eigenvalues and eigenvectors of asymmetric matrix in packed storage.
   <PRE>
 USAGE:
   m, w, z, ifail, info, ap = NumRu::Lapack.dspevx( jobz, range, uplo, ap, vl, vu, il, iu, abstol)
@@ -427,7 +427,7 @@ FORTRAN MANUAL
 
   <A NAME="dspgst"></A>
   <H2>dspgst</H2>
-  Reduces a symmetric-definite generalized eigenproblem
+  Reduces a symmetric-definite generalized eigenproblemAx= lambda Bx,  ABx= lambda x,  or BAx= lambda x, to standardform,  where A and B are held in packed storage, and B has beenfactorized by DPPTRF.
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.dspgst( itype, uplo, n, ap, bp)
@@ -497,7 +497,7 @@ FORTRAN MANUAL
 
   <A NAME="dspgv"></A>
   <H2>dspgv</H2>
-  Computes all eigenvalues and eigenvectors of  a generalized
+  Computes all eigenvalues and eigenvectors of  a generalizedsymmetric-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.
   <PRE>
 USAGE:
   w, z, info, ap, bp = NumRu::Lapack.dspgv( itype, jobz, uplo, ap, bp)
@@ -609,7 +609,7 @@ FORTRAN MANUAL
 
   <A NAME="dspgvd"></A>
   <H2>dspgvd</H2>
-  Computes all eigenvalues and eigenvectors of  a generalized
+  Computes all eigenvalues and eigenvectors of  a generalizedsymmetric-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.If eigenvectors are desired, it uses a divide and conquer algorithm.
   <PRE>
 USAGE:
   w, z, work, iwork, info, ap, bp = NumRu::Lapack.dspgvd( itype, jobz, uplo, ap, bp, lwork, liwork)
@@ -749,7 +749,7 @@ FORTRAN MANUAL
 
   <A NAME="dspgvx"></A>
   <H2>dspgvx</H2>
-  Computes selected eigenvalues, and optionally, eigenvectors of
+  Computes selected eigenvalues, and optionally, eigenvectors ofa generalized symmetric-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.
   <PRE>
 USAGE:
   m, w, z, ifail, info, ap, bp = NumRu::Lapack.dspgvx( itype, jobz, range, uplo, ap, bp, vl, vu, il, iu, abstol, ldz)
@@ -932,7 +932,7 @@ FORTRAN MANUAL
 
   <A NAME="dsprfs"></A>
   <H2>dsprfs</H2>
-  Improves the computed solution to a real
+  Improves the computed solution to a realsymmetric indefinite system of linear equationsAX=B, where A is held in packed storage, and provides forwardand backward error bounds for the solution.
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.dsprfs( uplo, ap, afp, ipiv, b, x)
@@ -1035,7 +1035,7 @@ FORTRAN MANUAL
 
   <A NAME="dspsv"></A>
   <H2>dspsv</H2>
-  Solves a real symmetric indefinite system of linear equations AX=B,
+  Solves a real symmetric indefinite system of linear equations AX=B,where A is held in packed storage.
   <PRE>
 USAGE:
   ipiv, info, ap, b = NumRu::Lapack.dspsv( uplo, ap, b)
@@ -1154,7 +1154,7 @@ FORTRAN MANUAL
 
   <A NAME="dspsvx"></A>
   <H2>dspsvx</H2>
-  Solves a real symmetric
+  Solves a real symmetricindefinite system of linear equations AX=B, where A is heldin packed storage, and provides an estimate of the conditionnumber and error bounds on the solution.
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, afp, ipiv = NumRu::Lapack.dspsvx( fact, uplo, ap, afp, ipiv, b)
@@ -1344,7 +1344,7 @@ FORTRAN MANUAL
 
   <A NAME="dsptrd"></A>
   <H2>dsptrd</H2>
-  Reduces a symmetric matrix in packed storage to real
+  Reduces a symmetric matrix in packed storage to realsymmetric tridiagonal form by an orthogonal similaritytransformation.
   <PRE>
 USAGE:
   d, e, tau, info, ap = NumRu::Lapack.dsptrd( uplo, ap)
@@ -1445,7 +1445,7 @@ FORTRAN MANUAL
 
   <A NAME="dsptrf"></A>
   <H2>dsptrf</H2>
-  Computes the factorization of a real
+  Computes the factorization of a realsymmetric-indefinite matrix in packed storage,using the diagonal pivoting method.
   <PRE>
 USAGE:
   ipiv, info, ap = NumRu::Lapack.dsptrf( uplo, ap)
@@ -1558,7 +1558,7 @@ FORTRAN MANUAL
 
   <A NAME="dsptri"></A>
   <H2>dsptri</H2>
-  Computes the inverse of a real symmetric
+  Computes the inverse of a real symmetricindefinite matrix in packed storage, using the factorizationcomputed by DSPTRF.
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.dsptri( uplo, ap, ipiv)
@@ -1623,7 +1623,7 @@ FORTRAN MANUAL
 
   <A NAME="dsptrs"></A>
   <H2>dsptrs</H2>
-  Solves a real symmetric
+  Solves a real symmetricindefinite system of linear equations AX=B, where A is heldin packed storage, using the factorization computedby DSPTRF.
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.dsptrs( uplo, ap, ipiv, b)

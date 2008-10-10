@@ -6,13 +6,13 @@
     <A NAME="top"></A>
     <H1>REAL routines for upper Hessenberg matrix</H1>
     <UL>
-      <LI><A HREF="#shsein">shsein</A>: Computes specified right and/or left eigenvectors of an upper</LI>
-      <LI><A HREF="#shseqr">shseqr</A>: Computes the eigenvalues and Schur factorization of an upper</LI>
+      <LI><A HREF="#shsein">shsein</A> : Computes specified right and/or left eigenvectors of an upperHessenberg matrix by inverse iteration.</LI>
+      <LI><A HREF="#shseqr">shseqr</A> : Computes the eigenvalues and Schur factorization of an upperHessenberg matrix, using the multishift QR algorithm.</LI>
     </UL>
 
   <A NAME="shsein"></A>
   <H2>shsein</H2>
-  Computes specified right and/or left eigenvectors of an upper
+  Computes specified right and/or left eigenvectors of an upperHessenberg matrix by inverse iteration.
   <PRE>
 USAGE:
   m, ifaill, ifailr, info, select, wr, vl, vr = NumRu::Lapack.shsein( side, eigsrc, initv, select, h, wr, wi, vl, vr)
@@ -180,7 +180,7 @@ FORTRAN MANUAL
 
   <A NAME="shseqr"></A>
   <H2>shseqr</H2>
-  Computes the eigenvalues and Schur factorization of an upper
+  Computes the eigenvalues and Schur factorization of an upperHessenberg matrix, using the multishift QR algorithm.
   <PRE>
 USAGE:
   wr, wi, work, info, h, z = NumRu::Lapack.shseqr( job, compz, ilo, ihi, h, z, ldz, lwork)

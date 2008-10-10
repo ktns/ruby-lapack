@@ -6,19 +6,19 @@
     <A NAME="top"></A>
     <H1>REAL routines for symmetric or Hermitian positive definite, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#sppcon">sppcon</A>: Estimates the reciprocal of the condition number of a</LI>
-      <LI><A HREF="#sppequ">sppequ</A>: Computes row and column scalings to equilibrate a symmetric</LI>
-      <LI><A HREF="#spprfs">spprfs</A>: Improves the computed solution to a symmetric positive</LI>
-      <LI><A HREF="#sppsv">sppsv</A>: Solves a symmetric positive definite system of linear</LI>
-      <LI><A HREF="#sppsvx">sppsvx</A>: Solves a symmetric positive definite system of linear</LI>
-      <LI><A HREF="#spptrf">spptrf</A>: Computes the Cholesky factorization of a symmetric</LI>
-      <LI><A HREF="#spptri">spptri</A>: Computes the inverse of a symmetric positive definite</LI>
-      <LI><A HREF="#spptrs">spptrs</A>: Solves a symmetric positive definite system of linear</LI>
+      <LI><A HREF="#sppcon">sppcon</A> : Estimates the reciprocal of the condition number of asymmetric positive definite matrix in packed storage,using the Cholesky factorization computed by SPPTRF.</LI>
+      <LI><A HREF="#sppequ">sppequ</A> : Computes row and column scalings to equilibrate a symmetricpositive definite matrix in packed storage and reduce its conditionnumber.</LI>
+      <LI><A HREF="#spprfs">spprfs</A> : Improves the computed solution to a symmetric positivedefinite system of linear equations AX=B, where A is held inpacked storage, and provides forward and backward error boundsfor the solution.</LI>
+      <LI><A HREF="#sppsv">sppsv</A> : Solves a symmetric positive definite system of linearequations AX=B, where A is held in packed storage.</LI>
+      <LI><A HREF="#sppsvx">sppsvx</A> : Solves a symmetric positive definite system of linearequations AX=B, where A is held in packed storage, and providesan estimate of the condition number and error bounds on thesolution.</LI>
+      <LI><A HREF="#spptrf">spptrf</A> : Computes the Cholesky factorization of a symmetricpositive definite matrix in packed storage.</LI>
+      <LI><A HREF="#spptri">spptri</A> : Computes the inverse of a symmetric positive definitematrix in packed storage, using the Cholesky factorization computedby SPPTRF.</LI>
+      <LI><A HREF="#spptrs">spptrs</A> : Solves a symmetric positive definite system of linearequations AX=B, where A is held in packed storage, using theCholesky factorization computed by SPPTRF.</LI>
     </UL>
 
   <A NAME="sppcon"></A>
   <H2>sppcon</H2>
-  Estimates the reciprocal of the condition number of a
+  Estimates the reciprocal of the condition number of asymmetric positive definite matrix in packed storage,using the Cholesky factorization computed by SPPTRF.
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.sppcon( uplo, ap, anorm)
@@ -85,7 +85,7 @@ FORTRAN MANUAL
 
   <A NAME="sppequ"></A>
   <H2>sppequ</H2>
-  Computes row and column scalings to equilibrate a symmetric
+  Computes row and column scalings to equilibrate a symmetricpositive definite matrix in packed storage and reduce its conditionnumber.
   <PRE>
 USAGE:
   s, scond, amax, info = NumRu::Lapack.sppequ( uplo, ap)
@@ -154,7 +154,7 @@ FORTRAN MANUAL
 
   <A NAME="spprfs"></A>
   <H2>spprfs</H2>
-  Improves the computed solution to a symmetric positive
+  Improves the computed solution to a symmetric positivedefinite system of linear equations AX=B, where A is held inpacked storage, and provides forward and backward error boundsfor the solution.
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.spprfs( uplo, ap, afp, b, x)
@@ -252,7 +252,7 @@ FORTRAN MANUAL
 
   <A NAME="sppsv"></A>
   <H2>sppsv</H2>
-  Solves a symmetric positive definite system of linear
+  Solves a symmetric positive definite system of linearequations AX=B, where A is held in packed storage.
   <PRE>
 USAGE:
   info, ap, b = NumRu::Lapack.sppsv( uplo, n, ap, b)
@@ -357,7 +357,7 @@ FORTRAN MANUAL
 
   <A NAME="sppsvx"></A>
   <H2>sppsvx</H2>
-  Solves a symmetric positive definite system of linear
+  Solves a symmetric positive definite system of linearequations AX=B, where A is held in packed storage, and providesan estimate of the condition number and error bounds on thesolution.
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, ap, afp, equed, s, b = NumRu::Lapack.sppsvx( fact, uplo, ap, afp, equed, s, b)
@@ -578,7 +578,7 @@ FORTRAN MANUAL
 
   <A NAME="spptrf"></A>
   <H2>spptrf</H2>
-  Computes the Cholesky factorization of a symmetric
+  Computes the Cholesky factorization of a symmetricpositive definite matrix in packed storage.
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.spptrf( uplo, n, ap)
@@ -657,7 +657,7 @@ FORTRAN MANUAL
 
   <A NAME="spptri"></A>
   <H2>spptri</H2>
-  Computes the inverse of a symmetric positive definite
+  Computes the inverse of a symmetric positive definitematrix in packed storage, using the Cholesky factorization computedby SPPTRF.
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.spptri( uplo, n, ap)
@@ -713,7 +713,7 @@ FORTRAN MANUAL
 
   <A NAME="spptrs"></A>
   <H2>spptrs</H2>
-  Solves a symmetric positive definite system of linear
+  Solves a symmetric positive definite system of linearequations AX=B, where A is held in packed storage, using theCholesky factorization computed by SPPTRF.
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.spptrs( uplo, n, ap, b)

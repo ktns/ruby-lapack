@@ -6,21 +6,21 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for triangular (or in some cases quasi-triangular) matrix</H1>
     <UL>
-      <LI><A HREF="#dtrcon">dtrcon</A>: Estimates the reciprocal of the condition number of a triangular</LI>
-      <LI><A HREF="#dtrevc">dtrevc</A>: Computes some or all of the right and/or left eigenvectors of</LI>
-      <LI><A HREF="#dtrexc">dtrexc</A>: Reorders the Schur factorization of a matrix by an orthogonal</LI>
-      <LI><A HREF="#dtrrfs">dtrrfs</A>: Provides forward and backward error bounds for the solution</LI>
-      <LI><A HREF="#dtrsen">dtrsen</A>: Reorders the Schur factorization of a matrix in order to find</LI>
-      <LI><A HREF="#dtrsna">dtrsna</A>: Estimates the reciprocal condition numbers (sensitivities)</LI>
-      <LI><A HREF="#dtrsyl">dtrsyl</A>: Solves the Sylvester matrix equation A X +/- X B=C where A</LI>
-      <LI><A HREF="#dtrti2">dtrti2</A>: </LI>
-      <LI><A HREF="#dtrtri">dtrtri</A>: Computes the inverse of a triangular matrix.</LI>
-      <LI><A HREF="#dtrtrs">dtrtrs</A>: Solves a triangular system of linear equations AX=B,</LI>
+      <LI><A HREF="#dtrcon">dtrcon</A> : Estimates the reciprocal of the condition number of a triangularmatrix, in either the 1-norm or the infinity-norm.</LI>
+      <LI><A HREF="#dtrevc">dtrevc</A> : Computes some or all of the right and/or left eigenvectors ofan upper quasi-triangular matrix.</LI>
+      <LI><A HREF="#dtrexc">dtrexc</A> : Reorders the Schur factorization of a matrix by an orthogonalsimilarity transformation.</LI>
+      <LI><A HREF="#dtrrfs">dtrrfs</A> : Provides forward and backward error bounds for the solutionof a triangular system of linear equations A X=B, A**T X=B orA**H X=B.</LI>
+      <LI><A HREF="#dtrsen">dtrsen</A> : Reorders the Schur factorization of a matrix in order to findan orthonormal basis of a right invariant subspace correspondingto selected eigenvalues, and returns reciprocal condition numbers(sensitivities) of the average of the cluster of eigenvaluesand of the invariant subspace.</LI>
+      <LI><A HREF="#dtrsna">dtrsna</A> : Estimates the reciprocal condition numbers (sensitivities)of selected eigenvalues and eigenvectors of an upperquasi-triangular matrix.</LI>
+      <LI><A HREF="#dtrsyl">dtrsyl</A> : Solves the Sylvester matrix equation A X +/- X B=C where Aand B are upper quasi-triangular, and may be transposed.</LI>
+      <LI><A HREF="#dtrti2">dtrti2</A> : </LI>
+      <LI><A HREF="#dtrtri">dtrtri</A> : Computes the inverse of a triangular matrix.</LI>
+      <LI><A HREF="#dtrtrs">dtrtrs</A> : Solves a triangular system of linear equations AX=B,A**T X=B or A**H X=B.</LI>
     </UL>
 
   <A NAME="dtrcon"></A>
   <H2>dtrcon</H2>
-  Estimates the reciprocal of the condition number of a triangular
+  Estimates the reciprocal of the condition number of a triangularmatrix, in either the 1-norm or the infinity-norm.
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.dtrcon( norm, uplo, diag, a)
@@ -98,7 +98,7 @@ FORTRAN MANUAL
 
   <A NAME="dtrevc"></A>
   <H2>dtrevc</H2>
-  Computes some or all of the right and/or left eigenvectors of
+  Computes some or all of the right and/or left eigenvectors ofan upper quasi-triangular matrix.
   <PRE>
 USAGE:
   m, info, select, vl, vr = NumRu::Lapack.dtrevc( side, howmny, select, t, vl, vr)
@@ -246,7 +246,7 @@ FORTRAN MANUAL
 
   <A NAME="dtrexc"></A>
   <H2>dtrexc</H2>
-  Reorders the Schur factorization of a matrix by an orthogonal
+  Reorders the Schur factorization of a matrix by an orthogonalsimilarity transformation.
   <PRE>
 USAGE:
   info, t, q, ifst, ilst = NumRu::Lapack.dtrexc( compq, t, q, ifst, ilst)
@@ -333,7 +333,7 @@ FORTRAN MANUAL
 
   <A NAME="dtrrfs"></A>
   <H2>dtrrfs</H2>
-  Provides forward and backward error bounds for the solution
+  Provides forward and backward error bounds for the solutionof a triangular system of linear equations A X=B, A**T X=B orA**H X=B.
   <PRE>
 USAGE:
   ferr, berr, info = NumRu::Lapack.dtrrfs( uplo, trans, diag, a, b, x)
@@ -438,7 +438,7 @@ FORTRAN MANUAL
 
   <A NAME="dtrsen"></A>
   <H2>dtrsen</H2>
-  Reorders the Schur factorization of a matrix in order to find
+  Reorders the Schur factorization of a matrix in order to findan orthonormal basis of a right invariant subspace correspondingto selected eigenvalues, and returns reciprocal condition numbers(sensitivities) of the average of the cluster of eigenvaluesand of the invariant subspace.
   <PRE>
 USAGE:
   wr, wi, m, s, sep, work, info, t, q = NumRu::Lapack.dtrsen( job, compq, select, t, q, lwork, liwork)
@@ -662,7 +662,7 @@ FORTRAN MANUAL
 
   <A NAME="dtrsna"></A>
   <H2>dtrsna</H2>
-  Estimates the reciprocal condition numbers (sensitivities)
+  Estimates the reciprocal condition numbers (sensitivities)of selected eigenvalues and eigenvectors of an upperquasi-triangular matrix.
   <PRE>
 USAGE:
   s, sep, m, info = NumRu::Lapack.dtrsna( job, howmny, select, t, vl, vr, ldwork)
@@ -838,7 +838,7 @@ FORTRAN MANUAL
 
   <A NAME="dtrsyl"></A>
   <H2>dtrsyl</H2>
-  Solves the Sylvester matrix equation A X +/- X B=C where A
+  Solves the Sylvester matrix equation A X +/- X B=C where Aand B are upper quasi-triangular, and may be transposed.
   <PRE>
 USAGE:
   scale, info, c = NumRu::Lapack.dtrsyl( trana, tranb, isgn, a, b, c)
@@ -1068,7 +1068,7 @@ FORTRAN MANUAL
 
   <A NAME="dtrtrs"></A>
   <H2>dtrtrs</H2>
-  Solves a triangular system of linear equations AX=B,
+  Solves a triangular system of linear equations AX=B,A**T X=B or A**H X=B.
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.dtrtrs( uplo, trans, diag, a, b)

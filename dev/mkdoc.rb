@@ -45,9 +45,15 @@ def parse_html(fname)
   File.foreach(fname){|line|
     if /^file <a href=".+">([a-z_\d]+)\.f<\/a>/ =~ line
       name = $1
-    elsif name && /^for\s+(.*)$/ =~ line
-      hash[name] = $1
-      name = nil
+    elsif name
+      if /^for\s+(.*)$/ =~ line
+        hash[name] = $1
+      elsif /^,\s+(.*)$/ =~ line
+        hash[name] ||= ""
+        hash[name] << $1
+      elsif /^gams/ =~ line 
+        name = nil
+      end
     end
   }
   return hash
@@ -97,7 +103,7 @@ DataTypes.each{|cdt, dt|
 EOF
         ms.each{|m|
           file.print <<"EOF"
-      <LI><A HREF=\"##{m}\">#{m}</A>: #{desc[m]}</LI>
+      <LI><A HREF=\"##{m}\">#{m}</A> : #{desc[m]}</LI>
 EOF
         }
         file.print <<"EOF"

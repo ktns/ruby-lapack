@@ -6,20 +6,20 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for symmetric or Hermitian positive definite matrix</H1>
     <UL>
-      <LI><A HREF="#dpocon">dpocon</A>: Estimates the reciprocal of the condition number of a</LI>
-      <LI><A HREF="#dpoequ">dpoequ</A>: Computes row and column scalings to equilibrate a symmetric</LI>
-      <LI><A HREF="#dporfs">dporfs</A>: Improves the computed solution to a symmetric positive</LI>
-      <LI><A HREF="#dposv">dposv</A>: Solves a symmetric positive definite system of linear</LI>
-      <LI><A HREF="#dposvx">dposvx</A>: Solves a symmetric positive definite system of linear</LI>
-      <LI><A HREF="#dpotf2">dpotf2</A>: </LI>
-      <LI><A HREF="#dpotrf">dpotrf</A>: Computes the Cholesky factorization of a symmetric</LI>
-      <LI><A HREF="#dpotri">dpotri</A>: Computes the inverse of a symmetric positive definite</LI>
-      <LI><A HREF="#dpotrs">dpotrs</A>: Solves a symmetric positive definite system of linear</LI>
+      <LI><A HREF="#dpocon">dpocon</A> : Estimates the reciprocal of the condition number of asymmetric positive definite matrix, using theCholesky factorization computed by DPOTRF.</LI>
+      <LI><A HREF="#dpoequ">dpoequ</A> : Computes row and column scalings to equilibrate a symmetricpositive definite matrix and reduce its condition number.</LI>
+      <LI><A HREF="#dporfs">dporfs</A> : Improves the computed solution to a symmetric positivedefinite system of linear equations AX=B, and provides forwardand backward error bounds for the solution.</LI>
+      <LI><A HREF="#dposv">dposv</A> : Solves a symmetric positive definite system of linearequations AX=B.</LI>
+      <LI><A HREF="#dposvx">dposvx</A> : Solves a symmetric positive definite system of linearequations AX=B, and provides an estimate of the condition numberand error bounds on the solution.</LI>
+      <LI><A HREF="#dpotf2">dpotf2</A> : </LI>
+      <LI><A HREF="#dpotrf">dpotrf</A> : Computes the Cholesky factorization of a symmetricpositive definite matrix.</LI>
+      <LI><A HREF="#dpotri">dpotri</A> : Computes the inverse of a symmetric positive definitematrix, using the Cholesky factorization computed by DPOTRF.</LI>
+      <LI><A HREF="#dpotrs">dpotrs</A> : Solves a symmetric positive definite system of linearequations AX=B, using the Cholesky factorization computed byDPOTRF.</LI>
     </UL>
 
   <A NAME="dpocon"></A>
   <H2>dpocon</H2>
-  Estimates the reciprocal of the condition number of a
+  Estimates the reciprocal of the condition number of asymmetric positive definite matrix, using theCholesky factorization computed by DPOTRF.
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.dpocon( uplo, a, anorm)
@@ -84,7 +84,7 @@ FORTRAN MANUAL
 
   <A NAME="dpoequ"></A>
   <H2>dpoequ</H2>
-  Computes row and column scalings to equilibrate a symmetric
+  Computes row and column scalings to equilibrate a symmetricpositive definite matrix and reduce its condition number.
   <PRE>
 USAGE:
   s, scond, amax, info = NumRu::Lapack.dpoequ( a)
@@ -150,7 +150,7 @@ FORTRAN MANUAL
 
   <A NAME="dporfs"></A>
   <H2>dporfs</H2>
-  Improves the computed solution to a symmetric positive
+  Improves the computed solution to a symmetric positivedefinite system of linear equations AX=B, and provides forwardand backward error bounds for the solution.
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.dporfs( uplo, a, af, b, x)
@@ -254,7 +254,7 @@ FORTRAN MANUAL
 
   <A NAME="dposv"></A>
   <H2>dposv</H2>
-  Solves a symmetric positive definite system of linear
+  Solves a symmetric positive definite system of linearequations AX=B.
   <PRE>
 USAGE:
   info, a, b = NumRu::Lapack.dposv( uplo, a, b)
@@ -345,7 +345,7 @@ FORTRAN MANUAL
 
   <A NAME="dposvx"></A>
   <H2>dposvx</H2>
-  Solves a symmetric positive definite system of linear
+  Solves a symmetric positive definite system of linearequations AX=B, and provides an estimate of the condition numberand error bounds on the solution.
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, a, af, equed, s, b = NumRu::Lapack.dposvx( fact, uplo, a, af, equed, s, b)
@@ -625,7 +625,7 @@ FORTRAN MANUAL
 
   <A NAME="dpotrf"></A>
   <H2>dpotrf</H2>
-  Computes the Cholesky factorization of a symmetric
+  Computes the Cholesky factorization of a symmetricpositive definite matrix.
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.dpotrf( uplo, a)
@@ -692,7 +692,7 @@ FORTRAN MANUAL
 
   <A NAME="dpotri"></A>
   <H2>dpotri</H2>
-  Computes the inverse of a symmetric positive definite
+  Computes the inverse of a symmetric positive definitematrix, using the Cholesky factorization computed by DPOTRF.
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.dpotri( uplo, a)
@@ -757,7 +757,7 @@ FORTRAN MANUAL
 
   <A NAME="dpotrs"></A>
   <H2>dpotrs</H2>
-  Solves a symmetric positive definite system of linear
+  Solves a symmetric positive definite system of linearequations AX=B, using the Cholesky factorization computed byDPOTRF.
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.dpotrs( uplo, a, b)

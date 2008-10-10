@@ -6,30 +6,30 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for (complex) Hermitian matrix</H1>
     <UL>
-      <LI><A HREF="#checon">checon</A>: Estimates the reciprocal of the condition number of a</LI>
-      <LI><A HREF="#cheev">cheev</A>: Computes all eigenvalues and, optionally, eigenvectors of a complex</LI>
-      <LI><A HREF="#cheevd">cheevd</A>: Computes all eigenvalues and, optionally, eigenvectors of a complex</LI>
-      <LI><A HREF="#cheevr">cheevr</A>: Computes selected eigenvalues, and optionally, eigenvectors of a complex</LI>
-      <LI><A HREF="#cheevx">cheevx</A>: Computes selected eigenvalues and eigenvectors of a Hermitian matrix.</LI>
-      <LI><A HREF="#chegs2">chegs2</A>: </LI>
-      <LI><A HREF="#chegst">chegst</A>: Reduces a Hermitian-definite generalized eigenproblem</LI>
-      <LI><A HREF="#chegv">chegv</A>: Computes all eigenvalues and the eigenvectors of  a generalized</LI>
-      <LI><A HREF="#chegvd">chegvd</A>: Computes all eigenvalues and the eigenvectors of  a generalized</LI>
-      <LI><A HREF="#chegvx">chegvx</A>: Computes selected eigenvalues, and optionally, the eigenvectors of</LI>
-      <LI><A HREF="#cherfs">cherfs</A>: Improves the computed solution to a complex</LI>
-      <LI><A HREF="#chesv">chesv</A>: Solves a complex Hermitian indefinite system of linear equations AX=B.</LI>
-      <LI><A HREF="#chesvx">chesvx</A>: Solves a complex Hermitian</LI>
-      <LI><A HREF="#chetd2">chetd2</A>: </LI>
-      <LI><A HREF="#chetf2">chetf2</A>: </LI>
-      <LI><A HREF="#chetrd">chetrd</A>: Reduces a Hermitian matrix to real symmetric tridiagonal</LI>
-      <LI><A HREF="#chetrf">chetrf</A>: Computes the factorization of a complex Hermitian-indefinite matrix,</LI>
-      <LI><A HREF="#chetri">chetri</A>: Computes the inverse of a complex Hermitian indefinite matrix,</LI>
-      <LI><A HREF="#chetrs">chetrs</A>: Solves a complex Hermitian indefinite system of linear equations AX=B,</LI>
+      <LI><A HREF="#checon">checon</A> : Estimates the reciprocal of the condition number of acomplex Hermitian indefinite matrix,using the factorization computed by CHETRF.</LI>
+      <LI><A HREF="#cheev">cheev</A> : Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian matrix.</LI>
+      <LI><A HREF="#cheevd">cheevd</A> : Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian matrix.  If eigenvectors are desired, it uses a divideand conquer algorithm.</LI>
+      <LI><A HREF="#cheevr">cheevr</A> : Computes selected eigenvalues, and optionally, eigenvectors of a complexHermitian matrix.  Eigenvalues are computed by the dqdsalgorithm, and eigenvectors are computed from various "good" LDL^Trepresentations (also known as Relatively Robust Representations).</LI>
+      <LI><A HREF="#cheevx">cheevx</A> : Computes selected eigenvalues and eigenvectors of a Hermitian matrix.</LI>
+      <LI><A HREF="#chegs2">chegs2</A> : </LI>
+      <LI><A HREF="#chegst">chegst</A> : Reduces a Hermitian-definite generalized eigenproblemAx= lambda Bx,  ABx= lambda x,  or BAx= lambda x, to standardform, where B has been factorized by CPOTRF.</LI>
+      <LI><A HREF="#chegv">chegv</A> : Computes all eigenvalues and the eigenvectors of  a generalizedHermitian-definite generalized eigenproblem,Ax= lambda Bx,  ABx= lambda x,  or BAx= lambda x.</LI>
+      <LI><A HREF="#chegvd">chegvd</A> : Computes all eigenvalues and the eigenvectors of  a generalizedHermitian-definite generalized eigenproblem,Ax= lambda Bx,  ABx= lambda x,  or BAx= lambda x.If eigenvectors are desired, it uses a divide and conquer algorithm.</LI>
+      <LI><A HREF="#chegvx">chegvx</A> : Computes selected eigenvalues, and optionally, the eigenvectors ofa generalized Hermitian-definite generalized eigenproblem,Ax= lambda Bx,  ABx= lambda x,  or BAx= lambda x.</LI>
+      <LI><A HREF="#cherfs">cherfs</A> : Improves the computed solution to a complexHermitian indefinite system of linear equationsAX=B, and provides forward and backward error bounds for thesolution.</LI>
+      <LI><A HREF="#chesv">chesv</A> : Solves a complex Hermitian indefinite system of linear equations AX=B.</LI>
+      <LI><A HREF="#chesvx">chesvx</A> : Solves a complex Hermitianindefinite system  of linear equations AX=B, and provides anestimate of the condition number and error bounds on the solution.</LI>
+      <LI><A HREF="#chetd2">chetd2</A> : </LI>
+      <LI><A HREF="#chetf2">chetf2</A> : </LI>
+      <LI><A HREF="#chetrd">chetrd</A> : Reduces a Hermitian matrix to real symmetric tridiagonalform by an orthogonal/unitary similarity transformation.</LI>
+      <LI><A HREF="#chetrf">chetrf</A> : Computes the factorization of a complex Hermitian-indefinite matrix,using the diagonal pivoting method.</LI>
+      <LI><A HREF="#chetri">chetri</A> : Computes the inverse of a complex Hermitian indefinite matrix,using the factorization computed by CHETRF.</LI>
+      <LI><A HREF="#chetrs">chetrs</A> : Solves a complex Hermitian indefinite system of linear equations AX=B,using the factorization computed by CHPTRF.</LI>
     </UL>
 
   <A NAME="checon"></A>
   <H2>checon</H2>
-  Estimates the reciprocal of the condition number of a
+  Estimates the reciprocal of the condition number of acomplex Hermitian indefinite matrix,using the factorization computed by CHETRF.
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.checon( uplo, a, ipiv, anorm)
@@ -98,7 +98,7 @@ FORTRAN MANUAL
 
   <A NAME="cheev"></A>
   <H2>cheev</H2>
-  Computes all eigenvalues and, optionally, eigenvectors of a complex
+  Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian matrix.
   <PRE>
 USAGE:
   w, work, info, a = NumRu::Lapack.cheev( jobz, uplo, a, lwork)
@@ -180,7 +180,7 @@ FORTRAN MANUAL
 
   <A NAME="cheevd"></A>
   <H2>cheevd</H2>
-  Computes all eigenvalues and, optionally, eigenvectors of a complex
+  Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian matrix.  If eigenvectors are desired, it uses a divideand conquer algorithm.
   <PRE>
 USAGE:
   w, work, rwork, iwork, info, a = NumRu::Lapack.cheevd( jobz, uplo, a, lwork, lrwork, liwork)
@@ -314,7 +314,7 @@ FORTRAN MANUAL
 
   <A NAME="cheevr"></A>
   <H2>cheevr</H2>
-  Computes selected eigenvalues, and optionally, eigenvectors of a complex
+  Computes selected eigenvalues, and optionally, eigenvectors of a complexHermitian matrix.  Eigenvalues are computed by the dqdsalgorithm, and eigenvectors are computed from various "good" LDL^Trepresentations (also known as Relatively Robust Representations).
   <PRE>
 USAGE:
   m, w, z, isuppz, work, rwork, iwork, info, a = NumRu::Lapack.cheevr( jobz, range, uplo, a, vl, vu, il, iu, abstol, lwork, lrwork, liwork)
@@ -792,7 +792,7 @@ FORTRAN MANUAL
 
   <A NAME="chegst"></A>
   <H2>chegst</H2>
-  Reduces a Hermitian-definite generalized eigenproblem
+  Reduces a Hermitian-definite generalized eigenproblemAx= lambda Bx,  ABx= lambda x,  or BAx= lambda x, to standardform, where B has been factorized by CPOTRF.
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.chegst( itype, uplo, a, b)
@@ -870,7 +870,7 @@ FORTRAN MANUAL
 
   <A NAME="chegv"></A>
   <H2>chegv</H2>
-  Computes all eigenvalues and the eigenvectors of  a generalized
+  Computes all eigenvalues and the eigenvectors of  a generalizedHermitian-definite generalized eigenproblem,Ax= lambda Bx,  ABx= lambda x,  or BAx= lambda x.
   <PRE>
 USAGE:
   w, work, info, a, b = NumRu::Lapack.chegv( itype, jobz, uplo, a, b, lwork)
@@ -984,7 +984,7 @@ FORTRAN MANUAL
 
   <A NAME="chegvd"></A>
   <H2>chegvd</H2>
-  Computes all eigenvalues and the eigenvectors of  a generalized
+  Computes all eigenvalues and the eigenvectors of  a generalizedHermitian-definite generalized eigenproblem,Ax= lambda Bx,  ABx= lambda x,  or BAx= lambda x.If eigenvectors are desired, it uses a divide and conquer algorithm.
   <PRE>
 USAGE:
   w, work, rwork, iwork, info, a, b = NumRu::Lapack.chegvd( itype, jobz, uplo, a, b, lwork, lrwork, liwork)
@@ -1150,7 +1150,7 @@ FORTRAN MANUAL
 
   <A NAME="chegvx"></A>
   <H2>chegvx</H2>
-  Computes selected eigenvalues, and optionally, the eigenvectors of
+  Computes selected eigenvalues, and optionally, the eigenvectors ofa generalized Hermitian-definite generalized eigenproblem,Ax= lambda Bx,  ABx= lambda x,  or BAx= lambda x.
   <PRE>
 USAGE:
   m, w, z, work, ifail, info, a, b = NumRu::Lapack.chegvx( itype, jobz, range, uplo, a, b, vl, vu, il, iu, abstol, ldz, lwork)
@@ -1338,7 +1338,7 @@ FORTRAN MANUAL
 
   <A NAME="cherfs"></A>
   <H2>cherfs</H2>
-  Improves the computed solution to a complex
+  Improves the computed solution to a complexHermitian indefinite system of linear equationsAX=B, and provides forward and backward error bounds for thesolution.
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.cherfs( uplo, a, af, ipiv, b, x)
@@ -1570,7 +1570,7 @@ FORTRAN MANUAL
 
   <A NAME="chesvx"></A>
   <H2>chesvx</H2>
-  Solves a complex Hermitian
+  Solves a complex Hermitianindefinite system  of linear equations AX=B, and provides anestimate of the condition number and error bounds on the solution.
   <PRE>
 USAGE:
   x, rcond, ferr, berr, work, info, af, ipiv = NumRu::Lapack.chesvx( fact, uplo, a, af, ipiv, b, lwork)
@@ -2011,7 +2011,7 @@ FORTRAN MANUAL
 
   <A NAME="chetrd"></A>
   <H2>chetrd</H2>
-  Reduces a Hermitian matrix to real symmetric tridiagonal
+  Reduces a Hermitian matrix to real symmetric tridiagonalform by an orthogonal/unitary similarity transformation.
   <PRE>
 USAGE:
   d, e, tau, work, info, a = NumRu::Lapack.chetrd( uplo, a, lwork)
@@ -2144,7 +2144,7 @@ FORTRAN MANUAL
 
   <A NAME="chetrf"></A>
   <H2>chetrf</H2>
-  Computes the factorization of a complex Hermitian-indefinite matrix,
+  Computes the factorization of a complex Hermitian-indefinite matrix,using the diagonal pivoting method.
   <PRE>
 USAGE:
   ipiv, work, info, a = NumRu::Lapack.chetrf( uplo, a, lwork)
@@ -2283,7 +2283,7 @@ FORTRAN MANUAL
 
   <A NAME="chetri"></A>
   <H2>chetri</H2>
-  Computes the inverse of a complex Hermitian indefinite matrix,
+  Computes the inverse of a complex Hermitian indefinite matrix,using the factorization computed by CHETRF.
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.chetri( uplo, a, ipiv)
@@ -2350,7 +2350,7 @@ FORTRAN MANUAL
 
   <A NAME="chetrs"></A>
   <H2>chetrs</H2>
-  Solves a complex Hermitian indefinite system of linear equations AX=B,
+  Solves a complex Hermitian indefinite system of linear equations AX=B,using the factorization computed by CHPTRF.
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.chetrs( uplo, a, ipiv, b)

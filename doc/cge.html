@@ -6,51 +6,51 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for general (i.e., unsymmetric, in some cases rectangular) matrix</H1>
     <UL>
-      <LI><A HREF="#cgebak">cgebak</A>: Transforms eigenvectors of a balanced matrix to those of the</LI>
-      <LI><A HREF="#cgebal">cgebal</A>: Balances a general matrix in order to improve the accuracy</LI>
-      <LI><A HREF="#cgebd2">cgebd2</A>: </LI>
-      <LI><A HREF="#cgebrd">cgebrd</A>: Reduces a general rectangular matrix to real bidiagonal form</LI>
-      <LI><A HREF="#cgecon">cgecon</A>: Estimates the reciprocal of the condition number of a general</LI>
-      <LI><A HREF="#cgeequ">cgeequ</A>: Computes row and column scalings to equilibrate a general</LI>
-      <LI><A HREF="#cgees">cgees</A>: Computes the eigenvalues and Schur factorization of a general</LI>
-      <LI><A HREF="#cgeesx">cgeesx</A>: Computes the eigenvalues and Schur factorization of a general</LI>
-      <LI><A HREF="#cgeev">cgeev</A>: Computes the eigenvalues and left and right eigenvectors of</LI>
-      <LI><A HREF="#cgeevx">cgeevx</A>: Computes the eigenvalues and left and right eigenvectors of</LI>
-      <LI><A HREF="#cgegs">cgegs</A>: Computes the generalized eigenvalues, Schur form, and left and/or</LI>
-      <LI><A HREF="#cgegv">cgegv</A>: Computes the generalized eigenvalues, and left and/or right</LI>
-      <LI><A HREF="#cgehd2">cgehd2</A>: </LI>
-      <LI><A HREF="#cgehrd">cgehrd</A>: Reduces a general matrix to upper Hessenberg form by an</LI>
-      <LI><A HREF="#cgelq2">cgelq2</A>: </LI>
-      <LI><A HREF="#cgelqf">cgelqf</A>: Computes an LQ factorization of a general rectangular matrix.</LI>
-      <LI><A HREF="#cgels">cgels</A>: Computes the least squares solution to an over-determined system</LI>
-      <LI><A HREF="#cgelsd">cgelsd</A>: Computes the least squares solution to an over-determined system</LI>
-      <LI><A HREF="#cgelss">cgelss</A>: Computes the minimum norm least squares solution to an over-</LI>
-      <LI><A HREF="#cgelsx">cgelsx</A>: Computes the minimum norm least squares solution to an over-</LI>
-      <LI><A HREF="#cgelsy">cgelsy</A>: Computes the minimum norm least squares solution to an over-</LI>
-      <LI><A HREF="#cgeql2">cgeql2</A>: </LI>
-      <LI><A HREF="#cgeqlf">cgeqlf</A>: Computes a QL factorization of a general rectangular matrix.</LI>
-      <LI><A HREF="#cgeqp3">cgeqp3</A>: Computes a QR factorization with column pivoting of a general</LI>
-      <LI><A HREF="#cgeqpf">cgeqpf</A>: Computes a QR factorization with column pivoting of a general</LI>
-      <LI><A HREF="#cgeqr2">cgeqr2</A>: </LI>
-      <LI><A HREF="#cgeqrf">cgeqrf</A>: Computes a QR factorization of a general rectangular matrix.</LI>
-      <LI><A HREF="#cgerfs">cgerfs</A>: Improves the computed solution to a general system of linear</LI>
-      <LI><A HREF="#cgerq2">cgerq2</A>: </LI>
-      <LI><A HREF="#cgerqf">cgerqf</A>: Computes an RQ factorization of a general rectangular matrix.</LI>
-      <LI><A HREF="#cgesc2">cgesc2</A>: </LI>
-      <LI><A HREF="#cgesdd">cgesdd</A>: Computes the singular value decomposition (SVD) of a general</LI>
-      <LI><A HREF="#cgesv">cgesv</A>: Solves a general system of linear equations AX=B.</LI>
-      <LI><A HREF="#cgesvd">cgesvd</A>: Computes the singular value decomposition (SVD) of a general</LI>
-      <LI><A HREF="#cgesvx">cgesvx</A>: Solves a general system of linear equations AX=B, A**T X=B</LI>
-      <LI><A HREF="#cgetc2">cgetc2</A>: </LI>
-      <LI><A HREF="#cgetf2">cgetf2</A>: </LI>
-      <LI><A HREF="#cgetrf">cgetrf</A>: Computes an LU factorization of a general matrix, using partial</LI>
-      <LI><A HREF="#cgetri">cgetri</A>: Computes the inverse of a general matrix, using the LU factorization</LI>
-      <LI><A HREF="#cgetrs">cgetrs</A>: Solves a general system of linear equations AX=B, A**T X=B</LI>
+      <LI><A HREF="#cgebak">cgebak</A> : Transforms eigenvectors of a balanced matrix to those of theoriginal matrix supplied to CGEBAL.</LI>
+      <LI><A HREF="#cgebal">cgebal</A> : Balances a general matrix in order to improve the accuracyof computed eigenvalues.</LI>
+      <LI><A HREF="#cgebd2">cgebd2</A> : </LI>
+      <LI><A HREF="#cgebrd">cgebrd</A> : Reduces a general rectangular matrix to real bidiagonal formby an orthogonal/unitary transformation.</LI>
+      <LI><A HREF="#cgecon">cgecon</A> : Estimates the reciprocal of the condition number of a generalmatrix, in either the 1-norm or the infinity-norm, using theLU factorization computed by CGETRF.</LI>
+      <LI><A HREF="#cgeequ">cgeequ</A> : Computes row and column scalings to equilibrate a generalrectangular matrix and reduce its condition number.</LI>
+      <LI><A HREF="#cgees">cgees</A> : Computes the eigenvalues and Schur factorization of a generalmatrix, and orders the factorization so that selected eigenvaluesare at the top left of the Schur form.</LI>
+      <LI><A HREF="#cgeesx">cgeesx</A> : Computes the eigenvalues and Schur factorization of a generalmatrix, orders the factorization so that selected eigenvaluesare at the top left of the Schur form, and computes reciprocalcondition numbers for the average of the selected eigenvalues,and for the associated right invariant subspace.</LI>
+      <LI><A HREF="#cgeev">cgeev</A> : Computes the eigenvalues and left and right eigenvectors ofa general matrix.</LI>
+      <LI><A HREF="#cgeevx">cgeevx</A> : Computes the eigenvalues and left and right eigenvectors ofa general matrix,  with preliminary balancing of the matrix,and computes reciprocal condition numbers for the eigenvaluesand right eigenvectors.</LI>
+      <LI><A HREF="#cgegs">cgegs</A> : Computes the generalized eigenvalues, Schur form, and left and/orright Schur vectors for a pair of nonsymmetric matrices</LI>
+      <LI><A HREF="#cgegv">cgegv</A> : Computes the generalized eigenvalues, and left and/or rightgeneralized eigenvectors for a pair of nonsymmetric matrices</LI>
+      <LI><A HREF="#cgehd2">cgehd2</A> : </LI>
+      <LI><A HREF="#cgehrd">cgehrd</A> : Reduces a general matrix to upper Hessenberg form by anunitary similarity transformation.</LI>
+      <LI><A HREF="#cgelq2">cgelq2</A> : </LI>
+      <LI><A HREF="#cgelqf">cgelqf</A> : Computes an LQ factorization of a general rectangular matrix.</LI>
+      <LI><A HREF="#cgels">cgels</A> : Computes the least squares solution to an over-determined systemof linear equations, A X=B or A**H X=B,  or the minimum normsolution of an under-determined system, where A is a generalrectangular matrix of full rank,  using a QR or LQ factorizationof A.</LI>
+      <LI><A HREF="#cgelsd">cgelsd</A> : Computes the least squares solution to an over-determined systemof linear equations, A X=B or A**H X=B,  or the minimum normsolution of an under-determined system, using a divide and conquermethod, where A is a general rectangular matrix of full rank,using a QR or LQ factorization of A.</LI>
+      <LI><A HREF="#cgelss">cgelss</A> : Computes the minimum norm least squares solution to an over-or under-determined system of linear equations A X=B,  usingthe singular value decomposition of A.</LI>
+      <LI><A HREF="#cgelsx">cgelsx</A> : Computes the minimum norm least squares solution to an over-or under-determined system of linear equations A X=B, using acomplete orthogonal factorization of A.</LI>
+      <LI><A HREF="#cgelsy">cgelsy</A> : Computes the minimum norm least squares solution to an over-or under-determined system of linear equations A X=B, using acomplete orthogonal factorization of A.</LI>
+      <LI><A HREF="#cgeql2">cgeql2</A> : </LI>
+      <LI><A HREF="#cgeqlf">cgeqlf</A> : Computes a QL factorization of a general rectangular matrix.</LI>
+      <LI><A HREF="#cgeqp3">cgeqp3</A> : Computes a QR factorization with column pivoting of a generalrectangular matrix using Level 3 BLAS.</LI>
+      <LI><A HREF="#cgeqpf">cgeqpf</A> : Computes a QR factorization with column pivoting of a generalrectangular matrix.</LI>
+      <LI><A HREF="#cgeqr2">cgeqr2</A> : </LI>
+      <LI><A HREF="#cgeqrf">cgeqrf</A> : Computes a QR factorization of a general rectangular matrix.</LI>
+      <LI><A HREF="#cgerfs">cgerfs</A> : Improves the computed solution to a general system of linearequations AX=B, A**T X=B or A**H X=B, and provides forward andbackward error bounds for the solution.</LI>
+      <LI><A HREF="#cgerq2">cgerq2</A> : </LI>
+      <LI><A HREF="#cgerqf">cgerqf</A> : Computes an RQ factorization of a general rectangular matrix.</LI>
+      <LI><A HREF="#cgesc2">cgesc2</A> : </LI>
+      <LI><A HREF="#cgesdd">cgesdd</A> : Computes the singular value decomposition (SVD) of a generalrectangular matrix using divide-and-conquer.</LI>
+      <LI><A HREF="#cgesv">cgesv</A> : Solves a general system of linear equations AX=B.</LI>
+      <LI><A HREF="#cgesvd">cgesvd</A> : Computes the singular value decomposition (SVD) of a generalrectangular matrix.</LI>
+      <LI><A HREF="#cgesvx">cgesvx</A> : Solves a general system of linear equations AX=B, A**T X=Bor A**H X=B, and provides an estimate of the condition numberand error bounds on the solution.</LI>
+      <LI><A HREF="#cgetc2">cgetc2</A> : </LI>
+      <LI><A HREF="#cgetf2">cgetf2</A> : </LI>
+      <LI><A HREF="#cgetrf">cgetrf</A> : Computes an LU factorization of a general matrix, using partialpivoting with row interchanges.</LI>
+      <LI><A HREF="#cgetri">cgetri</A> : Computes the inverse of a general matrix, using the LU factorizationcomputed by CGETRF.</LI>
+      <LI><A HREF="#cgetrs">cgetrs</A> : Solves a general system of linear equations AX=B, A**T X=Bor A**H X=B, using the LU factorization computed by CGETRF.</LI>
     </UL>
 
   <A NAME="cgebak"></A>
   <H2>cgebak</H2>
-  Transforms eigenvectors of a balanced matrix to those of the
+  Transforms eigenvectors of a balanced matrix to those of theoriginal matrix supplied to CGEBAL.
   <PRE>
 USAGE:
   info, v = NumRu::Lapack.cgebak( job, side, ilo, ihi, scale, v)
@@ -122,7 +122,7 @@ FORTRAN MANUAL
 
   <A NAME="cgebal"></A>
   <H2>cgebal</H2>
-  Balances a general matrix in order to improve the accuracy
+  Balances a general matrix in order to improve the accuracyof computed eigenvalues.
   <PRE>
 USAGE:
   ilo, ihi, scale, info, a = NumRu::Lapack.cgebal( job, a)
@@ -361,7 +361,7 @@ FORTRAN MANUAL
 
   <A NAME="cgebrd"></A>
   <H2>cgebrd</H2>
-  Reduces a general rectangular matrix to real bidiagonal form
+  Reduces a general rectangular matrix to real bidiagonal formby an orthogonal/unitary transformation.
   <PRE>
 USAGE:
   d, e, tauq, taup, work, info, a = NumRu::Lapack.cgebrd( m, a, lwork)
@@ -503,7 +503,7 @@ FORTRAN MANUAL
 
   <A NAME="cgecon"></A>
   <H2>cgecon</H2>
-  Estimates the reciprocal of the condition number of a general
+  Estimates the reciprocal of the condition number of a generalmatrix, in either the 1-norm or the infinity-norm, using theLU factorization computed by CGETRF.
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.cgecon( norm, a, anorm)
@@ -571,7 +571,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeequ"></A>
   <H2>cgeequ</H2>
-  Computes row and column scalings to equilibrate a general
+  Computes row and column scalings to equilibrate a generalrectangular matrix and reduce its condition number.
   <PRE>
 USAGE:
   r, c, rowcnd, colcnd, amax, info = NumRu::Lapack.cgeequ( a)
@@ -653,7 +653,7 @@ FORTRAN MANUAL
 
   <A NAME="cgees"></A>
   <H2>cgees</H2>
-  Computes the eigenvalues and Schur factorization of a general
+  Computes the eigenvalues and Schur factorization of a generalmatrix, and orders the factorization so that selected eigenvaluesare at the top left of the Schur form.
   <PRE>
 USAGE:
   sdim, w, vs, work, info, a = NumRu::Lapack.cgees( jobvs, sort, a, lwork){|a| ... }
@@ -772,7 +772,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeesx"></A>
   <H2>cgeesx</H2>
-  Computes the eigenvalues and Schur factorization of a general
+  Computes the eigenvalues and Schur factorization of a generalmatrix, orders the factorization so that selected eigenvaluesare at the top left of the Schur form, and computes reciprocalcondition numbers for the average of the selected eigenvalues,and for the associated right invariant subspace.
   <PRE>
 USAGE:
   sdim, w, vs, rconde, rcondv, work, info, a = NumRu::Lapack.cgeesx( jobvs, sort, sense, a, lwork){|a| ... }
@@ -921,7 +921,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeev"></A>
   <H2>cgeev</H2>
-  Computes the eigenvalues and left and right eigenvectors of
+  Computes the eigenvalues and left and right eigenvectors ofa general matrix.
   <PRE>
 USAGE:
   w, vl, vr, work, info, a = NumRu::Lapack.cgeev( jobvl, jobvr, a, lwork)
@@ -1027,7 +1027,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeevx"></A>
   <H2>cgeevx</H2>
-  Computes the eigenvalues and left and right eigenvectors of
+  Computes the eigenvalues and left and right eigenvectors ofa general matrix,  with preliminary balancing of the matrix,and computes reciprocal condition numbers for the eigenvaluesand right eigenvectors.
   <PRE>
 USAGE:
   w, vl, vr, ilo, ihi, scale, abnrm, rconde, rcondv, work, info, a = NumRu::Lapack.cgeevx( balanc, jobvl, jobvr, sense, a, lwork)
@@ -1212,7 +1212,7 @@ FORTRAN MANUAL
 
   <A NAME="cgegs"></A>
   <H2>cgegs</H2>
-  Computes the generalized eigenvalues, Schur form, and left and/or
+  Computes the generalized eigenvalues, Schur form, and left and/orright Schur vectors for a pair of nonsymmetric matrices
   <PRE>
 USAGE:
   alpha, beta, vsl, vsr, work, info, a, b = NumRu::Lapack.cgegs( jobvsl, jobvsr, a, b, lwork)
@@ -1354,7 +1354,7 @@ FORTRAN MANUAL
 
   <A NAME="cgegv"></A>
   <H2>cgegv</H2>
-  Computes the generalized eigenvalues, and left and/or right
+  Computes the generalized eigenvalues, and left and/or rightgeneralized eigenvectors for a pair of nonsymmetric matrices
   <PRE>
 USAGE:
   alpha, beta, vl, vr, work, rwork, info, a, b = NumRu::Lapack.cgegv( jobvl, jobvr, a, b, lwork)
@@ -1650,7 +1650,7 @@ FORTRAN MANUAL
 
   <A NAME="cgehrd"></A>
   <H2>cgehrd</H2>
-  Reduces a general matrix to upper Hessenberg form by an
+  Reduces a general matrix to upper Hessenberg form by anunitary similarity transformation.
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.cgehrd( ilo, ihi, a, lwork)
@@ -1934,7 +1934,7 @@ FORTRAN MANUAL
 
   <A NAME="cgels"></A>
   <H2>cgels</H2>
-  Computes the least squares solution to an over-determined system
+  Computes the least squares solution to an over-determined systemof linear equations, A X=B or A**H X=B,  or the minimum normsolution of an under-determined system, where A is a generalrectangular matrix of full rank,  using a QR or LQ factorizationof A.
   <PRE>
 USAGE:
   work, info, a, b = NumRu::Lapack.cgels( trans, m, a, b, lwork)
@@ -2056,7 +2056,7 @@ FORTRAN MANUAL
 
   <A NAME="cgelsd"></A>
   <H2>cgelsd</H2>
-  Computes the least squares solution to an over-determined system
+  Computes the least squares solution to an over-determined systemof linear equations, A X=B or A**H X=B,  or the minimum normsolution of an under-determined system, using a divide and conquermethod, where A is a general rectangular matrix of full rank,using a QR or LQ factorization of A.
   <PRE>
 USAGE:
   s, rank, work, info, a, b = NumRu::Lapack.cgelsd( m, a, b, rcond, lwork)
@@ -2208,7 +2208,7 @@ FORTRAN MANUAL
 
   <A NAME="cgelss"></A>
   <H2>cgelss</H2>
-  Computes the minimum norm least squares solution to an over-
+  Computes the minimum norm least squares solution to an over-or under-determined system of linear equations A X=B,  usingthe singular value decomposition of A.
   <PRE>
 USAGE:
   s, rank, work, info, a, b = NumRu::Lapack.cgelss( m, a, b, rcond, lwork)
@@ -2316,7 +2316,7 @@ FORTRAN MANUAL
 
   <A NAME="cgelsx"></A>
   <H2>cgelsx</H2>
-  Computes the minimum norm least squares solution to an over-
+  Computes the minimum norm least squares solution to an over-or under-determined system of linear equations A X=B, using acomplete orthogonal factorization of A.
   <PRE>
 USAGE:
   rank, info, a, b, jpvt = NumRu::Lapack.cgelsx( m, a, b, jpvt, rcond)
@@ -2432,7 +2432,7 @@ FORTRAN MANUAL
 
   <A NAME="cgelsy"></A>
   <H2>cgelsy</H2>
-  Computes the minimum norm least squares solution to an over-
+  Computes the minimum norm least squares solution to an over-or under-determined system of linear equations A X=B, using acomplete orthogonal factorization of A.
   <PRE>
 USAGE:
   rank, work, info, a, b, jpvt = NumRu::Lapack.cgelsy( m, a, b, jpvt, rcond, lwork)
@@ -2749,7 +2749,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeqp3"></A>
   <H2>cgeqp3</H2>
-  Computes a QR factorization with column pivoting of a general
+  Computes a QR factorization with column pivoting of a generalrectangular matrix using Level 3 BLAS.
   <PRE>
 USAGE:
   tau, work, info, a, jpvt = NumRu::Lapack.cgeqp3( m, a, jpvt, lwork)
@@ -2845,7 +2845,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeqpf"></A>
   <H2>cgeqpf</H2>
-  Computes a QR factorization with column pivoting of a general
+  Computes a QR factorization with column pivoting of a generalrectangular matrix.
   <PRE>
 USAGE:
   tau, info, a, jpvt = NumRu::Lapack.cgeqpf( m, a, jpvt)
@@ -3110,7 +3110,7 @@ FORTRAN MANUAL
 
   <A NAME="cgerfs"></A>
   <H2>cgerfs</H2>
-  Improves the computed solution to a general system of linear
+  Improves the computed solution to a general system of linearequations AX=B, A**T X=B or A**H X=B, and provides forward andbackward error bounds for the solution.
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.cgerfs( trans, a, af, ipiv, b, x)
@@ -3459,7 +3459,7 @@ FORTRAN MANUAL
 
   <A NAME="cgesdd"></A>
   <H2>cgesdd</H2>
-  Computes the singular value decomposition (SVD) of a general
+  Computes the singular value decomposition (SVD) of a generalrectangular matrix using divide-and-conquer.
   <PRE>
 USAGE:
   s, u, vt, work, info, a = NumRu::Lapack.cgesdd( jobz, m, a, lwork)
@@ -3685,7 +3685,7 @@ FORTRAN MANUAL
 
   <A NAME="cgesvd"></A>
   <H2>cgesvd</H2>
-  Computes the singular value decomposition (SVD) of a general
+  Computes the singular value decomposition (SVD) of a generalrectangular matrix.
   <PRE>
 USAGE:
   s, u, vt, work, info, a = NumRu::Lapack.cgesvd( jobu, jobvt, m, a, lwork)
@@ -3825,7 +3825,7 @@ FORTRAN MANUAL
 
   <A NAME="cgesvx"></A>
   <H2>cgesvx</H2>
-  Solves a general system of linear equations AX=B, A**T X=B
+  Solves a general system of linear equations AX=B, A**T X=Bor A**H X=B, and provides an estimate of the condition numberand error bounds on the solution.
   <PRE>
 USAGE:
   x, rcond, ferr, berr, rwork, info, a, af, ipiv, equed, r, c, b = NumRu::Lapack.cgesvx( fact, trans, a, af, ipiv, equed, r, c, b)
@@ -4206,7 +4206,7 @@ FORTRAN MANUAL
 
   <A NAME="cgetrf"></A>
   <H2>cgetrf</H2>
-  Computes an LU factorization of a general matrix, using partial
+  Computes an LU factorization of a general matrix, using partialpivoting with row interchanges.
   <PRE>
 USAGE:
   ipiv, info, a = NumRu::Lapack.cgetrf( m, a)
@@ -4271,7 +4271,7 @@ FORTRAN MANUAL
 
   <A NAME="cgetri"></A>
   <H2>cgetri</H2>
-  Computes the inverse of a general matrix, using the LU factorization
+  Computes the inverse of a general matrix, using the LU factorizationcomputed by CGETRF.
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.cgetri( a, ipiv, lwork)
@@ -4339,7 +4339,7 @@ FORTRAN MANUAL
 
   <A NAME="cgetrs"></A>
   <H2>cgetrs</H2>
-  Solves a general system of linear equations AX=B, A**T X=B
+  Solves a general system of linear equations AX=B, A**T X=Bor A**H X=B, using the LU factorization computed by CGETRF.
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.cgetrs( trans, a, ipiv, b)

@@ -6,30 +6,30 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for (real) orthogonal matrix</H1>
     <UL>
-      <LI><A HREF="#dorg2l">dorg2l</A>: </LI>
-      <LI><A HREF="#dorg2r">dorg2r</A>: </LI>
-      <LI><A HREF="#dorgbr">dorgbr</A>: Generates the orthogonal transformation matrices from</LI>
-      <LI><A HREF="#dorghr">dorghr</A>: Generates the orthogonal transformation matrix from</LI>
-      <LI><A HREF="#dorgl2">dorgl2</A>: </LI>
-      <LI><A HREF="#dorglq">dorglq</A>: Generates all or part of the orthogonal matrix Q from</LI>
-      <LI><A HREF="#dorgql">dorgql</A>: Generates all or part of the orthogonal matrix Q from</LI>
-      <LI><A HREF="#dorgqr">dorgqr</A>: Generates all or part of the orthogonal matrix Q from</LI>
-      <LI><A HREF="#dorgr2">dorgr2</A>: </LI>
-      <LI><A HREF="#dorgrq">dorgrq</A>: Generates all or part of the orthogonal matrix Q from</LI>
-      <LI><A HREF="#dorgtr">dorgtr</A>: Generates the orthogonal transformation matrix from</LI>
-      <LI><A HREF="#dorm2l">dorm2l</A>: </LI>
-      <LI><A HREF="#dorm2r">dorm2r</A>: </LI>
-      <LI><A HREF="#dormbr">dormbr</A>: Multiplies a general matrix by one of the orthogonal</LI>
-      <LI><A HREF="#dormhr">dormhr</A>: Multiplies a general matrix by the orthogonal transformation</LI>
-      <LI><A HREF="#dorml2">dorml2</A>: </LI>
-      <LI><A HREF="#dormlq">dormlq</A>: Multiplies a general matrix by the orthogonal matrix</LI>
-      <LI><A HREF="#dormql">dormql</A>: Multiplies a general matrix by the orthogonal matrix</LI>
-      <LI><A HREF="#dormqr">dormqr</A>: Multiplies a general matrix by the orthogonal matrix</LI>
-      <LI><A HREF="#dormr2">dormr2</A>: </LI>
-      <LI><A HREF="#dormr3">dormr3</A>: Multiples a general matrix by the orthogonal matrix</LI>
-      <LI><A HREF="#dormrq">dormrq</A>: Multiplies a general matrix by the orthogonal matrix</LI>
-      <LI><A HREF="#dormrz">dormrz</A>: Multiples a general matrix by the orthogonal matrix</LI>
-      <LI><A HREF="#dormtr">dormtr</A>: Multiplies a general matrix by the orthogonal</LI>
+      <LI><A HREF="#dorg2l">dorg2l</A> : </LI>
+      <LI><A HREF="#dorg2r">dorg2r</A> : </LI>
+      <LI><A HREF="#dorgbr">dorgbr</A> : Generates the orthogonal transformation matrices froma reduction to bidiagonal form determined by DGEBRD.</LI>
+      <LI><A HREF="#dorghr">dorghr</A> : Generates the orthogonal transformation matrix froma reduction to Hessenberg form determined by DGEHRD.</LI>
+      <LI><A HREF="#dorgl2">dorgl2</A> : </LI>
+      <LI><A HREF="#dorglq">dorglq</A> : Generates all or part of the orthogonal matrix Q froman LQ factorization determined by DGELQF.</LI>
+      <LI><A HREF="#dorgql">dorgql</A> : Generates all or part of the orthogonal matrix Q froma QL factorization determined by DGEQLF.</LI>
+      <LI><A HREF="#dorgqr">dorgqr</A> : Generates all or part of the orthogonal matrix Q froma QR factorization determined by DGEQRF.</LI>
+      <LI><A HREF="#dorgr2">dorgr2</A> : </LI>
+      <LI><A HREF="#dorgrq">dorgrq</A> : Generates all or part of the orthogonal matrix Q froman RQ factorization determined by DGERQF.</LI>
+      <LI><A HREF="#dorgtr">dorgtr</A> : Generates the orthogonal transformation matrix froma reduction to tridiagonal form determined by DSYTRD.</LI>
+      <LI><A HREF="#dorm2l">dorm2l</A> : </LI>
+      <LI><A HREF="#dorm2r">dorm2r</A> : </LI>
+      <LI><A HREF="#dormbr">dormbr</A> : Multiplies a general matrix by one of the orthogonaltransformation  matrices from a reduction to bidiagonal formdetermined by DGEBRD.</LI>
+      <LI><A HREF="#dormhr">dormhr</A> : Multiplies a general matrix by the orthogonal transformationmatrix from a reduction to Hessenberg form determined by DGEHRD.</LI>
+      <LI><A HREF="#dorml2">dorml2</A> : </LI>
+      <LI><A HREF="#dormlq">dormlq</A> : Multiplies a general matrix by the orthogonal matrixfrom an LQ factorization determined by DGELQF.</LI>
+      <LI><A HREF="#dormql">dormql</A> : Multiplies a general matrix by the orthogonal matrixfrom a QL factorization determined by DGEQLF.</LI>
+      <LI><A HREF="#dormqr">dormqr</A> : Multiplies a general matrix by the orthogonal matrixfrom a QR factorization determined by DGEQRF.</LI>
+      <LI><A HREF="#dormr2">dormr2</A> : </LI>
+      <LI><A HREF="#dormr3">dormr3</A> : Multiples a general matrix by the orthogonal matrixfrom an RZ factorization determined by DTZRZF.</LI>
+      <LI><A HREF="#dormrq">dormrq</A> : Multiplies a general matrix by the orthogonal matrixfrom an RQ factorization determined by DGERQF.</LI>
+      <LI><A HREF="#dormrz">dormrz</A> : Multiples a general matrix by the orthogonal matrixfrom an RZ factorization determined by DTZRZF.</LI>
+      <LI><A HREF="#dormtr">dormtr</A> : Multiplies a general matrix by the orthogonaltransformation matrix from a reduction to tridiagonal formdetermined by DSYTRD.</LI>
     </UL>
 
   <A NAME="dorg2l"></A>
@@ -166,7 +166,7 @@ FORTRAN MANUAL
 
   <A NAME="dorgbr"></A>
   <H2>dorgbr</H2>
-  Generates the orthogonal transformation matrices from
+  Generates the orthogonal transformation matrices froma reduction to bidiagonal form determined by DGEBRD.
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.dorgbr( vect, m, k, a, tau, lwork)
@@ -268,7 +268,7 @@ FORTRAN MANUAL
 
   <A NAME="dorghr"></A>
   <H2>dorghr</H2>
-  Generates the orthogonal transformation matrix from
+  Generates the orthogonal transformation matrix froma reduction to Hessenberg form determined by DGEHRD.
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.dorghr( ilo, ihi, a, tau, lwork)
@@ -406,7 +406,7 @@ FORTRAN MANUAL
 
   <A NAME="dorglq"></A>
   <H2>dorglq</H2>
-  Generates all or part of the orthogonal matrix Q from
+  Generates all or part of the orthogonal matrix Q froman LQ factorization determined by DGELQF.
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.dorglq( m, a, tau, lwork)
@@ -482,7 +482,7 @@ FORTRAN MANUAL
 
   <A NAME="dorgql"></A>
   <H2>dorgql</H2>
-  Generates all or part of the orthogonal matrix Q from
+  Generates all or part of the orthogonal matrix Q froma QL factorization determined by DGEQLF.
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.dorgql( m, a, tau, lwork)
@@ -559,7 +559,7 @@ FORTRAN MANUAL
 
   <A NAME="dorgqr"></A>
   <H2>dorgqr</H2>
-  Generates all or part of the orthogonal matrix Q from
+  Generates all or part of the orthogonal matrix Q froma QR factorization determined by DGEQRF.
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.dorgqr( m, a, tau, lwork)
@@ -702,7 +702,7 @@ FORTRAN MANUAL
 
   <A NAME="dorgrq"></A>
   <H2>dorgrq</H2>
-  Generates all or part of the orthogonal matrix Q from
+  Generates all or part of the orthogonal matrix Q froman RQ factorization determined by DGERQF.
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.dorgrq( m, a, tau, lwork)
@@ -779,7 +779,7 @@ FORTRAN MANUAL
 
   <A NAME="dorgtr"></A>
   <H2>dorgtr</H2>
-  Generates the orthogonal transformation matrix from
+  Generates the orthogonal transformation matrix froma reduction to tridiagonal form determined by DSYTRD.
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.dorgtr( uplo, a, tau, lwork)
@@ -1045,7 +1045,7 @@ FORTRAN MANUAL
 
   <A NAME="dormbr"></A>
   <H2>dormbr</H2>
-  Multiplies a general matrix by one of the orthogonal
+  Multiplies a general matrix by one of the orthogonaltransformation  matrices from a reduction to bidiagonal formdetermined by DGEBRD.
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.dormbr( vect, side, trans, m, k, a, tau, c, lwork)
@@ -1187,7 +1187,7 @@ FORTRAN MANUAL
 
   <A NAME="dormhr"></A>
   <H2>dormhr</H2>
-  Multiplies a general matrix by the orthogonal transformation
+  Multiplies a general matrix by the orthogonal transformationmatrix from a reduction to Hessenberg form determined by DGEHRD.
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.dormhr( side, trans, ilo, ihi, a, tau, c, lwork)
@@ -1405,7 +1405,7 @@ FORTRAN MANUAL
 
   <A NAME="dormlq"></A>
   <H2>dormlq</H2>
-  Multiplies a general matrix by the orthogonal matrix
+  Multiplies a general matrix by the orthogonal matrixfrom an LQ factorization determined by DGELQF.
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.dormlq( side, trans, a, tau, c, lwork)
@@ -1509,7 +1509,7 @@ FORTRAN MANUAL
 
   <A NAME="dormql"></A>
   <H2>dormql</H2>
-  Multiplies a general matrix by the orthogonal matrix
+  Multiplies a general matrix by the orthogonal matrixfrom a QL factorization determined by DGEQLF.
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.dormql( side, trans, m, a, tau, c, lwork)
@@ -1613,7 +1613,7 @@ FORTRAN MANUAL
 
   <A NAME="dormqr"></A>
   <H2>dormqr</H2>
-  Multiplies a general matrix by the orthogonal matrix
+  Multiplies a general matrix by the orthogonal matrixfrom a QR factorization determined by DGEQRF.
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.dormqr( side, trans, m, a, tau, c, lwork)
@@ -1813,7 +1813,7 @@ FORTRAN MANUAL
 
   <A NAME="dormr3"></A>
   <H2>dormr3</H2>
-  Multiples a general matrix by the orthogonal matrix
+  Multiples a general matrix by the orthogonal matrixfrom an RZ factorization determined by DTZRZF.
   <PRE>
 USAGE:
   info, c = NumRu::Lapack.dormr3( side, trans, l, a, tau, c)
@@ -1934,7 +1934,7 @@ FORTRAN MANUAL
 
   <A NAME="dormrq"></A>
   <H2>dormrq</H2>
-  Multiplies a general matrix by the orthogonal matrix
+  Multiplies a general matrix by the orthogonal matrixfrom an RQ factorization determined by DGERQF.
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.dormrq( side, trans, a, tau, c, lwork)
@@ -2038,7 +2038,7 @@ FORTRAN MANUAL
 
   <A NAME="dormrz"></A>
   <H2>dormrz</H2>
-  Multiples a general matrix by the orthogonal matrix
+  Multiples a general matrix by the orthogonal matrixfrom an RZ factorization determined by DTZRZF.
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.dormrz( side, trans, l, a, tau, c, lwork)
@@ -2153,7 +2153,7 @@ FORTRAN MANUAL
 
   <A NAME="dormtr"></A>
   <H2>dormtr</H2>
-  Multiplies a general matrix by the orthogonal
+  Multiplies a general matrix by the orthogonaltransformation matrix from a reduction to tridiagonal formdetermined by DSYTRD.
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.dormtr( side, uplo, trans, a, tau, c, lwork)

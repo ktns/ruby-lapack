@@ -6,30 +6,30 @@
     <A NAME="top"></A>
     <H1>REAL routines for symmetric matrix</H1>
     <UL>
-      <LI><A HREF="#ssycon">ssycon</A>: Estimates the reciprocal of the condition number of a</LI>
-      <LI><A HREF="#ssyev">ssyev</A>: Computes all eigenvalues, and optionally, eigenvectors of a real</LI>
-      <LI><A HREF="#ssyevd">ssyevd</A>: Computes all eigenvalues, and optionally, eigenvectors of a real</LI>
-      <LI><A HREF="#ssyevr">ssyevr</A>: Computes selected eigenvalues, and optionally, eigenvectors of a real</LI>
-      <LI><A HREF="#ssyevx">ssyevx</A>: Computes selected eigenvalues and eigenvectors of a symmetric matrix.</LI>
-      <LI><A HREF="#ssygs2">ssygs2</A>: </LI>
-      <LI><A HREF="#ssygst">ssygst</A>: Reduces a symmetric-definite generalized eigenproblem</LI>
-      <LI><A HREF="#ssygv">ssygv</A>: Computes all eigenvalues and the eigenvectors of  a generalized</LI>
-      <LI><A HREF="#ssygvd">ssygvd</A>: Computes all eigenvalues and the eigenvectors of  a generalized</LI>
-      <LI><A HREF="#ssygvx">ssygvx</A>: Computes selected eigenvalues, and optionally, the eigenvectors of</LI>
-      <LI><A HREF="#ssyrfs">ssyrfs</A>: Improves the computed solution to a real</LI>
-      <LI><A HREF="#ssysv">ssysv</A>: Solves a real symmetric indefinite system of linear equations AX=B.</LI>
-      <LI><A HREF="#ssysvx">ssysvx</A>: Solves a real symmetric</LI>
-      <LI><A HREF="#ssytd2">ssytd2</A>: </LI>
-      <LI><A HREF="#ssytf2">ssytf2</A>: </LI>
-      <LI><A HREF="#ssytrd">ssytrd</A>: Reduces a symmetric matrix to real symmetric tridiagonal</LI>
-      <LI><A HREF="#ssytrf">ssytrf</A>: Computes the factorization of a real symmetric-indefinite matrix,</LI>
-      <LI><A HREF="#ssytri">ssytri</A>: Computes the inverse of a real symmetric indefinite matrix,</LI>
-      <LI><A HREF="#ssytrs">ssytrs</A>: Solves a real symmetric indefinite system of linear equations AX=B,</LI>
+      <LI><A HREF="#ssycon">ssycon</A> : Estimates the reciprocal of the condition number of areal symmetric indefinite matrix,using the factorization computed by SSYTRF.</LI>
+      <LI><A HREF="#ssyev">ssyev</A> : Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric matrix.</LI>
+      <LI><A HREF="#ssyevd">ssyevd</A> : Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric matrix.  If eigenvectors are desired, it uses a divideand conquer algorithm.</LI>
+      <LI><A HREF="#ssyevr">ssyevr</A> : Computes selected eigenvalues, and optionally, eigenvectors of a realsymmetric matrix.  Eigenvalues are computed by the dqdsalgorithm, and eigenvectors are computed from various "good" LDL^Trepresentations (also known as Relatively Robust Representations).</LI>
+      <LI><A HREF="#ssyevx">ssyevx</A> : Computes selected eigenvalues and eigenvectors of a symmetric matrix.</LI>
+      <LI><A HREF="#ssygs2">ssygs2</A> : </LI>
+      <LI><A HREF="#ssygst">ssygst</A> : Reduces a symmetric-definite generalized eigenproblemAx= lambda Bx,  ABx= lambda x,  or BAx= lambda x, to standardform, where B has been factorized by SPOTRF.</LI>
+      <LI><A HREF="#ssygv">ssygv</A> : Computes all eigenvalues and the eigenvectors of  a generalizedsymmetric-definite generalized eigenproblem,Ax= lambda Bx,  ABx= lambda x,  or BAx= lambda x.</LI>
+      <LI><A HREF="#ssygvd">ssygvd</A> : Computes all eigenvalues and the eigenvectors of  a generalizedsymmetric-definite generalized eigenproblem,Ax= lambda Bx,  ABx= lambda x,  or BAx= lambda x.If eigenvectors are desired, it uses a divide and conquer algorithm.</LI>
+      <LI><A HREF="#ssygvx">ssygvx</A> : Computes selected eigenvalues, and optionally, the eigenvectors ofa generalized symmetric-definite generalized eigenproblem,Ax= lambda Bx,  ABx= lambda x,  or BAx= lambda x.</LI>
+      <LI><A HREF="#ssyrfs">ssyrfs</A> : Improves the computed solution to a realsymmetric indefinite system of linear equationsAX=B, and provides forward and backward error bounds for thesolution.</LI>
+      <LI><A HREF="#ssysv">ssysv</A> : Solves a real symmetric indefinite system of linear equations AX=B.</LI>
+      <LI><A HREF="#ssysvx">ssysvx</A> : Solves a real symmetricindefinite system  of linear equations AX=B, and provides anestimate of the condition number and error bounds on the solution.</LI>
+      <LI><A HREF="#ssytd2">ssytd2</A> : </LI>
+      <LI><A HREF="#ssytf2">ssytf2</A> : </LI>
+      <LI><A HREF="#ssytrd">ssytrd</A> : Reduces a symmetric matrix to real symmetric tridiagonalform by an orthogonal similarity transformation.</LI>
+      <LI><A HREF="#ssytrf">ssytrf</A> : Computes the factorization of a real symmetric-indefinite matrix,using the diagonal pivoting method.</LI>
+      <LI><A HREF="#ssytri">ssytri</A> : Computes the inverse of a real symmetric indefinite matrix,using the factorization computed by SSYTRF.</LI>
+      <LI><A HREF="#ssytrs">ssytrs</A> : Solves a real symmetric indefinite system of linear equations AX=B,using the factorization computed by SSPTRF.</LI>
     </UL>
 
   <A NAME="ssycon"></A>
   <H2>ssycon</H2>
-  Estimates the reciprocal of the condition number of a
+  Estimates the reciprocal of the condition number of areal symmetric indefinite matrix,using the factorization computed by SSYTRF.
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.ssycon( uplo, a, ipiv, anorm)
@@ -100,7 +100,7 @@ FORTRAN MANUAL
 
   <A NAME="ssyev"></A>
   <H2>ssyev</H2>
-  Computes all eigenvalues, and optionally, eigenvectors of a real
+  Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric matrix.
   <PRE>
 USAGE:
   w, work, info, a = NumRu::Lapack.ssyev( jobz, uplo, a, lwork)
@@ -180,7 +180,7 @@ FORTRAN MANUAL
 
   <A NAME="ssyevd"></A>
   <H2>ssyevd</H2>
-  Computes all eigenvalues, and optionally, eigenvectors of a real
+  Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric matrix.  If eigenvectors are desired, it uses a divideand conquer algorithm.
   <PRE>
 USAGE:
   w, work, iwork, info, a = NumRu::Lapack.ssyevd( jobz, uplo, a, lwork, liwork)
@@ -303,7 +303,7 @@ FORTRAN MANUAL
 
   <A NAME="ssyevr"></A>
   <H2>ssyevr</H2>
-  Computes selected eigenvalues, and optionally, eigenvectors of a real
+  Computes selected eigenvalues, and optionally, eigenvectors of a realsymmetric matrix.  Eigenvalues are computed by the dqdsalgorithm, and eigenvectors are computed from various "good" LDL^Trepresentations (also known as Relatively Robust Representations).
   <PRE>
 USAGE:
   m, w, z, isuppz, work, iwork, info, a = NumRu::Lapack.ssyevr( jobz, range, uplo, a, vl, vu, il, iu, abstol, lwork, liwork)
@@ -766,7 +766,7 @@ FORTRAN MANUAL
 
   <A NAME="ssygst"></A>
   <H2>ssygst</H2>
-  Reduces a symmetric-definite generalized eigenproblem
+  Reduces a symmetric-definite generalized eigenproblemAx= lambda Bx,  ABx= lambda x,  or BAx= lambda x, to standardform, where B has been factorized by SPOTRF.
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.ssygst( itype, uplo, a, b)
@@ -844,7 +844,7 @@ FORTRAN MANUAL
 
   <A NAME="ssygv"></A>
   <H2>ssygv</H2>
-  Computes all eigenvalues and the eigenvectors of  a generalized
+  Computes all eigenvalues and the eigenvectors of  a generalizedsymmetric-definite generalized eigenproblem,Ax= lambda Bx,  ABx= lambda x,  or BAx= lambda x.
   <PRE>
 USAGE:
   w, work, info, a, b = NumRu::Lapack.ssygv( itype, jobz, uplo, a, b, lwork)
@@ -956,7 +956,7 @@ FORTRAN MANUAL
 
   <A NAME="ssygvd"></A>
   <H2>ssygvd</H2>
-  Computes all eigenvalues and the eigenvectors of  a generalized
+  Computes all eigenvalues and the eigenvectors of  a generalizedsymmetric-definite generalized eigenproblem,Ax= lambda Bx,  ABx= lambda x,  or BAx= lambda x.If eigenvectors are desired, it uses a divide and conquer algorithm.
   <PRE>
 USAGE:
   w, work, iwork, info, a, b = NumRu::Lapack.ssygvd( itype, jobz, uplo, a, b, lwork, liwork)
@@ -1107,7 +1107,7 @@ FORTRAN MANUAL
 
   <A NAME="ssygvx"></A>
   <H2>ssygvx</H2>
-  Computes selected eigenvalues, and optionally, the eigenvectors of
+  Computes selected eigenvalues, and optionally, the eigenvectors ofa generalized symmetric-definite generalized eigenproblem,Ax= lambda Bx,  ABx= lambda x,  or BAx= lambda x.
   <PRE>
 USAGE:
   m, w, z, work, ifail, info, a, b = NumRu::Lapack.ssygvx( itype, jobz, range, uplo, a, b, ldb, vl, vu, il, iu, abstol, ldz, lwork)
@@ -1293,7 +1293,7 @@ FORTRAN MANUAL
 
   <A NAME="ssyrfs"></A>
   <H2>ssyrfs</H2>
-  Improves the computed solution to a real
+  Improves the computed solution to a realsymmetric indefinite system of linear equationsAX=B, and provides forward and backward error bounds for thesolution.
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.ssyrfs( uplo, a, af, ipiv, b, x)
@@ -1525,7 +1525,7 @@ FORTRAN MANUAL
 
   <A NAME="ssysvx"></A>
   <H2>ssysvx</H2>
-  Solves a real symmetric
+  Solves a real symmetricindefinite system  of linear equations AX=B, and provides anestimate of the condition number and error bounds on the solution.
   <PRE>
 USAGE:
   x, rcond, ferr, berr, work, info, af, ipiv = NumRu::Lapack.ssysvx( fact, uplo, a, af, ipiv, b, lwork)
@@ -1967,7 +1967,7 @@ FORTRAN MANUAL
 
   <A NAME="ssytrd"></A>
   <H2>ssytrd</H2>
-  Reduces a symmetric matrix to real symmetric tridiagonal
+  Reduces a symmetric matrix to real symmetric tridiagonalform by an orthogonal similarity transformation.
   <PRE>
 USAGE:
   d, e, tau, work, info, a = NumRu::Lapack.ssytrd( uplo, a, lwork)
@@ -2100,7 +2100,7 @@ FORTRAN MANUAL
 
   <A NAME="ssytrf"></A>
   <H2>ssytrf</H2>
-  Computes the factorization of a real symmetric-indefinite matrix,
+  Computes the factorization of a real symmetric-indefinite matrix,using the diagonal pivoting method.
   <PRE>
 USAGE:
   ipiv, work, info, a = NumRu::Lapack.ssytrf( uplo, a, lwork)
@@ -2244,7 +2244,7 @@ FORTRAN MANUAL
 
   <A NAME="ssytri"></A>
   <H2>ssytri</H2>
-  Computes the inverse of a real symmetric indefinite matrix,
+  Computes the inverse of a real symmetric indefinite matrix,using the factorization computed by SSYTRF.
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.ssytri( uplo, a, ipiv)
@@ -2311,7 +2311,7 @@ FORTRAN MANUAL
 
   <A NAME="ssytrs"></A>
   <H2>ssytrs</H2>
-  Solves a real symmetric indefinite system of linear equations AX=B,
+  Solves a real symmetric indefinite system of linear equations AX=B,using the factorization computed by SSPTRF.
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.ssytrs( uplo, a, ipiv, b)

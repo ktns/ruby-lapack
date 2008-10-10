@@ -6,20 +6,20 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for symmetric or Hermitian positive definite matrix</H1>
     <UL>
-      <LI><A HREF="#cpocon">cpocon</A>: Estimates the reciprocal of the condition number of a</LI>
-      <LI><A HREF="#cpoequ">cpoequ</A>: Computes row and column scalings to equilibrate a Hermitian</LI>
-      <LI><A HREF="#cporfs">cporfs</A>: Improves the computed solution to a Hermitian positive</LI>
-      <LI><A HREF="#cposv">cposv</A>: Solves a Hermitian positive definite system of linear</LI>
-      <LI><A HREF="#cposvx">cposvx</A>: Solves a Hermitian positive definite system of linear</LI>
-      <LI><A HREF="#cpotf2">cpotf2</A>: </LI>
-      <LI><A HREF="#cpotrf">cpotrf</A>: Computes the Cholesky factorization of a Hermitian</LI>
-      <LI><A HREF="#cpotri">cpotri</A>: Computes the inverse of a Hermitian positive definite</LI>
-      <LI><A HREF="#cpotrs">cpotrs</A>: Solves a Hermitian positive definite system of linear</LI>
+      <LI><A HREF="#cpocon">cpocon</A> : Estimates the reciprocal of the condition number of aHermitian positive definite matrix, using theCholesky factorization computed by CPOTRF.</LI>
+      <LI><A HREF="#cpoequ">cpoequ</A> : Computes row and column scalings to equilibrate a Hermitianpositive definite matrix and reduce its condition number.</LI>
+      <LI><A HREF="#cporfs">cporfs</A> : Improves the computed solution to a Hermitian positivedefinite system of linear equations AX=B, and provides forwardand backward error bounds for the solution.</LI>
+      <LI><A HREF="#cposv">cposv</A> : Solves a Hermitian positive definite system of linearequations AX=B.</LI>
+      <LI><A HREF="#cposvx">cposvx</A> : Solves a Hermitian positive definite system of linearequations AX=B, and provides an estimate of the condition numberand error bounds on the solution.</LI>
+      <LI><A HREF="#cpotf2">cpotf2</A> : </LI>
+      <LI><A HREF="#cpotrf">cpotrf</A> : Computes the Cholesky factorization of a Hermitianpositive definite matrix.</LI>
+      <LI><A HREF="#cpotri">cpotri</A> : Computes the inverse of a Hermitian positive definitematrix, using the Cholesky factorization computed by CPOTRF.</LI>
+      <LI><A HREF="#cpotrs">cpotrs</A> : Solves a Hermitian positive definite system of linearequations AX=B, using the Cholesky factorization computed byCPOTRF.</LI>
     </UL>
 
   <A NAME="cpocon"></A>
   <H2>cpocon</H2>
-  Estimates the reciprocal of the condition number of a
+  Estimates the reciprocal of the condition number of aHermitian positive definite matrix, using theCholesky factorization computed by CPOTRF.
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.cpocon( uplo, a, anorm)
@@ -84,7 +84,7 @@ FORTRAN MANUAL
 
   <A NAME="cpoequ"></A>
   <H2>cpoequ</H2>
-  Computes row and column scalings to equilibrate a Hermitian
+  Computes row and column scalings to equilibrate a Hermitianpositive definite matrix and reduce its condition number.
   <PRE>
 USAGE:
   s, scond, amax, info = NumRu::Lapack.cpoequ( a)
@@ -150,7 +150,7 @@ FORTRAN MANUAL
 
   <A NAME="cporfs"></A>
   <H2>cporfs</H2>
-  Improves the computed solution to a Hermitian positive
+  Improves the computed solution to a Hermitian positivedefinite system of linear equations AX=B, and provides forwardand backward error bounds for the solution.
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.cporfs( uplo, a, af, b, x)
@@ -254,7 +254,7 @@ FORTRAN MANUAL
 
   <A NAME="cposv"></A>
   <H2>cposv</H2>
-  Solves a Hermitian positive definite system of linear
+  Solves a Hermitian positive definite system of linearequations AX=B.
   <PRE>
 USAGE:
   info, a, b = NumRu::Lapack.cposv( uplo, a, b)
@@ -345,7 +345,7 @@ FORTRAN MANUAL
 
   <A NAME="cposvx"></A>
   <H2>cposvx</H2>
-  Solves a Hermitian positive definite system of linear
+  Solves a Hermitian positive definite system of linearequations AX=B, and provides an estimate of the condition numberand error bounds on the solution.
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, a, af, equed, s, b = NumRu::Lapack.cposvx( fact, uplo, a, af, equed, s, b)
@@ -625,7 +625,7 @@ FORTRAN MANUAL
 
   <A NAME="cpotrf"></A>
   <H2>cpotrf</H2>
-  Computes the Cholesky factorization of a Hermitian
+  Computes the Cholesky factorization of a Hermitianpositive definite matrix.
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.cpotrf( uplo, a)
@@ -692,7 +692,7 @@ FORTRAN MANUAL
 
   <A NAME="cpotri"></A>
   <H2>cpotri</H2>
-  Computes the inverse of a Hermitian positive definite
+  Computes the inverse of a Hermitian positive definitematrix, using the Cholesky factorization computed by CPOTRF.
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.cpotri( uplo, a)
@@ -757,7 +757,7 @@ FORTRAN MANUAL
 
   <A NAME="cpotrs"></A>
   <H2>cpotrs</H2>
-  Solves a Hermitian positive definite system of linear
+  Solves a Hermitian positive definite system of linearequations AX=B, using the Cholesky factorization computed byCPOTRF.
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.cpotrs( uplo, a, b)

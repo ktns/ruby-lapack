@@ -6,13 +6,13 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for (complex) unitary, packed storageBDbidiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#cupgtr">cupgtr</A>: Generates the unitary transformation matrix from</LI>
-      <LI><A HREF="#cupmtr">cupmtr</A>: Multiplies a general matrix by the unitary</LI>
+      <LI><A HREF="#cupgtr">cupgtr</A> : Generates the unitary transformation matrix froma reduction to tridiagonal form determined by CHPTRD.</LI>
+      <LI><A HREF="#cupmtr">cupmtr</A> : Multiplies a general matrix by the unitarytransformation matrix from a reduction to tridiagonal formdetermined by CHPTRD.</LI>
     </UL>
 
   <A NAME="cupgtr"></A>
   <H2>cupgtr</H2>
-  Generates the unitary transformation matrix from
+  Generates the unitary transformation matrix froma reduction to tridiagonal form determined by CHPTRD.
   <PRE>
 USAGE:
   q, info = NumRu::Lapack.cupgtr( uplo, ap, tau)
@@ -77,7 +77,7 @@ FORTRAN MANUAL
 
   <A NAME="cupmtr"></A>
   <H2>cupmtr</H2>
-  Multiplies a general matrix by the unitary
+  Multiplies a general matrix by the unitarytransformation matrix from a reduction to tridiagonal formdetermined by CHPTRD.
   <PRE>
 USAGE:
   info, c = NumRu::Lapack.cupmtr( side, uplo, trans, m, ap, tau, c)

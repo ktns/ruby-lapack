@@ -6,30 +6,30 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for (complex) unitary matrix</H1>
     <UL>
-      <LI><A HREF="#zung2l">zung2l</A>: </LI>
-      <LI><A HREF="#zung2r">zung2r</A>: </LI>
-      <LI><A HREF="#zungbr">zungbr</A>: Generates the unitary transformation matrices from</LI>
-      <LI><A HREF="#zunghr">zunghr</A>: Generates the unitary transformation matrix from</LI>
-      <LI><A HREF="#zungl2">zungl2</A>: </LI>
-      <LI><A HREF="#zunglq">zunglq</A>: Generates all or part of the unitary matrix Q from</LI>
-      <LI><A HREF="#zungql">zungql</A>: Generates all or part of the unitary matrix Q from</LI>
-      <LI><A HREF="#zungqr">zungqr</A>: Generates all or part of the unitary matrix Q from</LI>
-      <LI><A HREF="#zungr2">zungr2</A>: </LI>
-      <LI><A HREF="#zungrq">zungrq</A>: Generates all or part of the unitary matrix Q from</LI>
-      <LI><A HREF="#zungtr">zungtr</A>: Generates the unitary transformation matrix from</LI>
-      <LI><A HREF="#zunm2l">zunm2l</A>: </LI>
-      <LI><A HREF="#zunm2r">zunm2r</A>: </LI>
-      <LI><A HREF="#zunmbr">zunmbr</A>: Multiplies a general matrix by one of the unitary</LI>
-      <LI><A HREF="#zunmhr">zunmhr</A>: Multiplies a general matrix by the unitary transformation</LI>
-      <LI><A HREF="#zunml2">zunml2</A>: </LI>
-      <LI><A HREF="#zunmlq">zunmlq</A>: Multiplies a general matrix by the unitary matrix</LI>
-      <LI><A HREF="#zunmql">zunmql</A>: Multiplies a general matrix by the unitary matrix</LI>
-      <LI><A HREF="#zunmqr">zunmqr</A>: Multiplies a general matrix by the unitary matrix</LI>
-      <LI><A HREF="#zunmr2">zunmr2</A>: </LI>
-      <LI><A HREF="#zunmr3">zunmr3</A>: Multiples a general matrix by the unitary matrix</LI>
-      <LI><A HREF="#zunmrq">zunmrq</A>: Multiplies a general matrix by the unitary matrix</LI>
-      <LI><A HREF="#zunmrz">zunmrz</A>: Multiples a general matrix by the unitary matrix</LI>
-      <LI><A HREF="#zunmtr">zunmtr</A>: Multiplies a general matrix by the unitary</LI>
+      <LI><A HREF="#zung2l">zung2l</A> : </LI>
+      <LI><A HREF="#zung2r">zung2r</A> : </LI>
+      <LI><A HREF="#zungbr">zungbr</A> : Generates the unitary transformation matrices froma reduction to bidiagonal form determined by ZGEBRD.</LI>
+      <LI><A HREF="#zunghr">zunghr</A> : Generates the unitary transformation matrix froma reduction to Hessenberg form determined by ZGEHRD.</LI>
+      <LI><A HREF="#zungl2">zungl2</A> : </LI>
+      <LI><A HREF="#zunglq">zunglq</A> : Generates all or part of the unitary matrix Q froman LQ factorization determined by ZGELQF.</LI>
+      <LI><A HREF="#zungql">zungql</A> : Generates all or part of the unitary matrix Q froma QL factorization determined by ZGEQLF.</LI>
+      <LI><A HREF="#zungqr">zungqr</A> : Generates all or part of the unitary matrix Q froma QR factorization determined by ZGEQRF.</LI>
+      <LI><A HREF="#zungr2">zungr2</A> : </LI>
+      <LI><A HREF="#zungrq">zungrq</A> : Generates all or part of the unitary matrix Q froman RQ factorization determined by ZGERQF.</LI>
+      <LI><A HREF="#zungtr">zungtr</A> : Generates the unitary transformation matrix froma reduction to tridiagonal form determined by ZHETRD.</LI>
+      <LI><A HREF="#zunm2l">zunm2l</A> : </LI>
+      <LI><A HREF="#zunm2r">zunm2r</A> : </LI>
+      <LI><A HREF="#zunmbr">zunmbr</A> : Multiplies a general matrix by one of the unitarytransformation matrices from a reduction to bidiagonal formdetermined by ZGEBRD.</LI>
+      <LI><A HREF="#zunmhr">zunmhr</A> : Multiplies a general matrix by the unitary transformationmatrix from a reduction to Hessenberg form determined by ZGEHRD.</LI>
+      <LI><A HREF="#zunml2">zunml2</A> : </LI>
+      <LI><A HREF="#zunmlq">zunmlq</A> : Multiplies a general matrix by the unitary matrixfrom an LQ factorization determined by ZGELQF.</LI>
+      <LI><A HREF="#zunmql">zunmql</A> : Multiplies a general matrix by the unitary matrixfrom a QL factorization determined by ZGEQLF.</LI>
+      <LI><A HREF="#zunmqr">zunmqr</A> : Multiplies a general matrix by the unitary matrixfrom a QR factorization determined by ZGEQRF.</LI>
+      <LI><A HREF="#zunmr2">zunmr2</A> : </LI>
+      <LI><A HREF="#zunmr3">zunmr3</A> : Multiples a general matrix by the unitary matrixfrom an RZ factorization determined by ZTZRZF.</LI>
+      <LI><A HREF="#zunmrq">zunmrq</A> : Multiplies a general matrix by the unitary matrixfrom an RQ factorization determined by ZGERQF.</LI>
+      <LI><A HREF="#zunmrz">zunmrz</A> : Multiples a general matrix by the unitary matrixfrom an RZ factorization determined by ZTZRZF.</LI>
+      <LI><A HREF="#zunmtr">zunmtr</A> : Multiplies a general matrix by the unitarytransformation matrix from a reduction to tridiagonal formdetermined by ZHETRD.</LI>
     </UL>
 
   <A NAME="zung2l"></A>
@@ -166,7 +166,7 @@ FORTRAN MANUAL
 
   <A NAME="zungbr"></A>
   <H2>zungbr</H2>
-  Generates the unitary transformation matrices from
+  Generates the unitary transformation matrices froma reduction to bidiagonal form determined by ZGEBRD.
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.zungbr( vect, m, k, a, tau, lwork)
@@ -268,7 +268,7 @@ FORTRAN MANUAL
 
   <A NAME="zunghr"></A>
   <H2>zunghr</H2>
-  Generates the unitary transformation matrix from
+  Generates the unitary transformation matrix froma reduction to Hessenberg form determined by ZGEHRD.
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.zunghr( ilo, ihi, a, tau, lwork)
@@ -406,7 +406,7 @@ FORTRAN MANUAL
 
   <A NAME="zunglq"></A>
   <H2>zunglq</H2>
-  Generates all or part of the unitary matrix Q from
+  Generates all or part of the unitary matrix Q froman LQ factorization determined by ZGELQF.
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.zunglq( m, a, tau, lwork)
@@ -482,7 +482,7 @@ FORTRAN MANUAL
 
   <A NAME="zungql"></A>
   <H2>zungql</H2>
-  Generates all or part of the unitary matrix Q from
+  Generates all or part of the unitary matrix Q froma QL factorization determined by ZGEQLF.
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.zungql( m, a, tau, lwork)
@@ -559,7 +559,7 @@ FORTRAN MANUAL
 
   <A NAME="zungqr"></A>
   <H2>zungqr</H2>
-  Generates all or part of the unitary matrix Q from
+  Generates all or part of the unitary matrix Q froma QR factorization determined by ZGEQRF.
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.zungqr( m, a, tau, lwork)
@@ -702,7 +702,7 @@ FORTRAN MANUAL
 
   <A NAME="zungrq"></A>
   <H2>zungrq</H2>
-  Generates all or part of the unitary matrix Q from
+  Generates all or part of the unitary matrix Q froman RQ factorization determined by ZGERQF.
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.zungrq( m, a, tau, lwork)
@@ -779,7 +779,7 @@ FORTRAN MANUAL
 
   <A NAME="zungtr"></A>
   <H2>zungtr</H2>
-  Generates the unitary transformation matrix from
+  Generates the unitary transformation matrix froma reduction to tridiagonal form determined by ZHETRD.
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.zungtr( uplo, a, tau, lwork)
@@ -1045,7 +1045,7 @@ FORTRAN MANUAL
 
   <A NAME="zunmbr"></A>
   <H2>zunmbr</H2>
-  Multiplies a general matrix by one of the unitary
+  Multiplies a general matrix by one of the unitarytransformation matrices from a reduction to bidiagonal formdetermined by ZGEBRD.
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.zunmbr( vect, side, trans, m, k, a, tau, c, lwork)
@@ -1188,7 +1188,7 @@ FORTRAN MANUAL
 
   <A NAME="zunmhr"></A>
   <H2>zunmhr</H2>
-  Multiplies a general matrix by the unitary transformation
+  Multiplies a general matrix by the unitary transformationmatrix from a reduction to Hessenberg form determined by ZGEHRD.
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.zunmhr( side, trans, ilo, ihi, a, tau, c, lwork)
@@ -1406,7 +1406,7 @@ FORTRAN MANUAL
 
   <A NAME="zunmlq"></A>
   <H2>zunmlq</H2>
-  Multiplies a general matrix by the unitary matrix
+  Multiplies a general matrix by the unitary matrixfrom an LQ factorization determined by ZGELQF.
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.zunmlq( side, trans, a, tau, c, lwork)
@@ -1510,7 +1510,7 @@ FORTRAN MANUAL
 
   <A NAME="zunmql"></A>
   <H2>zunmql</H2>
-  Multiplies a general matrix by the unitary matrix
+  Multiplies a general matrix by the unitary matrixfrom a QL factorization determined by ZGEQLF.
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.zunmql( side, trans, m, a, tau, c, lwork)
@@ -1614,7 +1614,7 @@ FORTRAN MANUAL
 
   <A NAME="zunmqr"></A>
   <H2>zunmqr</H2>
-  Multiplies a general matrix by the unitary matrix
+  Multiplies a general matrix by the unitary matrixfrom a QR factorization determined by ZGEQRF.
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.zunmqr( side, trans, m, a, tau, c, lwork)
@@ -1814,7 +1814,7 @@ FORTRAN MANUAL
 
   <A NAME="zunmr3"></A>
   <H2>zunmr3</H2>
-  Multiples a general matrix by the unitary matrix
+  Multiples a general matrix by the unitary matrixfrom an RZ factorization determined by ZTZRZF.
   <PRE>
 USAGE:
   info, c = NumRu::Lapack.zunmr3( side, trans, l, a, tau, c)
@@ -1936,7 +1936,7 @@ FORTRAN MANUAL
 
   <A NAME="zunmrq"></A>
   <H2>zunmrq</H2>
-  Multiplies a general matrix by the unitary matrix
+  Multiplies a general matrix by the unitary matrixfrom an RQ factorization determined by ZGERQF.
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.zunmrq( side, trans, a, tau, c, lwork)
@@ -2040,7 +2040,7 @@ FORTRAN MANUAL
 
   <A NAME="zunmrz"></A>
   <H2>zunmrz</H2>
-  Multiples a general matrix by the unitary matrix
+  Multiples a general matrix by the unitary matrixfrom an RZ factorization determined by ZTZRZF.
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.zunmrz( side, trans, l, a, tau, c, lwork)
@@ -2155,7 +2155,7 @@ FORTRAN MANUAL
 
   <A NAME="zunmtr"></A>
   <H2>zunmtr</H2>
-  Multiplies a general matrix by the unitary
+  Multiplies a general matrix by the unitarytransformation matrix from a reduction to tridiagonal formdetermined by ZHETRD.
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.zunmtr( side, uplo, trans, a, tau, c, lwork)

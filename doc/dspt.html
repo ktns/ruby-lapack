@@ -6,15 +6,15 @@
     <A NAME="top"></A>
     <H1>Data type in double but solving problem using single precision routines for symmetric or Hermitian positive definite tridiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#dsptrd">dsptrd</A>: Reduces a symmetric matrix in packed storage to real</LI>
-      <LI><A HREF="#dsptrf">dsptrf</A>: Computes the factorization of a real</LI>
-      <LI><A HREF="#dsptri">dsptri</A>: Computes the inverse of a real symmetric</LI>
-      <LI><A HREF="#dsptrs">dsptrs</A>: Solves a real symmetric</LI>
+      <LI><A HREF="#dsptrd">dsptrd</A> : Reduces a symmetric matrix in packed storage to realsymmetric tridiagonal form by an orthogonal similaritytransformation.</LI>
+      <LI><A HREF="#dsptrf">dsptrf</A> : Computes the factorization of a realsymmetric-indefinite matrix in packed storage,using the diagonal pivoting method.</LI>
+      <LI><A HREF="#dsptri">dsptri</A> : Computes the inverse of a real symmetricindefinite matrix in packed storage, using the factorizationcomputed by DSPTRF.</LI>
+      <LI><A HREF="#dsptrs">dsptrs</A> : Solves a real symmetricindefinite system of linear equations AX=B, where A is heldin packed storage, using the factorization computedby DSPTRF.</LI>
     </UL>
 
   <A NAME="dsptrd"></A>
   <H2>dsptrd</H2>
-  Reduces a symmetric matrix in packed storage to real
+  Reduces a symmetric matrix in packed storage to realsymmetric tridiagonal form by an orthogonal similaritytransformation.
   <PRE>
 USAGE:
   d, e, tau, info, ap = NumRu::Lapack.dsptrd( uplo, ap)
@@ -115,7 +115,7 @@ FORTRAN MANUAL
 
   <A NAME="dsptrf"></A>
   <H2>dsptrf</H2>
-  Computes the factorization of a real
+  Computes the factorization of a realsymmetric-indefinite matrix in packed storage,using the diagonal pivoting method.
   <PRE>
 USAGE:
   ipiv, info, ap = NumRu::Lapack.dsptrf( uplo, ap)
@@ -228,7 +228,7 @@ FORTRAN MANUAL
 
   <A NAME="dsptri"></A>
   <H2>dsptri</H2>
-  Computes the inverse of a real symmetric
+  Computes the inverse of a real symmetricindefinite matrix in packed storage, using the factorizationcomputed by DSPTRF.
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.dsptri( uplo, ap, ipiv)
@@ -293,7 +293,7 @@ FORTRAN MANUAL
 
   <A NAME="dsptrs"></A>
   <H2>dsptrs</H2>
-  Solves a real symmetric
+  Solves a real symmetricindefinite system of linear equations AX=B, where A is heldin packed storage, using the factorization computedby DSPTRF.
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.dsptrs( uplo, ap, ipiv, b)

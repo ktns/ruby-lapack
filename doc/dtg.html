@@ -6,19 +6,19 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for triangular matrices, generalized problem (i.e., a pair of triangular matrices) matrix</H1>
     <UL>
-      <LI><A HREF="#dtgevc">dtgevc</A>: Computes some or all of the right and/or left generalized eigenvectors</LI>
-      <LI><A HREF="#dtgex2">dtgex2</A>: </LI>
-      <LI><A HREF="#dtgexc">dtgexc</A>: Reorders the generalized real Schur decomposition of a real</LI>
-      <LI><A HREF="#dtgsen">dtgsen</A>: Reorders the generalized real Schur decomposition of a real</LI>
-      <LI><A HREF="#dtgsja">dtgsja</A>: Computes the generalized singular value decomposition of two real</LI>
-      <LI><A HREF="#dtgsna">dtgsna</A>: Estimates reciprocal condition numbers for specified</LI>
-      <LI><A HREF="#dtgsy2">dtgsy2</A>: </LI>
-      <LI><A HREF="#dtgsyl">dtgsyl</A>: Solves the generalized Sylvester equation.</LI>
+      <LI><A HREF="#dtgevc">dtgevc</A> : Computes some or all of the right and/or left generalized eigenvectorsof a pair of upper triangular matrices.</LI>
+      <LI><A HREF="#dtgex2">dtgex2</A> : </LI>
+      <LI><A HREF="#dtgexc">dtgexc</A> : Reorders the generalized real Schur decomposition of a realmatrix pair (A,B) using an orthogonal equivalence transformationso that the diagonal block of (A,B) with row index IFST is movedto row ILST.</LI>
+      <LI><A HREF="#dtgsen">dtgsen</A> : Reorders the generalized real Schur decomposition of a realmatrix pair (A, B) so that a selected cluster of eigenvaluesappears in the leading diagonal blocks of the upper quasi-triangularmatrix A and the upper triangular B.</LI>
+      <LI><A HREF="#dtgsja">dtgsja</A> : Computes the generalized singular value decomposition of two realupper triangular (or trapezoidal) matrices as output by DGGSVP.</LI>
+      <LI><A HREF="#dtgsna">dtgsna</A> : Estimates reciprocal condition numbers for specifiedeigenvalues and/or eigenvectors of a matrix pair (A, B) ingeneralized real Schur canonical form, as returned by DGGES.</LI>
+      <LI><A HREF="#dtgsy2">dtgsy2</A> : </LI>
+      <LI><A HREF="#dtgsyl">dtgsyl</A> : Solves the generalized Sylvester equation.</LI>
     </UL>
 
   <A NAME="dtgevc"></A>
   <H2>dtgevc</H2>
-  Computes some or all of the right and/or left generalized eigenvectors
+  Computes some or all of the right and/or left generalized eigenvectorsof a pair of upper triangular matrices.
   <PRE>
 USAGE:
   m, info, vl, vr = NumRu::Lapack.dtgevc( side, howmny, select, s, p, vl, vr)
@@ -367,7 +367,7 @@ FORTRAN MANUAL
 
   <A NAME="dtgexc"></A>
   <H2>dtgexc</H2>
-  Reorders the generalized real Schur decomposition of a real
+  Reorders the generalized real Schur decomposition of a realmatrix pair (A,B) using an orthogonal equivalence transformationso that the diagonal block of (A,B) with row index IFST is movedto row ILST.
   <PRE>
 USAGE:
   work, info, a, b, q, z, ifst, ilst = NumRu::Lapack.dtgexc( wantq, wantz, a, b, q, ldq, z, ifst, ilst, lwork)
@@ -505,7 +505,7 @@ FORTRAN MANUAL
 
   <A NAME="dtgsen"></A>
   <H2>dtgsen</H2>
-  Reorders the generalized real Schur decomposition of a real
+  Reorders the generalized real Schur decomposition of a realmatrix pair (A, B) so that a selected cluster of eigenvaluesappears in the leading diagonal blocks of the upper quasi-triangularmatrix A and the upper triangular B.
   <PRE>
 USAGE:
   alphar, alphai, beta, m, pl, pr, dif, work, iwork, info, a, b, q, z = NumRu::Lapack.dtgsen( ijob, wantq, wantz, select, a, b, q, z, lwork, liwork)
@@ -835,7 +835,7 @@ FORTRAN MANUAL
 
   <A NAME="dtgsja"></A>
   <H2>dtgsja</H2>
-  Computes the generalized singular value decomposition of two real
+  Computes the generalized singular value decomposition of two realupper triangular (or trapezoidal) matrices as output by DGGSVP.
   <PRE>
 USAGE:
   alpha, beta, ncycle, info, a, b, u, v, q = NumRu::Lapack.dtgsja( jobu, jobv, jobq, k, l, a, b, tola, tolb, u, v, q)
@@ -1094,7 +1094,7 @@ FORTRAN MANUAL
 
   <A NAME="dtgsna"></A>
   <H2>dtgsna</H2>
-  Estimates reciprocal condition numbers for specified
+  Estimates reciprocal condition numbers for specifiedeigenvalues and/or eigenvectors of a matrix pair (A, B) ingeneralized real Schur canonical form, as returned by DGGES.
   <PRE>
 USAGE:
   s, dif, m, work, info = NumRu::Lapack.dtgsna( job, howmny, select, a, b, vl, vr, lwork)

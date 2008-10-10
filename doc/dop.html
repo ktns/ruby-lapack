@@ -6,13 +6,13 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for (real) orthogonal, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#dopgtr">dopgtr</A>: Generates the orthogonal transformation matrix from</LI>
-      <LI><A HREF="#dopmtr">dopmtr</A>: Multiplies a general matrix by the orthogonal</LI>
+      <LI><A HREF="#dopgtr">dopgtr</A> : Generates the orthogonal transformation matrix froma reduction to tridiagonal form determined by DSPTRD.</LI>
+      <LI><A HREF="#dopmtr">dopmtr</A> : Multiplies a general matrix by the orthogonaltransformation matrix from a reduction to tridiagonal formdetermined by DSPTRD.</LI>
     </UL>
 
   <A NAME="dopgtr"></A>
   <H2>dopgtr</H2>
-  Generates the orthogonal transformation matrix from
+  Generates the orthogonal transformation matrix froma reduction to tridiagonal form determined by DSPTRD.
   <PRE>
 USAGE:
   q, info = NumRu::Lapack.dopgtr( uplo, ap, tau)
@@ -77,7 +77,7 @@ FORTRAN MANUAL
 
   <A NAME="dopmtr"></A>
   <H2>dopmtr</H2>
-  Multiplies a general matrix by the orthogonal
+  Multiplies a general matrix by the orthogonaltransformation matrix from a reduction to tridiagonal formdetermined by DSPTRD.
   <PRE>
 USAGE:
   info, c = NumRu::Lapack.dopmtr( side, uplo, trans, m, ap, tau, c)

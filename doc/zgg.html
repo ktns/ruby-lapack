@@ -6,24 +6,24 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for general matrices, generalized problem (i.e., a pair of general matrices) matrix</H1>
     <UL>
-      <LI><A HREF="#zggbak">zggbak</A>: Forms the right or left eigenvectors of the generalized eigenvalue</LI>
-      <LI><A HREF="#zggbal">zggbal</A>: </LI>
-      <LI><A HREF="#zgges">zgges</A>: Computes the generalized eigenvalues, Schur form, and left and/or</LI>
-      <LI><A HREF="#zggesx">zggesx</A>: Computes the generalized eigenvalues, the real Schur form, and,</LI>
-      <LI><A HREF="#zggev">zggev</A>: Computes the generalized eigenvalues, and left and/or right</LI>
-      <LI><A HREF="#zggevx">zggevx</A>: Computes the generalized eigenvalues, and optionally, the left</LI>
-      <LI><A HREF="#zggglm">zggglm</A>: Solves the GLM (Generalized Linear Regression Model) using</LI>
-      <LI><A HREF="#zgghrd">zgghrd</A>: Reduces a pair of complex matrices to generalized upper</LI>
-      <LI><A HREF="#zgglse">zgglse</A>: Solves the LSE (Constrained Linear Least Squares Problem) using</LI>
-      <LI><A HREF="#zggqrf">zggqrf</A>: Computes a generalized QR factorization of a pair of matrices.</LI>
-      <LI><A HREF="#zggrqf">zggrqf</A>: Computes a generalized RQ factorization of a pair of matrices.</LI>
-      <LI><A HREF="#zggsvd">zggsvd</A>: Computes the Generalized Singular Value Decomposition</LI>
-      <LI><A HREF="#zggsvp">zggsvp</A>: Computes unitary matrices as a preprocessing step</LI>
+      <LI><A HREF="#zggbak">zggbak</A> : Forms the right or left eigenvectors of the generalized eigenvalueproblem by backward transformation on the computed eigenvectors ofthe balanced pair of matrices output by ZGGBAL.</LI>
+      <LI><A HREF="#zggbal">zggbal</A> : eigenvalue problem A x = lambda B x.</LI>
+      <LI><A HREF="#zgges">zgges</A> : Computes the generalized eigenvalues, Schur form, and left and/orright Schur vectors for a pair of nonsymmetric matrices</LI>
+      <LI><A HREF="#zggesx">zggesx</A> : Computes the generalized eigenvalues, the real Schur form, and,optionally, the left and/or right matrices of Schur vectors.</LI>
+      <LI><A HREF="#zggev">zggev</A> : Computes the generalized eigenvalues, and left and/or rightgeneralized eigenvectors for a pair of nonsymmetric matrices</LI>
+      <LI><A HREF="#zggevx">zggevx</A> : Computes the generalized eigenvalues, and optionally, the leftand/or right generalized eigenvectors.</LI>
+      <LI><A HREF="#zggglm">zggglm</A> : Solves the GLM (Generalized Linear Regression Model) usingthe GQR (Generalized QR) factorization</LI>
+      <LI><A HREF="#zgghrd">zgghrd</A> : Reduces a pair of complex matrices to generalized upperHessenberg form using unitary similarity transformations.</LI>
+      <LI><A HREF="#zgglse">zgglse</A> : Solves the LSE (Constrained Linear Least Squares Problem) usingthe GRQ (Generalized RQ) factorization</LI>
+      <LI><A HREF="#zggqrf">zggqrf</A> : Computes a generalized QR factorization of a pair of matrices.</LI>
+      <LI><A HREF="#zggrqf">zggrqf</A> : Computes a generalized RQ factorization of a pair of matrices.</LI>
+      <LI><A HREF="#zggsvd">zggsvd</A> : Computes the Generalized Singular Value Decomposition</LI>
+      <LI><A HREF="#zggsvp">zggsvp</A> : Computes unitary matrices as a preprocessing stepfor computing the generalized singular value decomposition</LI>
     </UL>
 
   <A NAME="zggbak"></A>
   <H2>zggbak</H2>
-  Forms the right or left eigenvectors of the generalized eigenvalue
+  Forms the right or left eigenvectors of the generalized eigenvalueproblem by backward transformation on the computed eigenvectors ofthe balanced pair of matrices output by ZGGBAL.
   <PRE>
 USAGE:
   info, v = NumRu::Lapack.zggbak( job, side, ilo, ihi, lscale, rscale, v)
@@ -120,7 +120,7 @@ FORTRAN MANUAL
 
   <A NAME="zggbal"></A>
   <H2>zggbal</H2>
-  
+  eigenvalue problem A x = lambda B x.
   <PRE>
 USAGE:
   ilo, ihi, lscale, rscale, info, a, b = NumRu::Lapack.zggbal( job, a, b)
@@ -229,7 +229,7 @@ FORTRAN MANUAL
 
   <A NAME="zgges"></A>
   <H2>zgges</H2>
-  Computes the generalized eigenvalues, Schur form, and left and/or
+  Computes the generalized eigenvalues, Schur form, and left and/orright Schur vectors for a pair of nonsymmetric matrices
   <PRE>
 USAGE:
   sdim, alpha, beta, vsl, vsr, work, info, a, b = NumRu::Lapack.zgges( jobvsl, jobvsr, sort, a, b, lwork){|a,b| ... }
@@ -398,7 +398,7 @@ FORTRAN MANUAL
 
   <A NAME="zggesx"></A>
   <H2>zggesx</H2>
-  Computes the generalized eigenvalues, the real Schur form, and,
+  Computes the generalized eigenvalues, the real Schur form, and,optionally, the left and/or right matrices of Schur vectors.
   <PRE>
 USAGE:
   sdim, alpha, beta, vsl, vsr, rconde, rcondv, work, iwork, info, a, b = NumRu::Lapack.zggesx( jobvsl, jobvsr, sort, sense, a, b, lwork, liwork){|a,b| ... }
@@ -608,7 +608,7 @@ FORTRAN MANUAL
 
   <A NAME="zggev"></A>
   <H2>zggev</H2>
-  Computes the generalized eigenvalues, and left and/or right
+  Computes the generalized eigenvalues, and left and/or rightgeneralized eigenvectors for a pair of nonsymmetric matrices
   <PRE>
 USAGE:
   alpha, beta, vl, vr, work, rwork, info, a, b = NumRu::Lapack.zggev( jobvl, jobvr, a, b, lwork)
@@ -743,7 +743,7 @@ FORTRAN MANUAL
 
   <A NAME="zggevx"></A>
   <H2>zggevx</H2>
-  Computes the generalized eigenvalues, and optionally, the left
+  Computes the generalized eigenvalues, and optionally, the leftand/or right generalized eigenvectors.
   <PRE>
 USAGE:
   alpha, beta, vl, vr, ilo, ihi, lscale, rscale, abnrm, bbnrm, rconde, rcondv, work, info, a, b = NumRu::Lapack.zggevx( balanc, jobvl, jobvr, sense, a, b, lwork)
@@ -985,7 +985,7 @@ FORTRAN MANUAL
 
   <A NAME="zggglm"></A>
   <H2>zggglm</H2>
-  Solves the GLM (Generalized Linear Regression Model) using
+  Solves the GLM (Generalized Linear Regression Model) usingthe GQR (Generalized QR) factorization
   <PRE>
 USAGE:
   x, y, work, info, a, b, d = NumRu::Lapack.zggglm( a, b, d, lwork)
@@ -1102,7 +1102,7 @@ FORTRAN MANUAL
 
   <A NAME="zgghrd"></A>
   <H2>zgghrd</H2>
-  Reduces a pair of complex matrices to generalized upper
+  Reduces a pair of complex matrices to generalized upperHessenberg form using unitary similarity transformations.
   <PRE>
 USAGE:
   info, a, b, q, z = NumRu::Lapack.zgghrd( compq, compz, ilo, ihi, a, b, q, z)
@@ -1231,7 +1231,7 @@ FORTRAN MANUAL
 
   <A NAME="zgglse"></A>
   <H2>zgglse</H2>
-  Solves the LSE (Constrained Linear Least Squares Problem) using
+  Solves the LSE (Constrained Linear Least Squares Problem) usingthe GRQ (Generalized RQ) factorization
   <PRE>
 USAGE:
   x, work, info, a, b, c, d = NumRu::Lapack.zgglse( a, b, c, d, lwork)
@@ -1912,7 +1912,7 @@ FORTRAN MANUAL
 
   <A NAME="zggsvp"></A>
   <H2>zggsvp</H2>
-  Computes unitary matrices as a preprocessing step
+  Computes unitary matrices as a preprocessing stepfor computing the generalized singular value decomposition
   <PRE>
 USAGE:
   k, l, u, v, q, info, a, b = NumRu::Lapack.zggsvp( jobu, jobv, jobq, p, a, b, tola, tolb)

@@ -6,21 +6,21 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for triangular (or in some cases quasi-triangular) matrix</H1>
     <UL>
-      <LI><A HREF="#ctrcon">ctrcon</A>: Estimates the reciprocal of the condition number of a triangular</LI>
-      <LI><A HREF="#ctrevc">ctrevc</A>: Computes left and right eigenvectors of an complex upper triangular</LI>
-      <LI><A HREF="#ctrexc">ctrexc</A>: Reorders the Schur factorization of a matrix by a unitary</LI>
-      <LI><A HREF="#ctrrfs">ctrrfs</A>: Provides forward and backward error bounds for the solution</LI>
-      <LI><A HREF="#ctrsen">ctrsen</A>: Reorders the Schur factorization of a matrix in order to find</LI>
-      <LI><A HREF="#ctrsna">ctrsna</A>: Estimates the reciprocal condition numbers (sensitivities)</LI>
-      <LI><A HREF="#ctrsyl">ctrsyl</A>: Solves the Sylvester matrix equation A X +/- X B=C where A</LI>
-      <LI><A HREF="#ctrti2">ctrti2</A>: </LI>
-      <LI><A HREF="#ctrtri">ctrtri</A>: Computes the inverse of a triangular matrix.</LI>
-      <LI><A HREF="#ctrtrs">ctrtrs</A>: Solves a triangular system of linear equations AX=B,</LI>
+      <LI><A HREF="#ctrcon">ctrcon</A> : Estimates the reciprocal of the condition number of a triangularmatrix, in either the 1-norm or the infinity-norm.</LI>
+      <LI><A HREF="#ctrevc">ctrevc</A> : Computes left and right eigenvectors of an complex upper triangularmatrix.</LI>
+      <LI><A HREF="#ctrexc">ctrexc</A> : Reorders the Schur factorization of a matrix by a unitarysimilarity transformation.</LI>
+      <LI><A HREF="#ctrrfs">ctrrfs</A> : Provides forward and backward error bounds for the solutionof a triangular system of linear equations A X=B, A**T X=B orA**H X=B.</LI>
+      <LI><A HREF="#ctrsen">ctrsen</A> : Reorders the Schur factorization of a matrix in order to findan orthonormal basis of a right invariant subspace correspondingto selected eigenvalues, and returns reciprocal condition numbers(sensitivities) of the average of the cluster of eigenvaluesand of the invariant subspace.</LI>
+      <LI><A HREF="#ctrsna">ctrsna</A> : Estimates the reciprocal condition numbers (sensitivities)of selected eigenvalues and eigenvectors of a complex uppertriangular matrix.</LI>
+      <LI><A HREF="#ctrsyl">ctrsyl</A> : Solves the Sylvester matrix equation A X +/- X B=C where Aand B are complex upper triangular, and may be transposed.</LI>
+      <LI><A HREF="#ctrti2">ctrti2</A> : </LI>
+      <LI><A HREF="#ctrtri">ctrtri</A> : Computes the inverse of a triangular matrix.</LI>
+      <LI><A HREF="#ctrtrs">ctrtrs</A> : Solves a triangular system of linear equations AX=B,A**T X=B or A**H X=B.</LI>
     </UL>
 
   <A NAME="ctrcon"></A>
   <H2>ctrcon</H2>
-  Estimates the reciprocal of the condition number of a triangular
+  Estimates the reciprocal of the condition number of a triangularmatrix, in either the 1-norm or the infinity-norm.
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.ctrcon( norm, uplo, diag, a)
@@ -98,7 +98,7 @@ FORTRAN MANUAL
 
   <A NAME="ctrevc"></A>
   <H2>ctrevc</H2>
-  Computes left and right eigenvectors of an complex upper triangular
+  Computes left and right eigenvectors of an complex upper triangularmatrix.
   <PRE>
 USAGE:
   m, info, t, vl, vr = NumRu::Lapack.ctrevc( side, howmny, select, t, vl, vr)
@@ -238,7 +238,7 @@ FORTRAN MANUAL
 
   <A NAME="ctrexc"></A>
   <H2>ctrexc</H2>
-  Reorders the Schur factorization of a matrix by a unitary
+  Reorders the Schur factorization of a matrix by a unitarysimilarity transformation.
   <PRE>
 USAGE:
   info, t, q = NumRu::Lapack.ctrexc( compq, t, q, ifst, ilst)
@@ -324,7 +324,7 @@ FORTRAN MANUAL
 
   <A NAME="ctrrfs"></A>
   <H2>ctrrfs</H2>
-  Provides forward and backward error bounds for the solution
+  Provides forward and backward error bounds for the solutionof a triangular system of linear equations A X=B, A**T X=B orA**H X=B.
   <PRE>
 USAGE:
   ferr, berr, info = NumRu::Lapack.ctrrfs( uplo, trans, diag, a, b, x)
@@ -429,7 +429,7 @@ FORTRAN MANUAL
 
   <A NAME="ctrsen"></A>
   <H2>ctrsen</H2>
-  Reorders the Schur factorization of a matrix in order to find
+  Reorders the Schur factorization of a matrix in order to findan orthonormal basis of a right invariant subspace correspondingto selected eigenvalues, and returns reciprocal condition numbers(sensitivities) of the average of the cluster of eigenvaluesand of the invariant subspace.
   <PRE>
 USAGE:
   w, m, s, sep, work, info, t, q = NumRu::Lapack.ctrsen( job, compq, select, t, q, lwork)
@@ -616,7 +616,7 @@ FORTRAN MANUAL
 
   <A NAME="ctrsna"></A>
   <H2>ctrsna</H2>
-  Estimates the reciprocal condition numbers (sensitivities)
+  Estimates the reciprocal condition numbers (sensitivities)of selected eigenvalues and eigenvectors of a complex uppertriangular matrix.
   <PRE>
 USAGE:
   s, sep, m, info = NumRu::Lapack.ctrsna( job, howmny, select, t, vl, vr, ldwork)
@@ -776,7 +776,7 @@ FORTRAN MANUAL
 
   <A NAME="ctrsyl"></A>
   <H2>ctrsyl</H2>
-  Solves the Sylvester matrix equation A X +/- X B=C where A
+  Solves the Sylvester matrix equation A X +/- X B=C where Aand B are complex upper triangular, and may be transposed.
   <PRE>
 USAGE:
   scale, info, c = NumRu::Lapack.ctrsyl( trana, tranb, isgn, a, b, c)
@@ -999,7 +999,7 @@ FORTRAN MANUAL
 
   <A NAME="ctrtrs"></A>
   <H2>ctrtrs</H2>
-  Solves a triangular system of linear equations AX=B,
+  Solves a triangular system of linear equations AX=B,A**T X=B or A**H X=B.
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.ctrtrs( uplo, trans, diag, a, b)
