@@ -6,84 +6,87 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for general tridiagonal matrix</H1>
     <UL>
+      <LI><A HREF="#dgtcon">dgtcon</A>: Estimates the reciprocal of the condition number of a general</LI>
+      <LI><A HREF="#dgtrfs">dgtrfs</A>: Improves the computed solution to a general tridiagonal system</LI>
+      <LI><A HREF="#dgtsv">dgtsv</A>: Solves a general tridiagonal system of linear equations AX=B.</LI>
+      <LI><A HREF="#dgtsvx">dgtsvx</A>: Solves a general tridiagonal system of linear equations AX=B,</LI>
       <LI><A HREF="#dgttrf">dgttrf</A>: Computes an LU factorization of a general tridiagonal matrix,</LI>
       <LI><A HREF="#dgttrs">dgttrs</A>: Solves a general tridiagonal system of linear equations AX=B,</LI>
-      <LI><A HREF="#dgtsv">dgtsv</A>: Solves a general tridiagonal system of linear equations AX=B.</LI>
       <LI><A HREF="#dgtts2">dgtts2</A>: </LI>
-      <LI><A HREF="#dgtcon">dgtcon</A>: Estimates the reciprocal of the condition number of a general</LI>
-      <LI><A HREF="#dgtsvx">dgtsvx</A>: Solves a general tridiagonal system of linear equations AX=B,</LI>
-      <LI><A HREF="#dgtrfs">dgtrfs</A>: Improves the computed solution to a general tridiagonal system</LI>
     </UL>
 
-  <A NAME="dgttrf"></A>
-  <H2>dgttrf</H2>
-  Computes an LU factorization of a general tridiagonal matrix,
+  <A NAME="dgtcon"></A>
+  <H2>dgtcon</H2>
+  Estimates the reciprocal of the condition number of a general
   <PRE>
 USAGE:
-  du2, ipiv, info, dl, d, du = NumRu::Lapack.dgttrf( dl, d, du)
+  rcond, info = NumRu::Lapack.dgtcon( norm, dl, d, du, du2, ipiv, anorm)
     or
-  NumRu::Lapack.dgttrf  # print help
+  NumRu::Lapack.dgtcon  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE DGTTRF( N, DL, D, DU, DU2, IPIV, INFO )
+      SUBROUTINE DGTCON( NORM, N, DL, D, DU, DU2, IPIV, ANORM, RCOND, WORK, IWORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  DGTTRF computes an LU factorization of a real tridiagonal matrix A
-*  using elimination with partial pivoting and row interchanges.
+*  DGTCON estimates the reciprocal of the condition number of a real
+*  tridiagonal matrix A using the LU factorization as computed by
+*  DGTTRF.
 *
-*  The factorization has the form
-*     A = L * U
-*  where L is a product of permutation and unit lower bidiagonal
-*  matrices and U is upper triangular with nonzeros in only the main
-*  diagonal and first two superdiagonals.
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
 *
 
 *  Arguments
 *  =========
 *
+*  NORM    (input) CHARACTER*1
+*          Specifies whether the 1-norm condition number or the
+*          infinity-norm condition number is required:
+*          = '1' or 'O':  1-norm;
+*          = 'I':         Infinity-norm.
+*
 *  N       (input) INTEGER
-*          The order of the matrix A.
+*          The order of the matrix A.  N >= 0.
 *
-*  DL      (input/output) DOUBLE PRECISION array, dimension (N-1)
-*          On entry, DL must contain the (n-1) sub-diagonal elements of
-*          A.
+*  DL      (input) DOUBLE PRECISION array, dimension (N-1)
+*          The (n-1) multipliers that define the matrix L from the
+*          LU factorization of A as computed by DGTTRF.
 *
-*          On exit, DL is overwritten by the (n-1) multipliers that
-*          define the matrix L from the LU factorization of A.
+*  D       (input) DOUBLE PRECISION array, dimension (N)
+*          The n diagonal elements of the upper triangular matrix U from
+*          the LU factorization of A.
 *
-*  D       (input/output) DOUBLE PRECISION array, dimension (N)
-*          On entry, D must contain the diagonal elements of A.
+*  DU      (input) DOUBLE PRECISION array, dimension (N-1)
+*          The (n-1) elements of the first superdiagonal of U.
 *
-*          On exit, D is overwritten by the n diagonal elements of the
-*          upper triangular matrix U from the LU factorization of A.
+*  DU2     (input) DOUBLE PRECISION array, dimension (N-2)
+*          The (n-2) elements of the second superdiagonal of U.
 *
-*  DU      (input/output) DOUBLE PRECISION array, dimension (N-1)
-*          On entry, DU must contain the (n-1) super-diagonal elements
-*          of A.
-*
-*          On exit, DU is overwritten by the (n-1) elements of the first
-*          super-diagonal of U.
-*
-*  DU2     (output) DOUBLE PRECISION array, dimension (N-2)
-*          On exit, DU2 is overwritten by the (n-2) elements of the
-*          second super-diagonal of U.
-*
-*  IPIV    (output) INTEGER array, dimension (N)
+*  IPIV    (input) INTEGER array, dimension (N)
 *          The pivot indices; for 1 <= i <= n, row i of the matrix was
 *          interchanged with row IPIV(i).  IPIV(i) will always be either
 *          i or i+1; IPIV(i) = i indicates a row interchange was not
 *          required.
 *
+*  ANORM   (input) DOUBLE PRECISION
+*          If NORM = '1' or 'O', the 1-norm of the original matrix A.
+*          If NORM = 'I', the infinity-norm of the original matrix A.
+*
+*  RCOND   (output) DOUBLE PRECISION
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
+*          estimate of the 1-norm of inv(A) computed in this routine.
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (2*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
-*          < 0:  if INFO = -k, the k-th argument had an illegal value
-*          > 0:  if INFO = k, U(k,k) is exactly zero. The factorization
-*                has been completed, but the factor U is exactly
-*                singular, and division by zero will occur if it is used
-*                to solve a system of equations.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
 *
 
 *  =====================================================================
@@ -93,57 +96,65 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="dgttrs"></A>
-  <H2>dgttrs</H2>
-  Solves a general tridiagonal system of linear equations AX=B,
+  <A NAME="dgtrfs"></A>
+  <H2>dgtrfs</H2>
+  Improves the computed solution to a general tridiagonal system
   <PRE>
 USAGE:
-  info, b = NumRu::Lapack.dgttrs( trans, dl, d, du, du2, ipiv, b)
+  ferr, berr, info, x = NumRu::Lapack.dgtrfs( trans, dl, d, du, dlf, df, duf, du2, ipiv, b, x)
     or
-  NumRu::Lapack.dgttrs  # print help
+  NumRu::Lapack.dgtrfs  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE DGTTRS( TRANS, N, NRHS, DL, D, DU, DU2, IPIV, B, LDB, INFO )
+      SUBROUTINE DGTRFS( TRANS, N, NRHS, DL, D, DU, DLF, DF, DUF, DU2, IPIV, B, LDB, X, LDX, FERR, BERR, WORK, IWORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  DGTTRS solves one of the systems of equations
-*     A*X = B  or  A'*X = B,
-*  with a tridiagonal matrix A using the LU factorization computed
-*  by DGTTRF.
+*  DGTRFS improves the computed solution to a system of linear
+*  equations when the coefficient matrix is tridiagonal, and provides
+*  error bounds and backward error estimates for the solution.
 *
 
 *  Arguments
 *  =========
 *
 *  TRANS   (input) CHARACTER*1
-*          Specifies the form of the system of equations.
-*          = 'N':  A * X = B  (No transpose)
-*          = 'T':  A'* X = B  (Transpose)
-*          = 'C':  A'* X = B  (Conjugate transpose = Transpose)
+*          Specifies the form of the system of equations:
+*          = 'N':  A * X = B     (No transpose)
+*          = 'T':  A**T * X = B  (Transpose)
+*          = 'C':  A**H * X = B  (Conjugate transpose = Transpose)
 *
 *  N       (input) INTEGER
-*          The order of the matrix A.
+*          The order of the matrix A.  N >= 0.
 *
 *  NRHS    (input) INTEGER
 *          The number of right hand sides, i.e., the number of columns
 *          of the matrix B.  NRHS >= 0.
 *
 *  DL      (input) DOUBLE PRECISION array, dimension (N-1)
-*          The (n-1) multipliers that define the matrix L from the
-*          LU factorization of A.
+*          The (n-1) subdiagonal elements of A.
 *
 *  D       (input) DOUBLE PRECISION array, dimension (N)
+*          The diagonal elements of A.
+*
+*  DU      (input) DOUBLE PRECISION array, dimension (N-1)
+*          The (n-1) superdiagonal elements of A.
+*
+*  DLF     (input) DOUBLE PRECISION array, dimension (N-1)
+*          The (n-1) multipliers that define the matrix L from the
+*          LU factorization of A as computed by DGTTRF.
+*
+*  DF      (input) DOUBLE PRECISION array, dimension (N)
 *          The n diagonal elements of the upper triangular matrix U from
 *          the LU factorization of A.
 *
-*  DU      (input) DOUBLE PRECISION array, dimension (N-1)
-*          The (n-1) elements of the first super-diagonal of U.
+*  DUF     (input) DOUBLE PRECISION array, dimension (N-1)
+*          The (n-1) elements of the first superdiagonal of U.
 *
 *  DU2     (input) DOUBLE PRECISION array, dimension (N-2)
-*          The (n-2) elements of the second super-diagonal of U.
+*          The (n-2) elements of the second superdiagonal of U.
 *
 *  IPIV    (input) INTEGER array, dimension (N)
 *          The pivot indices; for 1 <= i <= n, row i of the matrix was
@@ -151,34 +162,50 @@ FORTRAN MANUAL
 *          i or i+1; IPIV(i) = i indicates a row interchange was not
 *          required.
 *
-*  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
-*          On entry, the matrix of right hand side vectors B.
-*          On exit, B is overwritten by the solution vectors X.
+*  B       (input) DOUBLE PRECISION array, dimension (LDB,NRHS)
+*          The right hand side matrix B.
 *
 *  LDB     (input) INTEGER
 *          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (input/output) DOUBLE PRECISION array, dimension (LDX,NRHS)
+*          On entry, the solution matrix X, as computed by DGTTRS.
+*          On exit, the improved solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
 *
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
 *          < 0:  if INFO = -i, the i-th argument had an illegal value
 *
+*  Internal Parameters
+*  ===================
+*
+*  ITMAX is the maximum number of steps of iterative refinement.
+*
 
 *  =====================================================================
 *
-*     .. Local Scalars ..
-      LOGICAL            NOTRAN
-      INTEGER            ITRANS, J, JB, NB
-*     ..
-*     .. External Functions ..
-      INTEGER            ILAENV
-      EXTERNAL           ILAENV
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           DGTTS2, XERBLA
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX, MIN
-*     ..
 
 
     </PRE>
@@ -254,164 +281,6 @@ FORTRAN MANUAL
 *          > 0: if INFO = i, U(i,i) is exactly zero, and the solution
 *               has not been computed.  The factorization has not been
 *               completed unless i = N.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="dgtts2"></A>
-  <H2>dgtts2</H2>
-  
-  <PRE>
-USAGE:
-  b = NumRu::Lapack.dgtts2( itrans, dl, d, du, du2, ipiv, b)
-    or
-  NumRu::Lapack.dgtts2  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE DGTTS2( ITRANS, N, NRHS, DL, D, DU, DU2, IPIV, B, LDB )
-
-*  Purpose
-*  =======
-*
-*  DGTTS2 solves one of the systems of equations
-*     A*X = B  or  A'*X = B,
-*  with a tridiagonal matrix A using the LU factorization computed
-*  by DGTTRF.
-*
-
-*  Arguments
-*  =========
-*
-*  ITRANS  (input) INTEGER
-*          Specifies the form of the system of equations.
-*          = 0:  A * X = B  (No transpose)
-*          = 1:  A'* X = B  (Transpose)
-*          = 2:  A'* X = B  (Conjugate transpose = Transpose)
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
-*  DL      (input) DOUBLE PRECISION array, dimension (N-1)
-*          The (n-1) multipliers that define the matrix L from the
-*          LU factorization of A.
-*
-*  D       (input) DOUBLE PRECISION array, dimension (N)
-*          The n diagonal elements of the upper triangular matrix U from
-*          the LU factorization of A.
-*
-*  DU      (input) DOUBLE PRECISION array, dimension (N-1)
-*          The (n-1) elements of the first super-diagonal of U.
-*
-*  DU2     (input) DOUBLE PRECISION array, dimension (N-2)
-*          The (n-2) elements of the second super-diagonal of U.
-*
-*  IPIV    (input) INTEGER array, dimension (N)
-*          The pivot indices; for 1 <= i <= n, row i of the matrix was
-*          interchanged with row IPIV(i).  IPIV(i) will always be either
-*          i or i+1; IPIV(i) = i indicates a row interchange was not
-*          required.
-*
-*  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
-*          On entry, the matrix of right hand side vectors B.
-*          On exit, B is overwritten by the solution vectors X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      INTEGER            I, IP, J
-      DOUBLE PRECISION   TEMP
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="dgtcon"></A>
-  <H2>dgtcon</H2>
-  Estimates the reciprocal of the condition number of a general
-  <PRE>
-USAGE:
-  rcond, info = NumRu::Lapack.dgtcon( norm, dl, d, du, du2, ipiv, anorm)
-    or
-  NumRu::Lapack.dgtcon  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE DGTCON( NORM, N, DL, D, DU, DU2, IPIV, ANORM, RCOND, WORK, IWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  DGTCON estimates the reciprocal of the condition number of a real
-*  tridiagonal matrix A using the LU factorization as computed by
-*  DGTTRF.
-*
-*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
-*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
-*
-
-*  Arguments
-*  =========
-*
-*  NORM    (input) CHARACTER*1
-*          Specifies whether the 1-norm condition number or the
-*          infinity-norm condition number is required:
-*          = '1' or 'O':  1-norm;
-*          = 'I':         Infinity-norm.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  DL      (input) DOUBLE PRECISION array, dimension (N-1)
-*          The (n-1) multipliers that define the matrix L from the
-*          LU factorization of A as computed by DGTTRF.
-*
-*  D       (input) DOUBLE PRECISION array, dimension (N)
-*          The n diagonal elements of the upper triangular matrix U from
-*          the LU factorization of A.
-*
-*  DU      (input) DOUBLE PRECISION array, dimension (N-1)
-*          The (n-1) elements of the first superdiagonal of U.
-*
-*  DU2     (input) DOUBLE PRECISION array, dimension (N-2)
-*          The (n-2) elements of the second superdiagonal of U.
-*
-*  IPIV    (input) INTEGER array, dimension (N)
-*          The pivot indices; for 1 <= i <= n, row i of the matrix was
-*          interchanged with row IPIV(i).  IPIV(i) will always be either
-*          i or i+1; IPIV(i) = i indicates a row interchange was not
-*          required.
-*
-*  ANORM   (input) DOUBLE PRECISION
-*          If NORM = '1' or 'O', the 1-norm of the original matrix A.
-*          If NORM = 'I', the infinity-norm of the original matrix A.
-*
-*  RCOND   (output) DOUBLE PRECISION
-*          The reciprocal of the condition number of the matrix A,
-*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
-*          estimate of the 1-norm of inv(A) computed in this routine.
-*
-*  WORK    (workspace) DOUBLE PRECISION array, dimension (2*N)
-*
-*  IWORK   (workspace) INTEGER array, dimension (N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
 *
 
 *  =====================================================================
@@ -612,65 +481,135 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="dgtrfs"></A>
-  <H2>dgtrfs</H2>
-  Improves the computed solution to a general tridiagonal system
+  <A NAME="dgttrf"></A>
+  <H2>dgttrf</H2>
+  Computes an LU factorization of a general tridiagonal matrix,
   <PRE>
 USAGE:
-  ferr, berr, info, x = NumRu::Lapack.dgtrfs( trans, dl, d, du, dlf, df, duf, du2, ipiv, b, x)
+  du2, ipiv, info, dl, d, du = NumRu::Lapack.dgttrf( dl, d, du)
     or
-  NumRu::Lapack.dgtrfs  # print help
+  NumRu::Lapack.dgttrf  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE DGTRFS( TRANS, N, NRHS, DL, D, DU, DLF, DF, DUF, DU2, IPIV, B, LDB, X, LDX, FERR, BERR, WORK, IWORK, INFO )
+      SUBROUTINE DGTTRF( N, DL, D, DU, DU2, IPIV, INFO )
 
 *  Purpose
 *  =======
 *
-*  DGTRFS improves the computed solution to a system of linear
-*  equations when the coefficient matrix is tridiagonal, and provides
-*  error bounds and backward error estimates for the solution.
+*  DGTTRF computes an LU factorization of a real tridiagonal matrix A
+*  using elimination with partial pivoting and row interchanges.
+*
+*  The factorization has the form
+*     A = L * U
+*  where L is a product of permutation and unit lower bidiagonal
+*  matrices and U is upper triangular with nonzeros in only the main
+*  diagonal and first two superdiagonals.
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.
+*
+*  DL      (input/output) DOUBLE PRECISION array, dimension (N-1)
+*          On entry, DL must contain the (n-1) sub-diagonal elements of
+*          A.
+*
+*          On exit, DL is overwritten by the (n-1) multipliers that
+*          define the matrix L from the LU factorization of A.
+*
+*  D       (input/output) DOUBLE PRECISION array, dimension (N)
+*          On entry, D must contain the diagonal elements of A.
+*
+*          On exit, D is overwritten by the n diagonal elements of the
+*          upper triangular matrix U from the LU factorization of A.
+*
+*  DU      (input/output) DOUBLE PRECISION array, dimension (N-1)
+*          On entry, DU must contain the (n-1) super-diagonal elements
+*          of A.
+*
+*          On exit, DU is overwritten by the (n-1) elements of the first
+*          super-diagonal of U.
+*
+*  DU2     (output) DOUBLE PRECISION array, dimension (N-2)
+*          On exit, DU2 is overwritten by the (n-2) elements of the
+*          second super-diagonal of U.
+*
+*  IPIV    (output) INTEGER array, dimension (N)
+*          The pivot indices; for 1 <= i <= n, row i of the matrix was
+*          interchanged with row IPIV(i).  IPIV(i) will always be either
+*          i or i+1; IPIV(i) = i indicates a row interchange was not
+*          required.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -k, the k-th argument had an illegal value
+*          > 0:  if INFO = k, U(k,k) is exactly zero. The factorization
+*                has been completed, but the factor U is exactly
+*                singular, and division by zero will occur if it is used
+*                to solve a system of equations.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dgttrs"></A>
+  <H2>dgttrs</H2>
+  Solves a general tridiagonal system of linear equations AX=B,
+  <PRE>
+USAGE:
+  info, b = NumRu::Lapack.dgttrs( trans, dl, d, du, du2, ipiv, b)
+    or
+  NumRu::Lapack.dgttrs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DGTTRS( TRANS, N, NRHS, DL, D, DU, DU2, IPIV, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  DGTTRS solves one of the systems of equations
+*     A*X = B  or  A'*X = B,
+*  with a tridiagonal matrix A using the LU factorization computed
+*  by DGTTRF.
 *
 
 *  Arguments
 *  =========
 *
 *  TRANS   (input) CHARACTER*1
-*          Specifies the form of the system of equations:
-*          = 'N':  A * X = B     (No transpose)
-*          = 'T':  A**T * X = B  (Transpose)
-*          = 'C':  A**H * X = B  (Conjugate transpose = Transpose)
+*          Specifies the form of the system of equations.
+*          = 'N':  A * X = B  (No transpose)
+*          = 'T':  A'* X = B  (Transpose)
+*          = 'C':  A'* X = B  (Conjugate transpose = Transpose)
 *
 *  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
+*          The order of the matrix A.
 *
 *  NRHS    (input) INTEGER
 *          The number of right hand sides, i.e., the number of columns
 *          of the matrix B.  NRHS >= 0.
 *
 *  DL      (input) DOUBLE PRECISION array, dimension (N-1)
-*          The (n-1) subdiagonal elements of A.
+*          The (n-1) multipliers that define the matrix L from the
+*          LU factorization of A.
 *
 *  D       (input) DOUBLE PRECISION array, dimension (N)
-*          The diagonal elements of A.
-*
-*  DU      (input) DOUBLE PRECISION array, dimension (N-1)
-*          The (n-1) superdiagonal elements of A.
-*
-*  DLF     (input) DOUBLE PRECISION array, dimension (N-1)
-*          The (n-1) multipliers that define the matrix L from the
-*          LU factorization of A as computed by DGTTRF.
-*
-*  DF      (input) DOUBLE PRECISION array, dimension (N)
 *          The n diagonal elements of the upper triangular matrix U from
 *          the LU factorization of A.
 *
-*  DUF     (input) DOUBLE PRECISION array, dimension (N-1)
-*          The (n-1) elements of the first superdiagonal of U.
+*  DU      (input) DOUBLE PRECISION array, dimension (N-1)
+*          The (n-1) elements of the first super-diagonal of U.
 *
 *  DU2     (input) DOUBLE PRECISION array, dimension (N-2)
-*          The (n-2) elements of the second superdiagonal of U.
+*          The (n-2) elements of the second super-diagonal of U.
 *
 *  IPIV    (input) INTEGER array, dimension (N)
 *          The pivot indices; for 1 <= i <= n, row i of the matrix was
@@ -678,50 +617,111 @@ FORTRAN MANUAL
 *          i or i+1; IPIV(i) = i indicates a row interchange was not
 *          required.
 *
-*  B       (input) DOUBLE PRECISION array, dimension (LDB,NRHS)
-*          The right hand side matrix B.
+*  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+*          On entry, the matrix of right hand side vectors B.
+*          On exit, B is overwritten by the solution vectors X.
 *
 *  LDB     (input) INTEGER
 *          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  X       (input/output) DOUBLE PRECISION array, dimension (LDX,NRHS)
-*          On entry, the solution matrix X, as computed by DGTTRS.
-*          On exit, the improved solution matrix X.
-*
-*  LDX     (input) INTEGER
-*          The leading dimension of the array X.  LDX >= max(1,N).
-*
-*  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)
-*          The estimated forward error bound for each solution vector
-*          X(j) (the j-th column of the solution matrix X).
-*          If XTRUE is the true solution corresponding to X(j), FERR(j)
-*          is an estimated upper bound for the magnitude of the largest
-*          element in (X(j) - XTRUE) divided by the magnitude of the
-*          largest element in X(j).  The estimate is as reliable as
-*          the estimate for RCOND, and is almost always a slight
-*          overestimate of the true error.
-*
-*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
-*          The componentwise relative backward error of each solution
-*          vector X(j) (i.e., the smallest relative change in
-*          any element of A or B that makes X(j) an exact solution).
-*
-*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
-*
-*  IWORK   (workspace) INTEGER array, dimension (N)
 *
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
 *          < 0:  if INFO = -i, the i-th argument had an illegal value
 *
-*  Internal Parameters
-*  ===================
+
+*  =====================================================================
 *
-*  ITMAX is the maximum number of steps of iterative refinement.
+*     .. Local Scalars ..
+      LOGICAL            NOTRAN
+      INTEGER            ITRANS, J, JB, NB
+*     ..
+*     .. External Functions ..
+      INTEGER            ILAENV
+      EXTERNAL           ILAENV
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           DGTTS2, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX, MIN
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dgtts2"></A>
+  <H2>dgtts2</H2>
+  
+  <PRE>
+USAGE:
+  b = NumRu::Lapack.dgtts2( itrans, dl, d, du, du2, ipiv, b)
+    or
+  NumRu::Lapack.dgtts2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DGTTS2( ITRANS, N, NRHS, DL, D, DU, DU2, IPIV, B, LDB )
+
+*  Purpose
+*  =======
+*
+*  DGTTS2 solves one of the systems of equations
+*     A*X = B  or  A'*X = B,
+*  with a tridiagonal matrix A using the LU factorization computed
+*  by DGTTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  ITRANS  (input) INTEGER
+*          Specifies the form of the system of equations.
+*          = 0:  A * X = B  (No transpose)
+*          = 1:  A'* X = B  (Transpose)
+*          = 2:  A'* X = B  (Conjugate transpose = Transpose)
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  DL      (input) DOUBLE PRECISION array, dimension (N-1)
+*          The (n-1) multipliers that define the matrix L from the
+*          LU factorization of A.
+*
+*  D       (input) DOUBLE PRECISION array, dimension (N)
+*          The n diagonal elements of the upper triangular matrix U from
+*          the LU factorization of A.
+*
+*  DU      (input) DOUBLE PRECISION array, dimension (N-1)
+*          The (n-1) elements of the first super-diagonal of U.
+*
+*  DU2     (input) DOUBLE PRECISION array, dimension (N-2)
+*          The (n-2) elements of the second super-diagonal of U.
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          The pivot indices; for 1 <= i <= n, row i of the matrix was
+*          interchanged with row IPIV(i).  IPIV(i) will always be either
+*          i or i+1; IPIV(i) = i indicates a row interchange was not
+*          required.
+*
+*  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+*          On entry, the matrix of right hand side vectors B.
+*          On exit, B is overwritten by the solution vectors X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
 *
 
 *  =====================================================================
 *
+*     .. Local Scalars ..
+      INTEGER            I, IP, J
+      DOUBLE PRECISION   TEMP
+*     ..
 
 
     </PRE>

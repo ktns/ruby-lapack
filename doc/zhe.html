@@ -6,26 +6,981 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for (complex) Hermitian matrix</H1>
     <UL>
+      <LI><A HREF="#zhecon">zhecon</A>: Estimates the reciprocal of the condition number of a</LI>
+      <LI><A HREF="#zheev">zheev</A>: Computes all eigenvalues and, optionally, eigenvectors of a complex</LI>
+      <LI><A HREF="#zheevd">zheevd</A>: Computes all eigenvalues and, optionally, eigenvectors of a complex</LI>
+      <LI><A HREF="#zheevr">zheevr</A>: Computes selected eigenvalues, and optionally, eigenvectors of a complex</LI>
+      <LI><A HREF="#zheevx">zheevx</A>: Computes selected eigenvalues and eigenvectors of a Hermitian matrix.</LI>
+      <LI><A HREF="#zhegs2">zhegs2</A>: </LI>
+      <LI><A HREF="#zhegst">zhegst</A>: Reduces a Hermitian-definite generalized eigenproblem</LI>
+      <LI><A HREF="#zhegv">zhegv</A>: Computes all eigenvalues and the eigenvectors of  a generalized</LI>
       <LI><A HREF="#zhegvd">zhegvd</A>: Computes all eigenvalues and the eigenvectors of  a generalized</LI>
+      <LI><A HREF="#zhegvx">zhegvx</A>: Computes selected eigenvalues, and optionally, the eigenvectors of</LI>
       <LI><A HREF="#zherfs">zherfs</A>: Improves the computed solution to a complex</LI>
       <LI><A HREF="#zhesv">zhesv</A>: Solves a complex Hermitian indefinite system of linear equations AX=B.</LI>
-      <LI><A HREF="#zhetrf">zhetrf</A>: Computes the factorization of a complex Hermitian-indefinite matrix,</LI>
       <LI><A HREF="#zhesvx">zhesvx</A>: Solves a complex Hermitian</LI>
-      <LI><A HREF="#zhegs2">zhegs2</A>: </LI>
-      <LI><A HREF="#zhetri">zhetri</A>: Computes the inverse of a complex Hermitian indefinite matrix,</LI>
-      <LI><A HREF="#zheev">zheev</A>: Computes all eigenvalues and, optionally, eigenvectors of a complex</LI>
-      <LI><A HREF="#zhegst">zhegst</A>: Reduces a Hermitian-definite generalized eigenproblem</LI>
+      <LI><A HREF="#zhetd2">zhetd2</A>: </LI>
       <LI><A HREF="#zhetf2">zhetf2</A>: </LI>
       <LI><A HREF="#zhetrd">zhetrd</A>: Reduces a Hermitian matrix to real symmetric tridiagonal</LI>
-      <LI><A HREF="#zhecon">zhecon</A>: Estimates the reciprocal of the condition number of a</LI>
+      <LI><A HREF="#zhetrf">zhetrf</A>: Computes the factorization of a complex Hermitian-indefinite matrix,</LI>
+      <LI><A HREF="#zhetri">zhetri</A>: Computes the inverse of a complex Hermitian indefinite matrix,</LI>
       <LI><A HREF="#zhetrs">zhetrs</A>: Solves a complex Hermitian indefinite system of linear equations AX=B,</LI>
-      <LI><A HREF="#zheevr">zheevr</A>: Computes selected eigenvalues, and optionally, eigenvectors of a complex</LI>
-      <LI><A HREF="#zheevd">zheevd</A>: Computes all eigenvalues and, optionally, eigenvectors of a complex</LI>
-      <LI><A HREF="#zhegvx">zhegvx</A>: Computes selected eigenvalues, and optionally, the eigenvectors of</LI>
-      <LI><A HREF="#zhetd2">zhetd2</A>: </LI>
-      <LI><A HREF="#zheevx">zheevx</A>: Computes selected eigenvalues and eigenvectors of a Hermitian matrix.</LI>
-      <LI><A HREF="#zhegv">zhegv</A>: Computes all eigenvalues and the eigenvectors of  a generalized</LI>
     </UL>
+
+  <A NAME="zhecon"></A>
+  <H2>zhecon</H2>
+  Estimates the reciprocal of the condition number of a
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.zhecon( uplo, a, ipiv, anorm)
+    or
+  NumRu::Lapack.zhecon  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZHECON( UPLO, N, A, LDA, IPIV, ANORM, RCOND, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZHECON estimates the reciprocal of the condition number of a complex
+*  Hermitian matrix A using the factorization A = U*D*U**H or
+*  A = L*D*L**H computed by ZHETRF.
+*
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the details of the factorization are stored
+*          as an upper or lower triangular matrix.
+*          = 'U':  Upper triangular, form is A = U*D*U**H;
+*          = 'L':  Lower triangular, form is A = L*D*L**H.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input) COMPLEX*16 array, dimension (LDA,N)
+*          The block diagonal matrix D and the multipliers used to
+*          obtain the factor U or L as computed by ZHETRF.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D
+*          as determined by ZHETRF.
+*
+*  ANORM   (input) DOUBLE PRECISION
+*          The 1-norm of the original matrix A.
+*
+*  RCOND   (output) DOUBLE PRECISION
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
+*          estimate of the 1-norm of inv(A) computed in this routine.
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zheev"></A>
+  <H2>zheev</H2>
+  Computes all eigenvalues and, optionally, eigenvectors of a complex
+  <PRE>
+USAGE:
+  w, work, info, a = NumRu::Lapack.zheev( jobz, uplo, a, lwork)
+    or
+  NumRu::Lapack.zheev  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZHEEV( JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZHEEV computes all eigenvalues and, optionally, eigenvectors of a
+*  complex Hermitian matrix A.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA, N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the
+*          leading N-by-N upper triangular part of A contains the
+*          upper triangular part of the matrix A.  If UPLO = 'L',
+*          the leading N-by-N lower triangular part of A contains
+*          the lower triangular part of the matrix A.
+*          On exit, if JOBZ = 'V', then if INFO = 0, A contains the
+*          orthonormal eigenvectors of the matrix A.
+*          If JOBZ = 'N', then on exit the lower triangle (if UPLO='L')
+*          or the upper triangle (if UPLO='U') of A, including the
+*          diagonal, is destroyed.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The length of the array WORK.  LWORK >= max(1,2*N-1).
+*          For optimal efficiency, LWORK >= (NB+1)*N,
+*          where NB is the blocksize for ZHETRD returned by ILAENV.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (max(1, 3*N-2))
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the algorithm failed to converge; i
+*                off-diagonal elements of an intermediate tridiagonal
+*                form did not converge to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zheevd"></A>
+  <H2>zheevd</H2>
+  Computes all eigenvalues and, optionally, eigenvectors of a complex
+  <PRE>
+USAGE:
+  w, work, rwork, iwork, info, a = NumRu::Lapack.zheevd( jobz, uplo, a, lwork, lrwork, liwork)
+    or
+  NumRu::Lapack.zheevd  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZHEEVD( JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, RWORK, LRWORK, IWORK, LIWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZHEEVD computes all eigenvalues and, optionally, eigenvectors of a
+*  complex Hermitian matrix A.  If eigenvectors are desired, it uses a
+*  divide and conquer algorithm.
+*
+*  The divide and conquer algorithm makes very mild assumptions about
+*  floating point arithmetic. It will work on machines with a guard
+*  digit in add/subtract, or on those binary machines without guard
+*  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
+*  Cray-2. It could conceivably fail on hexadecimal or decimal machines
+*  without guard digits, but we know of none.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA, N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the
+*          leading N-by-N upper triangular part of A contains the
+*          upper triangular part of the matrix A.  If UPLO = 'L',
+*          the leading N-by-N lower triangular part of A contains
+*          the lower triangular part of the matrix A.
+*          On exit, if JOBZ = 'V', then if INFO = 0, A contains the
+*          orthonormal eigenvectors of the matrix A.
+*          If JOBZ = 'N', then on exit the lower triangle (if UPLO='L')
+*          or the upper triangle (if UPLO='U') of A, including the
+*          diagonal, is destroyed.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The length of the array WORK.
+*          If N <= 1,                LWORK must be at least 1.
+*          If JOBZ  = 'N' and N > 1, LWORK must be at least N + 1.
+*          If JOBZ  = 'V' and N > 1, LWORK must be at least 2*N + N**2.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal sizes of the WORK, RWORK and
+*          IWORK arrays, returns these values as the first entries of
+*          the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  RWORK   (workspace/output) DOUBLE PRECISION array,
+*                                         dimension (LRWORK)
+*          On exit, if INFO = 0, RWORK(1) returns the optimal LRWORK.
+*
+*  LRWORK  (input) INTEGER
+*          The dimension of the array RWORK.
+*          If N <= 1,                LRWORK must be at least 1.
+*          If JOBZ  = 'N' and N > 1, LRWORK must be at least N.
+*          If JOBZ  = 'V' and N > 1, LRWORK must be at least
+*                         1 + 5*N + 2*N**2.
+*
+*          If LRWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal sizes of the WORK, RWORK
+*          and IWORK arrays, returns these values as the first entries
+*          of the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
+*          On exit, if INFO = 0, IWORK(1) returns the optimal LIWORK.
+*
+*  LIWORK  (input) INTEGER
+*          The dimension of the array IWORK.
+*          If N <= 1,                LIWORK must be at least 1.
+*          If JOBZ  = 'N' and N > 1, LIWORK must be at least 1.
+*          If JOBZ  = 'V' and N > 1, LIWORK must be at least 3 + 5*N.
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal sizes of the WORK, RWORK
+*          and IWORK arrays, returns these values as the first entries
+*          of the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i and JOBZ = 'N', then the algorithm failed
+*                to converge; i off-diagonal elements of an intermediate
+*                tridiagonal form did not converge to zero;
+*                if INFO = i and JOBZ = 'V', then the algorithm failed
+*                to compute an eigenvalue while working on the submatrix
+*                lying in rows and columns INFO/(N+1) through
+*                mod(INFO,N+1).
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Jeff Rutter, Computer Science Division, University of California
+*     at Berkeley, USA
+*
+*  Modified description of INFO. Sven, 16 Feb 05.
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zheevr"></A>
+  <H2>zheevr</H2>
+  Computes selected eigenvalues, and optionally, eigenvectors of a complex
+  <PRE>
+USAGE:
+  m, w, z, isuppz, work, rwork, iwork, info, a = NumRu::Lapack.zheevr( jobz, range, uplo, a, vl, vu, il, iu, abstol, lwork, lrwork, liwork)
+    or
+  NumRu::Lapack.zheevr  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZHEEVR( JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, ISUPPZ, WORK, LWORK, RWORK, LRWORK, IWORK, LIWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZHEEVR computes selected eigenvalues and, optionally, eigenvectors
+*  of a complex Hermitian matrix A.  Eigenvalues and eigenvectors can
+*  be selected by specifying either a range of values or a range of
+*  indices for the desired eigenvalues.
+*
+*  ZHEEVR first reduces the matrix A to tridiagonal form T with a call
+*  to ZHETRD.  Then, whenever possible, ZHEEVR calls ZSTEMR to compute
+*  eigenspectrum using Relatively Robust Representations.  ZSTEMR
+*  computes eigenvalues by the dqds algorithm, while orthogonal
+*  eigenvectors are computed from various "good" L D L^T representations
+*  (also known as Relatively Robust Representations). Gram-Schmidt
+*  orthogonalization is avoided as far as possible. More specifically,
+*  the various steps of the algorithm are as follows.
+*
+*  For each unreduced block (submatrix) of T,
+*     (a) Compute T - sigma I  = L D L^T, so that L and D
+*         define all the wanted eigenvalues to high relative accuracy.
+*         This means that small relative changes in the entries of D and L
+*         cause only small relative changes in the eigenvalues and
+*         eigenvectors. The standard (unfactored) representation of the
+*         tridiagonal matrix T does not have this property in general.
+*     (b) Compute the eigenvalues to suitable accuracy.
+*         If the eigenvectors are desired, the algorithm attains full
+*         accuracy of the computed eigenvalues only right before
+*         the corresponding vectors have to be computed, see steps c) and d).
+*     (c) For each cluster of close eigenvalues, select a new
+*         shift close to the cluster, find a new factorization, and refine
+*         the shifted eigenvalues to suitable accuracy.
+*     (d) For each eigenvalue with a large enough relative separation compute
+*         the corresponding eigenvector by forming a rank revealing twisted
+*         factorization. Go back to (c) for any clusters that remain.
+*
+*  The desired accuracy of the output can be specified by the input
+*  parameter ABSTOL.
+*
+*  For more details, see DSTEMR's documentation and:
+*  - Inderjit S. Dhillon and Beresford N. Parlett: "Multiple representations
+*    to compute orthogonal eigenvectors of symmetric tridiagonal matrices,"
+*    Linear Algebra and its Applications, 387(1), pp. 1-28, August 2004.
+*  - Inderjit Dhillon and Beresford Parlett: "Orthogonal Eigenvectors and
+*    Relative Gaps," SIAM Journal on Matrix Analysis and Applications, Vol. 25,
+*    2004.  Also LAPACK Working Note 154.
+*  - Inderjit Dhillon: "A new O(n^2) algorithm for the symmetric
+*    tridiagonal eigenvalue/eigenvector problem",
+*    Computer Science Division Technical Report No. UCB/CSD-97-971,
+*    UC Berkeley, May 1997.
+*
+*
+*  Note 1 : ZHEEVR calls ZSTEMR when the full spectrum is requested
+*  on machines which conform to the ieee-754 floating point standard.
+*  ZHEEVR calls DSTEBZ and ZSTEIN on non-ieee machines and
+*  when partial spectrum requests are made.
+*
+*  Normal execution of ZSTEMR may create NaNs and infinities and
+*  hence may abort due to a floating point exception in environments
+*  which do not handle NaNs and infinities in the ieee standard default
+*  manner.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  RANGE   (input) CHARACTER*1
+*          = 'A': all eigenvalues will be found.
+*          = 'V': all eigenvalues in the half-open interval (VL,VU]
+*                 will be found.
+*          = 'I': the IL-th through IU-th eigenvalues will be found.
+********** For RANGE = 'V' or 'I' and IU - IL < N - 1, DSTEBZ and
+********** ZSTEIN are called
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA, N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the
+*          leading N-by-N upper triangular part of A contains the
+*          upper triangular part of the matrix A.  If UPLO = 'L',
+*          the leading N-by-N lower triangular part of A contains
+*          the lower triangular part of the matrix A.
+*          On exit, the lower triangle (if UPLO='L') or the upper
+*          triangle (if UPLO='U') of A, including the diagonal, is
+*          destroyed.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  VL      (input) DOUBLE PRECISION
+*  VU      (input) DOUBLE PRECISION
+*          If RANGE='V', the lower and upper bounds of the interval to
+*          be searched for eigenvalues. VL < VU.
+*          Not referenced if RANGE = 'A' or 'I'.
+*
+*  IL      (input) INTEGER
+*  IU      (input) INTEGER
+*          If RANGE='I', the indices (in ascending order) of the
+*          smallest and largest eigenvalues to be returned.
+*          1 <= IL <= IU <= N, if N > 0; IL = 1 and IU = 0 if N = 0.
+*          Not referenced if RANGE = 'A' or 'V'.
+*
+*  ABSTOL  (input) DOUBLE PRECISION
+*          The absolute error tolerance for the eigenvalues.
+*          An approximate eigenvalue is accepted as converged
+*          when it is determined to lie in an interval [a,b]
+*          of width less than or equal to
+*
+*                  ABSTOL + EPS *   max( |a|,|b| ) ,
+*
+*          where EPS is the machine precision.  If ABSTOL is less than
+*          or equal to zero, then  EPS*|T|  will be used in its place,
+*          where |T| is the 1-norm of the tridiagonal matrix obtained
+*          by reducing A to tridiagonal form.
+*
+*          See "Computing Small Singular Values of Bidiagonal Matrices
+*          with Guaranteed High Relative Accuracy," by Demmel and
+*          Kahan, LAPACK Working Note #3.
+*
+*          If high relative accuracy is important, set ABSTOL to
+*          DLAMCH( 'Safe minimum' ).  Doing so will guarantee that
+*          eigenvalues are computed to high relative accuracy when
+*          possible in future releases.  The current code does not
+*          make any guarantees about high relative accuracy, but
+*          furutre releases will. See J. Barlow and J. Demmel,
+*          "Computing Accurate Eigensystems of Scaled Diagonally
+*          Dominant Matrices", LAPACK Working Note #7, for a discussion
+*          of which matrices define their eigenvalues to high relative
+*          accuracy.
+*
+*  M       (output) INTEGER
+*          The total number of eigenvalues found.  0 <= M <= N.
+*          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          The first M elements contain the selected eigenvalues in
+*          ascending order.
+*
+*  Z       (output) COMPLEX*16 array, dimension (LDZ, max(1,M))
+*          If JOBZ = 'V', then if INFO = 0, the first M columns of Z
+*          contain the orthonormal eigenvectors of the matrix A
+*          corresponding to the selected eigenvalues, with the i-th
+*          column of Z holding the eigenvector associated with W(i).
+*          If JOBZ = 'N', then Z is not referenced.
+*          Note: the user must ensure that at least max(1,M) columns are
+*          supplied in the array Z; if RANGE = 'V', the exact value of M
+*          is not known in advance and an upper bound must be used.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  ISUPPZ  (output) INTEGER array, dimension ( 2*max(1,M) )
+*          The support of the eigenvectors in Z, i.e., the indices
+*          indicating the nonzero elements in Z. The i-th eigenvector
+*          is nonzero only in elements ISUPPZ( 2*i-1 ) through
+*          ISUPPZ( 2*i ).
+********** Implemented only for RANGE = 'A' or 'I' and IU - IL = N - 1
+*
+*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The length of the array WORK.  LWORK >= max(1,2*N).
+*          For optimal efficiency, LWORK >= (NB+1)*N,
+*          where NB is the max of the blocksize for ZHETRD and for
+*          ZUNMTR as returned by ILAENV.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal sizes of the WORK, RWORK and
+*          IWORK arrays, returns these values as the first entries of
+*          the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  RWORK   (workspace/output) DOUBLE PRECISION array, dimension (MAX(1,LRWORK))
+*          On exit, if INFO = 0, RWORK(1) returns the optimal
+*          (and minimal) LRWORK.
+*
+* LRWORK   (input) INTEGER
+*          The length of the array RWORK.  LRWORK >= max(1,24*N).
+*
+*          If LRWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal sizes of the WORK, RWORK
+*          and IWORK arrays, returns these values as the first entries
+*          of the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
+*          On exit, if INFO = 0, IWORK(1) returns the optimal
+*          (and minimal) LIWORK.
+*
+* LIWORK   (input) INTEGER
+*          The dimension of the array IWORK.  LIWORK >= max(1,10*N).
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal sizes of the WORK, RWORK
+*          and IWORK arrays, returns these values as the first entries
+*          of the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  Internal error
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Inderjit Dhillon, IBM Almaden, USA
+*     Osni Marques, LBNL/NERSC, USA
+*     Ken Stanley, Computer Science Division, University of
+*       California at Berkeley, USA
+*     Jason Riedy, Computer Science Division, University of
+*       California at Berkeley, USA
+*
+* =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zheevx"></A>
+  <H2>zheevx</H2>
+  Computes selected eigenvalues and eigenvectors of a Hermitian matrix.
+  <PRE>
+USAGE:
+  m, w, z, work, ifail, info, a = NumRu::Lapack.zheevx( jobz, range, uplo, a, vl, vu, il, iu, abstol, lwork)
+    or
+  NumRu::Lapack.zheevx  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZHEEVX( JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, LWORK, RWORK, IWORK, IFAIL, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZHEEVX computes selected eigenvalues and, optionally, eigenvectors
+*  of a complex Hermitian matrix A.  Eigenvalues and eigenvectors can
+*  be selected by specifying either a range of values or a range of
+*  indices for the desired eigenvalues.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  RANGE   (input) CHARACTER*1
+*          = 'A': all eigenvalues will be found.
+*          = 'V': all eigenvalues in the half-open interval (VL,VU]
+*                 will be found.
+*          = 'I': the IL-th through IU-th eigenvalues will be found.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA, N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the
+*          leading N-by-N upper triangular part of A contains the
+*          upper triangular part of the matrix A.  If UPLO = 'L',
+*          the leading N-by-N lower triangular part of A contains
+*          the lower triangular part of the matrix A.
+*          On exit, the lower triangle (if UPLO='L') or the upper
+*          triangle (if UPLO='U') of A, including the diagonal, is
+*          destroyed.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  VL      (input) DOUBLE PRECISION
+*  VU      (input) DOUBLE PRECISION
+*          If RANGE='V', the lower and upper bounds of the interval to
+*          be searched for eigenvalues. VL < VU.
+*          Not referenced if RANGE = 'A' or 'I'.
+*
+*  IL      (input) INTEGER
+*  IU      (input) INTEGER
+*          If RANGE='I', the indices (in ascending order) of the
+*          smallest and largest eigenvalues to be returned.
+*          1 <= IL <= IU <= N, if N > 0; IL = 1 and IU = 0 if N = 0.
+*          Not referenced if RANGE = 'A' or 'V'.
+*
+*  ABSTOL  (input) DOUBLE PRECISION
+*          The absolute error tolerance for the eigenvalues.
+*          An approximate eigenvalue is accepted as converged
+*          when it is determined to lie in an interval [a,b]
+*          of width less than or equal to
+*
+*                  ABSTOL + EPS *   max( |a|,|b| ) ,
+*
+*          where EPS is the machine precision.  If ABSTOL is less than
+*          or equal to zero, then  EPS*|T|  will be used in its place,
+*          where |T| is the 1-norm of the tridiagonal matrix obtained
+*          by reducing A to tridiagonal form.
+*
+*          Eigenvalues will be computed most accurately when ABSTOL is
+*          set to twice the underflow threshold 2*DLAMCH('S'), not zero.
+*          If this routine returns with INFO>0, indicating that some
+*          eigenvectors did not converge, try setting ABSTOL to
+*          2*DLAMCH('S').
+*
+*          See "Computing Small Singular Values of Bidiagonal Matrices
+*          with Guaranteed High Relative Accuracy," by Demmel and
+*          Kahan, LAPACK Working Note #3.
+*
+*  M       (output) INTEGER
+*          The total number of eigenvalues found.  0 <= M <= N.
+*          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          On normal exit, the first M elements contain the selected
+*          eigenvalues in ascending order.
+*
+*  Z       (output) COMPLEX*16 array, dimension (LDZ, max(1,M))
+*          If JOBZ = 'V', then if INFO = 0, the first M columns of Z
+*          contain the orthonormal eigenvectors of the matrix A
+*          corresponding to the selected eigenvalues, with the i-th
+*          column of Z holding the eigenvector associated with W(i).
+*          If an eigenvector fails to converge, then that column of Z
+*          contains the latest approximation to the eigenvector, and the
+*          index of the eigenvector is returned in IFAIL.
+*          If JOBZ = 'N', then Z is not referenced.
+*          Note: the user must ensure that at least max(1,M) columns are
+*          supplied in the array Z; if RANGE = 'V', the exact value of M
+*          is not known in advance and an upper bound must be used.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The length of the array WORK.  LWORK >= 1, when N <= 1;
+*          otherwise 2*N.
+*          For optimal efficiency, LWORK >= (NB+1)*N,
+*          where NB is the max of the blocksize for ZHETRD and for
+*          ZUNMTR as returned by ILAENV.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (7*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (5*N)
+*
+*  IFAIL   (output) INTEGER array, dimension (N)
+*          If JOBZ = 'V', then if INFO = 0, the first M elements of
+*          IFAIL are zero.  If INFO > 0, then IFAIL contains the
+*          indices of the eigenvectors that failed to converge.
+*          If JOBZ = 'N', then IFAIL is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, then i eigenvectors failed to converge.
+*                Their indices are stored in array IFAIL.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zhegs2"></A>
+  <H2>zhegs2</H2>
+  
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.zhegs2( itype, uplo, a, b)
+    or
+  NumRu::Lapack.zhegs2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZHEGS2( ITYPE, UPLO, N, A, LDA, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZHEGS2 reduces a complex Hermitian-definite generalized
+*  eigenproblem to standard form.
+*
+*  If ITYPE = 1, the problem is A*x = lambda*B*x,
+*  and A is overwritten by inv(U')*A*inv(U) or inv(L)*A*inv(L')
+*
+*  If ITYPE = 2 or 3, the problem is A*B*x = lambda*x or
+*  B*A*x = lambda*x, and A is overwritten by U*A*U` or L'*A*L.
+*
+*  B must have been previously factorized as U'*U or L*L' by ZPOTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  ITYPE   (input) INTEGER
+*          = 1: compute inv(U')*A*inv(U) or inv(L)*A*inv(L');
+*          = 2 or 3: compute U*A*U' or L'*A*L.
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the upper or lower triangular part of the
+*          Hermitian matrix A is stored, and how B has been factorized.
+*          = 'U':  Upper triangular
+*          = 'L':  Lower triangular
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
+*          n by n upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading n by n lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*
+*          On exit, if INFO = 0, the transformed matrix, stored in the
+*          same format as A.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input) COMPLEX*16 array, dimension (LDB,N)
+*          The triangular factor from the Cholesky factorization of B,
+*          as returned by ZPOTRF.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zhegst"></A>
+  <H2>zhegst</H2>
+  Reduces a Hermitian-definite generalized eigenproblem
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.zhegst( itype, uplo, a, b)
+    or
+  NumRu::Lapack.zhegst  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZHEGST( ITYPE, UPLO, N, A, LDA, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZHEGST reduces a complex Hermitian-definite generalized
+*  eigenproblem to standard form.
+*
+*  If ITYPE = 1, the problem is A*x = lambda*B*x,
+*  and A is overwritten by inv(U**H)*A*inv(U) or inv(L)*A*inv(L**H)
+*
+*  If ITYPE = 2 or 3, the problem is A*B*x = lambda*x or
+*  B*A*x = lambda*x, and A is overwritten by U*A*U**H or L**H*A*L.
+*
+*  B must have been previously factorized as U**H*U or L*L**H by ZPOTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  ITYPE   (input) INTEGER
+*          = 1: compute inv(U**H)*A*inv(U) or inv(L)*A*inv(L**H);
+*          = 2 or 3: compute U*A*U**H or L**H*A*L.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored and B is factored as
+*                  U**H*U;
+*          = 'L':  Lower triangle of A is stored and B is factored as
+*                  L*L**H.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
+*          N-by-N upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading N-by-N lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*
+*          On exit, if INFO = 0, the transformed matrix, stored in the
+*          same format as A.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input) COMPLEX*16 array, dimension (LDB,N)
+*          The triangular factor from the Cholesky factorization of B,
+*          as returned by ZPOTRF.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zhegv"></A>
+  <H2>zhegv</H2>
+  Computes all eigenvalues and the eigenvectors of  a generalized
+  <PRE>
+USAGE:
+  w, work, info, a, b = NumRu::Lapack.zhegv( itype, jobz, uplo, a, b, lwork)
+    or
+  NumRu::Lapack.zhegv  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZHEGV( ITYPE, JOBZ, UPLO, N, A, LDA, B, LDB, W, WORK, LWORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZHEGV computes all the eigenvalues, and optionally, the eigenvectors
+*  of a complex generalized Hermitian-definite eigenproblem, of the form
+*  A*x=(lambda)*B*x,  A*Bx=(lambda)*x,  or B*A*x=(lambda)*x.
+*  Here A and B are assumed to be Hermitian and B is also
+*  positive definite.
+*
+
+*  Arguments
+*  =========
+*
+*  ITYPE   (input) INTEGER
+*          Specifies the problem type to be solved:
+*          = 1:  A*x = (lambda)*B*x
+*          = 2:  A*B*x = (lambda)*x
+*          = 3:  B*A*x = (lambda)*x
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangles of A and B are stored;
+*          = 'L':  Lower triangles of A and B are stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA, N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the
+*          leading N-by-N upper triangular part of A contains the
+*          upper triangular part of the matrix A.  If UPLO = 'L',
+*          the leading N-by-N lower triangular part of A contains
+*          the lower triangular part of the matrix A.
+*
+*          On exit, if JOBZ = 'V', then if INFO = 0, A contains the
+*          matrix Z of eigenvectors.  The eigenvectors are normalized
+*          as follows:
+*          if ITYPE = 1 or 2, Z**H*B*Z = I;
+*          if ITYPE = 3, Z**H*inv(B)*Z = I.
+*          If JOBZ = 'N', then on exit the upper triangle (if UPLO='U')
+*          or the lower triangle (if UPLO='L') of A, including the
+*          diagonal, is destroyed.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input/output) COMPLEX*16 array, dimension (LDB, N)
+*          On entry, the Hermitian positive definite matrix B.
+*          If UPLO = 'U', the leading N-by-N upper triangular part of B
+*          contains the upper triangular part of the matrix B.
+*          If UPLO = 'L', the leading N-by-N lower triangular part of B
+*          contains the lower triangular part of the matrix B.
+*
+*          On exit, if INFO <= N, the part of B containing the matrix is
+*          overwritten by the triangular factor U or L from the Cholesky
+*          factorization B = U**H*U or B = L*L**H.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The length of the array WORK.  LWORK >= max(1,2*N-1).
+*          For optimal efficiency, LWORK >= (NB+1)*N,
+*          where NB is the blocksize for ZHETRD returned by ILAENV.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (max(1, 3*N-2))
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  ZPOTRF or ZHEEV returned an error code:
+*             <= N:  if INFO = i, ZHEEV failed to converge;
+*                    i off-diagonal elements of an intermediate
+*                    tridiagonal form did not converge to zero;
+*             > N:   if INFO = N + i, for 1 <= i <= N, then the leading
+*                    minor of order i of B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="zhegvd"></A>
   <H2>zhegvd</H2>
@@ -186,6 +1141,194 @@ FORTRAN MANUAL
 *  converge (NEIG in old code could be greater than N causing out of
 *  bounds reference to A - reported by Ralf Meyer).  Also corrected the
 *  description of INFO and the test on ITYPE. Sven, 16 Feb 05.
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zhegvx"></A>
+  <H2>zhegvx</H2>
+  Computes selected eigenvalues, and optionally, the eigenvectors of
+  <PRE>
+USAGE:
+  m, w, z, work, ifail, info, a, b = NumRu::Lapack.zhegvx( itype, jobz, range, uplo, a, b, vl, vu, il, iu, abstol, ldz, lwork)
+    or
+  NumRu::Lapack.zhegvx  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZHEGVX( ITYPE, JOBZ, RANGE, UPLO, N, A, LDA, B, LDB, VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, LWORK, RWORK, IWORK, IFAIL, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZHEGVX computes selected eigenvalues, and optionally, eigenvectors
+*  of a complex generalized Hermitian-definite eigenproblem, of the form
+*  A*x=(lambda)*B*x,  A*Bx=(lambda)*x,  or B*A*x=(lambda)*x.  Here A and
+*  B are assumed to be Hermitian and B is also positive definite.
+*  Eigenvalues and eigenvectors can be selected by specifying either a
+*  range of values or a range of indices for the desired eigenvalues.
+*
+
+*  Arguments
+*  =========
+*
+*  ITYPE   (input) INTEGER
+*          Specifies the problem type to be solved:
+*          = 1:  A*x = (lambda)*B*x
+*          = 2:  A*B*x = (lambda)*x
+*          = 3:  B*A*x = (lambda)*x
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  RANGE   (input) CHARACTER*1
+*          = 'A': all eigenvalues will be found.
+*          = 'V': all eigenvalues in the half-open interval (VL,VU]
+*                 will be found.
+*          = 'I': the IL-th through IU-th eigenvalues will be found.
+**
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangles of A and B are stored;
+*          = 'L':  Lower triangles of A and B are stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA, N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the
+*          leading N-by-N upper triangular part of A contains the
+*          upper triangular part of the matrix A.  If UPLO = 'L',
+*          the leading N-by-N lower triangular part of A contains
+*          the lower triangular part of the matrix A.
+*
+*          On exit,  the lower triangle (if UPLO='L') or the upper
+*          triangle (if UPLO='U') of A, including the diagonal, is
+*          destroyed.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input/output) COMPLEX*16 array, dimension (LDB, N)
+*          On entry, the Hermitian matrix B.  If UPLO = 'U', the
+*          leading N-by-N upper triangular part of B contains the
+*          upper triangular part of the matrix B.  If UPLO = 'L',
+*          the leading N-by-N lower triangular part of B contains
+*          the lower triangular part of the matrix B.
+*
+*          On exit, if INFO <= N, the part of B containing the matrix is
+*          overwritten by the triangular factor U or L from the Cholesky
+*          factorization B = U**H*U or B = L*L**H.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  VL      (input) DOUBLE PRECISION
+*  VU      (input) DOUBLE PRECISION
+*          If RANGE='V', the lower and upper bounds of the interval to
+*          be searched for eigenvalues. VL < VU.
+*          Not referenced if RANGE = 'A' or 'I'.
+*
+*  IL      (input) INTEGER
+*  IU      (input) INTEGER
+*          If RANGE='I', the indices (in ascending order) of the
+*          smallest and largest eigenvalues to be returned.
+*          1 <= IL <= IU <= N, if N > 0; IL = 1 and IU = 0 if N = 0.
+*          Not referenced if RANGE = 'A' or 'V'.
+*
+*  ABSTOL  (input) DOUBLE PRECISION
+*          The absolute error tolerance for the eigenvalues.
+*          An approximate eigenvalue is accepted as converged
+*          when it is determined to lie in an interval [a,b]
+*          of width less than or equal to
+*
+*                  ABSTOL + EPS *   max( |a|,|b| ) ,
+*
+*          where EPS is the machine precision.  If ABSTOL is less than
+*          or equal to zero, then  EPS*|T|  will be used in its place,
+*          where |T| is the 1-norm of the tridiagonal matrix obtained
+*          by reducing A to tridiagonal form.
+*
+*          Eigenvalues will be computed most accurately when ABSTOL is
+*          set to twice the underflow threshold 2*DLAMCH('S'), not zero.
+*          If this routine returns with INFO>0, indicating that some
+*          eigenvectors did not converge, try setting ABSTOL to
+*          2*DLAMCH('S').
+*
+*  M       (output) INTEGER
+*          The total number of eigenvalues found.  0 <= M <= N.
+*          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          The first M elements contain the selected
+*          eigenvalues in ascending order.
+*
+*  Z       (output) COMPLEX*16 array, dimension (LDZ, max(1,M))
+*          If JOBZ = 'N', then Z is not referenced.
+*          If JOBZ = 'V', then if INFO = 0, the first M columns of Z
+*          contain the orthonormal eigenvectors of the matrix A
+*          corresponding to the selected eigenvalues, with the i-th
+*          column of Z holding the eigenvector associated with W(i).
+*          The eigenvectors are normalized as follows:
+*          if ITYPE = 1 or 2, Z**T*B*Z = I;
+*          if ITYPE = 3, Z**T*inv(B)*Z = I.
+*
+*          If an eigenvector fails to converge, then that column of Z
+*          contains the latest approximation to the eigenvector, and the
+*          index of the eigenvector is returned in IFAIL.
+*          Note: the user must ensure that at least max(1,M) columns are
+*          supplied in the array Z; if RANGE = 'V', the exact value of M
+*          is not known in advance and an upper bound must be used.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The length of the array WORK.  LWORK >= max(1,2*N).
+*          For optimal efficiency, LWORK >= (NB+1)*N,
+*          where NB is the blocksize for ZHETRD returned by ILAENV.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (7*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (5*N)
+*
+*  IFAIL   (output) INTEGER array, dimension (N)
+*          If JOBZ = 'V', then if INFO = 0, the first M elements of
+*          IFAIL are zero.  If INFO > 0, then IFAIL contains the
+*          indices of the eigenvectors that failed to converge.
+*          If JOBZ = 'N', then IFAIL is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  ZPOTRF or ZHEEVX returned an error code:
+*             <= N:  if INFO = i, ZHEEVX failed to converge;
+*                    i eigenvectors failed to converge.  Their indices
+*                    are stored in array IFAIL.
+*             > N:   if INFO = N + i, for 1 <= i <= N, then the leading
+*                    minor of order i of B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
+*
 *  =====================================================================
 *
 
@@ -425,145 +1568,6 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="zhetrf"></A>
-  <H2>zhetrf</H2>
-  Computes the factorization of a complex Hermitian-indefinite matrix,
-  <PRE>
-USAGE:
-  ipiv, work, info, a = NumRu::Lapack.zhetrf( uplo, a, lwork)
-    or
-  NumRu::Lapack.zhetrf  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZHETRF( UPLO, N, A, LDA, IPIV, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZHETRF computes the factorization of a complex Hermitian matrix A
-*  using the Bunch-Kaufman diagonal pivoting method.  The form of the
-*  factorization is
-*
-*     A = U*D*U**H  or  A = L*D*L**H
-*
-*  where U (or L) is a product of permutation and unit upper (lower)
-*  triangular matrices, and D is Hermitian and block diagonal with
-*  1-by-1 and 2-by-2 diagonal blocks.
-*
-*  This is the blocked version of the algorithm, calling Level 3 BLAS.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
-*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
-*          N-by-N upper triangular part of A contains the upper
-*          triangular part of the matrix A, and the strictly lower
-*          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading N-by-N lower triangular part of A contains the lower
-*          triangular part of the matrix A, and the strictly upper
-*          triangular part of A is not referenced.
-*
-*          On exit, the block diagonal matrix D and the multipliers used
-*          to obtain the factor U or L (see below for further details).
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  IPIV    (output) INTEGER array, dimension (N)
-*          Details of the interchanges and the block structure of D.
-*          If IPIV(k) > 0, then rows and columns k and IPIV(k) were
-*          interchanged and D(k,k) is a 1-by-1 diagonal block.
-*          If UPLO = 'U' and IPIV(k) = IPIV(k-1) < 0, then rows and
-*          columns k-1 and -IPIV(k) were interchanged and D(k-1:k,k-1:k)
-*          is a 2-by-2 diagonal block.  If UPLO = 'L' and IPIV(k) =
-*          IPIV(k+1) < 0, then rows and columns k+1 and -IPIV(k) were
-*          interchanged and D(k:k+1,k:k+1) is a 2-by-2 diagonal block.
-*
-*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The length of WORK.  LWORK >=1.  For best performance
-*          LWORK >= N*NB, where NB is the block size returned by ILAENV.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, D(i,i) is exactly zero.  The factorization
-*                has been completed, but the block diagonal matrix D is
-*                exactly singular, and division by zero will occur if it
-*                is used to solve a system of equations.
-*
-
-*  Further Details
-*  ===============
-*
-*  If UPLO = 'U', then A = U*D*U', where
-*     U = P(n)*U(n)* ... *P(k)U(k)* ...,
-*  i.e., U is a product of terms P(k)*U(k), where k decreases from n to
-*  1 in steps of 1 or 2, and D is a block diagonal matrix with 1-by-1
-*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
-*  defined by IPIV(k), and U(k) is a unit upper triangular matrix, such
-*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
-*
-*             (   I    v    0   )   k-s
-*     U(k) =  (   0    I    0   )   s
-*             (   0    0    I   )   n-k
-*                k-s   s   n-k
-*
-*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(1:k-1,k).
-*  If s = 2, the upper triangle of D(k) overwrites A(k-1,k-1), A(k-1,k),
-*  and A(k,k), and v overwrites A(1:k-2,k-1:k).
-*
-*  If UPLO = 'L', then A = L*D*L', where
-*     L = P(1)*L(1)* ... *P(k)*L(k)* ...,
-*  i.e., L is a product of terms P(k)*L(k), where k increases from 1 to
-*  n in steps of 1 or 2, and D is a block diagonal matrix with 1-by-1
-*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
-*  defined by IPIV(k), and L(k) is a unit lower triangular matrix, such
-*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
-*
-*             (   I    0     0   )  k-1
-*     L(k) =  (   0    I     0   )  s
-*             (   0    v     I   )  n-k-s+1
-*                k-1   s  n-k-s+1
-*
-*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(k+1:n,k).
-*  If s = 2, the lower triangle of D(k) overwrites A(k,k), A(k+1,k),
-*  and A(k+1,k+1), and v overwrites A(k+2:n,k:k+1).
-*
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      LOGICAL            LQUERY, UPPER
-      INTEGER            IINFO, IWS, J, K, KB, LDWORK, LWKOPT, NB, NBMIN
-*     ..
-*     .. External Functions ..
-      LOGICAL            LSAME
-      INTEGER            ILAENV
-      EXTERNAL           LSAME, ILAENV
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           XERBLA, ZHETF2, ZLAHEF
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
   <A NAME="zhesvx"></A>
   <H2>zhesvx</H2>
   Solves a complex Hermitian
@@ -753,304 +1757,121 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="zhegs2"></A>
-  <H2>zhegs2</H2>
+  <A NAME="zhetd2"></A>
+  <H2>zhetd2</H2>
   
   <PRE>
 USAGE:
-  info, a = NumRu::Lapack.zhegs2( itype, uplo, a, b)
+  d, e, tau, info, a = NumRu::Lapack.zhetd2( uplo, a)
     or
-  NumRu::Lapack.zhegs2  # print help
+  NumRu::Lapack.zhetd2  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE ZHEGS2( ITYPE, UPLO, N, A, LDA, B, LDB, INFO )
+      SUBROUTINE ZHETD2( UPLO, N, A, LDA, D, E, TAU, INFO )
 
 *  Purpose
 *  =======
 *
-*  ZHEGS2 reduces a complex Hermitian-definite generalized
-*  eigenproblem to standard form.
-*
-*  If ITYPE = 1, the problem is A*x = lambda*B*x,
-*  and A is overwritten by inv(U')*A*inv(U) or inv(L)*A*inv(L')
-*
-*  If ITYPE = 2 or 3, the problem is A*B*x = lambda*x or
-*  B*A*x = lambda*x, and A is overwritten by U*A*U` or L'*A*L.
-*
-*  B must have been previously factorized as U'*U or L*L' by ZPOTRF.
+*  ZHETD2 reduces a complex Hermitian matrix A to real symmetric
+*  tridiagonal form T by a unitary similarity transformation:
+*  Q' * A * Q = T.
 *
 
 *  Arguments
 *  =========
 *
-*  ITYPE   (input) INTEGER
-*          = 1: compute inv(U')*A*inv(U) or inv(L)*A*inv(L');
-*          = 2 or 3: compute U*A*U' or L'*A*L.
-*
 *  UPLO    (input) CHARACTER*1
 *          Specifies whether the upper or lower triangular part of the
-*          Hermitian matrix A is stored, and how B has been factorized.
+*          Hermitian matrix A is stored:
 *          = 'U':  Upper triangular
 *          = 'L':  Lower triangular
 *
 *  N       (input) INTEGER
-*          The order of the matrices A and B.  N >= 0.
+*          The order of the matrix A.  N >= 0.
 *
 *  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
 *          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
-*          n by n upper triangular part of A contains the upper
+*          n-by-n upper triangular part of A contains the upper
 *          triangular part of the matrix A, and the strictly lower
 *          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading n by n lower triangular part of A contains the lower
+*          leading n-by-n lower triangular part of A contains the lower
 *          triangular part of the matrix A, and the strictly upper
 *          triangular part of A is not referenced.
-*
-*          On exit, if INFO = 0, the transformed matrix, stored in the
-*          same format as A.
+*          On exit, if UPLO = 'U', the diagonal and first superdiagonal
+*          of A are overwritten by the corresponding elements of the
+*          tridiagonal matrix T, and the elements above the first
+*          superdiagonal, with the array TAU, represent the unitary
+*          matrix Q as a product of elementary reflectors; if UPLO
+*          = 'L', the diagonal and first subdiagonal of A are over-
+*          written by the corresponding elements of the tridiagonal
+*          matrix T, and the elements below the first subdiagonal, with
+*          the array TAU, represent the unitary matrix Q as a product
+*          of elementary reflectors. See Further Details.
 *
 *  LDA     (input) INTEGER
 *          The leading dimension of the array A.  LDA >= max(1,N).
 *
-*  B       (input) COMPLEX*16 array, dimension (LDB,N)
-*          The triangular factor from the Cholesky factorization of B,
-*          as returned by ZPOTRF.
+*  D       (output) DOUBLE PRECISION array, dimension (N)
+*          The diagonal elements of the tridiagonal matrix T:
+*          D(i) = A(i,i).
 *
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
+*  E       (output) DOUBLE PRECISION array, dimension (N-1)
+*          The off-diagonal elements of the tridiagonal matrix T:
+*          E(i) = A(i,i+1) if UPLO = 'U', E(i) = A(i+1,i) if UPLO = 'L'.
+*
+*  TAU     (output) COMPLEX*16 array, dimension (N-1)
+*          The scalar factors of the elementary reflectors (see Further
+*          Details).
 *
 *  INFO    (output) INTEGER
-*          = 0:  successful exit.
+*          = 0:  successful exit
 *          < 0:  if INFO = -i, the i-th argument had an illegal value.
 *
 
-*  =====================================================================
+*  Further Details
+*  ===============
 *
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zhetri"></A>
-  <H2>zhetri</H2>
-  Computes the inverse of a complex Hermitian indefinite matrix,
-  <PRE>
-USAGE:
-  info, a = NumRu::Lapack.zhetri( uplo, a, ipiv)
-    or
-  NumRu::Lapack.zhetri  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZHETRI( UPLO, N, A, LDA, IPIV, WORK, INFO )
-
-*  Purpose
-*  =======
+*  If UPLO = 'U', the matrix Q is represented as a product of elementary
+*  reflectors
 *
-*  ZHETRI computes the inverse of a complex Hermitian indefinite matrix
-*  A using the factorization A = U*D*U**H or A = L*D*L**H computed by
-*  ZHETRF.
+*     Q = H(n-1) . . . H(2) H(1).
 *
-
-*  Arguments
-*  =========
+*  Each H(i) has the form
 *
-*  UPLO    (input) CHARACTER*1
-*          Specifies whether the details of the factorization are stored
-*          as an upper or lower triangular matrix.
-*          = 'U':  Upper triangular, form is A = U*D*U**H;
-*          = 'L':  Lower triangular, form is A = L*D*L**H.
+*     H(i) = I - tau * v * v'
 *
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
+*  where tau is a complex scalar, and v is a complex vector with
+*  v(i+1:n) = 0 and v(i) = 1; v(1:i-1) is stored on exit in
+*  A(1:i-1,i+1), and tau in TAU(i).
 *
-*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
-*          On entry, the block diagonal matrix D and the multipliers
-*          used to obtain the factor U or L as computed by ZHETRF.
+*  If UPLO = 'L', the matrix Q is represented as a product of elementary
+*  reflectors
 *
-*          On exit, if INFO = 0, the (Hermitian) inverse of the original
-*          matrix.  If UPLO = 'U', the upper triangular part of the
-*          inverse is formed and the part of A below the diagonal is not
-*          referenced; if UPLO = 'L' the lower triangular part of the
-*          inverse is formed and the part of A above the diagonal is
-*          not referenced.
+*     Q = H(1) H(2) . . . H(n-1).
 *
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
+*  Each H(i) has the form
 *
-*  IPIV    (input) INTEGER array, dimension (N)
-*          Details of the interchanges and the block structure of D
-*          as determined by ZHETRF.
+*     H(i) = I - tau * v * v'
 *
-*  WORK    (workspace) COMPLEX*16 array, dimension (N)
+*  where tau is a complex scalar, and v is a complex vector with
+*  v(1:i) = 0 and v(i+1) = 1; v(i+2:n) is stored on exit in A(i+2:n,i),
+*  and tau in TAU(i).
 *
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*          > 0: if INFO = i, D(i,i) = 0; the matrix is singular and its
-*               inverse could not be computed.
+*  The contents of A on exit are illustrated by the following examples
+*  with n = 5:
 *
-
-*  =====================================================================
+*  if UPLO = 'U':                       if UPLO = 'L':
 *
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zheev"></A>
-  <H2>zheev</H2>
-  Computes all eigenvalues and, optionally, eigenvectors of a complex
-  <PRE>
-USAGE:
-  w, work, info, a = NumRu::Lapack.zheev( jobz, uplo, a, lwork)
-    or
-  NumRu::Lapack.zheev  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZHEEV( JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, RWORK, INFO )
-
-*  Purpose
-*  =======
+*    (  d   e   v2  v3  v4 )              (  d                  )
+*    (      d   e   v3  v4 )              (  e   d              )
+*    (          d   e   v4 )              (  v1  e   d          )
+*    (              d   e  )              (  v1  v2  e   d      )
+*    (                  d  )              (  v1  v2  v3  e   d  )
 *
-*  ZHEEV computes all eigenvalues and, optionally, eigenvectors of a
-*  complex Hermitian matrix A.
+*  where d and e denote diagonal and off-diagonal elements of T, and vi
+*  denotes an element of the vector defining H(i).
 *
-
-*  Arguments
-*  =========
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA, N)
-*          On entry, the Hermitian matrix A.  If UPLO = 'U', the
-*          leading N-by-N upper triangular part of A contains the
-*          upper triangular part of the matrix A.  If UPLO = 'L',
-*          the leading N-by-N lower triangular part of A contains
-*          the lower triangular part of the matrix A.
-*          On exit, if JOBZ = 'V', then if INFO = 0, A contains the
-*          orthonormal eigenvectors of the matrix A.
-*          If JOBZ = 'N', then on exit the lower triangle (if UPLO='L')
-*          or the upper triangle (if UPLO='U') of A, including the
-*          diagonal, is destroyed.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  W       (output) DOUBLE PRECISION array, dimension (N)
-*          If INFO = 0, the eigenvalues in ascending order.
-*
-*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The length of the array WORK.  LWORK >= max(1,2*N-1).
-*          For optimal efficiency, LWORK >= (NB+1)*N,
-*          where NB is the blocksize for ZHETRD returned by ILAENV.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  RWORK   (workspace) DOUBLE PRECISION array, dimension (max(1, 3*N-2))
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, the algorithm failed to converge; i
-*                off-diagonal elements of an intermediate tridiagonal
-*                form did not converge to zero.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zhegst"></A>
-  <H2>zhegst</H2>
-  Reduces a Hermitian-definite generalized eigenproblem
-  <PRE>
-USAGE:
-  info, a = NumRu::Lapack.zhegst( itype, uplo, a, b)
-    or
-  NumRu::Lapack.zhegst  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZHEGST( ITYPE, UPLO, N, A, LDA, B, LDB, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZHEGST reduces a complex Hermitian-definite generalized
-*  eigenproblem to standard form.
-*
-*  If ITYPE = 1, the problem is A*x = lambda*B*x,
-*  and A is overwritten by inv(U**H)*A*inv(U) or inv(L)*A*inv(L**H)
-*
-*  If ITYPE = 2 or 3, the problem is A*B*x = lambda*x or
-*  B*A*x = lambda*x, and A is overwritten by U*A*U**H or L**H*A*L.
-*
-*  B must have been previously factorized as U**H*U or L*L**H by ZPOTRF.
-*
-
-*  Arguments
-*  =========
-*
-*  ITYPE   (input) INTEGER
-*          = 1: compute inv(U**H)*A*inv(U) or inv(L)*A*inv(L**H);
-*          = 2 or 3: compute U*A*U**H or L**H*A*L.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored and B is factored as
-*                  U**H*U;
-*          = 'L':  Lower triangle of A is stored and B is factored as
-*                  L*L**H.
-*
-*  N       (input) INTEGER
-*          The order of the matrices A and B.  N >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
-*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
-*          N-by-N upper triangular part of A contains the upper
-*          triangular part of the matrix A, and the strictly lower
-*          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading N-by-N lower triangular part of A contains the lower
-*          triangular part of the matrix A, and the strictly upper
-*          triangular part of A is not referenced.
-*
-*          On exit, if INFO = 0, the transformed matrix, stored in the
-*          same format as A.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  B       (input) COMPLEX*16 array, dimension (LDB,N)
-*          The triangular factor from the Cholesky factorization of B,
-*          as returned by ZPOTRF.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
 *  =====================================================================
 *
 
@@ -1321,28 +2142,164 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="zhecon"></A>
-  <H2>zhecon</H2>
-  Estimates the reciprocal of the condition number of a
+  <A NAME="zhetrf"></A>
+  <H2>zhetrf</H2>
+  Computes the factorization of a complex Hermitian-indefinite matrix,
   <PRE>
 USAGE:
-  rcond, info = NumRu::Lapack.zhecon( uplo, a, ipiv, anorm)
+  ipiv, work, info, a = NumRu::Lapack.zhetrf( uplo, a, lwork)
     or
-  NumRu::Lapack.zhecon  # print help
+  NumRu::Lapack.zhetrf  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE ZHECON( UPLO, N, A, LDA, IPIV, ANORM, RCOND, WORK, INFO )
+      SUBROUTINE ZHETRF( UPLO, N, A, LDA, IPIV, WORK, LWORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  ZHECON estimates the reciprocal of the condition number of a complex
-*  Hermitian matrix A using the factorization A = U*D*U**H or
-*  A = L*D*L**H computed by ZHETRF.
+*  ZHETRF computes the factorization of a complex Hermitian matrix A
+*  using the Bunch-Kaufman diagonal pivoting method.  The form of the
+*  factorization is
 *
-*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
-*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
+*     A = U*D*U**H  or  A = L*D*L**H
+*
+*  where U (or L) is a product of permutation and unit upper (lower)
+*  triangular matrices, and D is Hermitian and block diagonal with
+*  1-by-1 and 2-by-2 diagonal blocks.
+*
+*  This is the blocked version of the algorithm, calling Level 3 BLAS.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
+*          N-by-N upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading N-by-N lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*
+*          On exit, the block diagonal matrix D and the multipliers used
+*          to obtain the factor U or L (see below for further details).
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  IPIV    (output) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D.
+*          If IPIV(k) > 0, then rows and columns k and IPIV(k) were
+*          interchanged and D(k,k) is a 1-by-1 diagonal block.
+*          If UPLO = 'U' and IPIV(k) = IPIV(k-1) < 0, then rows and
+*          columns k-1 and -IPIV(k) were interchanged and D(k-1:k,k-1:k)
+*          is a 2-by-2 diagonal block.  If UPLO = 'L' and IPIV(k) =
+*          IPIV(k+1) < 0, then rows and columns k+1 and -IPIV(k) were
+*          interchanged and D(k:k+1,k:k+1) is a 2-by-2 diagonal block.
+*
+*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The length of WORK.  LWORK >=1.  For best performance
+*          LWORK >= N*NB, where NB is the block size returned by ILAENV.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, D(i,i) is exactly zero.  The factorization
+*                has been completed, but the block diagonal matrix D is
+*                exactly singular, and division by zero will occur if it
+*                is used to solve a system of equations.
+*
+
+*  Further Details
+*  ===============
+*
+*  If UPLO = 'U', then A = U*D*U', where
+*     U = P(n)*U(n)* ... *P(k)U(k)* ...,
+*  i.e., U is a product of terms P(k)*U(k), where k decreases from n to
+*  1 in steps of 1 or 2, and D is a block diagonal matrix with 1-by-1
+*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
+*  defined by IPIV(k), and U(k) is a unit upper triangular matrix, such
+*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
+*
+*             (   I    v    0   )   k-s
+*     U(k) =  (   0    I    0   )   s
+*             (   0    0    I   )   n-k
+*                k-s   s   n-k
+*
+*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(1:k-1,k).
+*  If s = 2, the upper triangle of D(k) overwrites A(k-1,k-1), A(k-1,k),
+*  and A(k,k), and v overwrites A(1:k-2,k-1:k).
+*
+*  If UPLO = 'L', then A = L*D*L', where
+*     L = P(1)*L(1)* ... *P(k)*L(k)* ...,
+*  i.e., L is a product of terms P(k)*L(k), where k increases from 1 to
+*  n in steps of 1 or 2, and D is a block diagonal matrix with 1-by-1
+*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
+*  defined by IPIV(k), and L(k) is a unit lower triangular matrix, such
+*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
+*
+*             (   I    0     0   )  k-1
+*     L(k) =  (   0    I     0   )  s
+*             (   0    v     I   )  n-k-s+1
+*                k-1   s  n-k-s+1
+*
+*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(k+1:n,k).
+*  If s = 2, the lower triangle of D(k) overwrites A(k,k), A(k+1,k),
+*  and A(k+1,k+1), and v overwrites A(k+2:n,k:k+1).
+*
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            LQUERY, UPPER
+      INTEGER            IINFO, IWS, J, K, KB, LDWORK, LWKOPT, NB, NBMIN
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      INTEGER            ILAENV
+      EXTERNAL           LSAME, ILAENV
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           XERBLA, ZHETF2, ZLAHEF
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zhetri"></A>
+  <H2>zhetri</H2>
+  Computes the inverse of a complex Hermitian indefinite matrix,
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.zhetri( uplo, a, ipiv)
+    or
+  NumRu::Lapack.zhetri  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZHETRI( UPLO, N, A, LDA, IPIV, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZHETRI computes the inverse of a complex Hermitian indefinite matrix
+*  A using the factorization A = U*D*U**H or A = L*D*L**H computed by
+*  ZHETRF.
 *
 
 *  Arguments
@@ -1357,9 +2314,16 @@ FORTRAN MANUAL
 *  N       (input) INTEGER
 *          The order of the matrix A.  N >= 0.
 *
-*  A       (input) COMPLEX*16 array, dimension (LDA,N)
-*          The block diagonal matrix D and the multipliers used to
-*          obtain the factor U or L as computed by ZHETRF.
+*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+*          On entry, the block diagonal matrix D and the multipliers
+*          used to obtain the factor U or L as computed by ZHETRF.
+*
+*          On exit, if INFO = 0, the (Hermitian) inverse of the original
+*          matrix.  If UPLO = 'U', the upper triangular part of the
+*          inverse is formed and the part of A below the diagonal is not
+*          referenced; if UPLO = 'L' the lower triangular part of the
+*          inverse is formed and the part of A above the diagonal is
+*          not referenced.
 *
 *  LDA     (input) INTEGER
 *          The leading dimension of the array A.  LDA >= max(1,N).
@@ -1368,19 +2332,13 @@ FORTRAN MANUAL
 *          Details of the interchanges and the block structure of D
 *          as determined by ZHETRF.
 *
-*  ANORM   (input) DOUBLE PRECISION
-*          The 1-norm of the original matrix A.
-*
-*  RCOND   (output) DOUBLE PRECISION
-*          The reciprocal of the condition number of the matrix A,
-*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
-*          estimate of the 1-norm of inv(A) computed in this routine.
-*
-*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
+*  WORK    (workspace) COMPLEX*16 array, dimension (N)
 *
 *  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, D(i,i) = 0; the matrix is singular and its
+*               inverse could not be computed.
 *
 
 *  =====================================================================
@@ -1448,964 +2406,6 @@ FORTRAN MANUAL
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
 *          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zheevr"></A>
-  <H2>zheevr</H2>
-  Computes selected eigenvalues, and optionally, eigenvectors of a complex
-  <PRE>
-USAGE:
-  m, w, z, isuppz, work, rwork, iwork, info, a = NumRu::Lapack.zheevr( jobz, range, uplo, a, vl, vu, il, iu, abstol, lwork, lrwork, liwork)
-    or
-  NumRu::Lapack.zheevr  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZHEEVR( JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, ISUPPZ, WORK, LWORK, RWORK, LRWORK, IWORK, LIWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZHEEVR computes selected eigenvalues and, optionally, eigenvectors
-*  of a complex Hermitian matrix A.  Eigenvalues and eigenvectors can
-*  be selected by specifying either a range of values or a range of
-*  indices for the desired eigenvalues.
-*
-*  ZHEEVR first reduces the matrix A to tridiagonal form T with a call
-*  to ZHETRD.  Then, whenever possible, ZHEEVR calls ZSTEMR to compute
-*  eigenspectrum using Relatively Robust Representations.  ZSTEMR
-*  computes eigenvalues by the dqds algorithm, while orthogonal
-*  eigenvectors are computed from various "good" L D L^T representations
-*  (also known as Relatively Robust Representations). Gram-Schmidt
-*  orthogonalization is avoided as far as possible. More specifically,
-*  the various steps of the algorithm are as follows.
-*
-*  For each unreduced block (submatrix) of T,
-*     (a) Compute T - sigma I  = L D L^T, so that L and D
-*         define all the wanted eigenvalues to high relative accuracy.
-*         This means that small relative changes in the entries of D and L
-*         cause only small relative changes in the eigenvalues and
-*         eigenvectors. The standard (unfactored) representation of the
-*         tridiagonal matrix T does not have this property in general.
-*     (b) Compute the eigenvalues to suitable accuracy.
-*         If the eigenvectors are desired, the algorithm attains full
-*         accuracy of the computed eigenvalues only right before
-*         the corresponding vectors have to be computed, see steps c) and d).
-*     (c) For each cluster of close eigenvalues, select a new
-*         shift close to the cluster, find a new factorization, and refine
-*         the shifted eigenvalues to suitable accuracy.
-*     (d) For each eigenvalue with a large enough relative separation compute
-*         the corresponding eigenvector by forming a rank revealing twisted
-*         factorization. Go back to (c) for any clusters that remain.
-*
-*  The desired accuracy of the output can be specified by the input
-*  parameter ABSTOL.
-*
-*  For more details, see DSTEMR's documentation and:
-*  - Inderjit S. Dhillon and Beresford N. Parlett: "Multiple representations
-*    to compute orthogonal eigenvectors of symmetric tridiagonal matrices,"
-*    Linear Algebra and its Applications, 387(1), pp. 1-28, August 2004.
-*  - Inderjit Dhillon and Beresford Parlett: "Orthogonal Eigenvectors and
-*    Relative Gaps," SIAM Journal on Matrix Analysis and Applications, Vol. 25,
-*    2004.  Also LAPACK Working Note 154.
-*  - Inderjit Dhillon: "A new O(n^2) algorithm for the symmetric
-*    tridiagonal eigenvalue/eigenvector problem",
-*    Computer Science Division Technical Report No. UCB/CSD-97-971,
-*    UC Berkeley, May 1997.
-*
-*
-*  Note 1 : ZHEEVR calls ZSTEMR when the full spectrum is requested
-*  on machines which conform to the ieee-754 floating point standard.
-*  ZHEEVR calls DSTEBZ and ZSTEIN on non-ieee machines and
-*  when partial spectrum requests are made.
-*
-*  Normal execution of ZSTEMR may create NaNs and infinities and
-*  hence may abort due to a floating point exception in environments
-*  which do not handle NaNs and infinities in the ieee standard default
-*  manner.
-*
-
-*  Arguments
-*  =========
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  RANGE   (input) CHARACTER*1
-*          = 'A': all eigenvalues will be found.
-*          = 'V': all eigenvalues in the half-open interval (VL,VU]
-*                 will be found.
-*          = 'I': the IL-th through IU-th eigenvalues will be found.
-********** For RANGE = 'V' or 'I' and IU - IL < N - 1, DSTEBZ and
-********** ZSTEIN are called
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA, N)
-*          On entry, the Hermitian matrix A.  If UPLO = 'U', the
-*          leading N-by-N upper triangular part of A contains the
-*          upper triangular part of the matrix A.  If UPLO = 'L',
-*          the leading N-by-N lower triangular part of A contains
-*          the lower triangular part of the matrix A.
-*          On exit, the lower triangle (if UPLO='L') or the upper
-*          triangle (if UPLO='U') of A, including the diagonal, is
-*          destroyed.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  VL      (input) DOUBLE PRECISION
-*  VU      (input) DOUBLE PRECISION
-*          If RANGE='V', the lower and upper bounds of the interval to
-*          be searched for eigenvalues. VL < VU.
-*          Not referenced if RANGE = 'A' or 'I'.
-*
-*  IL      (input) INTEGER
-*  IU      (input) INTEGER
-*          If RANGE='I', the indices (in ascending order) of the
-*          smallest and largest eigenvalues to be returned.
-*          1 <= IL <= IU <= N, if N > 0; IL = 1 and IU = 0 if N = 0.
-*          Not referenced if RANGE = 'A' or 'V'.
-*
-*  ABSTOL  (input) DOUBLE PRECISION
-*          The absolute error tolerance for the eigenvalues.
-*          An approximate eigenvalue is accepted as converged
-*          when it is determined to lie in an interval [a,b]
-*          of width less than or equal to
-*
-*                  ABSTOL + EPS *   max( |a|,|b| ) ,
-*
-*          where EPS is the machine precision.  If ABSTOL is less than
-*          or equal to zero, then  EPS*|T|  will be used in its place,
-*          where |T| is the 1-norm of the tridiagonal matrix obtained
-*          by reducing A to tridiagonal form.
-*
-*          See "Computing Small Singular Values of Bidiagonal Matrices
-*          with Guaranteed High Relative Accuracy," by Demmel and
-*          Kahan, LAPACK Working Note #3.
-*
-*          If high relative accuracy is important, set ABSTOL to
-*          DLAMCH( 'Safe minimum' ).  Doing so will guarantee that
-*          eigenvalues are computed to high relative accuracy when
-*          possible in future releases.  The current code does not
-*          make any guarantees about high relative accuracy, but
-*          furutre releases will. See J. Barlow and J. Demmel,
-*          "Computing Accurate Eigensystems of Scaled Diagonally
-*          Dominant Matrices", LAPACK Working Note #7, for a discussion
-*          of which matrices define their eigenvalues to high relative
-*          accuracy.
-*
-*  M       (output) INTEGER
-*          The total number of eigenvalues found.  0 <= M <= N.
-*          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
-*
-*  W       (output) DOUBLE PRECISION array, dimension (N)
-*          The first M elements contain the selected eigenvalues in
-*          ascending order.
-*
-*  Z       (output) COMPLEX*16 array, dimension (LDZ, max(1,M))
-*          If JOBZ = 'V', then if INFO = 0, the first M columns of Z
-*          contain the orthonormal eigenvectors of the matrix A
-*          corresponding to the selected eigenvalues, with the i-th
-*          column of Z holding the eigenvector associated with W(i).
-*          If JOBZ = 'N', then Z is not referenced.
-*          Note: the user must ensure that at least max(1,M) columns are
-*          supplied in the array Z; if RANGE = 'V', the exact value of M
-*          is not known in advance and an upper bound must be used.
-*
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z.  LDZ >= 1, and if
-*          JOBZ = 'V', LDZ >= max(1,N).
-*
-*  ISUPPZ  (output) INTEGER array, dimension ( 2*max(1,M) )
-*          The support of the eigenvectors in Z, i.e., the indices
-*          indicating the nonzero elements in Z. The i-th eigenvector
-*          is nonzero only in elements ISUPPZ( 2*i-1 ) through
-*          ISUPPZ( 2*i ).
-********** Implemented only for RANGE = 'A' or 'I' and IU - IL = N - 1
-*
-*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The length of the array WORK.  LWORK >= max(1,2*N).
-*          For optimal efficiency, LWORK >= (NB+1)*N,
-*          where NB is the max of the blocksize for ZHETRD and for
-*          ZUNMTR as returned by ILAENV.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal sizes of the WORK, RWORK and
-*          IWORK arrays, returns these values as the first entries of
-*          the WORK, RWORK and IWORK arrays, and no error message
-*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
-*
-*  RWORK   (workspace/output) DOUBLE PRECISION array, dimension (MAX(1,LRWORK))
-*          On exit, if INFO = 0, RWORK(1) returns the optimal
-*          (and minimal) LRWORK.
-*
-* LRWORK   (input) INTEGER
-*          The length of the array RWORK.  LRWORK >= max(1,24*N).
-*
-*          If LRWORK = -1, then a workspace query is assumed; the
-*          routine only calculates the optimal sizes of the WORK, RWORK
-*          and IWORK arrays, returns these values as the first entries
-*          of the WORK, RWORK and IWORK arrays, and no error message
-*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
-*
-*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
-*          On exit, if INFO = 0, IWORK(1) returns the optimal
-*          (and minimal) LIWORK.
-*
-* LIWORK   (input) INTEGER
-*          The dimension of the array IWORK.  LIWORK >= max(1,10*N).
-*
-*          If LIWORK = -1, then a workspace query is assumed; the
-*          routine only calculates the optimal sizes of the WORK, RWORK
-*          and IWORK arrays, returns these values as the first entries
-*          of the WORK, RWORK and IWORK arrays, and no error message
-*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  Internal error
-*
-
-*  Further Details
-*  ===============
-*
-*  Based on contributions by
-*     Inderjit Dhillon, IBM Almaden, USA
-*     Osni Marques, LBNL/NERSC, USA
-*     Ken Stanley, Computer Science Division, University of
-*       California at Berkeley, USA
-*     Jason Riedy, Computer Science Division, University of
-*       California at Berkeley, USA
-*
-* =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zheevd"></A>
-  <H2>zheevd</H2>
-  Computes all eigenvalues and, optionally, eigenvectors of a complex
-  <PRE>
-USAGE:
-  w, work, rwork, iwork, info, a = NumRu::Lapack.zheevd( jobz, uplo, a, lwork, lrwork, liwork)
-    or
-  NumRu::Lapack.zheevd  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZHEEVD( JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, RWORK, LRWORK, IWORK, LIWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZHEEVD computes all eigenvalues and, optionally, eigenvectors of a
-*  complex Hermitian matrix A.  If eigenvectors are desired, it uses a
-*  divide and conquer algorithm.
-*
-*  The divide and conquer algorithm makes very mild assumptions about
-*  floating point arithmetic. It will work on machines with a guard
-*  digit in add/subtract, or on those binary machines without guard
-*  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
-*  Cray-2. It could conceivably fail on hexadecimal or decimal machines
-*  without guard digits, but we know of none.
-*
-
-*  Arguments
-*  =========
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA, N)
-*          On entry, the Hermitian matrix A.  If UPLO = 'U', the
-*          leading N-by-N upper triangular part of A contains the
-*          upper triangular part of the matrix A.  If UPLO = 'L',
-*          the leading N-by-N lower triangular part of A contains
-*          the lower triangular part of the matrix A.
-*          On exit, if JOBZ = 'V', then if INFO = 0, A contains the
-*          orthonormal eigenvectors of the matrix A.
-*          If JOBZ = 'N', then on exit the lower triangle (if UPLO='L')
-*          or the upper triangle (if UPLO='U') of A, including the
-*          diagonal, is destroyed.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  W       (output) DOUBLE PRECISION array, dimension (N)
-*          If INFO = 0, the eigenvalues in ascending order.
-*
-*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The length of the array WORK.
-*          If N <= 1,                LWORK must be at least 1.
-*          If JOBZ  = 'N' and N > 1, LWORK must be at least N + 1.
-*          If JOBZ  = 'V' and N > 1, LWORK must be at least 2*N + N**2.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal sizes of the WORK, RWORK and
-*          IWORK arrays, returns these values as the first entries of
-*          the WORK, RWORK and IWORK arrays, and no error message
-*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
-*
-*  RWORK   (workspace/output) DOUBLE PRECISION array,
-*                                         dimension (LRWORK)
-*          On exit, if INFO = 0, RWORK(1) returns the optimal LRWORK.
-*
-*  LRWORK  (input) INTEGER
-*          The dimension of the array RWORK.
-*          If N <= 1,                LRWORK must be at least 1.
-*          If JOBZ  = 'N' and N > 1, LRWORK must be at least N.
-*          If JOBZ  = 'V' and N > 1, LRWORK must be at least
-*                         1 + 5*N + 2*N**2.
-*
-*          If LRWORK = -1, then a workspace query is assumed; the
-*          routine only calculates the optimal sizes of the WORK, RWORK
-*          and IWORK arrays, returns these values as the first entries
-*          of the WORK, RWORK and IWORK arrays, and no error message
-*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
-*
-*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
-*          On exit, if INFO = 0, IWORK(1) returns the optimal LIWORK.
-*
-*  LIWORK  (input) INTEGER
-*          The dimension of the array IWORK.
-*          If N <= 1,                LIWORK must be at least 1.
-*          If JOBZ  = 'N' and N > 1, LIWORK must be at least 1.
-*          If JOBZ  = 'V' and N > 1, LIWORK must be at least 3 + 5*N.
-*
-*          If LIWORK = -1, then a workspace query is assumed; the
-*          routine only calculates the optimal sizes of the WORK, RWORK
-*          and IWORK arrays, returns these values as the first entries
-*          of the WORK, RWORK and IWORK arrays, and no error message
-*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i and JOBZ = 'N', then the algorithm failed
-*                to converge; i off-diagonal elements of an intermediate
-*                tridiagonal form did not converge to zero;
-*                if INFO = i and JOBZ = 'V', then the algorithm failed
-*                to compute an eigenvalue while working on the submatrix
-*                lying in rows and columns INFO/(N+1) through
-*                mod(INFO,N+1).
-*
-
-*  Further Details
-*  ===============
-*
-*  Based on contributions by
-*     Jeff Rutter, Computer Science Division, University of California
-*     at Berkeley, USA
-*
-*  Modified description of INFO. Sven, 16 Feb 05.
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zhegvx"></A>
-  <H2>zhegvx</H2>
-  Computes selected eigenvalues, and optionally, the eigenvectors of
-  <PRE>
-USAGE:
-  m, w, z, work, ifail, info, a, b = NumRu::Lapack.zhegvx( itype, jobz, range, uplo, a, b, vl, vu, il, iu, abstol, ldz, lwork)
-    or
-  NumRu::Lapack.zhegvx  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZHEGVX( ITYPE, JOBZ, RANGE, UPLO, N, A, LDA, B, LDB, VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, LWORK, RWORK, IWORK, IFAIL, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZHEGVX computes selected eigenvalues, and optionally, eigenvectors
-*  of a complex generalized Hermitian-definite eigenproblem, of the form
-*  A*x=(lambda)*B*x,  A*Bx=(lambda)*x,  or B*A*x=(lambda)*x.  Here A and
-*  B are assumed to be Hermitian and B is also positive definite.
-*  Eigenvalues and eigenvectors can be selected by specifying either a
-*  range of values or a range of indices for the desired eigenvalues.
-*
-
-*  Arguments
-*  =========
-*
-*  ITYPE   (input) INTEGER
-*          Specifies the problem type to be solved:
-*          = 1:  A*x = (lambda)*B*x
-*          = 2:  A*B*x = (lambda)*x
-*          = 3:  B*A*x = (lambda)*x
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  RANGE   (input) CHARACTER*1
-*          = 'A': all eigenvalues will be found.
-*          = 'V': all eigenvalues in the half-open interval (VL,VU]
-*                 will be found.
-*          = 'I': the IL-th through IU-th eigenvalues will be found.
-**
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangles of A and B are stored;
-*          = 'L':  Lower triangles of A and B are stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrices A and B.  N >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA, N)
-*          On entry, the Hermitian matrix A.  If UPLO = 'U', the
-*          leading N-by-N upper triangular part of A contains the
-*          upper triangular part of the matrix A.  If UPLO = 'L',
-*          the leading N-by-N lower triangular part of A contains
-*          the lower triangular part of the matrix A.
-*
-*          On exit,  the lower triangle (if UPLO='L') or the upper
-*          triangle (if UPLO='U') of A, including the diagonal, is
-*          destroyed.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  B       (input/output) COMPLEX*16 array, dimension (LDB, N)
-*          On entry, the Hermitian matrix B.  If UPLO = 'U', the
-*          leading N-by-N upper triangular part of B contains the
-*          upper triangular part of the matrix B.  If UPLO = 'L',
-*          the leading N-by-N lower triangular part of B contains
-*          the lower triangular part of the matrix B.
-*
-*          On exit, if INFO <= N, the part of B containing the matrix is
-*          overwritten by the triangular factor U or L from the Cholesky
-*          factorization B = U**H*U or B = L*L**H.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  VL      (input) DOUBLE PRECISION
-*  VU      (input) DOUBLE PRECISION
-*          If RANGE='V', the lower and upper bounds of the interval to
-*          be searched for eigenvalues. VL < VU.
-*          Not referenced if RANGE = 'A' or 'I'.
-*
-*  IL      (input) INTEGER
-*  IU      (input) INTEGER
-*          If RANGE='I', the indices (in ascending order) of the
-*          smallest and largest eigenvalues to be returned.
-*          1 <= IL <= IU <= N, if N > 0; IL = 1 and IU = 0 if N = 0.
-*          Not referenced if RANGE = 'A' or 'V'.
-*
-*  ABSTOL  (input) DOUBLE PRECISION
-*          The absolute error tolerance for the eigenvalues.
-*          An approximate eigenvalue is accepted as converged
-*          when it is determined to lie in an interval [a,b]
-*          of width less than or equal to
-*
-*                  ABSTOL + EPS *   max( |a|,|b| ) ,
-*
-*          where EPS is the machine precision.  If ABSTOL is less than
-*          or equal to zero, then  EPS*|T|  will be used in its place,
-*          where |T| is the 1-norm of the tridiagonal matrix obtained
-*          by reducing A to tridiagonal form.
-*
-*          Eigenvalues will be computed most accurately when ABSTOL is
-*          set to twice the underflow threshold 2*DLAMCH('S'), not zero.
-*          If this routine returns with INFO>0, indicating that some
-*          eigenvectors did not converge, try setting ABSTOL to
-*          2*DLAMCH('S').
-*
-*  M       (output) INTEGER
-*          The total number of eigenvalues found.  0 <= M <= N.
-*          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
-*
-*  W       (output) DOUBLE PRECISION array, dimension (N)
-*          The first M elements contain the selected
-*          eigenvalues in ascending order.
-*
-*  Z       (output) COMPLEX*16 array, dimension (LDZ, max(1,M))
-*          If JOBZ = 'N', then Z is not referenced.
-*          If JOBZ = 'V', then if INFO = 0, the first M columns of Z
-*          contain the orthonormal eigenvectors of the matrix A
-*          corresponding to the selected eigenvalues, with the i-th
-*          column of Z holding the eigenvector associated with W(i).
-*          The eigenvectors are normalized as follows:
-*          if ITYPE = 1 or 2, Z**T*B*Z = I;
-*          if ITYPE = 3, Z**T*inv(B)*Z = I.
-*
-*          If an eigenvector fails to converge, then that column of Z
-*          contains the latest approximation to the eigenvector, and the
-*          index of the eigenvector is returned in IFAIL.
-*          Note: the user must ensure that at least max(1,M) columns are
-*          supplied in the array Z; if RANGE = 'V', the exact value of M
-*          is not known in advance and an upper bound must be used.
-*
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z.  LDZ >= 1, and if
-*          JOBZ = 'V', LDZ >= max(1,N).
-*
-*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The length of the array WORK.  LWORK >= max(1,2*N).
-*          For optimal efficiency, LWORK >= (NB+1)*N,
-*          where NB is the blocksize for ZHETRD returned by ILAENV.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  RWORK   (workspace) DOUBLE PRECISION array, dimension (7*N)
-*
-*  IWORK   (workspace) INTEGER array, dimension (5*N)
-*
-*  IFAIL   (output) INTEGER array, dimension (N)
-*          If JOBZ = 'V', then if INFO = 0, the first M elements of
-*          IFAIL are zero.  If INFO > 0, then IFAIL contains the
-*          indices of the eigenvectors that failed to converge.
-*          If JOBZ = 'N', then IFAIL is not referenced.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  ZPOTRF or ZHEEVX returned an error code:
-*             <= N:  if INFO = i, ZHEEVX failed to converge;
-*                    i eigenvectors failed to converge.  Their indices
-*                    are stored in array IFAIL.
-*             > N:   if INFO = N + i, for 1 <= i <= N, then the leading
-*                    minor of order i of B is not positive definite.
-*                    The factorization of B could not be completed and
-*                    no eigenvalues or eigenvectors were computed.
-*
-
-*  Further Details
-*  ===============
-*
-*  Based on contributions by
-*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
-*
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zhetd2"></A>
-  <H2>zhetd2</H2>
-  
-  <PRE>
-USAGE:
-  d, e, tau, info, a = NumRu::Lapack.zhetd2( uplo, a)
-    or
-  NumRu::Lapack.zhetd2  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZHETD2( UPLO, N, A, LDA, D, E, TAU, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZHETD2 reduces a complex Hermitian matrix A to real symmetric
-*  tridiagonal form T by a unitary similarity transformation:
-*  Q' * A * Q = T.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          Specifies whether the upper or lower triangular part of the
-*          Hermitian matrix A is stored:
-*          = 'U':  Upper triangular
-*          = 'L':  Lower triangular
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
-*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
-*          n-by-n upper triangular part of A contains the upper
-*          triangular part of the matrix A, and the strictly lower
-*          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading n-by-n lower triangular part of A contains the lower
-*          triangular part of the matrix A, and the strictly upper
-*          triangular part of A is not referenced.
-*          On exit, if UPLO = 'U', the diagonal and first superdiagonal
-*          of A are overwritten by the corresponding elements of the
-*          tridiagonal matrix T, and the elements above the first
-*          superdiagonal, with the array TAU, represent the unitary
-*          matrix Q as a product of elementary reflectors; if UPLO
-*          = 'L', the diagonal and first subdiagonal of A are over-
-*          written by the corresponding elements of the tridiagonal
-*          matrix T, and the elements below the first subdiagonal, with
-*          the array TAU, represent the unitary matrix Q as a product
-*          of elementary reflectors. See Further Details.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  D       (output) DOUBLE PRECISION array, dimension (N)
-*          The diagonal elements of the tridiagonal matrix T:
-*          D(i) = A(i,i).
-*
-*  E       (output) DOUBLE PRECISION array, dimension (N-1)
-*          The off-diagonal elements of the tridiagonal matrix T:
-*          E(i) = A(i,i+1) if UPLO = 'U', E(i) = A(i+1,i) if UPLO = 'L'.
-*
-*  TAU     (output) COMPLEX*16 array, dimension (N-1)
-*          The scalar factors of the elementary reflectors (see Further
-*          Details).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value.
-*
-
-*  Further Details
-*  ===============
-*
-*  If UPLO = 'U', the matrix Q is represented as a product of elementary
-*  reflectors
-*
-*     Q = H(n-1) . . . H(2) H(1).
-*
-*  Each H(i) has the form
-*
-*     H(i) = I - tau * v * v'
-*
-*  where tau is a complex scalar, and v is a complex vector with
-*  v(i+1:n) = 0 and v(i) = 1; v(1:i-1) is stored on exit in
-*  A(1:i-1,i+1), and tau in TAU(i).
-*
-*  If UPLO = 'L', the matrix Q is represented as a product of elementary
-*  reflectors
-*
-*     Q = H(1) H(2) . . . H(n-1).
-*
-*  Each H(i) has the form
-*
-*     H(i) = I - tau * v * v'
-*
-*  where tau is a complex scalar, and v is a complex vector with
-*  v(1:i) = 0 and v(i+1) = 1; v(i+2:n) is stored on exit in A(i+2:n,i),
-*  and tau in TAU(i).
-*
-*  The contents of A on exit are illustrated by the following examples
-*  with n = 5:
-*
-*  if UPLO = 'U':                       if UPLO = 'L':
-*
-*    (  d   e   v2  v3  v4 )              (  d                  )
-*    (      d   e   v3  v4 )              (  e   d              )
-*    (          d   e   v4 )              (  v1  e   d          )
-*    (              d   e  )              (  v1  v2  e   d      )
-*    (                  d  )              (  v1  v2  v3  e   d  )
-*
-*  where d and e denote diagonal and off-diagonal elements of T, and vi
-*  denotes an element of the vector defining H(i).
-*
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zheevx"></A>
-  <H2>zheevx</H2>
-  Computes selected eigenvalues and eigenvectors of a Hermitian matrix.
-  <PRE>
-USAGE:
-  m, w, z, work, ifail, info, a = NumRu::Lapack.zheevx( jobz, range, uplo, a, vl, vu, il, iu, abstol, lwork)
-    or
-  NumRu::Lapack.zheevx  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZHEEVX( JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, LWORK, RWORK, IWORK, IFAIL, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZHEEVX computes selected eigenvalues and, optionally, eigenvectors
-*  of a complex Hermitian matrix A.  Eigenvalues and eigenvectors can
-*  be selected by specifying either a range of values or a range of
-*  indices for the desired eigenvalues.
-*
-
-*  Arguments
-*  =========
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  RANGE   (input) CHARACTER*1
-*          = 'A': all eigenvalues will be found.
-*          = 'V': all eigenvalues in the half-open interval (VL,VU]
-*                 will be found.
-*          = 'I': the IL-th through IU-th eigenvalues will be found.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA, N)
-*          On entry, the Hermitian matrix A.  If UPLO = 'U', the
-*          leading N-by-N upper triangular part of A contains the
-*          upper triangular part of the matrix A.  If UPLO = 'L',
-*          the leading N-by-N lower triangular part of A contains
-*          the lower triangular part of the matrix A.
-*          On exit, the lower triangle (if UPLO='L') or the upper
-*          triangle (if UPLO='U') of A, including the diagonal, is
-*          destroyed.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  VL      (input) DOUBLE PRECISION
-*  VU      (input) DOUBLE PRECISION
-*          If RANGE='V', the lower and upper bounds of the interval to
-*          be searched for eigenvalues. VL < VU.
-*          Not referenced if RANGE = 'A' or 'I'.
-*
-*  IL      (input) INTEGER
-*  IU      (input) INTEGER
-*          If RANGE='I', the indices (in ascending order) of the
-*          smallest and largest eigenvalues to be returned.
-*          1 <= IL <= IU <= N, if N > 0; IL = 1 and IU = 0 if N = 0.
-*          Not referenced if RANGE = 'A' or 'V'.
-*
-*  ABSTOL  (input) DOUBLE PRECISION
-*          The absolute error tolerance for the eigenvalues.
-*          An approximate eigenvalue is accepted as converged
-*          when it is determined to lie in an interval [a,b]
-*          of width less than or equal to
-*
-*                  ABSTOL + EPS *   max( |a|,|b| ) ,
-*
-*          where EPS is the machine precision.  If ABSTOL is less than
-*          or equal to zero, then  EPS*|T|  will be used in its place,
-*          where |T| is the 1-norm of the tridiagonal matrix obtained
-*          by reducing A to tridiagonal form.
-*
-*          Eigenvalues will be computed most accurately when ABSTOL is
-*          set to twice the underflow threshold 2*DLAMCH('S'), not zero.
-*          If this routine returns with INFO>0, indicating that some
-*          eigenvectors did not converge, try setting ABSTOL to
-*          2*DLAMCH('S').
-*
-*          See "Computing Small Singular Values of Bidiagonal Matrices
-*          with Guaranteed High Relative Accuracy," by Demmel and
-*          Kahan, LAPACK Working Note #3.
-*
-*  M       (output) INTEGER
-*          The total number of eigenvalues found.  0 <= M <= N.
-*          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
-*
-*  W       (output) DOUBLE PRECISION array, dimension (N)
-*          On normal exit, the first M elements contain the selected
-*          eigenvalues in ascending order.
-*
-*  Z       (output) COMPLEX*16 array, dimension (LDZ, max(1,M))
-*          If JOBZ = 'V', then if INFO = 0, the first M columns of Z
-*          contain the orthonormal eigenvectors of the matrix A
-*          corresponding to the selected eigenvalues, with the i-th
-*          column of Z holding the eigenvector associated with W(i).
-*          If an eigenvector fails to converge, then that column of Z
-*          contains the latest approximation to the eigenvector, and the
-*          index of the eigenvector is returned in IFAIL.
-*          If JOBZ = 'N', then Z is not referenced.
-*          Note: the user must ensure that at least max(1,M) columns are
-*          supplied in the array Z; if RANGE = 'V', the exact value of M
-*          is not known in advance and an upper bound must be used.
-*
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z.  LDZ >= 1, and if
-*          JOBZ = 'V', LDZ >= max(1,N).
-*
-*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The length of the array WORK.  LWORK >= 1, when N <= 1;
-*          otherwise 2*N.
-*          For optimal efficiency, LWORK >= (NB+1)*N,
-*          where NB is the max of the blocksize for ZHETRD and for
-*          ZUNMTR as returned by ILAENV.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  RWORK   (workspace) DOUBLE PRECISION array, dimension (7*N)
-*
-*  IWORK   (workspace) INTEGER array, dimension (5*N)
-*
-*  IFAIL   (output) INTEGER array, dimension (N)
-*          If JOBZ = 'V', then if INFO = 0, the first M elements of
-*          IFAIL are zero.  If INFO > 0, then IFAIL contains the
-*          indices of the eigenvectors that failed to converge.
-*          If JOBZ = 'N', then IFAIL is not referenced.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, then i eigenvectors failed to converge.
-*                Their indices are stored in array IFAIL.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zhegv"></A>
-  <H2>zhegv</H2>
-  Computes all eigenvalues and the eigenvectors of  a generalized
-  <PRE>
-USAGE:
-  w, work, info, a, b = NumRu::Lapack.zhegv( itype, jobz, uplo, a, b, lwork)
-    or
-  NumRu::Lapack.zhegv  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZHEGV( ITYPE, JOBZ, UPLO, N, A, LDA, B, LDB, W, WORK, LWORK, RWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZHEGV computes all the eigenvalues, and optionally, the eigenvectors
-*  of a complex generalized Hermitian-definite eigenproblem, of the form
-*  A*x=(lambda)*B*x,  A*Bx=(lambda)*x,  or B*A*x=(lambda)*x.
-*  Here A and B are assumed to be Hermitian and B is also
-*  positive definite.
-*
-
-*  Arguments
-*  =========
-*
-*  ITYPE   (input) INTEGER
-*          Specifies the problem type to be solved:
-*          = 1:  A*x = (lambda)*B*x
-*          = 2:  A*B*x = (lambda)*x
-*          = 3:  B*A*x = (lambda)*x
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangles of A and B are stored;
-*          = 'L':  Lower triangles of A and B are stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrices A and B.  N >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA, N)
-*          On entry, the Hermitian matrix A.  If UPLO = 'U', the
-*          leading N-by-N upper triangular part of A contains the
-*          upper triangular part of the matrix A.  If UPLO = 'L',
-*          the leading N-by-N lower triangular part of A contains
-*          the lower triangular part of the matrix A.
-*
-*          On exit, if JOBZ = 'V', then if INFO = 0, A contains the
-*          matrix Z of eigenvectors.  The eigenvectors are normalized
-*          as follows:
-*          if ITYPE = 1 or 2, Z**H*B*Z = I;
-*          if ITYPE = 3, Z**H*inv(B)*Z = I.
-*          If JOBZ = 'N', then on exit the upper triangle (if UPLO='U')
-*          or the lower triangle (if UPLO='L') of A, including the
-*          diagonal, is destroyed.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  B       (input/output) COMPLEX*16 array, dimension (LDB, N)
-*          On entry, the Hermitian positive definite matrix B.
-*          If UPLO = 'U', the leading N-by-N upper triangular part of B
-*          contains the upper triangular part of the matrix B.
-*          If UPLO = 'L', the leading N-by-N lower triangular part of B
-*          contains the lower triangular part of the matrix B.
-*
-*          On exit, if INFO <= N, the part of B containing the matrix is
-*          overwritten by the triangular factor U or L from the Cholesky
-*          factorization B = U**H*U or B = L*L**H.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  W       (output) DOUBLE PRECISION array, dimension (N)
-*          If INFO = 0, the eigenvalues in ascending order.
-*
-*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The length of the array WORK.  LWORK >= max(1,2*N-1).
-*          For optimal efficiency, LWORK >= (NB+1)*N,
-*          where NB is the blocksize for ZHETRD returned by ILAENV.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  RWORK   (workspace) DOUBLE PRECISION array, dimension (max(1, 3*N-2))
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  ZPOTRF or ZHEEV returned an error code:
-*             <= N:  if INFO = i, ZHEEV failed to converge;
-*                    i off-diagonal elements of an intermediate
-*                    tridiagonal form did not converge to zero;
-*             > N:   if INFO = N + i, for 1 <= i <= N, then the leading
-*                    minor of order i of B is not positive definite.
-*                    The factorization of B could not be completed and
-*                    no eigenvalues or eigenvectors were computed.
 *
 
 *  =====================================================================

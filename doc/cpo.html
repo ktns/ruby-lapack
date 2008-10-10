@@ -6,82 +6,16 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for symmetric or Hermitian positive definite matrix</H1>
     <UL>
-      <LI><A HREF="#cpoequ">cpoequ</A>: Computes row and column scalings to equilibrate a Hermitian</LI>
       <LI><A HREF="#cpocon">cpocon</A>: Estimates the reciprocal of the condition number of a</LI>
-      <LI><A HREF="#cpotrf">cpotrf</A>: Computes the Cholesky factorization of a Hermitian</LI>
-      <LI><A HREF="#cpotrs">cpotrs</A>: Solves a Hermitian positive definite system of linear</LI>
-      <LI><A HREF="#cposv">cposv</A>: Solves a Hermitian positive definite system of linear</LI>
-      <LI><A HREF="#cpotf2">cpotf2</A>: </LI>
-      <LI><A HREF="#cpotri">cpotri</A>: Computes the inverse of a Hermitian positive definite</LI>
+      <LI><A HREF="#cpoequ">cpoequ</A>: Computes row and column scalings to equilibrate a Hermitian</LI>
       <LI><A HREF="#cporfs">cporfs</A>: Improves the computed solution to a Hermitian positive</LI>
+      <LI><A HREF="#cposv">cposv</A>: Solves a Hermitian positive definite system of linear</LI>
       <LI><A HREF="#cposvx">cposvx</A>: Solves a Hermitian positive definite system of linear</LI>
+      <LI><A HREF="#cpotf2">cpotf2</A>: </LI>
+      <LI><A HREF="#cpotrf">cpotrf</A>: Computes the Cholesky factorization of a Hermitian</LI>
+      <LI><A HREF="#cpotri">cpotri</A>: Computes the inverse of a Hermitian positive definite</LI>
+      <LI><A HREF="#cpotrs">cpotrs</A>: Solves a Hermitian positive definite system of linear</LI>
     </UL>
-
-  <A NAME="cpoequ"></A>
-  <H2>cpoequ</H2>
-  Computes row and column scalings to equilibrate a Hermitian
-  <PRE>
-USAGE:
-  s, scond, amax, info = NumRu::Lapack.cpoequ( a)
-    or
-  NumRu::Lapack.cpoequ  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CPOEQU( N, A, LDA, S, SCOND, AMAX, INFO )
-
-*  Purpose
-*  =======
-*
-*  CPOEQU computes row and column scalings intended to equilibrate a
-*  Hermitian positive definite matrix A and reduce its condition number
-*  (with respect to the two-norm).  S contains the scale factors,
-*  S(i) = 1/sqrt(A(i,i)), chosen so that the scaled matrix B with
-*  elements B(i,j) = S(i)*A(i,j)*S(j) has ones on the diagonal.  This
-*  choice of S puts the condition number of B within a factor N of the
-*  smallest possible condition number over all possible diagonal
-*  scalings.
-*
-
-*  Arguments
-*  =========
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input) COMPLEX array, dimension (LDA,N)
-*          The N-by-N Hermitian positive definite matrix whose scaling
-*          factors are to be computed.  Only the diagonal elements of A
-*          are referenced.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  S       (output) REAL array, dimension (N)
-*          If INFO = 0, S contains the scale factors for A.
-*
-*  SCOND   (output) REAL
-*          If INFO = 0, S contains the ratio of the smallest S(i) to
-*          the largest S(i).  If SCOND >= 0.1 and AMAX is neither too
-*          large nor too small, it is not worth scaling by S.
-*
-*  AMAX    (output) REAL
-*          Absolute value of largest matrix element.  If AMAX is very
-*          close to overflow or very close to underflow, the matrix
-*          should be scaled.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, the i-th diagonal element is nonpositive.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
 
   <A NAME="cpocon"></A>
   <H2>cpocon</H2>
@@ -148,354 +82,67 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="cpotrf"></A>
-  <H2>cpotrf</H2>
-  Computes the Cholesky factorization of a Hermitian
+  <A NAME="cpoequ"></A>
+  <H2>cpoequ</H2>
+  Computes row and column scalings to equilibrate a Hermitian
   <PRE>
 USAGE:
-  info, a = NumRu::Lapack.cpotrf( uplo, a)
+  s, scond, amax, info = NumRu::Lapack.cpoequ( a)
     or
-  NumRu::Lapack.cpotrf  # print help
+  NumRu::Lapack.cpoequ  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE CPOTRF( UPLO, N, A, LDA, INFO )
+      SUBROUTINE CPOEQU( N, A, LDA, S, SCOND, AMAX, INFO )
 
 *  Purpose
 *  =======
 *
-*  CPOTRF computes the Cholesky factorization of a complex Hermitian
-*  positive definite matrix A.
-*
-*  The factorization has the form
-*     A = U**H * U,  if UPLO = 'U', or
-*     A = L  * L**H,  if UPLO = 'L',
-*  where U is an upper triangular matrix and L is lower triangular.
-*
-*  This is the block version of the algorithm, calling Level 3 BLAS.
+*  CPOEQU computes row and column scalings intended to equilibrate a
+*  Hermitian positive definite matrix A and reduce its condition number
+*  (with respect to the two-norm).  S contains the scale factors,
+*  S(i) = 1/sqrt(A(i,i)), chosen so that the scaled matrix B with
+*  elements B(i,j) = S(i)*A(i,j)*S(j) has ones on the diagonal.  This
+*  choice of S puts the condition number of B within a factor N of the
+*  smallest possible condition number over all possible diagonal
+*  scalings.
 *
 
 *  Arguments
 *  =========
 *
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
 *  N       (input) INTEGER
 *          The order of the matrix A.  N >= 0.
-*
-*  A       (input/output) COMPLEX array, dimension (LDA,N)
-*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
-*          N-by-N upper triangular part of A contains the upper
-*          triangular part of the matrix A, and the strictly lower
-*          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading N-by-N lower triangular part of A contains the lower
-*          triangular part of the matrix A, and the strictly upper
-*          triangular part of A is not referenced.
-*
-*          On exit, if INFO = 0, the factor U or L from the Cholesky
-*          factorization A = U**H*U or A = L*L**H.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, the leading minor of order i is not
-*                positive definite, and the factorization could not be
-*                completed.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="cpotrs"></A>
-  <H2>cpotrs</H2>
-  Solves a Hermitian positive definite system of linear
-  <PRE>
-USAGE:
-  info, b = NumRu::Lapack.cpotrs( uplo, a, b)
-    or
-  NumRu::Lapack.cpotrs  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CPOTRS( UPLO, N, NRHS, A, LDA, B, LDB, INFO )
-
-*  Purpose
-*  =======
-*
-*  CPOTRS solves a system of linear equations A*X = B with a Hermitian
-*  positive definite matrix A using the Cholesky factorization 
-*  A = U**H*U or A = L*L**H computed by CPOTRF.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
 *
 *  A       (input) COMPLEX array, dimension (LDA,N)
-*          The triangular factor U or L from the Cholesky factorization
-*          A = U**H*U or A = L*L**H, as computed by CPOTRF.
+*          The N-by-N Hermitian positive definite matrix whose scaling
+*          factors are to be computed.  Only the diagonal elements of A
+*          are referenced.
 *
 *  LDA     (input) INTEGER
 *          The leading dimension of the array A.  LDA >= max(1,N).
 *
-*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)
-*          On entry, the right hand side matrix B.
-*          On exit, the solution matrix X.
+*  S       (output) REAL array, dimension (N)
+*          If INFO = 0, S contains the scale factors for A.
 *
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
+*  SCOND   (output) REAL
+*          If INFO = 0, S contains the ratio of the smallest S(i) to
+*          the largest S(i).  If SCOND >= 0.1 and AMAX is neither too
+*          large nor too small, it is not worth scaling by S.
+*
+*  AMAX    (output) REAL
+*          Absolute value of largest matrix element.  If AMAX is very
+*          close to overflow or very close to underflow, the matrix
+*          should be scaled.
 *
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
 *          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the i-th diagonal element is nonpositive.
 *
 
 *  =====================================================================
 *
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="cposv"></A>
-  <H2>cposv</H2>
-  Solves a Hermitian positive definite system of linear
-  <PRE>
-USAGE:
-  info, a, b = NumRu::Lapack.cposv( uplo, a, b)
-    or
-  NumRu::Lapack.cposv  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CPOSV( UPLO, N, NRHS, A, LDA, B, LDB, INFO )
-
-*  Purpose
-*  =======
-*
-*  CPOSV computes the solution to a complex system of linear equations
-*     A * X = B,
-*  where A is an N-by-N Hermitian positive definite matrix and X and B
-*  are N-by-NRHS matrices.
-*
-*  The Cholesky decomposition is used to factor A as
-*     A = U**H* U,  if UPLO = 'U', or
-*     A = L * L**H,  if UPLO = 'L',
-*  where U is an upper triangular matrix and  L is a lower triangular
-*  matrix.  The factored form of A is then used to solve the system of
-*  equations A * X = B.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The number of linear equations, i.e., the order of the
-*          matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
-*  A       (input/output) COMPLEX array, dimension (LDA,N)
-*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
-*          N-by-N upper triangular part of A contains the upper
-*          triangular part of the matrix A, and the strictly lower
-*          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading N-by-N lower triangular part of A contains the lower
-*          triangular part of the matrix A, and the strictly upper
-*          triangular part of A is not referenced.
-*
-*          On exit, if INFO = 0, the factor U or L from the Cholesky
-*          factorization A = U**H*U or A = L*L**H.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)
-*          On entry, the N-by-NRHS right hand side matrix B.
-*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, the leading minor of order i of A is not
-*                positive definite, so the factorization could not be
-*                completed, and the solution has not been computed.
-*
-
-*  =====================================================================
-*
-*     .. External Functions ..
-      LOGICAL            LSAME
-      EXTERNAL           LSAME
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           CPOTRF, CPOTRS, XERBLA
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="cpotf2"></A>
-  <H2>cpotf2</H2>
-  
-  <PRE>
-USAGE:
-  info, a = NumRu::Lapack.cpotf2( uplo, a)
-    or
-  NumRu::Lapack.cpotf2  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CPOTF2( UPLO, N, A, LDA, INFO )
-
-*  Purpose
-*  =======
-*
-*  CPOTF2 computes the Cholesky factorization of a complex Hermitian
-*  positive definite matrix A.
-*
-*  The factorization has the form
-*     A = U' * U ,  if UPLO = 'U', or
-*     A = L  * L',  if UPLO = 'L',
-*  where U is an upper triangular matrix and L is lower triangular.
-*
-*  This is the unblocked version of the algorithm, calling Level 2 BLAS.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          Specifies whether the upper or lower triangular part of the
-*          Hermitian matrix A is stored.
-*          = 'U':  Upper triangular
-*          = 'L':  Lower triangular
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input/output) COMPLEX array, dimension (LDA,N)
-*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
-*          n by n upper triangular part of A contains the upper
-*          triangular part of the matrix A, and the strictly lower
-*          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading n by n lower triangular part of A contains the lower
-*          triangular part of the matrix A, and the strictly upper
-*          triangular part of A is not referenced.
-*
-*          On exit, if INFO = 0, the factor U or L from the Cholesky
-*          factorization A = U'*U  or A = L*L'.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -k, the k-th argument had an illegal value
-*          > 0: if INFO = k, the leading minor of order k is not
-*               positive definite, and the factorization could not be
-*               completed.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="cpotri"></A>
-  <H2>cpotri</H2>
-  Computes the inverse of a Hermitian positive definite
-  <PRE>
-USAGE:
-  info, a = NumRu::Lapack.cpotri( uplo, a)
-    or
-  NumRu::Lapack.cpotri  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CPOTRI( UPLO, N, A, LDA, INFO )
-
-*  Purpose
-*  =======
-*
-*  CPOTRI computes the inverse of a complex Hermitian positive definite
-*  matrix A using the Cholesky factorization A = U**H*U or A = L*L**H
-*  computed by CPOTRF.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input/output) COMPLEX array, dimension (LDA,N)
-*          On entry, the triangular factor U or L from the Cholesky
-*          factorization A = U**H*U or A = L*L**H, as computed by
-*          CPOTRF.
-*          On exit, the upper or lower triangle of the (Hermitian)
-*          inverse of A, overwriting the input factor U or L.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, the (i,i) element of the factor U or L is
-*                zero, and the inverse could not be computed.
-*
-
-*  =====================================================================
-*
-*     .. External Functions ..
-      LOGICAL            LSAME
-      EXTERNAL           LSAME
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           CLAUUM, CTRTRI, XERBLA
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX
-*     ..
 
 
     </PRE>
@@ -600,6 +247,97 @@ FORTRAN MANUAL
 
 *  ====================================================================
 *
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cposv"></A>
+  <H2>cposv</H2>
+  Solves a Hermitian positive definite system of linear
+  <PRE>
+USAGE:
+  info, a, b = NumRu::Lapack.cposv( uplo, a, b)
+    or
+  NumRu::Lapack.cposv  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPOSV( UPLO, N, NRHS, A, LDA, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPOSV computes the solution to a complex system of linear equations
+*     A * X = B,
+*  where A is an N-by-N Hermitian positive definite matrix and X and B
+*  are N-by-NRHS matrices.
+*
+*  The Cholesky decomposition is used to factor A as
+*     A = U**H* U,  if UPLO = 'U', or
+*     A = L * L**H,  if UPLO = 'L',
+*  where U is an upper triangular matrix and  L is a lower triangular
+*  matrix.  The factored form of A is then used to solve the system of
+*  equations A * X = B.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The number of linear equations, i.e., the order of the
+*          matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
+*          N-by-N upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading N-by-N lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*
+*          On exit, if INFO = 0, the factor U or L from the Cholesky
+*          factorization A = U**H*U or A = L*L**H.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)
+*          On entry, the N-by-NRHS right hand side matrix B.
+*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the leading minor of order i of A is not
+*                positive definite, so the factorization could not be
+*                completed, and the solution has not been computed.
+*
+
+*  =====================================================================
+*
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CPOTRF, CPOTRS, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
 
 
     </PRE>
@@ -807,6 +545,268 @@ FORTRAN MANUAL
 *                       there are a number of situations where the
 *                       computed solution can be more accurate than the
 *                       value of RCOND would suggest.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cpotf2"></A>
+  <H2>cpotf2</H2>
+  
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.cpotf2( uplo, a)
+    or
+  NumRu::Lapack.cpotf2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPOTF2( UPLO, N, A, LDA, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPOTF2 computes the Cholesky factorization of a complex Hermitian
+*  positive definite matrix A.
+*
+*  The factorization has the form
+*     A = U' * U ,  if UPLO = 'U', or
+*     A = L  * L',  if UPLO = 'L',
+*  where U is an upper triangular matrix and L is lower triangular.
+*
+*  This is the unblocked version of the algorithm, calling Level 2 BLAS.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the upper or lower triangular part of the
+*          Hermitian matrix A is stored.
+*          = 'U':  Upper triangular
+*          = 'L':  Lower triangular
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
+*          n by n upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading n by n lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*
+*          On exit, if INFO = 0, the factor U or L from the Cholesky
+*          factorization A = U'*U  or A = L*L'.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*          > 0: if INFO = k, the leading minor of order k is not
+*               positive definite, and the factorization could not be
+*               completed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cpotrf"></A>
+  <H2>cpotrf</H2>
+  Computes the Cholesky factorization of a Hermitian
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.cpotrf( uplo, a)
+    or
+  NumRu::Lapack.cpotrf  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPOTRF( UPLO, N, A, LDA, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPOTRF computes the Cholesky factorization of a complex Hermitian
+*  positive definite matrix A.
+*
+*  The factorization has the form
+*     A = U**H * U,  if UPLO = 'U', or
+*     A = L  * L**H,  if UPLO = 'L',
+*  where U is an upper triangular matrix and L is lower triangular.
+*
+*  This is the block version of the algorithm, calling Level 3 BLAS.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
+*          N-by-N upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading N-by-N lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*
+*          On exit, if INFO = 0, the factor U or L from the Cholesky
+*          factorization A = U**H*U or A = L*L**H.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the leading minor of order i is not
+*                positive definite, and the factorization could not be
+*                completed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cpotri"></A>
+  <H2>cpotri</H2>
+  Computes the inverse of a Hermitian positive definite
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.cpotri( uplo, a)
+    or
+  NumRu::Lapack.cpotri  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPOTRI( UPLO, N, A, LDA, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPOTRI computes the inverse of a complex Hermitian positive definite
+*  matrix A using the Cholesky factorization A = U**H*U or A = L*L**H
+*  computed by CPOTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the triangular factor U or L from the Cholesky
+*          factorization A = U**H*U or A = L*L**H, as computed by
+*          CPOTRF.
+*          On exit, the upper or lower triangle of the (Hermitian)
+*          inverse of A, overwriting the input factor U or L.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the (i,i) element of the factor U or L is
+*                zero, and the inverse could not be computed.
+*
+
+*  =====================================================================
+*
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CLAUUM, CTRTRI, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cpotrs"></A>
+  <H2>cpotrs</H2>
+  Solves a Hermitian positive definite system of linear
+  <PRE>
+USAGE:
+  info, b = NumRu::Lapack.cpotrs( uplo, a, b)
+    or
+  NumRu::Lapack.cpotrs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPOTRS( UPLO, N, NRHS, A, LDA, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPOTRS solves a system of linear equations A*X = B with a Hermitian
+*  positive definite matrix A using the Cholesky factorization 
+*  A = U**H*U or A = L*L**H computed by CPOTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  A       (input) COMPLEX array, dimension (LDA,N)
+*          The triangular factor U or L from the Cholesky factorization
+*          A = U**H*U or A = L*L**H, as computed by CPOTRF.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)
+*          On entry, the right hand side matrix B.
+*          On exit, the solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
 *
 
 *  =====================================================================

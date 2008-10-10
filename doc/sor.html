@@ -6,31 +6,1610 @@
     <A NAME="top"></A>
     <H1>REAL routines for (real) orthogonal matrix</H1>
     <UL>
+      <LI><A HREF="#sorg2l">sorg2l</A>: </LI>
+      <LI><A HREF="#sorg2r">sorg2r</A>: </LI>
+      <LI><A HREF="#sorgbr">sorgbr</A>: Generates the orthogonal transformation matrices from</LI>
+      <LI><A HREF="#sorghr">sorghr</A>: Generates the orthogonal transformation matrix from</LI>
+      <LI><A HREF="#sorgl2">sorgl2</A>: </LI>
+      <LI><A HREF="#sorglq">sorglq</A>: Generates all or part of the orthogonal matrix Q from</LI>
+      <LI><A HREF="#sorgql">sorgql</A>: Generates all or part of the orthogonal matrix Q from</LI>
+      <LI><A HREF="#sorgqr">sorgqr</A>: Generates all or part of the orthogonal matrix Q from</LI>
+      <LI><A HREF="#sorgr2">sorgr2</A>: </LI>
+      <LI><A HREF="#sorgrq">sorgrq</A>: Generates all or part of the orthogonal matrix Q from</LI>
+      <LI><A HREF="#sorgtr">sorgtr</A>: Generates the orthogonal transformation matrix from</LI>
+      <LI><A HREF="#sorm2l">sorm2l</A>: </LI>
+      <LI><A HREF="#sorm2r">sorm2r</A>: </LI>
+      <LI><A HREF="#sormbr">sormbr</A>: Multiplies a general matrix by one of the orthogonal</LI>
+      <LI><A HREF="#sormhr">sormhr</A>: Multiplies a general matrix by the orthogonal transformation</LI>
+      <LI><A HREF="#sorml2">sorml2</A>: </LI>
+      <LI><A HREF="#sormlq">sormlq</A>: Multiplies a general matrix by the orthogonal matrix</LI>
+      <LI><A HREF="#sormql">sormql</A>: Multiplies a general matrix by the orthogonal matrix</LI>
       <LI><A HREF="#sormqr">sormqr</A>: Multiplies a general matrix by the orthogonal matrix</LI>
       <LI><A HREF="#sormr2">sormr2</A>: </LI>
-      <LI><A HREF="#sorm2r">sorm2r</A>: </LI>
-      <LI><A HREF="#sormtr">sormtr</A>: Multiplies a general matrix by the orthogonal</LI>
-      <LI><A HREF="#sorgbr">sorgbr</A>: Generates the orthogonal transformation matrices from</LI>
-      <LI><A HREF="#sorg2l">sorg2l</A>: </LI>
-      <LI><A HREF="#sorghr">sorghr</A>: Generates the orthogonal transformation matrix from</LI>
-      <LI><A HREF="#sorgqr">sorgqr</A>: Generates all or part of the orthogonal matrix Q from</LI>
-      <LI><A HREF="#sorml2">sorml2</A>: </LI>
-      <LI><A HREF="#sorgtr">sorgtr</A>: Generates the orthogonal transformation matrix from</LI>
-      <LI><A HREF="#sormrz">sormrz</A>: Multiples a general matrix by the orthogonal matrix</LI>
-      <LI><A HREF="#sormhr">sormhr</A>: Multiplies a general matrix by the orthogonal transformation</LI>
-      <LI><A HREF="#sormlq">sormlq</A>: Multiplies a general matrix by the orthogonal matrix</LI>
-      <LI><A HREF="#sormrq">sormrq</A>: Multiplies a general matrix by the orthogonal matrix</LI>
       <LI><A HREF="#sormr3">sormr3</A>: Multiples a general matrix by the orthogonal matrix</LI>
-      <LI><A HREF="#sorglq">sorglq</A>: Generates all or part of the orthogonal matrix Q from</LI>
-      <LI><A HREF="#sorgrq">sorgrq</A>: Generates all or part of the orthogonal matrix Q from</LI>
-      <LI><A HREF="#sorgl2">sorgl2</A>: </LI>
-      <LI><A HREF="#sorgr2">sorgr2</A>: </LI>
-      <LI><A HREF="#sormbr">sormbr</A>: Multiplies a general matrix by one of the orthogonal</LI>
-      <LI><A HREF="#sorg2r">sorg2r</A>: </LI>
-      <LI><A HREF="#sorm2l">sorm2l</A>: </LI>
-      <LI><A HREF="#sormql">sormql</A>: Multiplies a general matrix by the orthogonal matrix</LI>
-      <LI><A HREF="#sorgql">sorgql</A>: Generates all or part of the orthogonal matrix Q from</LI>
+      <LI><A HREF="#sormrq">sormrq</A>: Multiplies a general matrix by the orthogonal matrix</LI>
+      <LI><A HREF="#sormrz">sormrz</A>: Multiples a general matrix by the orthogonal matrix</LI>
+      <LI><A HREF="#sormtr">sormtr</A>: Multiplies a general matrix by the orthogonal</LI>
     </UL>
+
+  <A NAME="sorg2l"></A>
+  <H2>sorg2l</H2>
+  
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.sorg2l( m, a, tau)
+    or
+  NumRu::Lapack.sorg2l  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SORG2L( M, N, K, A, LDA, TAU, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SORG2L generates an m by n real matrix Q with orthonormal columns,
+*  which is defined as the last n columns of a product of k elementary
+*  reflectors of order m
+*
+*        Q  =  H(k) . . . H(2) H(1)
+*
+*  as returned by SGEQLF.
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix Q. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix Q. M >= N >= 0.
+*
+*  K       (input) INTEGER
+*          The number of elementary reflectors whose product defines the
+*          matrix Q. N >= K >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the (n-k+i)-th column must contain the vector which
+*          defines the elementary reflector H(i), for i = 1,2,...,k, as
+*          returned by SGEQLF in the last k columns of its array
+*          argument A.
+*          On exit, the m by n matrix Q.
+*
+*  LDA     (input) INTEGER
+*          The first dimension of the array A. LDA >= max(1,M).
+*
+*  TAU     (input) REAL array, dimension (K)
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by SGEQLF.
+*
+*  WORK    (workspace) REAL array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument has an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sorg2r"></A>
+  <H2>sorg2r</H2>
+  
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.sorg2r( m, a, tau)
+    or
+  NumRu::Lapack.sorg2r  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SORG2R( M, N, K, A, LDA, TAU, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SORG2R generates an m by n real matrix Q with orthonormal columns,
+*  which is defined as the first n columns of a product of k elementary
+*  reflectors of order m
+*
+*        Q  =  H(1) H(2) . . . H(k)
+*
+*  as returned by SGEQRF.
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix Q. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix Q. M >= N >= 0.
+*
+*  K       (input) INTEGER
+*          The number of elementary reflectors whose product defines the
+*          matrix Q. N >= K >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the i-th column must contain the vector which
+*          defines the elementary reflector H(i), for i = 1,2,...,k, as
+*          returned by SGEQRF in the first k columns of its array
+*          argument A.
+*          On exit, the m-by-n matrix Q.
+*
+*  LDA     (input) INTEGER
+*          The first dimension of the array A. LDA >= max(1,M).
+*
+*  TAU     (input) REAL array, dimension (K)
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by SGEQRF.
+*
+*  WORK    (workspace) REAL array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument has an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sorgbr"></A>
+  <H2>sorgbr</H2>
+  Generates the orthogonal transformation matrices from
+  <PRE>
+USAGE:
+  work, info, a = NumRu::Lapack.sorgbr( vect, m, k, a, tau, lwork)
+    or
+  NumRu::Lapack.sorgbr  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SORGBR( VECT, M, N, K, A, LDA, TAU, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SORGBR generates one of the real orthogonal matrices Q or P**T
+*  determined by SGEBRD when reducing a real matrix A to bidiagonal
+*  form: A = Q * B * P**T.  Q and P**T are defined as products of
+*  elementary reflectors H(i) or G(i) respectively.
+*
+*  If VECT = 'Q', A is assumed to have been an M-by-K matrix, and Q
+*  is of order M:
+*  if m >= k, Q = H(1) H(2) . . . H(k) and SORGBR returns the first n
+*  columns of Q, where m >= n >= k;
+*  if m < k, Q = H(1) H(2) . . . H(m-1) and SORGBR returns Q as an
+*  M-by-M matrix.
+*
+*  If VECT = 'P', A is assumed to have been a K-by-N matrix, and P**T
+*  is of order N:
+*  if k < n, P**T = G(k) . . . G(2) G(1) and SORGBR returns the first m
+*  rows of P**T, where n >= m >= k;
+*  if k >= n, P**T = G(n-1) . . . G(2) G(1) and SORGBR returns P**T as
+*  an N-by-N matrix.
+*
+
+*  Arguments
+*  =========
+*
+*  VECT    (input) CHARACTER*1
+*          Specifies whether the matrix Q or the matrix P**T is
+*          required, as defined in the transformation applied by SGEBRD:
+*          = 'Q':  generate Q;
+*          = 'P':  generate P**T.
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix Q or P**T to be returned.
+*          M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix Q or P**T to be returned.
+*          N >= 0.
+*          If VECT = 'Q', M >= N >= min(M,K);
+*          if VECT = 'P', N >= M >= min(N,K).
+*
+*  K       (input) INTEGER
+*          If VECT = 'Q', the number of columns in the original M-by-K
+*          matrix reduced by SGEBRD.
+*          If VECT = 'P', the number of rows in the original K-by-N
+*          matrix reduced by SGEBRD.
+*          K >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the vectors which define the elementary reflectors,
+*          as returned by SGEBRD.
+*          On exit, the M-by-N matrix Q or P**T.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A. LDA >= max(1,M).
+*
+*  TAU     (input) REAL array, dimension
+*                                (min(M,K)) if VECT = 'Q'
+*                                (min(N,K)) if VECT = 'P'
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i) or G(i), which determines Q or P**T, as
+*          returned by SGEBRD in its array argument TAUQ or TAUP.
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK. LWORK >= max(1,min(M,N)).
+*          For optimum performance LWORK >= min(M,N)*NB, where NB
+*          is the optimal blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sorghr"></A>
+  <H2>sorghr</H2>
+  Generates the orthogonal transformation matrix from
+  <PRE>
+USAGE:
+  work, info, a = NumRu::Lapack.sorghr( ilo, ihi, a, tau, lwork)
+    or
+  NumRu::Lapack.sorghr  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SORGHR( N, ILO, IHI, A, LDA, TAU, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SORGHR generates a real orthogonal matrix Q which is defined as the
+*  product of IHI-ILO elementary reflectors of order N, as returned by
+*  SGEHRD:
+*
+*  Q = H(ilo) H(ilo+1) . . . H(ihi-1).
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix Q. N >= 0.
+*
+*  ILO     (input) INTEGER
+*  IHI     (input) INTEGER
+*          ILO and IHI must have the same values as in the previous call
+*          of SGEHRD. Q is equal to the unit matrix except in the
+*          submatrix Q(ilo+1:ihi,ilo+1:ihi).
+*          1 <= ILO <= IHI <= N, if N > 0; ILO=1 and IHI=0, if N=0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the vectors which define the elementary reflectors,
+*          as returned by SGEHRD.
+*          On exit, the N-by-N orthogonal matrix Q.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A. LDA >= max(1,N).
+*
+*  TAU     (input) REAL array, dimension (N-1)
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by SGEHRD.
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK. LWORK >= IHI-ILO.
+*          For optimum performance LWORK >= (IHI-ILO)*NB, where NB is
+*          the optimal blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sorgl2"></A>
+  <H2>sorgl2</H2>
+  
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.sorgl2( a, tau)
+    or
+  NumRu::Lapack.sorgl2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SORGL2( M, N, K, A, LDA, TAU, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SORGL2 generates an m by n real matrix Q with orthonormal rows,
+*  which is defined as the first m rows of a product of k elementary
+*  reflectors of order n
+*
+*        Q  =  H(k) . . . H(2) H(1)
+*
+*  as returned by SGELQF.
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix Q. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix Q. N >= M.
+*
+*  K       (input) INTEGER
+*          The number of elementary reflectors whose product defines the
+*          matrix Q. M >= K >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the i-th row must contain the vector which defines
+*          the elementary reflector H(i), for i = 1,2,...,k, as returned
+*          by SGELQF in the first k rows of its array argument A.
+*          On exit, the m-by-n matrix Q.
+*
+*  LDA     (input) INTEGER
+*          The first dimension of the array A. LDA >= max(1,M).
+*
+*  TAU     (input) REAL array, dimension (K)
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by SGELQF.
+*
+*  WORK    (workspace) REAL array, dimension (M)
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument has an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sorglq"></A>
+  <H2>sorglq</H2>
+  Generates all or part of the orthogonal matrix Q from
+  <PRE>
+USAGE:
+  work, info, a = NumRu::Lapack.sorglq( m, a, tau, lwork)
+    or
+  NumRu::Lapack.sorglq  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SORGLQ( M, N, K, A, LDA, TAU, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SORGLQ generates an M-by-N real matrix Q with orthonormal rows,
+*  which is defined as the first M rows of a product of K elementary
+*  reflectors of order N
+*
+*        Q  =  H(k) . . . H(2) H(1)
+*
+*  as returned by SGELQF.
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix Q. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix Q. N >= M.
+*
+*  K       (input) INTEGER
+*          The number of elementary reflectors whose product defines the
+*          matrix Q. M >= K >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the i-th row must contain the vector which defines
+*          the elementary reflector H(i), for i = 1,2,...,k, as returned
+*          by SGELQF in the first k rows of its array argument A.
+*          On exit, the M-by-N matrix Q.
+*
+*  LDA     (input) INTEGER
+*          The first dimension of the array A. LDA >= max(1,M).
+*
+*  TAU     (input) REAL array, dimension (K)
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by SGELQF.
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK. LWORK >= max(1,M).
+*          For optimum performance LWORK >= M*NB, where NB is
+*          the optimal blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument has an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sorgql"></A>
+  <H2>sorgql</H2>
+  Generates all or part of the orthogonal matrix Q from
+  <PRE>
+USAGE:
+  work, info, a = NumRu::Lapack.sorgql( m, a, tau, lwork)
+    or
+  NumRu::Lapack.sorgql  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SORGQL( M, N, K, A, LDA, TAU, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SORGQL generates an M-by-N real matrix Q with orthonormal columns,
+*  which is defined as the last N columns of a product of K elementary
+*  reflectors of order M
+*
+*        Q  =  H(k) . . . H(2) H(1)
+*
+*  as returned by SGEQLF.
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix Q. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix Q. M >= N >= 0.
+*
+*  K       (input) INTEGER
+*          The number of elementary reflectors whose product defines the
+*          matrix Q. N >= K >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the (n-k+i)-th column must contain the vector which
+*          defines the elementary reflector H(i), for i = 1,2,...,k, as
+*          returned by SGEQLF in the last k columns of its array
+*          argument A.
+*          On exit, the M-by-N matrix Q.
+*
+*  LDA     (input) INTEGER
+*          The first dimension of the array A. LDA >= max(1,M).
+*
+*  TAU     (input) REAL array, dimension (K)
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by SGEQLF.
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK. LWORK >= max(1,N).
+*          For optimum performance LWORK >= N*NB, where NB is the
+*          optimal blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument has an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sorgqr"></A>
+  <H2>sorgqr</H2>
+  Generates all or part of the orthogonal matrix Q from
+  <PRE>
+USAGE:
+  work, info, a = NumRu::Lapack.sorgqr( m, a, tau, lwork)
+    or
+  NumRu::Lapack.sorgqr  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SORGQR( M, N, K, A, LDA, TAU, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SORGQR generates an M-by-N real matrix Q with orthonormal columns,
+*  which is defined as the first N columns of a product of K elementary
+*  reflectors of order M
+*
+*        Q  =  H(1) H(2) . . . H(k)
+*
+*  as returned by SGEQRF.
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix Q. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix Q. M >= N >= 0.
+*
+*  K       (input) INTEGER
+*          The number of elementary reflectors whose product defines the
+*          matrix Q. N >= K >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the i-th column must contain the vector which
+*          defines the elementary reflector H(i), for i = 1,2,...,k, as
+*          returned by SGEQRF in the first k columns of its array
+*          argument A.
+*          On exit, the M-by-N matrix Q.
+*
+*  LDA     (input) INTEGER
+*          The first dimension of the array A. LDA >= max(1,M).
+*
+*  TAU     (input) REAL array, dimension (K)
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by SGEQRF.
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK. LWORK >= max(1,N).
+*          For optimum performance LWORK >= N*NB, where NB is the
+*          optimal blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument has an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sorgr2"></A>
+  <H2>sorgr2</H2>
+  
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.sorgr2( a, tau)
+    or
+  NumRu::Lapack.sorgr2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SORGR2( M, N, K, A, LDA, TAU, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SORGR2 generates an m by n real matrix Q with orthonormal rows,
+*  which is defined as the last m rows of a product of k elementary
+*  reflectors of order n
+*
+*        Q  =  H(1) H(2) . . . H(k)
+*
+*  as returned by SGERQF.
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix Q. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix Q. N >= M.
+*
+*  K       (input) INTEGER
+*          The number of elementary reflectors whose product defines the
+*          matrix Q. M >= K >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the (m-k+i)-th row must contain the vector which
+*          defines the elementary reflector H(i), for i = 1,2,...,k, as
+*          returned by SGERQF in the last k rows of its array argument
+*          A.
+*          On exit, the m by n matrix Q.
+*
+*  LDA     (input) INTEGER
+*          The first dimension of the array A. LDA >= max(1,M).
+*
+*  TAU     (input) REAL array, dimension (K)
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by SGERQF.
+*
+*  WORK    (workspace) REAL array, dimension (M)
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument has an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sorgrq"></A>
+  <H2>sorgrq</H2>
+  Generates all or part of the orthogonal matrix Q from
+  <PRE>
+USAGE:
+  work, info, a = NumRu::Lapack.sorgrq( m, a, tau, lwork)
+    or
+  NumRu::Lapack.sorgrq  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SORGRQ( M, N, K, A, LDA, TAU, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SORGRQ generates an M-by-N real matrix Q with orthonormal rows,
+*  which is defined as the last M rows of a product of K elementary
+*  reflectors of order N
+*
+*        Q  =  H(1) H(2) . . . H(k)
+*
+*  as returned by SGERQF.
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix Q. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix Q. N >= M.
+*
+*  K       (input) INTEGER
+*          The number of elementary reflectors whose product defines the
+*          matrix Q. M >= K >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the (m-k+i)-th row must contain the vector which
+*          defines the elementary reflector H(i), for i = 1,2,...,k, as
+*          returned by SGERQF in the last k rows of its array argument
+*          A.
+*          On exit, the M-by-N matrix Q.
+*
+*  LDA     (input) INTEGER
+*          The first dimension of the array A. LDA >= max(1,M).
+*
+*  TAU     (input) REAL array, dimension (K)
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by SGERQF.
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK. LWORK >= max(1,M).
+*          For optimum performance LWORK >= M*NB, where NB is the
+*          optimal blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument has an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sorgtr"></A>
+  <H2>sorgtr</H2>
+  Generates the orthogonal transformation matrix from
+  <PRE>
+USAGE:
+  work, info, a = NumRu::Lapack.sorgtr( uplo, a, tau, lwork)
+    or
+  NumRu::Lapack.sorgtr  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SORGTR( UPLO, N, A, LDA, TAU, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SORGTR generates a real orthogonal matrix Q which is defined as the
+*  product of n-1 elementary reflectors of order N, as returned by
+*  SSYTRD:
+*
+*  if UPLO = 'U', Q = H(n-1) . . . H(2) H(1),
+*
+*  if UPLO = 'L', Q = H(1) H(2) . . . H(n-1).
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U': Upper triangle of A contains elementary reflectors
+*                 from SSYTRD;
+*          = 'L': Lower triangle of A contains elementary reflectors
+*                 from SSYTRD.
+*
+*  N       (input) INTEGER
+*          The order of the matrix Q. N >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the vectors which define the elementary reflectors,
+*          as returned by SSYTRD.
+*          On exit, the N-by-N orthogonal matrix Q.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A. LDA >= max(1,N).
+*
+*  TAU     (input) REAL array, dimension (N-1)
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by SSYTRD.
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK. LWORK >= max(1,N-1).
+*          For optimum performance LWORK >= (N-1)*NB, where NB is
+*          the optimal blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sorm2l"></A>
+  <H2>sorm2l</H2>
+  
+  <PRE>
+USAGE:
+  info, c = NumRu::Lapack.sorm2l( side, trans, m, a, tau, c)
+    or
+  NumRu::Lapack.sorm2l  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SORM2L( SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SORM2L overwrites the general real m by n matrix C with
+*
+*        Q * C  if SIDE = 'L' and TRANS = 'N', or
+*
+*        Q'* C  if SIDE = 'L' and TRANS = 'T', or
+*
+*        C * Q  if SIDE = 'R' and TRANS = 'N', or
+*
+*        C * Q' if SIDE = 'R' and TRANS = 'T',
+*
+*  where Q is a real orthogonal matrix defined as the product of k
+*  elementary reflectors
+*
+*        Q = H(k) . . . H(2) H(1)
+*
+*  as returned by SGEQLF. Q is of order m if SIDE = 'L' and of order n
+*  if SIDE = 'R'.
+*
+
+*  Arguments
+*  =========
+*
+*  SIDE    (input) CHARACTER*1
+*          = 'L': apply Q or Q' from the Left
+*          = 'R': apply Q or Q' from the Right
+*
+*  TRANS   (input) CHARACTER*1
+*          = 'N': apply Q  (No transpose)
+*          = 'T': apply Q' (Transpose)
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix C. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix C. N >= 0.
+*
+*  K       (input) INTEGER
+*          The number of elementary reflectors whose product defines
+*          the matrix Q.
+*          If SIDE = 'L', M >= K >= 0;
+*          if SIDE = 'R', N >= K >= 0.
+*
+*  A       (input) REAL array, dimension (LDA,K)
+*          The i-th column must contain the vector which defines the
+*          elementary reflector H(i), for i = 1,2,...,k, as returned by
+*          SGEQLF in the last k columns of its array argument A.
+*          A is modified by the routine but restored on exit.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.
+*          If SIDE = 'L', LDA >= max(1,M);
+*          if SIDE = 'R', LDA >= max(1,N).
+*
+*  TAU     (input) REAL array, dimension (K)
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by SGEQLF.
+*
+*  C       (input/output) REAL array, dimension (LDC,N)
+*          On entry, the m by n matrix C.
+*          On exit, C is overwritten by Q*C or Q'*C or C*Q' or C*Q.
+*
+*  LDC     (input) INTEGER
+*          The leading dimension of the array C. LDC >= max(1,M).
+*
+*  WORK    (workspace) REAL array, dimension
+*                                   (N) if SIDE = 'L',
+*                                   (M) if SIDE = 'R'
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sorm2r"></A>
+  <H2>sorm2r</H2>
+  
+  <PRE>
+USAGE:
+  info, c = NumRu::Lapack.sorm2r( side, trans, m, a, tau, c)
+    or
+  NumRu::Lapack.sorm2r  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SORM2R( SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SORM2R overwrites the general real m by n matrix C with
+*
+*        Q * C  if SIDE = 'L' and TRANS = 'N', or
+*
+*        Q'* C  if SIDE = 'L' and TRANS = 'T', or
+*
+*        C * Q  if SIDE = 'R' and TRANS = 'N', or
+*
+*        C * Q' if SIDE = 'R' and TRANS = 'T',
+*
+*  where Q is a real orthogonal matrix defined as the product of k
+*  elementary reflectors
+*
+*        Q = H(1) H(2) . . . H(k)
+*
+*  as returned by SGEQRF. Q is of order m if SIDE = 'L' and of order n
+*  if SIDE = 'R'.
+*
+
+*  Arguments
+*  =========
+*
+*  SIDE    (input) CHARACTER*1
+*          = 'L': apply Q or Q' from the Left
+*          = 'R': apply Q or Q' from the Right
+*
+*  TRANS   (input) CHARACTER*1
+*          = 'N': apply Q  (No transpose)
+*          = 'T': apply Q' (Transpose)
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix C. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix C. N >= 0.
+*
+*  K       (input) INTEGER
+*          The number of elementary reflectors whose product defines
+*          the matrix Q.
+*          If SIDE = 'L', M >= K >= 0;
+*          if SIDE = 'R', N >= K >= 0.
+*
+*  A       (input) REAL array, dimension (LDA,K)
+*          The i-th column must contain the vector which defines the
+*          elementary reflector H(i), for i = 1,2,...,k, as returned by
+*          SGEQRF in the first k columns of its array argument A.
+*          A is modified by the routine but restored on exit.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.
+*          If SIDE = 'L', LDA >= max(1,M);
+*          if SIDE = 'R', LDA >= max(1,N).
+*
+*  TAU     (input) REAL array, dimension (K)
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by SGEQRF.
+*
+*  C       (input/output) REAL array, dimension (LDC,N)
+*          On entry, the m by n matrix C.
+*          On exit, C is overwritten by Q*C or Q'*C or C*Q' or C*Q.
+*
+*  LDC     (input) INTEGER
+*          The leading dimension of the array C. LDC >= max(1,M).
+*
+*  WORK    (workspace) REAL array, dimension
+*                                   (N) if SIDE = 'L',
+*                                   (M) if SIDE = 'R'
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sormbr"></A>
+  <H2>sormbr</H2>
+  Multiplies a general matrix by one of the orthogonal
+  <PRE>
+USAGE:
+  work, info, c = NumRu::Lapack.sormbr( vect, side, trans, m, k, a, tau, c, lwork)
+    or
+  NumRu::Lapack.sormbr  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SORMBR( VECT, SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  If VECT = 'Q', SORMBR overwrites the general real M-by-N matrix C
+*  with
+*                  SIDE = 'L'     SIDE = 'R'
+*  TRANS = 'N':      Q * C          C * Q
+*  TRANS = 'T':      Q**T * C       C * Q**T
+*
+*  If VECT = 'P', SORMBR overwrites the general real M-by-N matrix C
+*  with
+*                  SIDE = 'L'     SIDE = 'R'
+*  TRANS = 'N':      P * C          C * P
+*  TRANS = 'T':      P**T * C       C * P**T
+*
+*  Here Q and P**T are the orthogonal matrices determined by SGEBRD when
+*  reducing a real matrix A to bidiagonal form: A = Q * B * P**T. Q and
+*  P**T are defined as products of elementary reflectors H(i) and G(i)
+*  respectively.
+*
+*  Let nq = m if SIDE = 'L' and nq = n if SIDE = 'R'. Thus nq is the
+*  order of the orthogonal matrix Q or P**T that is applied.
+*
+*  If VECT = 'Q', A is assumed to have been an NQ-by-K matrix:
+*  if nq >= k, Q = H(1) H(2) . . . H(k);
+*  if nq < k, Q = H(1) H(2) . . . H(nq-1).
+*
+*  If VECT = 'P', A is assumed to have been a K-by-NQ matrix:
+*  if k < nq, P = G(1) G(2) . . . G(k);
+*  if k >= nq, P = G(1) G(2) . . . G(nq-1).
+*
+
+*  Arguments
+*  =========
+*
+*  VECT    (input) CHARACTER*1
+*          = 'Q': apply Q or Q**T;
+*          = 'P': apply P or P**T.
+*
+*  SIDE    (input) CHARACTER*1
+*          = 'L': apply Q, Q**T, P or P**T from the Left;
+*          = 'R': apply Q, Q**T, P or P**T from the Right.
+*
+*  TRANS   (input) CHARACTER*1
+*          = 'N':  No transpose, apply Q  or P;
+*          = 'T':  Transpose, apply Q**T or P**T.
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix C. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix C. N >= 0.
+*
+*  K       (input) INTEGER
+*          If VECT = 'Q', the number of columns in the original
+*          matrix reduced by SGEBRD.
+*          If VECT = 'P', the number of rows in the original
+*          matrix reduced by SGEBRD.
+*          K >= 0.
+*
+*  A       (input) REAL array, dimension
+*                                (LDA,min(nq,K)) if VECT = 'Q'
+*                                (LDA,nq)        if VECT = 'P'
+*          The vectors which define the elementary reflectors H(i) and
+*          G(i), whose products determine the matrices Q and P, as
+*          returned by SGEBRD.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.
+*          If VECT = 'Q', LDA >= max(1,nq);
+*          if VECT = 'P', LDA >= max(1,min(nq,K)).
+*
+*  TAU     (input) REAL array, dimension (min(nq,K))
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i) or G(i) which determines Q or P, as returned
+*          by SGEBRD in the array argument TAUQ or TAUP.
+*
+*  C       (input/output) REAL array, dimension (LDC,N)
+*          On entry, the M-by-N matrix C.
+*          On exit, C is overwritten by Q*C or Q**T*C or C*Q**T or C*Q
+*          or P*C or P**T*C or C*P or C*P**T.
+*
+*  LDC     (input) INTEGER
+*          The leading dimension of the array C. LDC >= max(1,M).
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          If SIDE = 'L', LWORK >= max(1,N);
+*          if SIDE = 'R', LWORK >= max(1,M).
+*          For optimum performance LWORK >= N*NB if SIDE = 'L', and
+*          LWORK >= M*NB if SIDE = 'R', where NB is the optimal
+*          blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            APPLYQ, LEFT, LQUERY, NOTRAN
+      CHARACTER          TRANST
+      INTEGER            I1, I2, IINFO, LWKOPT, MI, NB, NI, NQ, NW
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      INTEGER            ILAENV
+      EXTERNAL           ILAENV, LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           SORMLQ, SORMQR, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX, MIN
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sormhr"></A>
+  <H2>sormhr</H2>
+  Multiplies a general matrix by the orthogonal transformation
+  <PRE>
+USAGE:
+  work, info, c = NumRu::Lapack.sormhr( side, trans, ilo, ihi, a, tau, c, lwork)
+    or
+  NumRu::Lapack.sormhr  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SORMHR( SIDE, TRANS, M, N, ILO, IHI, A, LDA, TAU, C, LDC, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SORMHR overwrites the general real M-by-N matrix C with
+*
+*                  SIDE = 'L'     SIDE = 'R'
+*  TRANS = 'N':      Q * C          C * Q
+*  TRANS = 'T':      Q**T * C       C * Q**T
+*
+*  where Q is a real orthogonal matrix of order nq, with nq = m if
+*  SIDE = 'L' and nq = n if SIDE = 'R'. Q is defined as the product of
+*  IHI-ILO elementary reflectors, as returned by SGEHRD:
+*
+*  Q = H(ilo) H(ilo+1) . . . H(ihi-1).
+*
+
+*  Arguments
+*  =========
+*
+*  SIDE    (input) CHARACTER*1
+*          = 'L': apply Q or Q**T from the Left;
+*          = 'R': apply Q or Q**T from the Right.
+*
+*  TRANS   (input) CHARACTER*1
+*          = 'N':  No transpose, apply Q;
+*          = 'T':  Transpose, apply Q**T.
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix C. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix C. N >= 0.
+*
+*  ILO     (input) INTEGER
+*  IHI     (input) INTEGER
+*          ILO and IHI must have the same values as in the previous call
+*          of SGEHRD. Q is equal to the unit matrix except in the
+*          submatrix Q(ilo+1:ihi,ilo+1:ihi).
+*          If SIDE = 'L', then 1 <= ILO <= IHI <= M, if M > 0, and
+*          ILO = 1 and IHI = 0, if M = 0;
+*          if SIDE = 'R', then 1 <= ILO <= IHI <= N, if N > 0, and
+*          ILO = 1 and IHI = 0, if N = 0.
+*
+*  A       (input) REAL array, dimension
+*                               (LDA,M) if SIDE = 'L'
+*                               (LDA,N) if SIDE = 'R'
+*          The vectors which define the elementary reflectors, as
+*          returned by SGEHRD.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.
+*          LDA >= max(1,M) if SIDE = 'L'; LDA >= max(1,N) if SIDE = 'R'.
+*
+*  TAU     (input) REAL array, dimension
+*                               (M-1) if SIDE = 'L'
+*                               (N-1) if SIDE = 'R'
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by SGEHRD.
+*
+*  C       (input/output) REAL array, dimension (LDC,N)
+*          On entry, the M-by-N matrix C.
+*          On exit, C is overwritten by Q*C or Q**T*C or C*Q**T or C*Q.
+*
+*  LDC     (input) INTEGER
+*          The leading dimension of the array C. LDC >= max(1,M).
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          If SIDE = 'L', LWORK >= max(1,N);
+*          if SIDE = 'R', LWORK >= max(1,M).
+*          For optimum performance LWORK >= N*NB if SIDE = 'L', and
+*          LWORK >= M*NB if SIDE = 'R', where NB is the optimal
+*          blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            LEFT, LQUERY
+      INTEGER            I1, I2, IINFO, LWKOPT, MI, NB, NH, NI, NQ, NW
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      INTEGER            ILAENV
+      EXTERNAL           ILAENV, LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           SORMQR, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX, MIN
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sorml2"></A>
+  <H2>sorml2</H2>
+  
+  <PRE>
+USAGE:
+  info, c = NumRu::Lapack.sorml2( side, trans, a, tau, c)
+    or
+  NumRu::Lapack.sorml2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SORML2( SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SORML2 overwrites the general real m by n matrix C with
+*
+*        Q * C  if SIDE = 'L' and TRANS = 'N', or
+*
+*        Q'* C  if SIDE = 'L' and TRANS = 'T', or
+*
+*        C * Q  if SIDE = 'R' and TRANS = 'N', or
+*
+*        C * Q' if SIDE = 'R' and TRANS = 'T',
+*
+*  where Q is a real orthogonal matrix defined as the product of k
+*  elementary reflectors
+*
+*        Q = H(k) . . . H(2) H(1)
+*
+*  as returned by SGELQF. Q is of order m if SIDE = 'L' and of order n
+*  if SIDE = 'R'.
+*
+
+*  Arguments
+*  =========
+*
+*  SIDE    (input) CHARACTER*1
+*          = 'L': apply Q or Q' from the Left
+*          = 'R': apply Q or Q' from the Right
+*
+*  TRANS   (input) CHARACTER*1
+*          = 'N': apply Q  (No transpose)
+*          = 'T': apply Q' (Transpose)
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix C. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix C. N >= 0.
+*
+*  K       (input) INTEGER
+*          The number of elementary reflectors whose product defines
+*          the matrix Q.
+*          If SIDE = 'L', M >= K >= 0;
+*          if SIDE = 'R', N >= K >= 0.
+*
+*  A       (input) REAL array, dimension
+*                               (LDA,M) if SIDE = 'L',
+*                               (LDA,N) if SIDE = 'R'
+*          The i-th row must contain the vector which defines the
+*          elementary reflector H(i), for i = 1,2,...,k, as returned by
+*          SGELQF in the first k rows of its array argument A.
+*          A is modified by the routine but restored on exit.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A. LDA >= max(1,K).
+*
+*  TAU     (input) REAL array, dimension (K)
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by SGELQF.
+*
+*  C       (input/output) REAL array, dimension (LDC,N)
+*          On entry, the m by n matrix C.
+*          On exit, C is overwritten by Q*C or Q'*C or C*Q' or C*Q.
+*
+*  LDC     (input) INTEGER
+*          The leading dimension of the array C. LDC >= max(1,M).
+*
+*  WORK    (workspace) REAL array, dimension
+*                                   (N) if SIDE = 'L',
+*                                   (M) if SIDE = 'R'
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sormlq"></A>
+  <H2>sormlq</H2>
+  Multiplies a general matrix by the orthogonal matrix
+  <PRE>
+USAGE:
+  work, info, c = NumRu::Lapack.sormlq( side, trans, a, tau, c, lwork)
+    or
+  NumRu::Lapack.sormlq  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SORMLQ( SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SORMLQ overwrites the general real M-by-N matrix C with
+*
+*                  SIDE = 'L'     SIDE = 'R'
+*  TRANS = 'N':      Q * C          C * Q
+*  TRANS = 'T':      Q**T * C       C * Q**T
+*
+*  where Q is a real orthogonal matrix defined as the product of k
+*  elementary reflectors
+*
+*        Q = H(k) . . . H(2) H(1)
+*
+*  as returned by SGELQF. Q is of order M if SIDE = 'L' and of order N
+*  if SIDE = 'R'.
+*
+
+*  Arguments
+*  =========
+*
+*  SIDE    (input) CHARACTER*1
+*          = 'L': apply Q or Q**T from the Left;
+*          = 'R': apply Q or Q**T from the Right.
+*
+*  TRANS   (input) CHARACTER*1
+*          = 'N':  No transpose, apply Q;
+*          = 'T':  Transpose, apply Q**T.
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix C. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix C. N >= 0.
+*
+*  K       (input) INTEGER
+*          The number of elementary reflectors whose product defines
+*          the matrix Q.
+*          If SIDE = 'L', M >= K >= 0;
+*          if SIDE = 'R', N >= K >= 0.
+*
+*  A       (input) REAL array, dimension
+*                               (LDA,M) if SIDE = 'L',
+*                               (LDA,N) if SIDE = 'R'
+*          The i-th row must contain the vector which defines the
+*          elementary reflector H(i), for i = 1,2,...,k, as returned by
+*          SGELQF in the first k rows of its array argument A.
+*          A is modified by the routine but restored on exit.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A. LDA >= max(1,K).
+*
+*  TAU     (input) REAL array, dimension (K)
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by SGELQF.
+*
+*  C       (input/output) REAL array, dimension (LDC,N)
+*          On entry, the M-by-N matrix C.
+*          On exit, C is overwritten by Q*C or Q**T*C or C*Q**T or C*Q.
+*
+*  LDC     (input) INTEGER
+*          The leading dimension of the array C. LDC >= max(1,M).
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          If SIDE = 'L', LWORK >= max(1,N);
+*          if SIDE = 'R', LWORK >= max(1,M).
+*          For optimum performance LWORK >= N*NB if SIDE = 'L', and
+*          LWORK >= M*NB if SIDE = 'R', where NB is the optimal
+*          blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sormql"></A>
+  <H2>sormql</H2>
+  Multiplies a general matrix by the orthogonal matrix
+  <PRE>
+USAGE:
+  work, info, c = NumRu::Lapack.sormql( side, trans, m, a, tau, c, lwork)
+    or
+  NumRu::Lapack.sormql  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SORMQL( SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SORMQL overwrites the general real M-by-N matrix C with
+*
+*                  SIDE = 'L'     SIDE = 'R'
+*  TRANS = 'N':      Q * C          C * Q
+*  TRANS = 'T':      Q**T * C       C * Q**T
+*
+*  where Q is a real orthogonal matrix defined as the product of k
+*  elementary reflectors
+*
+*        Q = H(k) . . . H(2) H(1)
+*
+*  as returned by SGEQLF. Q is of order M if SIDE = 'L' and of order N
+*  if SIDE = 'R'.
+*
+
+*  Arguments
+*  =========
+*
+*  SIDE    (input) CHARACTER*1
+*          = 'L': apply Q or Q**T from the Left;
+*          = 'R': apply Q or Q**T from the Right.
+*
+*  TRANS   (input) CHARACTER*1
+*          = 'N':  No transpose, apply Q;
+*          = 'T':  Transpose, apply Q**T.
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix C. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix C. N >= 0.
+*
+*  K       (input) INTEGER
+*          The number of elementary reflectors whose product defines
+*          the matrix Q.
+*          If SIDE = 'L', M >= K >= 0;
+*          if SIDE = 'R', N >= K >= 0.
+*
+*  A       (input) REAL array, dimension (LDA,K)
+*          The i-th column must contain the vector which defines the
+*          elementary reflector H(i), for i = 1,2,...,k, as returned by
+*          SGEQLF in the last k columns of its array argument A.
+*          A is modified by the routine but restored on exit.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.
+*          If SIDE = 'L', LDA >= max(1,M);
+*          if SIDE = 'R', LDA >= max(1,N).
+*
+*  TAU     (input) REAL array, dimension (K)
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by SGEQLF.
+*
+*  C       (input/output) REAL array, dimension (LDC,N)
+*          On entry, the M-by-N matrix C.
+*          On exit, C is overwritten by Q*C or Q**T*C or C*Q**T or C*Q.
+*
+*  LDC     (input) INTEGER
+*          The leading dimension of the array C. LDC >= max(1,M).
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          If SIDE = 'L', LWORK >= max(1,N);
+*          if SIDE = 'R', LWORK >= max(1,M).
+*          For optimum performance LWORK >= N*NB if SIDE = 'L', and
+*          LWORK >= M*NB if SIDE = 'R', where NB is the optimal
+*          blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="sormqr"></A>
   <H2>sormqr</H2>
@@ -232,23 +1811,23 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="sorm2r"></A>
-  <H2>sorm2r</H2>
-  
+  <A NAME="sormr3"></A>
+  <H2>sormr3</H2>
+  Multiples a general matrix by the orthogonal matrix
   <PRE>
 USAGE:
-  info, c = NumRu::Lapack.sorm2r( side, trans, m, a, tau, c)
+  info, c = NumRu::Lapack.sormr3( side, trans, l, a, tau, c)
     or
-  NumRu::Lapack.sorm2r  # print help
+  NumRu::Lapack.sormr3  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE SORM2R( SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, INFO )
+      SUBROUTINE SORMR3( SIDE, TRANS, M, N, K, L, A, LDA, TAU, C, LDC, WORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  SORM2R overwrites the general real m by n matrix C with
+*  SORMR3 overwrites the general real m by n matrix C with
 *
 *        Q * C  if SIDE = 'L' and TRANS = 'N', or
 *
@@ -263,7 +1842,7 @@ FORTRAN MANUAL
 *
 *        Q = H(1) H(2) . . . H(k)
 *
-*  as returned by SGEQRF. Q is of order m if SIDE = 'L' and of order n
+*  as returned by STZRZF. Q is of order m if SIDE = 'L' and of order n
 *  if SIDE = 'R'.
 *
 
@@ -290,23 +1869,28 @@ FORTRAN MANUAL
 *          If SIDE = 'L', M >= K >= 0;
 *          if SIDE = 'R', N >= K >= 0.
 *
-*  A       (input) REAL array, dimension (LDA,K)
-*          The i-th column must contain the vector which defines the
+*  L       (input) INTEGER
+*          The number of columns of the matrix A containing
+*          the meaningful part of the Householder reflectors.
+*          If SIDE = 'L', M >= L >= 0, if SIDE = 'R', N >= L >= 0.
+*
+*  A       (input) REAL array, dimension
+*                               (LDA,M) if SIDE = 'L',
+*                               (LDA,N) if SIDE = 'R'
+*          The i-th row must contain the vector which defines the
 *          elementary reflector H(i), for i = 1,2,...,k, as returned by
-*          SGEQRF in the first k columns of its array argument A.
+*          STZRZF in the last k rows of its array argument A.
 *          A is modified by the routine but restored on exit.
 *
 *  LDA     (input) INTEGER
-*          The leading dimension of the array A.
-*          If SIDE = 'L', LDA >= max(1,M);
-*          if SIDE = 'R', LDA >= max(1,N).
+*          The leading dimension of the array A. LDA >= max(1,K).
 *
 *  TAU     (input) REAL array, dimension (K)
 *          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by SGEQRF.
+*          reflector H(i), as returned by STZRZF.
 *
 *  C       (input/output) REAL array, dimension (LDC,N)
-*          On entry, the m by n matrix C.
+*          On entry, the m-by-n matrix C.
 *          On exit, C is overwritten by Q*C or Q'*C or C*Q' or C*Q.
 *
 *  LDC     (input) INTEGER
@@ -321,124 +1905,24 @@ FORTRAN MANUAL
 *          < 0: if INFO = -i, the i-th argument had an illegal value
 *
 
-*  =====================================================================
+*  Further Details
+*  ===============
 *
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sormtr"></A>
-  <H2>sormtr</H2>
-  Multiplies a general matrix by the orthogonal
-  <PRE>
-USAGE:
-  work, info, c = NumRu::Lapack.sormtr( side, uplo, trans, a, tau, c, lwork)
-    or
-  NumRu::Lapack.sormtr  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SORMTR( SIDE, UPLO, TRANS, M, N, A, LDA, TAU, C, LDC, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
+*  Based on contributions by
+*    A. Petitet, Computer Science Dept., Univ. of Tenn., Knoxville, USA
 *
-*  SORMTR overwrites the general real M-by-N matrix C with
-*
-*                  SIDE = 'L'     SIDE = 'R'
-*  TRANS = 'N':      Q * C          C * Q
-*  TRANS = 'T':      Q**T * C       C * Q**T
-*
-*  where Q is a real orthogonal matrix of order nq, with nq = m if
-*  SIDE = 'L' and nq = n if SIDE = 'R'. Q is defined as the product of
-*  nq-1 elementary reflectors, as returned by SSYTRD:
-*
-*  if UPLO = 'U', Q = H(nq-1) . . . H(2) H(1);
-*
-*  if UPLO = 'L', Q = H(1) H(2) . . . H(nq-1).
-*
-
-*  Arguments
-*  =========
-*
-*  SIDE    (input) CHARACTER*1
-*          = 'L': apply Q or Q**T from the Left;
-*          = 'R': apply Q or Q**T from the Right.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U': Upper triangle of A contains elementary reflectors
-*                 from SSYTRD;
-*          = 'L': Lower triangle of A contains elementary reflectors
-*                 from SSYTRD.
-*
-*  TRANS   (input) CHARACTER*1
-*          = 'N':  No transpose, apply Q;
-*          = 'T':  Transpose, apply Q**T.
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix C. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix C. N >= 0.
-*
-*  A       (input) REAL array, dimension
-*                               (LDA,M) if SIDE = 'L'
-*                               (LDA,N) if SIDE = 'R'
-*          The vectors which define the elementary reflectors, as
-*          returned by SSYTRD.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.
-*          LDA >= max(1,M) if SIDE = 'L'; LDA >= max(1,N) if SIDE = 'R'.
-*
-*  TAU     (input) REAL array, dimension
-*                               (M-1) if SIDE = 'L'
-*                               (N-1) if SIDE = 'R'
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by SSYTRD.
-*
-*  C       (input/output) REAL array, dimension (LDC,N)
-*          On entry, the M-by-N matrix C.
-*          On exit, C is overwritten by Q*C or Q**T*C or C*Q**T or C*Q.
-*
-*  LDC     (input) INTEGER
-*          The leading dimension of the array C. LDC >= max(1,M).
-*
-*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.
-*          If SIDE = 'L', LWORK >= max(1,N);
-*          if SIDE = 'R', LWORK >= max(1,M).
-*          For optimum performance LWORK >= N*NB if SIDE = 'L', and
-*          LWORK >= M*NB if SIDE = 'R', where NB is the optimal
-*          blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
 *  =====================================================================
 *
 *     .. Local Scalars ..
-      LOGICAL            LEFT, LQUERY, UPPER
-      INTEGER            I1, I2, IINFO, LWKOPT, MI, NI, NB, NQ, NW
+      LOGICAL            LEFT, NOTRAN
+      INTEGER            I, I1, I2, I3, IC, JA, JC, MI, NI, NQ
 *     ..
 *     .. External Functions ..
       LOGICAL            LSAME
-      INTEGER            ILAENV
-      EXTERNAL           ILAENV, LSAME
+      EXTERNAL           LSAME
 *     ..
 *     .. External Subroutines ..
-      EXTERNAL           SORMQL, SORMQR, XERBLA
+      EXTERNAL           SLARZ, XERBLA
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX
@@ -448,356 +1932,34 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="sorgbr"></A>
-  <H2>sorgbr</H2>
-  Generates the orthogonal transformation matrices from
+  <A NAME="sormrq"></A>
+  <H2>sormrq</H2>
+  Multiplies a general matrix by the orthogonal matrix
   <PRE>
 USAGE:
-  work, info, a = NumRu::Lapack.sorgbr( vect, m, k, a, tau, lwork)
+  work, info, c = NumRu::Lapack.sormrq( side, trans, a, tau, c, lwork)
     or
-  NumRu::Lapack.sorgbr  # print help
+  NumRu::Lapack.sormrq  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE SORGBR( VECT, M, N, K, A, LDA, TAU, WORK, LWORK, INFO )
+      SUBROUTINE SORMRQ( SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, LWORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  SORGBR generates one of the real orthogonal matrices Q or P**T
-*  determined by SGEBRD when reducing a real matrix A to bidiagonal
-*  form: A = Q * B * P**T.  Q and P**T are defined as products of
-*  elementary reflectors H(i) or G(i) respectively.
-*
-*  If VECT = 'Q', A is assumed to have been an M-by-K matrix, and Q
-*  is of order M:
-*  if m >= k, Q = H(1) H(2) . . . H(k) and SORGBR returns the first n
-*  columns of Q, where m >= n >= k;
-*  if m < k, Q = H(1) H(2) . . . H(m-1) and SORGBR returns Q as an
-*  M-by-M matrix.
-*
-*  If VECT = 'P', A is assumed to have been a K-by-N matrix, and P**T
-*  is of order N:
-*  if k < n, P**T = G(k) . . . G(2) G(1) and SORGBR returns the first m
-*  rows of P**T, where n >= m >= k;
-*  if k >= n, P**T = G(n-1) . . . G(2) G(1) and SORGBR returns P**T as
-*  an N-by-N matrix.
-*
-
-*  Arguments
-*  =========
-*
-*  VECT    (input) CHARACTER*1
-*          Specifies whether the matrix Q or the matrix P**T is
-*          required, as defined in the transformation applied by SGEBRD:
-*          = 'Q':  generate Q;
-*          = 'P':  generate P**T.
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix Q or P**T to be returned.
-*          M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix Q or P**T to be returned.
-*          N >= 0.
-*          If VECT = 'Q', M >= N >= min(M,K);
-*          if VECT = 'P', N >= M >= min(N,K).
-*
-*  K       (input) INTEGER
-*          If VECT = 'Q', the number of columns in the original M-by-K
-*          matrix reduced by SGEBRD.
-*          If VECT = 'P', the number of rows in the original K-by-N
-*          matrix reduced by SGEBRD.
-*          K >= 0.
-*
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the vectors which define the elementary reflectors,
-*          as returned by SGEBRD.
-*          On exit, the M-by-N matrix Q or P**T.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A. LDA >= max(1,M).
-*
-*  TAU     (input) REAL array, dimension
-*                                (min(M,K)) if VECT = 'Q'
-*                                (min(N,K)) if VECT = 'P'
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i) or G(i), which determines Q or P**T, as
-*          returned by SGEBRD in its array argument TAUQ or TAUP.
-*
-*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK. LWORK >= max(1,min(M,N)).
-*          For optimum performance LWORK >= min(M,N)*NB, where NB
-*          is the optimal blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sorg2l"></A>
-  <H2>sorg2l</H2>
-  
-  <PRE>
-USAGE:
-  info, a = NumRu::Lapack.sorg2l( m, a, tau)
-    or
-  NumRu::Lapack.sorg2l  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SORG2L( M, N, K, A, LDA, TAU, WORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SORG2L generates an m by n real matrix Q with orthonormal columns,
-*  which is defined as the last n columns of a product of k elementary
-*  reflectors of order m
-*
-*        Q  =  H(k) . . . H(2) H(1)
-*
-*  as returned by SGEQLF.
-*
-
-*  Arguments
-*  =========
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix Q. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix Q. M >= N >= 0.
-*
-*  K       (input) INTEGER
-*          The number of elementary reflectors whose product defines the
-*          matrix Q. N >= K >= 0.
-*
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the (n-k+i)-th column must contain the vector which
-*          defines the elementary reflector H(i), for i = 1,2,...,k, as
-*          returned by SGEQLF in the last k columns of its array
-*          argument A.
-*          On exit, the m by n matrix Q.
-*
-*  LDA     (input) INTEGER
-*          The first dimension of the array A. LDA >= max(1,M).
-*
-*  TAU     (input) REAL array, dimension (K)
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by SGEQLF.
-*
-*  WORK    (workspace) REAL array, dimension (N)
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument has an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sorghr"></A>
-  <H2>sorghr</H2>
-  Generates the orthogonal transformation matrix from
-  <PRE>
-USAGE:
-  work, info, a = NumRu::Lapack.sorghr( ilo, ihi, a, tau, lwork)
-    or
-  NumRu::Lapack.sorghr  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SORGHR( N, ILO, IHI, A, LDA, TAU, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SORGHR generates a real orthogonal matrix Q which is defined as the
-*  product of IHI-ILO elementary reflectors of order N, as returned by
-*  SGEHRD:
-*
-*  Q = H(ilo) H(ilo+1) . . . H(ihi-1).
-*
-
-*  Arguments
-*  =========
-*
-*  N       (input) INTEGER
-*          The order of the matrix Q. N >= 0.
-*
-*  ILO     (input) INTEGER
-*  IHI     (input) INTEGER
-*          ILO and IHI must have the same values as in the previous call
-*          of SGEHRD. Q is equal to the unit matrix except in the
-*          submatrix Q(ilo+1:ihi,ilo+1:ihi).
-*          1 <= ILO <= IHI <= N, if N > 0; ILO=1 and IHI=0, if N=0.
-*
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the vectors which define the elementary reflectors,
-*          as returned by SGEHRD.
-*          On exit, the N-by-N orthogonal matrix Q.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A. LDA >= max(1,N).
-*
-*  TAU     (input) REAL array, dimension (N-1)
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by SGEHRD.
-*
-*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK. LWORK >= IHI-ILO.
-*          For optimum performance LWORK >= (IHI-ILO)*NB, where NB is
-*          the optimal blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sorgqr"></A>
-  <H2>sorgqr</H2>
-  Generates all or part of the orthogonal matrix Q from
-  <PRE>
-USAGE:
-  work, info, a = NumRu::Lapack.sorgqr( m, a, tau, lwork)
-    or
-  NumRu::Lapack.sorgqr  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SORGQR( M, N, K, A, LDA, TAU, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SORGQR generates an M-by-N real matrix Q with orthonormal columns,
-*  which is defined as the first N columns of a product of K elementary
-*  reflectors of order M
-*
-*        Q  =  H(1) H(2) . . . H(k)
-*
-*  as returned by SGEQRF.
-*
-
-*  Arguments
-*  =========
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix Q. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix Q. M >= N >= 0.
-*
-*  K       (input) INTEGER
-*          The number of elementary reflectors whose product defines the
-*          matrix Q. N >= K >= 0.
-*
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the i-th column must contain the vector which
-*          defines the elementary reflector H(i), for i = 1,2,...,k, as
-*          returned by SGEQRF in the first k columns of its array
-*          argument A.
-*          On exit, the M-by-N matrix Q.
-*
-*  LDA     (input) INTEGER
-*          The first dimension of the array A. LDA >= max(1,M).
-*
-*  TAU     (input) REAL array, dimension (K)
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by SGEQRF.
-*
-*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK. LWORK >= max(1,N).
-*          For optimum performance LWORK >= N*NB, where NB is the
-*          optimal blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument has an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sorml2"></A>
-  <H2>sorml2</H2>
-  
-  <PRE>
-USAGE:
-  info, c = NumRu::Lapack.sorml2( side, trans, a, tau, c)
-    or
-  NumRu::Lapack.sorml2  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SORML2( SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SORML2 overwrites the general real m by n matrix C with
-*
-*        Q * C  if SIDE = 'L' and TRANS = 'N', or
-*
-*        Q'* C  if SIDE = 'L' and TRANS = 'T', or
-*
-*        C * Q  if SIDE = 'R' and TRANS = 'N', or
-*
-*        C * Q' if SIDE = 'R' and TRANS = 'T',
+*  SORMRQ overwrites the general real M-by-N matrix C with
+*
+*                  SIDE = 'L'     SIDE = 'R'
+*  TRANS = 'N':      Q * C          C * Q
+*  TRANS = 'T':      Q**T * C       C * Q**T
 *
 *  where Q is a real orthogonal matrix defined as the product of k
 *  elementary reflectors
 *
-*        Q = H(k) . . . H(2) H(1)
+*        Q = H(1) H(2) . . . H(k)
 *
-*  as returned by SGELQF. Q is of order m if SIDE = 'L' and of order n
+*  as returned by SGERQF. Q is of order M if SIDE = 'L' and of order N
 *  if SIDE = 'R'.
 *
 
@@ -805,12 +1967,12 @@ FORTRAN MANUAL
 *  =========
 *
 *  SIDE    (input) CHARACTER*1
-*          = 'L': apply Q or Q' from the Left
-*          = 'R': apply Q or Q' from the Right
+*          = 'L': apply Q or Q**T from the Left;
+*          = 'R': apply Q or Q**T from the Right.
 *
 *  TRANS   (input) CHARACTER*1
-*          = 'N': apply Q  (No transpose)
-*          = 'T': apply Q' (Transpose)
+*          = 'N':  No transpose, apply Q;
+*          = 'T':  Transpose, apply Q**T.
 *
 *  M       (input) INTEGER
 *          The number of rows of the matrix C. M >= 0.
@@ -829,7 +1991,7 @@ FORTRAN MANUAL
 *                               (LDA,N) if SIDE = 'R'
 *          The i-th row must contain the vector which defines the
 *          elementary reflector H(i), for i = 1,2,...,k, as returned by
-*          SGELQF in the first k rows of its array argument A.
+*          SGERQF in the last k rows of its array argument A.
 *          A is modified by the routine but restored on exit.
 *
 *  LDA     (input) INTEGER
@@ -837,87 +1999,25 @@ FORTRAN MANUAL
 *
 *  TAU     (input) REAL array, dimension (K)
 *          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by SGELQF.
+*          reflector H(i), as returned by SGERQF.
 *
 *  C       (input/output) REAL array, dimension (LDC,N)
-*          On entry, the m by n matrix C.
-*          On exit, C is overwritten by Q*C or Q'*C or C*Q' or C*Q.
+*          On entry, the M-by-N matrix C.
+*          On exit, C is overwritten by Q*C or Q**T*C or C*Q**T or C*Q.
 *
 *  LDC     (input) INTEGER
 *          The leading dimension of the array C. LDC >= max(1,M).
-*
-*  WORK    (workspace) REAL array, dimension
-*                                   (N) if SIDE = 'L',
-*                                   (M) if SIDE = 'R'
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sorgtr"></A>
-  <H2>sorgtr</H2>
-  Generates the orthogonal transformation matrix from
-  <PRE>
-USAGE:
-  work, info, a = NumRu::Lapack.sorgtr( uplo, a, tau, lwork)
-    or
-  NumRu::Lapack.sorgtr  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SORGTR( UPLO, N, A, LDA, TAU, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SORGTR generates a real orthogonal matrix Q which is defined as the
-*  product of n-1 elementary reflectors of order N, as returned by
-*  SSYTRD:
-*
-*  if UPLO = 'U', Q = H(n-1) . . . H(2) H(1),
-*
-*  if UPLO = 'L', Q = H(1) H(2) . . . H(n-1).
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U': Upper triangle of A contains elementary reflectors
-*                 from SSYTRD;
-*          = 'L': Lower triangle of A contains elementary reflectors
-*                 from SSYTRD.
-*
-*  N       (input) INTEGER
-*          The order of the matrix Q. N >= 0.
-*
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the vectors which define the elementary reflectors,
-*          as returned by SSYTRD.
-*          On exit, the N-by-N orthogonal matrix Q.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A. LDA >= max(1,N).
-*
-*  TAU     (input) REAL array, dimension (N-1)
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by SSYTRD.
 *
 *  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
 *          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
 *
 *  LWORK   (input) INTEGER
-*          The dimension of the array WORK. LWORK >= max(1,N-1).
-*          For optimum performance LWORK >= (N-1)*NB, where NB is
-*          the optimal blocksize.
+*          The dimension of the array WORK.
+*          If SIDE = 'L', LWORK >= max(1,N);
+*          if SIDE = 'R', LWORK >= max(1,M).
+*          For optimum performance LWORK >= N*NB if SIDE = 'L', and
+*          LWORK >= M*NB if SIDE = 'R', where NB is the optimal
+*          blocksize.
 *
 *          If LWORK = -1, then a workspace query is assumed; the routine
 *          only calculates the optimal size of the WORK array, returns
@@ -1051,23 +2151,23 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="sormhr"></A>
-  <H2>sormhr</H2>
-  Multiplies a general matrix by the orthogonal transformation
+  <A NAME="sormtr"></A>
+  <H2>sormtr</H2>
+  Multiplies a general matrix by the orthogonal
   <PRE>
 USAGE:
-  work, info, c = NumRu::Lapack.sormhr( side, trans, ilo, ihi, a, tau, c, lwork)
+  work, info, c = NumRu::Lapack.sormtr( side, uplo, trans, a, tau, c, lwork)
     or
-  NumRu::Lapack.sormhr  # print help
+  NumRu::Lapack.sormtr  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE SORMHR( SIDE, TRANS, M, N, ILO, IHI, A, LDA, TAU, C, LDC, WORK, LWORK, INFO )
+      SUBROUTINE SORMTR( SIDE, UPLO, TRANS, M, N, A, LDA, TAU, C, LDC, WORK, LWORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  SORMHR overwrites the general real M-by-N matrix C with
+*  SORMTR overwrites the general real M-by-N matrix C with
 *
 *                  SIDE = 'L'     SIDE = 'R'
 *  TRANS = 'N':      Q * C          C * Q
@@ -1075,9 +2175,11 @@ FORTRAN MANUAL
 *
 *  where Q is a real orthogonal matrix of order nq, with nq = m if
 *  SIDE = 'L' and nq = n if SIDE = 'R'. Q is defined as the product of
-*  IHI-ILO elementary reflectors, as returned by SGEHRD:
+*  nq-1 elementary reflectors, as returned by SSYTRD:
 *
-*  Q = H(ilo) H(ilo+1) . . . H(ihi-1).
+*  if UPLO = 'U', Q = H(nq-1) . . . H(2) H(1);
+*
+*  if UPLO = 'L', Q = H(1) H(2) . . . H(nq-1).
 *
 
 *  Arguments
@@ -1086,6 +2188,12 @@ FORTRAN MANUAL
 *  SIDE    (input) CHARACTER*1
 *          = 'L': apply Q or Q**T from the Left;
 *          = 'R': apply Q or Q**T from the Right.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U': Upper triangle of A contains elementary reflectors
+*                 from SSYTRD;
+*          = 'L': Lower triangle of A contains elementary reflectors
+*                 from SSYTRD.
 *
 *  TRANS   (input) CHARACTER*1
 *          = 'N':  No transpose, apply Q;
@@ -1097,21 +2205,11 @@ FORTRAN MANUAL
 *  N       (input) INTEGER
 *          The number of columns of the matrix C. N >= 0.
 *
-*  ILO     (input) INTEGER
-*  IHI     (input) INTEGER
-*          ILO and IHI must have the same values as in the previous call
-*          of SGEHRD. Q is equal to the unit matrix except in the
-*          submatrix Q(ilo+1:ihi,ilo+1:ihi).
-*          If SIDE = 'L', then 1 <= ILO <= IHI <= M, if M > 0, and
-*          ILO = 1 and IHI = 0, if M = 0;
-*          if SIDE = 'R', then 1 <= ILO <= IHI <= N, if N > 0, and
-*          ILO = 1 and IHI = 0, if N = 0.
-*
 *  A       (input) REAL array, dimension
 *                               (LDA,M) if SIDE = 'L'
 *                               (LDA,N) if SIDE = 'R'
 *          The vectors which define the elementary reflectors, as
-*          returned by SGEHRD.
+*          returned by SSYTRD.
 *
 *  LDA     (input) INTEGER
 *          The leading dimension of the array A.
@@ -1121,7 +2219,7 @@ FORTRAN MANUAL
 *                               (M-1) if SIDE = 'L'
 *                               (N-1) if SIDE = 'R'
 *          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by SGEHRD.
+*          reflector H(i), as returned by SSYTRD.
 *
 *  C       (input/output) REAL array, dimension (LDC,N)
 *          On entry, the M-by-N matrix C.
@@ -1154,8 +2252,8 @@ FORTRAN MANUAL
 *  =====================================================================
 *
 *     .. Local Scalars ..
-      LOGICAL            LEFT, LQUERY
-      INTEGER            I1, I2, IINFO, LWKOPT, MI, NB, NH, NI, NQ, NW
+      LOGICAL            LEFT, LQUERY, UPPER
+      INTEGER            I1, I2, IINFO, LWKOPT, MI, NI, NB, NQ, NW
 *     ..
 *     .. External Functions ..
       LOGICAL            LSAME
@@ -1163,1109 +2261,11 @@ FORTRAN MANUAL
       EXTERNAL           ILAENV, LSAME
 *     ..
 *     .. External Subroutines ..
-      EXTERNAL           SORMQR, XERBLA
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX, MIN
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sormlq"></A>
-  <H2>sormlq</H2>
-  Multiplies a general matrix by the orthogonal matrix
-  <PRE>
-USAGE:
-  work, info, c = NumRu::Lapack.sormlq( side, trans, a, tau, c, lwork)
-    or
-  NumRu::Lapack.sormlq  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SORMLQ( SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SORMLQ overwrites the general real M-by-N matrix C with
-*
-*                  SIDE = 'L'     SIDE = 'R'
-*  TRANS = 'N':      Q * C          C * Q
-*  TRANS = 'T':      Q**T * C       C * Q**T
-*
-*  where Q is a real orthogonal matrix defined as the product of k
-*  elementary reflectors
-*
-*        Q = H(k) . . . H(2) H(1)
-*
-*  as returned by SGELQF. Q is of order M if SIDE = 'L' and of order N
-*  if SIDE = 'R'.
-*
-
-*  Arguments
-*  =========
-*
-*  SIDE    (input) CHARACTER*1
-*          = 'L': apply Q or Q**T from the Left;
-*          = 'R': apply Q or Q**T from the Right.
-*
-*  TRANS   (input) CHARACTER*1
-*          = 'N':  No transpose, apply Q;
-*          = 'T':  Transpose, apply Q**T.
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix C. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix C. N >= 0.
-*
-*  K       (input) INTEGER
-*          The number of elementary reflectors whose product defines
-*          the matrix Q.
-*          If SIDE = 'L', M >= K >= 0;
-*          if SIDE = 'R', N >= K >= 0.
-*
-*  A       (input) REAL array, dimension
-*                               (LDA,M) if SIDE = 'L',
-*                               (LDA,N) if SIDE = 'R'
-*          The i-th row must contain the vector which defines the
-*          elementary reflector H(i), for i = 1,2,...,k, as returned by
-*          SGELQF in the first k rows of its array argument A.
-*          A is modified by the routine but restored on exit.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A. LDA >= max(1,K).
-*
-*  TAU     (input) REAL array, dimension (K)
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by SGELQF.
-*
-*  C       (input/output) REAL array, dimension (LDC,N)
-*          On entry, the M-by-N matrix C.
-*          On exit, C is overwritten by Q*C or Q**T*C or C*Q**T or C*Q.
-*
-*  LDC     (input) INTEGER
-*          The leading dimension of the array C. LDC >= max(1,M).
-*
-*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.
-*          If SIDE = 'L', LWORK >= max(1,N);
-*          if SIDE = 'R', LWORK >= max(1,M).
-*          For optimum performance LWORK >= N*NB if SIDE = 'L', and
-*          LWORK >= M*NB if SIDE = 'R', where NB is the optimal
-*          blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sormrq"></A>
-  <H2>sormrq</H2>
-  Multiplies a general matrix by the orthogonal matrix
-  <PRE>
-USAGE:
-  work, info, c = NumRu::Lapack.sormrq( side, trans, a, tau, c, lwork)
-    or
-  NumRu::Lapack.sormrq  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SORMRQ( SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SORMRQ overwrites the general real M-by-N matrix C with
-*
-*                  SIDE = 'L'     SIDE = 'R'
-*  TRANS = 'N':      Q * C          C * Q
-*  TRANS = 'T':      Q**T * C       C * Q**T
-*
-*  where Q is a real orthogonal matrix defined as the product of k
-*  elementary reflectors
-*
-*        Q = H(1) H(2) . . . H(k)
-*
-*  as returned by SGERQF. Q is of order M if SIDE = 'L' and of order N
-*  if SIDE = 'R'.
-*
-
-*  Arguments
-*  =========
-*
-*  SIDE    (input) CHARACTER*1
-*          = 'L': apply Q or Q**T from the Left;
-*          = 'R': apply Q or Q**T from the Right.
-*
-*  TRANS   (input) CHARACTER*1
-*          = 'N':  No transpose, apply Q;
-*          = 'T':  Transpose, apply Q**T.
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix C. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix C. N >= 0.
-*
-*  K       (input) INTEGER
-*          The number of elementary reflectors whose product defines
-*          the matrix Q.
-*          If SIDE = 'L', M >= K >= 0;
-*          if SIDE = 'R', N >= K >= 0.
-*
-*  A       (input) REAL array, dimension
-*                               (LDA,M) if SIDE = 'L',
-*                               (LDA,N) if SIDE = 'R'
-*          The i-th row must contain the vector which defines the
-*          elementary reflector H(i), for i = 1,2,...,k, as returned by
-*          SGERQF in the last k rows of its array argument A.
-*          A is modified by the routine but restored on exit.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A. LDA >= max(1,K).
-*
-*  TAU     (input) REAL array, dimension (K)
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by SGERQF.
-*
-*  C       (input/output) REAL array, dimension (LDC,N)
-*          On entry, the M-by-N matrix C.
-*          On exit, C is overwritten by Q*C or Q**T*C or C*Q**T or C*Q.
-*
-*  LDC     (input) INTEGER
-*          The leading dimension of the array C. LDC >= max(1,M).
-*
-*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.
-*          If SIDE = 'L', LWORK >= max(1,N);
-*          if SIDE = 'R', LWORK >= max(1,M).
-*          For optimum performance LWORK >= N*NB if SIDE = 'L', and
-*          LWORK >= M*NB if SIDE = 'R', where NB is the optimal
-*          blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sormr3"></A>
-  <H2>sormr3</H2>
-  Multiples a general matrix by the orthogonal matrix
-  <PRE>
-USAGE:
-  info, c = NumRu::Lapack.sormr3( side, trans, l, a, tau, c)
-    or
-  NumRu::Lapack.sormr3  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SORMR3( SIDE, TRANS, M, N, K, L, A, LDA, TAU, C, LDC, WORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SORMR3 overwrites the general real m by n matrix C with
-*
-*        Q * C  if SIDE = 'L' and TRANS = 'N', or
-*
-*        Q'* C  if SIDE = 'L' and TRANS = 'T', or
-*
-*        C * Q  if SIDE = 'R' and TRANS = 'N', or
-*
-*        C * Q' if SIDE = 'R' and TRANS = 'T',
-*
-*  where Q is a real orthogonal matrix defined as the product of k
-*  elementary reflectors
-*
-*        Q = H(1) H(2) . . . H(k)
-*
-*  as returned by STZRZF. Q is of order m if SIDE = 'L' and of order n
-*  if SIDE = 'R'.
-*
-
-*  Arguments
-*  =========
-*
-*  SIDE    (input) CHARACTER*1
-*          = 'L': apply Q or Q' from the Left
-*          = 'R': apply Q or Q' from the Right
-*
-*  TRANS   (input) CHARACTER*1
-*          = 'N': apply Q  (No transpose)
-*          = 'T': apply Q' (Transpose)
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix C. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix C. N >= 0.
-*
-*  K       (input) INTEGER
-*          The number of elementary reflectors whose product defines
-*          the matrix Q.
-*          If SIDE = 'L', M >= K >= 0;
-*          if SIDE = 'R', N >= K >= 0.
-*
-*  L       (input) INTEGER
-*          The number of columns of the matrix A containing
-*          the meaningful part of the Householder reflectors.
-*          If SIDE = 'L', M >= L >= 0, if SIDE = 'R', N >= L >= 0.
-*
-*  A       (input) REAL array, dimension
-*                               (LDA,M) if SIDE = 'L',
-*                               (LDA,N) if SIDE = 'R'
-*          The i-th row must contain the vector which defines the
-*          elementary reflector H(i), for i = 1,2,...,k, as returned by
-*          STZRZF in the last k rows of its array argument A.
-*          A is modified by the routine but restored on exit.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A. LDA >= max(1,K).
-*
-*  TAU     (input) REAL array, dimension (K)
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by STZRZF.
-*
-*  C       (input/output) REAL array, dimension (LDC,N)
-*          On entry, the m-by-n matrix C.
-*          On exit, C is overwritten by Q*C or Q'*C or C*Q' or C*Q.
-*
-*  LDC     (input) INTEGER
-*          The leading dimension of the array C. LDC >= max(1,M).
-*
-*  WORK    (workspace) REAL array, dimension
-*                                   (N) if SIDE = 'L',
-*                                   (M) if SIDE = 'R'
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*
-
-*  Further Details
-*  ===============
-*
-*  Based on contributions by
-*    A. Petitet, Computer Science Dept., Univ. of Tenn., Knoxville, USA
-*
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      LOGICAL            LEFT, NOTRAN
-      INTEGER            I, I1, I2, I3, IC, JA, JC, MI, NI, NQ
-*     ..
-*     .. External Functions ..
-      LOGICAL            LSAME
-      EXTERNAL           LSAME
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           SLARZ, XERBLA
+      EXTERNAL           SORMQL, SORMQR, XERBLA
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX
 *     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sorglq"></A>
-  <H2>sorglq</H2>
-  Generates all or part of the orthogonal matrix Q from
-  <PRE>
-USAGE:
-  work, info, a = NumRu::Lapack.sorglq( m, a, tau, lwork)
-    or
-  NumRu::Lapack.sorglq  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SORGLQ( M, N, K, A, LDA, TAU, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SORGLQ generates an M-by-N real matrix Q with orthonormal rows,
-*  which is defined as the first M rows of a product of K elementary
-*  reflectors of order N
-*
-*        Q  =  H(k) . . . H(2) H(1)
-*
-*  as returned by SGELQF.
-*
-
-*  Arguments
-*  =========
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix Q. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix Q. N >= M.
-*
-*  K       (input) INTEGER
-*          The number of elementary reflectors whose product defines the
-*          matrix Q. M >= K >= 0.
-*
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the i-th row must contain the vector which defines
-*          the elementary reflector H(i), for i = 1,2,...,k, as returned
-*          by SGELQF in the first k rows of its array argument A.
-*          On exit, the M-by-N matrix Q.
-*
-*  LDA     (input) INTEGER
-*          The first dimension of the array A. LDA >= max(1,M).
-*
-*  TAU     (input) REAL array, dimension (K)
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by SGELQF.
-*
-*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK. LWORK >= max(1,M).
-*          For optimum performance LWORK >= M*NB, where NB is
-*          the optimal blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument has an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sorgrq"></A>
-  <H2>sorgrq</H2>
-  Generates all or part of the orthogonal matrix Q from
-  <PRE>
-USAGE:
-  work, info, a = NumRu::Lapack.sorgrq( m, a, tau, lwork)
-    or
-  NumRu::Lapack.sorgrq  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SORGRQ( M, N, K, A, LDA, TAU, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SORGRQ generates an M-by-N real matrix Q with orthonormal rows,
-*  which is defined as the last M rows of a product of K elementary
-*  reflectors of order N
-*
-*        Q  =  H(1) H(2) . . . H(k)
-*
-*  as returned by SGERQF.
-*
-
-*  Arguments
-*  =========
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix Q. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix Q. N >= M.
-*
-*  K       (input) INTEGER
-*          The number of elementary reflectors whose product defines the
-*          matrix Q. M >= K >= 0.
-*
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the (m-k+i)-th row must contain the vector which
-*          defines the elementary reflector H(i), for i = 1,2,...,k, as
-*          returned by SGERQF in the last k rows of its array argument
-*          A.
-*          On exit, the M-by-N matrix Q.
-*
-*  LDA     (input) INTEGER
-*          The first dimension of the array A. LDA >= max(1,M).
-*
-*  TAU     (input) REAL array, dimension (K)
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by SGERQF.
-*
-*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK. LWORK >= max(1,M).
-*          For optimum performance LWORK >= M*NB, where NB is the
-*          optimal blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument has an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sorgl2"></A>
-  <H2>sorgl2</H2>
-  
-  <PRE>
-USAGE:
-  info, a = NumRu::Lapack.sorgl2( a, tau)
-    or
-  NumRu::Lapack.sorgl2  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SORGL2( M, N, K, A, LDA, TAU, WORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SORGL2 generates an m by n real matrix Q with orthonormal rows,
-*  which is defined as the first m rows of a product of k elementary
-*  reflectors of order n
-*
-*        Q  =  H(k) . . . H(2) H(1)
-*
-*  as returned by SGELQF.
-*
-
-*  Arguments
-*  =========
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix Q. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix Q. N >= M.
-*
-*  K       (input) INTEGER
-*          The number of elementary reflectors whose product defines the
-*          matrix Q. M >= K >= 0.
-*
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the i-th row must contain the vector which defines
-*          the elementary reflector H(i), for i = 1,2,...,k, as returned
-*          by SGELQF in the first k rows of its array argument A.
-*          On exit, the m-by-n matrix Q.
-*
-*  LDA     (input) INTEGER
-*          The first dimension of the array A. LDA >= max(1,M).
-*
-*  TAU     (input) REAL array, dimension (K)
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by SGELQF.
-*
-*  WORK    (workspace) REAL array, dimension (M)
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument has an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sorgr2"></A>
-  <H2>sorgr2</H2>
-  
-  <PRE>
-USAGE:
-  info, a = NumRu::Lapack.sorgr2( a, tau)
-    or
-  NumRu::Lapack.sorgr2  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SORGR2( M, N, K, A, LDA, TAU, WORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SORGR2 generates an m by n real matrix Q with orthonormal rows,
-*  which is defined as the last m rows of a product of k elementary
-*  reflectors of order n
-*
-*        Q  =  H(1) H(2) . . . H(k)
-*
-*  as returned by SGERQF.
-*
-
-*  Arguments
-*  =========
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix Q. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix Q. N >= M.
-*
-*  K       (input) INTEGER
-*          The number of elementary reflectors whose product defines the
-*          matrix Q. M >= K >= 0.
-*
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the (m-k+i)-th row must contain the vector which
-*          defines the elementary reflector H(i), for i = 1,2,...,k, as
-*          returned by SGERQF in the last k rows of its array argument
-*          A.
-*          On exit, the m by n matrix Q.
-*
-*  LDA     (input) INTEGER
-*          The first dimension of the array A. LDA >= max(1,M).
-*
-*  TAU     (input) REAL array, dimension (K)
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by SGERQF.
-*
-*  WORK    (workspace) REAL array, dimension (M)
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument has an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sormbr"></A>
-  <H2>sormbr</H2>
-  Multiplies a general matrix by one of the orthogonal
-  <PRE>
-USAGE:
-  work, info, c = NumRu::Lapack.sormbr( vect, side, trans, m, k, a, tau, c, lwork)
-    or
-  NumRu::Lapack.sormbr  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SORMBR( VECT, SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  If VECT = 'Q', SORMBR overwrites the general real M-by-N matrix C
-*  with
-*                  SIDE = 'L'     SIDE = 'R'
-*  TRANS = 'N':      Q * C          C * Q
-*  TRANS = 'T':      Q**T * C       C * Q**T
-*
-*  If VECT = 'P', SORMBR overwrites the general real M-by-N matrix C
-*  with
-*                  SIDE = 'L'     SIDE = 'R'
-*  TRANS = 'N':      P * C          C * P
-*  TRANS = 'T':      P**T * C       C * P**T
-*
-*  Here Q and P**T are the orthogonal matrices determined by SGEBRD when
-*  reducing a real matrix A to bidiagonal form: A = Q * B * P**T. Q and
-*  P**T are defined as products of elementary reflectors H(i) and G(i)
-*  respectively.
-*
-*  Let nq = m if SIDE = 'L' and nq = n if SIDE = 'R'. Thus nq is the
-*  order of the orthogonal matrix Q or P**T that is applied.
-*
-*  If VECT = 'Q', A is assumed to have been an NQ-by-K matrix:
-*  if nq >= k, Q = H(1) H(2) . . . H(k);
-*  if nq < k, Q = H(1) H(2) . . . H(nq-1).
-*
-*  If VECT = 'P', A is assumed to have been a K-by-NQ matrix:
-*  if k < nq, P = G(1) G(2) . . . G(k);
-*  if k >= nq, P = G(1) G(2) . . . G(nq-1).
-*
-
-*  Arguments
-*  =========
-*
-*  VECT    (input) CHARACTER*1
-*          = 'Q': apply Q or Q**T;
-*          = 'P': apply P or P**T.
-*
-*  SIDE    (input) CHARACTER*1
-*          = 'L': apply Q, Q**T, P or P**T from the Left;
-*          = 'R': apply Q, Q**T, P or P**T from the Right.
-*
-*  TRANS   (input) CHARACTER*1
-*          = 'N':  No transpose, apply Q  or P;
-*          = 'T':  Transpose, apply Q**T or P**T.
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix C. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix C. N >= 0.
-*
-*  K       (input) INTEGER
-*          If VECT = 'Q', the number of columns in the original
-*          matrix reduced by SGEBRD.
-*          If VECT = 'P', the number of rows in the original
-*          matrix reduced by SGEBRD.
-*          K >= 0.
-*
-*  A       (input) REAL array, dimension
-*                                (LDA,min(nq,K)) if VECT = 'Q'
-*                                (LDA,nq)        if VECT = 'P'
-*          The vectors which define the elementary reflectors H(i) and
-*          G(i), whose products determine the matrices Q and P, as
-*          returned by SGEBRD.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.
-*          If VECT = 'Q', LDA >= max(1,nq);
-*          if VECT = 'P', LDA >= max(1,min(nq,K)).
-*
-*  TAU     (input) REAL array, dimension (min(nq,K))
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i) or G(i) which determines Q or P, as returned
-*          by SGEBRD in the array argument TAUQ or TAUP.
-*
-*  C       (input/output) REAL array, dimension (LDC,N)
-*          On entry, the M-by-N matrix C.
-*          On exit, C is overwritten by Q*C or Q**T*C or C*Q**T or C*Q
-*          or P*C or P**T*C or C*P or C*P**T.
-*
-*  LDC     (input) INTEGER
-*          The leading dimension of the array C. LDC >= max(1,M).
-*
-*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.
-*          If SIDE = 'L', LWORK >= max(1,N);
-*          if SIDE = 'R', LWORK >= max(1,M).
-*          For optimum performance LWORK >= N*NB if SIDE = 'L', and
-*          LWORK >= M*NB if SIDE = 'R', where NB is the optimal
-*          blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      LOGICAL            APPLYQ, LEFT, LQUERY, NOTRAN
-      CHARACTER          TRANST
-      INTEGER            I1, I2, IINFO, LWKOPT, MI, NB, NI, NQ, NW
-*     ..
-*     .. External Functions ..
-      LOGICAL            LSAME
-      INTEGER            ILAENV
-      EXTERNAL           ILAENV, LSAME
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           SORMLQ, SORMQR, XERBLA
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX, MIN
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sorg2r"></A>
-  <H2>sorg2r</H2>
-  
-  <PRE>
-USAGE:
-  info, a = NumRu::Lapack.sorg2r( m, a, tau)
-    or
-  NumRu::Lapack.sorg2r  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SORG2R( M, N, K, A, LDA, TAU, WORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SORG2R generates an m by n real matrix Q with orthonormal columns,
-*  which is defined as the first n columns of a product of k elementary
-*  reflectors of order m
-*
-*        Q  =  H(1) H(2) . . . H(k)
-*
-*  as returned by SGEQRF.
-*
-
-*  Arguments
-*  =========
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix Q. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix Q. M >= N >= 0.
-*
-*  K       (input) INTEGER
-*          The number of elementary reflectors whose product defines the
-*          matrix Q. N >= K >= 0.
-*
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the i-th column must contain the vector which
-*          defines the elementary reflector H(i), for i = 1,2,...,k, as
-*          returned by SGEQRF in the first k columns of its array
-*          argument A.
-*          On exit, the m-by-n matrix Q.
-*
-*  LDA     (input) INTEGER
-*          The first dimension of the array A. LDA >= max(1,M).
-*
-*  TAU     (input) REAL array, dimension (K)
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by SGEQRF.
-*
-*  WORK    (workspace) REAL array, dimension (N)
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument has an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sorm2l"></A>
-  <H2>sorm2l</H2>
-  
-  <PRE>
-USAGE:
-  info, c = NumRu::Lapack.sorm2l( side, trans, m, a, tau, c)
-    or
-  NumRu::Lapack.sorm2l  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SORM2L( SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SORM2L overwrites the general real m by n matrix C with
-*
-*        Q * C  if SIDE = 'L' and TRANS = 'N', or
-*
-*        Q'* C  if SIDE = 'L' and TRANS = 'T', or
-*
-*        C * Q  if SIDE = 'R' and TRANS = 'N', or
-*
-*        C * Q' if SIDE = 'R' and TRANS = 'T',
-*
-*  where Q is a real orthogonal matrix defined as the product of k
-*  elementary reflectors
-*
-*        Q = H(k) . . . H(2) H(1)
-*
-*  as returned by SGEQLF. Q is of order m if SIDE = 'L' and of order n
-*  if SIDE = 'R'.
-*
-
-*  Arguments
-*  =========
-*
-*  SIDE    (input) CHARACTER*1
-*          = 'L': apply Q or Q' from the Left
-*          = 'R': apply Q or Q' from the Right
-*
-*  TRANS   (input) CHARACTER*1
-*          = 'N': apply Q  (No transpose)
-*          = 'T': apply Q' (Transpose)
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix C. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix C. N >= 0.
-*
-*  K       (input) INTEGER
-*          The number of elementary reflectors whose product defines
-*          the matrix Q.
-*          If SIDE = 'L', M >= K >= 0;
-*          if SIDE = 'R', N >= K >= 0.
-*
-*  A       (input) REAL array, dimension (LDA,K)
-*          The i-th column must contain the vector which defines the
-*          elementary reflector H(i), for i = 1,2,...,k, as returned by
-*          SGEQLF in the last k columns of its array argument A.
-*          A is modified by the routine but restored on exit.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.
-*          If SIDE = 'L', LDA >= max(1,M);
-*          if SIDE = 'R', LDA >= max(1,N).
-*
-*  TAU     (input) REAL array, dimension (K)
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by SGEQLF.
-*
-*  C       (input/output) REAL array, dimension (LDC,N)
-*          On entry, the m by n matrix C.
-*          On exit, C is overwritten by Q*C or Q'*C or C*Q' or C*Q.
-*
-*  LDC     (input) INTEGER
-*          The leading dimension of the array C. LDC >= max(1,M).
-*
-*  WORK    (workspace) REAL array, dimension
-*                                   (N) if SIDE = 'L',
-*                                   (M) if SIDE = 'R'
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sormql"></A>
-  <H2>sormql</H2>
-  Multiplies a general matrix by the orthogonal matrix
-  <PRE>
-USAGE:
-  work, info, c = NumRu::Lapack.sormql( side, trans, m, a, tau, c, lwork)
-    or
-  NumRu::Lapack.sormql  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SORMQL( SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SORMQL overwrites the general real M-by-N matrix C with
-*
-*                  SIDE = 'L'     SIDE = 'R'
-*  TRANS = 'N':      Q * C          C * Q
-*  TRANS = 'T':      Q**T * C       C * Q**T
-*
-*  where Q is a real orthogonal matrix defined as the product of k
-*  elementary reflectors
-*
-*        Q = H(k) . . . H(2) H(1)
-*
-*  as returned by SGEQLF. Q is of order M if SIDE = 'L' and of order N
-*  if SIDE = 'R'.
-*
-
-*  Arguments
-*  =========
-*
-*  SIDE    (input) CHARACTER*1
-*          = 'L': apply Q or Q**T from the Left;
-*          = 'R': apply Q or Q**T from the Right.
-*
-*  TRANS   (input) CHARACTER*1
-*          = 'N':  No transpose, apply Q;
-*          = 'T':  Transpose, apply Q**T.
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix C. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix C. N >= 0.
-*
-*  K       (input) INTEGER
-*          The number of elementary reflectors whose product defines
-*          the matrix Q.
-*          If SIDE = 'L', M >= K >= 0;
-*          if SIDE = 'R', N >= K >= 0.
-*
-*  A       (input) REAL array, dimension (LDA,K)
-*          The i-th column must contain the vector which defines the
-*          elementary reflector H(i), for i = 1,2,...,k, as returned by
-*          SGEQLF in the last k columns of its array argument A.
-*          A is modified by the routine but restored on exit.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.
-*          If SIDE = 'L', LDA >= max(1,M);
-*          if SIDE = 'R', LDA >= max(1,N).
-*
-*  TAU     (input) REAL array, dimension (K)
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by SGEQLF.
-*
-*  C       (input/output) REAL array, dimension (LDC,N)
-*          On entry, the M-by-N matrix C.
-*          On exit, C is overwritten by Q*C or Q**T*C or C*Q**T or C*Q.
-*
-*  LDC     (input) INTEGER
-*          The leading dimension of the array C. LDC >= max(1,M).
-*
-*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.
-*          If SIDE = 'L', LWORK >= max(1,N);
-*          if SIDE = 'R', LWORK >= max(1,M).
-*          For optimum performance LWORK >= N*NB if SIDE = 'L', and
-*          LWORK >= M*NB if SIDE = 'R', where NB is the optimal
-*          blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sorgql"></A>
-  <H2>sorgql</H2>
-  Generates all or part of the orthogonal matrix Q from
-  <PRE>
-USAGE:
-  work, info, a = NumRu::Lapack.sorgql( m, a, tau, lwork)
-    or
-  NumRu::Lapack.sorgql  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SORGQL( M, N, K, A, LDA, TAU, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SORGQL generates an M-by-N real matrix Q with orthonormal columns,
-*  which is defined as the last N columns of a product of K elementary
-*  reflectors of order M
-*
-*        Q  =  H(k) . . . H(2) H(1)
-*
-*  as returned by SGEQLF.
-*
-
-*  Arguments
-*  =========
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix Q. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix Q. M >= N >= 0.
-*
-*  K       (input) INTEGER
-*          The number of elementary reflectors whose product defines the
-*          matrix Q. N >= K >= 0.
-*
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the (n-k+i)-th column must contain the vector which
-*          defines the elementary reflector H(i), for i = 1,2,...,k, as
-*          returned by SGEQLF in the last k columns of its array
-*          argument A.
-*          On exit, the M-by-N matrix Q.
-*
-*  LDA     (input) INTEGER
-*          The first dimension of the array A. LDA >= max(1,M).
-*
-*  TAU     (input) REAL array, dimension (K)
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by SGEQLF.
-*
-*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK. LWORK >= max(1,N).
-*          For optimum performance LWORK >= N*NB, where NB is the
-*          optimal blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument has an illegal value
-*
-
-*  =====================================================================
-*
 
 
     </PRE>

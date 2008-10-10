@@ -6,47 +6,48 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for triangular band matrix</H1>
     <UL>
-      <LI><A HREF="#ctbtrs">ctbtrs</A>: Solves a triangular banded system of linear equations AX=B,</LI>
-      <LI><A HREF="#ctbrfs">ctbrfs</A>: Provides forward and backward error bounds for the solution</LI>
       <LI><A HREF="#ctbcon">ctbcon</A>: Estimates the reciprocal of the condition number of a triangular</LI>
+      <LI><A HREF="#ctbrfs">ctbrfs</A>: Provides forward and backward error bounds for the solution</LI>
+      <LI><A HREF="#ctbtrs">ctbtrs</A>: Solves a triangular banded system of linear equations AX=B,</LI>
     </UL>
 
-  <A NAME="ctbtrs"></A>
-  <H2>ctbtrs</H2>
-  Solves a triangular banded system of linear equations AX=B,
+  <A NAME="ctbcon"></A>
+  <H2>ctbcon</H2>
+  Estimates the reciprocal of the condition number of a triangular
   <PRE>
 USAGE:
-  info, b = NumRu::Lapack.ctbtrs( uplo, trans, diag, kd, ab, b)
+  rcond, info = NumRu::Lapack.ctbcon( norm, uplo, diag, kd, ab)
     or
-  NumRu::Lapack.ctbtrs  # print help
+  NumRu::Lapack.ctbcon  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE CTBTRS( UPLO, TRANS, DIAG, N, KD, NRHS, AB, LDAB, B, LDB, INFO )
+      SUBROUTINE CTBCON( NORM, UPLO, DIAG, N, KD, AB, LDAB, RCOND, WORK, RWORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  CTBTRS solves a triangular system of the form
+*  CTBCON estimates the reciprocal of the condition number of a
+*  triangular band matrix A, in either the 1-norm or the infinity-norm.
 *
-*     A * X = B,  A**T * X = B,  or  A**H * X = B,
-*
-*  where A is a triangular band matrix of order N, and B is an
-*  N-by-NRHS matrix.  A check is made to verify that A is nonsingular.
+*  The norm of A is computed and an estimate is obtained for
+*  norm(inv(A)), then the reciprocal of the condition number is
+*  computed as
+*     RCOND = 1 / ( norm(A) * norm(inv(A)) ).
 *
 
 *  Arguments
 *  =========
 *
+*  NORM    (input) CHARACTER*1
+*          Specifies whether the 1-norm condition number or the
+*          infinity-norm condition number is required:
+*          = '1' or 'O':  1-norm;
+*          = 'I':         Infinity-norm.
+*
 *  UPLO    (input) CHARACTER*1
 *          = 'U':  A is upper triangular;
 *          = 'L':  A is lower triangular.
-*
-*  TRANS   (input) CHARACTER*1
-*          Specifies the form of the system of equations:
-*          = 'N':  A * X = B     (No transpose)
-*          = 'T':  A**T * X = B  (Transpose)
-*          = 'C':  A**H * X = B  (Conjugate transpose)
 *
 *  DIAG    (input) CHARACTER*1
 *          = 'N':  A is non-unit triangular;
@@ -59,13 +60,9 @@ FORTRAN MANUAL
 *          The number of superdiagonals or subdiagonals of the
 *          triangular band matrix A.  KD >= 0.
 *
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
 *  AB      (input) COMPLEX array, dimension (LDAB,N)
 *          The upper or lower triangular band matrix A, stored in the
-*          first kd+1 rows of AB.  The j-th column of A is stored
+*          first kd+1 rows of the array. The j-th column of A is stored
 *          in the j-th column of the array AB as follows:
 *          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
 *          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
@@ -75,19 +72,17 @@ FORTRAN MANUAL
 *  LDAB    (input) INTEGER
 *          The leading dimension of the array AB.  LDAB >= KD+1.
 *
-*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)
-*          On entry, the right hand side matrix B.
-*          On exit, if INFO = 0, the solution matrix X.
+*  RCOND   (output) REAL
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(norm(A) * norm(inv(A))).
 *
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
+*  WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*  RWORK   (workspace) REAL array, dimension (N)
 *
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
 *          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, the i-th diagonal element of A is zero,
-*                indicating that the matrix is singular and the
-*                solutions X have not been computed.
 *
 
 *  =====================================================================
@@ -205,43 +200,42 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="ctbcon"></A>
-  <H2>ctbcon</H2>
-  Estimates the reciprocal of the condition number of a triangular
+  <A NAME="ctbtrs"></A>
+  <H2>ctbtrs</H2>
+  Solves a triangular banded system of linear equations AX=B,
   <PRE>
 USAGE:
-  rcond, info = NumRu::Lapack.ctbcon( norm, uplo, diag, kd, ab)
+  info, b = NumRu::Lapack.ctbtrs( uplo, trans, diag, kd, ab, b)
     or
-  NumRu::Lapack.ctbcon  # print help
+  NumRu::Lapack.ctbtrs  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE CTBCON( NORM, UPLO, DIAG, N, KD, AB, LDAB, RCOND, WORK, RWORK, INFO )
+      SUBROUTINE CTBTRS( UPLO, TRANS, DIAG, N, KD, NRHS, AB, LDAB, B, LDB, INFO )
 
 *  Purpose
 *  =======
 *
-*  CTBCON estimates the reciprocal of the condition number of a
-*  triangular band matrix A, in either the 1-norm or the infinity-norm.
+*  CTBTRS solves a triangular system of the form
 *
-*  The norm of A is computed and an estimate is obtained for
-*  norm(inv(A)), then the reciprocal of the condition number is
-*  computed as
-*     RCOND = 1 / ( norm(A) * norm(inv(A)) ).
+*     A * X = B,  A**T * X = B,  or  A**H * X = B,
+*
+*  where A is a triangular band matrix of order N, and B is an
+*  N-by-NRHS matrix.  A check is made to verify that A is nonsingular.
 *
 
 *  Arguments
 *  =========
 *
-*  NORM    (input) CHARACTER*1
-*          Specifies whether the 1-norm condition number or the
-*          infinity-norm condition number is required:
-*          = '1' or 'O':  1-norm;
-*          = 'I':         Infinity-norm.
-*
 *  UPLO    (input) CHARACTER*1
 *          = 'U':  A is upper triangular;
 *          = 'L':  A is lower triangular.
+*
+*  TRANS   (input) CHARACTER*1
+*          Specifies the form of the system of equations:
+*          = 'N':  A * X = B     (No transpose)
+*          = 'T':  A**T * X = B  (Transpose)
+*          = 'C':  A**H * X = B  (Conjugate transpose)
 *
 *  DIAG    (input) CHARACTER*1
 *          = 'N':  A is non-unit triangular;
@@ -254,9 +248,13 @@ FORTRAN MANUAL
 *          The number of superdiagonals or subdiagonals of the
 *          triangular band matrix A.  KD >= 0.
 *
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
 *  AB      (input) COMPLEX array, dimension (LDAB,N)
 *          The upper or lower triangular band matrix A, stored in the
-*          first kd+1 rows of the array. The j-th column of A is stored
+*          first kd+1 rows of AB.  The j-th column of A is stored
 *          in the j-th column of the array AB as follows:
 *          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
 *          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
@@ -266,17 +264,19 @@ FORTRAN MANUAL
 *  LDAB    (input) INTEGER
 *          The leading dimension of the array AB.  LDAB >= KD+1.
 *
-*  RCOND   (output) REAL
-*          The reciprocal of the condition number of the matrix A,
-*          computed as RCOND = 1/(norm(A) * norm(inv(A))).
+*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)
+*          On entry, the right hand side matrix B.
+*          On exit, if INFO = 0, the solution matrix X.
 *
-*  WORK    (workspace) COMPLEX array, dimension (2*N)
-*
-*  RWORK   (workspace) REAL array, dimension (N)
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
 *
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
 *          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the i-th diagonal element of A is zero,
+*                indicating that the matrix is singular and the
+*                solutions X have not been computed.
 *
 
 *  =====================================================================

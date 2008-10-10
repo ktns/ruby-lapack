@@ -7,13 +7,13 @@
     <H1>DOUBLE PRECISION routines for general band matrix</H1>
     <UL>
       <LI><A HREF="#dgbbrd">dgbbrd</A>: </LI>
-      <LI><A HREF="#dgbtf2">dgbtf2</A>: </LI>
-      <LI><A HREF="#dgbsvx">dgbsvx</A>: Solves a general banded system of linear equations AX=B,</LI>
-      <LI><A HREF="#dgbtrf">dgbtrf</A>: Computes an LU factorization of a general band matrix, using</LI>
       <LI><A HREF="#dgbcon">dgbcon</A>: Estimates the reciprocal of the condition number of a general</LI>
       <LI><A HREF="#dgbequ">dgbequ</A>: Computes row and column scalings to equilibrate a general band</LI>
-      <LI><A HREF="#dgbsv">dgbsv</A>: Solves a general banded system of linear equations AX=B.</LI>
       <LI><A HREF="#dgbrfs">dgbrfs</A>: Improves the computed solution to a general banded system of</LI>
+      <LI><A HREF="#dgbsv">dgbsv</A>: Solves a general banded system of linear equations AX=B.</LI>
+      <LI><A HREF="#dgbsvx">dgbsvx</A>: Solves a general banded system of linear equations AX=B,</LI>
+      <LI><A HREF="#dgbtf2">dgbtf2</A>: </LI>
+      <LI><A HREF="#dgbtrf">dgbtrf</A>: Computes an LU factorization of a general band matrix, using</LI>
       <LI><A HREF="#dgbtrs">dgbtrs</A>: Solves a general banded system of linear equations AX=B,</LI>
     </UL>
 
@@ -122,26 +122,113 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="dgbtf2"></A>
-  <H2>dgbtf2</H2>
-  
+  <A NAME="dgbcon"></A>
+  <H2>dgbcon</H2>
+  Estimates the reciprocal of the condition number of a general
   <PRE>
 USAGE:
-  ipiv, info, ab = NumRu::Lapack.dgbtf2( m, kl, ku, ab)
+  rcond, info = NumRu::Lapack.dgbcon( norm, kl, ku, ab, ipiv, anorm)
     or
-  NumRu::Lapack.dgbtf2  # print help
+  NumRu::Lapack.dgbcon  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE DGBTF2( M, N, KL, KU, AB, LDAB, IPIV, INFO )
+      SUBROUTINE DGBCON( NORM, N, KL, KU, AB, LDAB, IPIV, ANORM, RCOND, WORK, IWORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  DGBTF2 computes an LU factorization of a real m-by-n band matrix A
-*  using partial pivoting with row interchanges.
+*  DGBCON estimates the reciprocal of the condition number of a real
+*  general band matrix A, in either the 1-norm or the infinity-norm,
+*  using the LU factorization computed by DGBTRF.
 *
-*  This is the unblocked version of the algorithm, calling Level 2 BLAS.
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as
+*     RCOND = 1 / ( norm(A) * norm(inv(A)) ).
+*
+
+*  Arguments
+*  =========
+*
+*  NORM    (input) CHARACTER*1
+*          Specifies whether the 1-norm condition number or the
+*          infinity-norm condition number is required:
+*          = '1' or 'O':  1-norm;
+*          = 'I':         Infinity-norm.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  KL      (input) INTEGER
+*          The number of subdiagonals within the band of A.  KL >= 0.
+*
+*  KU      (input) INTEGER
+*          The number of superdiagonals within the band of A.  KU >= 0.
+*
+*  AB      (input) DOUBLE PRECISION array, dimension (LDAB,N)
+*          Details of the LU factorization of the band matrix A, as
+*          computed by DGBTRF.  U is stored as an upper triangular band
+*          matrix with KL+KU superdiagonals in rows 1 to KL+KU+1, and
+*          the multipliers used during the factorization are stored in
+*          rows KL+KU+2 to 2*KL+KU+1.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= 2*KL+KU+1.
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          The pivot indices; for 1 <= i <= N, row i of the matrix was
+*          interchanged with row IPIV(i).
+*
+*  ANORM   (input) DOUBLE PRECISION
+*          If NORM = '1' or 'O', the 1-norm of the original matrix A.
+*          If NORM = 'I', the infinity-norm of the original matrix A.
+*
+*  RCOND   (output) DOUBLE PRECISION
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(norm(A) * norm(inv(A))).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dgbequ"></A>
+  <H2>dgbequ</H2>
+  Computes row and column scalings to equilibrate a general band
+  <PRE>
+USAGE:
+  r, c, rowcnd, colcnd, amax, info = NumRu::Lapack.dgbequ( m, kl, ku, ab)
+    or
+  NumRu::Lapack.dgbequ  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DGBEQU( M, N, KL, KU, AB, LDAB, R, C, ROWCND, COLCND, AMAX, INFO )
+
+*  Purpose
+*  =======
+*
+*  DGBEQU computes row and column scalings intended to equilibrate an
+*  M-by-N band matrix A and reduce its condition number.  R returns the
+*  row scale factors and C the column scale factors, chosen to try to
+*  make the largest element in each row and column of the matrix B with
+*  elements B(i,j)=R(i)*A(i,j)*C(j) have absolute value 1.
+*
+*  R(i) and C(j) are restricted to be between SMLNUM = smallest safe
+*  number and BIGNUM = largest safe number.  Use of these scaling
+*  factors is not guaranteed to reduce the condition number of A but
+*  works well in practice.
 *
 
 *  Arguments
@@ -159,13 +246,218 @@ FORTRAN MANUAL
 *  KU      (input) INTEGER
 *          The number of superdiagonals within the band of A.  KU >= 0.
 *
+*  AB      (input) DOUBLE PRECISION array, dimension (LDAB,N)
+*          The band matrix A, stored in rows 1 to KL+KU+1.  The j-th
+*          column of A is stored in the j-th column of the array AB as
+*          follows:
+*          AB(ku+1+i-j,j) = A(i,j) for max(1,j-ku)<=i<=min(m,j+kl).
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KL+KU+1.
+*
+*  R       (output) DOUBLE PRECISION array, dimension (M)
+*          If INFO = 0, or INFO > M, R contains the row scale factors
+*          for A.
+*
+*  C       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, C contains the column scale factors for A.
+*
+*  ROWCND  (output) DOUBLE PRECISION
+*          If INFO = 0 or INFO > M, ROWCND contains the ratio of the
+*          smallest R(i) to the largest R(i).  If ROWCND >= 0.1 and
+*          AMAX is neither too large nor too small, it is not worth
+*          scaling by R.
+*
+*  COLCND  (output) DOUBLE PRECISION
+*          If INFO = 0, COLCND contains the ratio of the smallest
+*          C(i) to the largest C(i).  If COLCND >= 0.1, it is not
+*          worth scaling by C.
+*
+*  AMAX    (output) DOUBLE PRECISION
+*          Absolute value of largest matrix element.  If AMAX is very
+*          close to overflow or very close to underflow, the matrix
+*          should be scaled.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is
+*                <= M:  the i-th row of A is exactly zero
+*                >  M:  the (i-M)-th column of A is exactly zero
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dgbrfs"></A>
+  <H2>dgbrfs</H2>
+  Improves the computed solution to a general banded system of
+  <PRE>
+USAGE:
+  ferr, berr, info, x = NumRu::Lapack.dgbrfs( trans, kl, ku, ab, afb, ipiv, b, x)
+    or
+  NumRu::Lapack.dgbrfs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DGBRFS( TRANS, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB, IPIV, B, LDB, X, LDX, FERR, BERR, WORK, IWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  DGBRFS improves the computed solution to a system of linear
+*  equations when the coefficient matrix is banded, and provides
+*  error bounds and backward error estimates for the solution.
+*
+
+*  Arguments
+*  =========
+*
+*  TRANS   (input) CHARACTER*1
+*          Specifies the form of the system of equations:
+*          = 'N':  A * X = B     (No transpose)
+*          = 'T':  A**T * X = B  (Transpose)
+*          = 'C':  A**H * X = B  (Conjugate transpose = Transpose)
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  KL      (input) INTEGER
+*          The number of subdiagonals within the band of A.  KL >= 0.
+*
+*  KU      (input) INTEGER
+*          The number of superdiagonals within the band of A.  KU >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrices B and X.  NRHS >= 0.
+*
+*  AB      (input) DOUBLE PRECISION array, dimension (LDAB,N)
+*          The original band matrix A, stored in rows 1 to KL+KU+1.
+*          The j-th column of A is stored in the j-th column of the
+*          array AB as follows:
+*          AB(ku+1+i-j,j) = A(i,j) for max(1,j-ku)<=i<=min(n,j+kl).
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KL+KU+1.
+*
+*  AFB     (input) DOUBLE PRECISION array, dimension (LDAFB,N)
+*          Details of the LU factorization of the band matrix A, as
+*          computed by DGBTRF.  U is stored as an upper triangular band
+*          matrix with KL+KU superdiagonals in rows 1 to KL+KU+1, and
+*          the multipliers used during the factorization are stored in
+*          rows KL+KU+2 to 2*KL+KU+1.
+*
+*  LDAFB   (input) INTEGER
+*          The leading dimension of the array AFB.  LDAFB >= 2*KL*KU+1.
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          The pivot indices from DGBTRF; for 1<=i<=N, row i of the
+*          matrix was interchanged with row IPIV(i).
+*
+*  B       (input) DOUBLE PRECISION array, dimension (LDB,NRHS)
+*          The right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (input/output) DOUBLE PRECISION array, dimension (LDX,NRHS)
+*          On entry, the solution matrix X, as computed by DGBTRS.
+*          On exit, the improved solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+*  Internal Parameters
+*  ===================
+*
+*  ITMAX is the maximum number of steps of iterative refinement.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dgbsv"></A>
+  <H2>dgbsv</H2>
+  Solves a general banded system of linear equations AX=B.
+  <PRE>
+USAGE:
+  ipiv, info, ab, b = NumRu::Lapack.dgbsv( kl, ku, ab, b)
+    or
+  NumRu::Lapack.dgbsv  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DGBSV( N, KL, KU, NRHS, AB, LDAB, IPIV, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  DGBSV computes the solution to a real system of linear equations
+*  A * X = B, where A is a band matrix of order N with KL subdiagonals
+*  and KU superdiagonals, and X and B are N-by-NRHS matrices.
+*
+*  The LU decomposition with partial pivoting and row interchanges is
+*  used to factor A as A = L * U, where L is a product of permutation
+*  and unit lower triangular matrices with KL subdiagonals, and U is
+*  upper triangular with KL+KU superdiagonals.  The factored form of A
+*  is then used to solve the system of equations A * X = B.
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The number of linear equations, i.e., the order of the
+*          matrix A.  N >= 0.
+*
+*  KL      (input) INTEGER
+*          The number of subdiagonals within the band of A.  KL >= 0.
+*
+*  KU      (input) INTEGER
+*          The number of superdiagonals within the band of A.  KU >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
 *  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB,N)
 *          On entry, the matrix A in band storage, in rows KL+1 to
 *          2*KL+KU+1; rows 1 to KL of the array need not be set.
 *          The j-th column of A is stored in the j-th column of the
 *          array AB as follows:
-*          AB(kl+ku+1+i-j,j) = A(i,j) for max(1,j-ku)<=i<=min(m,j+kl)
-*
+*          AB(KL+KU+1+i-j,j) = A(i,j) for max(1,j-KU)<=i<=min(N,j+KL)
 *          On exit, details of the factorization: U is stored as an
 *          upper triangular band matrix with KL+KU superdiagonals in
 *          rows 1 to KL+KU+1, and the multipliers used during the
@@ -175,17 +467,23 @@ FORTRAN MANUAL
 *  LDAB    (input) INTEGER
 *          The leading dimension of the array AB.  LDAB >= 2*KL+KU+1.
 *
-*  IPIV    (output) INTEGER array, dimension (min(M,N))
-*          The pivot indices; for 1 <= i <= min(M,N), row i of the
-*          matrix was interchanged with row IPIV(i).
+*  IPIV    (output) INTEGER array, dimension (N)
+*          The pivot indices that define the permutation matrix P;
+*          row i of the matrix was interchanged with row IPIV(i).
+*
+*  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+*          On entry, the N-by-NRHS right hand side matrix B.
+*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
 *
 *  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*          > 0: if INFO = +i, U(i,i) is exactly zero. The factorization
-*               has been completed, but the factor U is exactly
-*               singular, and division by zero will occur if it is used
-*               to solve a system of equations.
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, U(i,i) is exactly zero.  The factorization
+*                has been completed, but the factor U is exactly
+*                singular, and the solution has not been computed.
 *
 
 *  Further Details
@@ -205,11 +503,16 @@ FORTRAN MANUAL
 *
 *  Array elements marked * are not used by the routine; elements marked
 *  + need not be set on entry, but are required by the routine to store
-*  elements of U, because of fill-in resulting from the row
-*  interchanges.
+*  elements of U because of fill-in resulting from the row interchanges.
 *
 *  =====================================================================
 *
+*     .. External Subroutines ..
+      EXTERNAL           DGBTRF, DGBTRS, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
 
 
     </PRE>
@@ -476,6 +779,99 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
+  <A NAME="dgbtf2"></A>
+  <H2>dgbtf2</H2>
+  
+  <PRE>
+USAGE:
+  ipiv, info, ab = NumRu::Lapack.dgbtf2( m, kl, ku, ab)
+    or
+  NumRu::Lapack.dgbtf2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DGBTF2( M, N, KL, KU, AB, LDAB, IPIV, INFO )
+
+*  Purpose
+*  =======
+*
+*  DGBTF2 computes an LU factorization of a real m-by-n band matrix A
+*  using partial pivoting with row interchanges.
+*
+*  This is the unblocked version of the algorithm, calling Level 2 BLAS.
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix A.  M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix A.  N >= 0.
+*
+*  KL      (input) INTEGER
+*          The number of subdiagonals within the band of A.  KL >= 0.
+*
+*  KU      (input) INTEGER
+*          The number of superdiagonals within the band of A.  KU >= 0.
+*
+*  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB,N)
+*          On entry, the matrix A in band storage, in rows KL+1 to
+*          2*KL+KU+1; rows 1 to KL of the array need not be set.
+*          The j-th column of A is stored in the j-th column of the
+*          array AB as follows:
+*          AB(kl+ku+1+i-j,j) = A(i,j) for max(1,j-ku)<=i<=min(m,j+kl)
+*
+*          On exit, details of the factorization: U is stored as an
+*          upper triangular band matrix with KL+KU superdiagonals in
+*          rows 1 to KL+KU+1, and the multipliers used during the
+*          factorization are stored in rows KL+KU+2 to 2*KL+KU+1.
+*          See below for further details.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= 2*KL+KU+1.
+*
+*  IPIV    (output) INTEGER array, dimension (min(M,N))
+*          The pivot indices; for 1 <= i <= min(M,N), row i of the
+*          matrix was interchanged with row IPIV(i).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = +i, U(i,i) is exactly zero. The factorization
+*               has been completed, but the factor U is exactly
+*               singular, and division by zero will occur if it is used
+*               to solve a system of equations.
+*
+
+*  Further Details
+*  ===============
+*
+*  The band storage scheme is illustrated by the following example, when
+*  M = N = 6, KL = 2, KU = 1:
+*
+*  On entry:                       On exit:
+*
+*      *    *    *    +    +    +       *    *    *   u14  u25  u36
+*      *    *    +    +    +    +       *    *   u13  u24  u35  u46
+*      *   a12  a23  a34  a45  a56      *   u12  u23  u34  u45  u56
+*     a11  a22  a33  a44  a55  a66     u11  u22  u33  u44  u55  u66
+*     a21  a32  a43  a54  a65   *      m21  m32  m43  m54  m65   *
+*     a31  a42  a53  a64   *    *      m31  m42  m53  m64   *    *
+*
+*  Array elements marked * are not used by the routine; elements marked
+*  + need not be set on entry, but are required by the routine to store
+*  elements of U, because of fill-in resulting from the row
+*  interchanges.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
   <A NAME="dgbtrf"></A>
   <H2>dgbtrf</H2>
   Computes an LU factorization of a general band matrix, using
@@ -561,402 +957,6 @@ FORTRAN MANUAL
 *  + need not be set on entry, but are required by the routine to store
 *  elements of U because of fill-in resulting from the row interchanges.
 *
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="dgbcon"></A>
-  <H2>dgbcon</H2>
-  Estimates the reciprocal of the condition number of a general
-  <PRE>
-USAGE:
-  rcond, info = NumRu::Lapack.dgbcon( norm, kl, ku, ab, ipiv, anorm)
-    or
-  NumRu::Lapack.dgbcon  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE DGBCON( NORM, N, KL, KU, AB, LDAB, IPIV, ANORM, RCOND, WORK, IWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  DGBCON estimates the reciprocal of the condition number of a real
-*  general band matrix A, in either the 1-norm or the infinity-norm,
-*  using the LU factorization computed by DGBTRF.
-*
-*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
-*  condition number is computed as
-*     RCOND = 1 / ( norm(A) * norm(inv(A)) ).
-*
-
-*  Arguments
-*  =========
-*
-*  NORM    (input) CHARACTER*1
-*          Specifies whether the 1-norm condition number or the
-*          infinity-norm condition number is required:
-*          = '1' or 'O':  1-norm;
-*          = 'I':         Infinity-norm.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  KL      (input) INTEGER
-*          The number of subdiagonals within the band of A.  KL >= 0.
-*
-*  KU      (input) INTEGER
-*          The number of superdiagonals within the band of A.  KU >= 0.
-*
-*  AB      (input) DOUBLE PRECISION array, dimension (LDAB,N)
-*          Details of the LU factorization of the band matrix A, as
-*          computed by DGBTRF.  U is stored as an upper triangular band
-*          matrix with KL+KU superdiagonals in rows 1 to KL+KU+1, and
-*          the multipliers used during the factorization are stored in
-*          rows KL+KU+2 to 2*KL+KU+1.
-*
-*  LDAB    (input) INTEGER
-*          The leading dimension of the array AB.  LDAB >= 2*KL+KU+1.
-*
-*  IPIV    (input) INTEGER array, dimension (N)
-*          The pivot indices; for 1 <= i <= N, row i of the matrix was
-*          interchanged with row IPIV(i).
-*
-*  ANORM   (input) DOUBLE PRECISION
-*          If NORM = '1' or 'O', the 1-norm of the original matrix A.
-*          If NORM = 'I', the infinity-norm of the original matrix A.
-*
-*  RCOND   (output) DOUBLE PRECISION
-*          The reciprocal of the condition number of the matrix A,
-*          computed as RCOND = 1/(norm(A) * norm(inv(A))).
-*
-*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
-*
-*  IWORK   (workspace) INTEGER array, dimension (N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="dgbequ"></A>
-  <H2>dgbequ</H2>
-  Computes row and column scalings to equilibrate a general band
-  <PRE>
-USAGE:
-  r, c, rowcnd, colcnd, amax, info = NumRu::Lapack.dgbequ( m, kl, ku, ab)
-    or
-  NumRu::Lapack.dgbequ  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE DGBEQU( M, N, KL, KU, AB, LDAB, R, C, ROWCND, COLCND, AMAX, INFO )
-
-*  Purpose
-*  =======
-*
-*  DGBEQU computes row and column scalings intended to equilibrate an
-*  M-by-N band matrix A and reduce its condition number.  R returns the
-*  row scale factors and C the column scale factors, chosen to try to
-*  make the largest element in each row and column of the matrix B with
-*  elements B(i,j)=R(i)*A(i,j)*C(j) have absolute value 1.
-*
-*  R(i) and C(j) are restricted to be between SMLNUM = smallest safe
-*  number and BIGNUM = largest safe number.  Use of these scaling
-*  factors is not guaranteed to reduce the condition number of A but
-*  works well in practice.
-*
-
-*  Arguments
-*  =========
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix A.  M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix A.  N >= 0.
-*
-*  KL      (input) INTEGER
-*          The number of subdiagonals within the band of A.  KL >= 0.
-*
-*  KU      (input) INTEGER
-*          The number of superdiagonals within the band of A.  KU >= 0.
-*
-*  AB      (input) DOUBLE PRECISION array, dimension (LDAB,N)
-*          The band matrix A, stored in rows 1 to KL+KU+1.  The j-th
-*          column of A is stored in the j-th column of the array AB as
-*          follows:
-*          AB(ku+1+i-j,j) = A(i,j) for max(1,j-ku)<=i<=min(m,j+kl).
-*
-*  LDAB    (input) INTEGER
-*          The leading dimension of the array AB.  LDAB >= KL+KU+1.
-*
-*  R       (output) DOUBLE PRECISION array, dimension (M)
-*          If INFO = 0, or INFO > M, R contains the row scale factors
-*          for A.
-*
-*  C       (output) DOUBLE PRECISION array, dimension (N)
-*          If INFO = 0, C contains the column scale factors for A.
-*
-*  ROWCND  (output) DOUBLE PRECISION
-*          If INFO = 0 or INFO > M, ROWCND contains the ratio of the
-*          smallest R(i) to the largest R(i).  If ROWCND >= 0.1 and
-*          AMAX is neither too large nor too small, it is not worth
-*          scaling by R.
-*
-*  COLCND  (output) DOUBLE PRECISION
-*          If INFO = 0, COLCND contains the ratio of the smallest
-*          C(i) to the largest C(i).  If COLCND >= 0.1, it is not
-*          worth scaling by C.
-*
-*  AMAX    (output) DOUBLE PRECISION
-*          Absolute value of largest matrix element.  If AMAX is very
-*          close to overflow or very close to underflow, the matrix
-*          should be scaled.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, and i is
-*                <= M:  the i-th row of A is exactly zero
-*                >  M:  the (i-M)-th column of A is exactly zero
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="dgbsv"></A>
-  <H2>dgbsv</H2>
-  Solves a general banded system of linear equations AX=B.
-  <PRE>
-USAGE:
-  ipiv, info, ab, b = NumRu::Lapack.dgbsv( kl, ku, ab, b)
-    or
-  NumRu::Lapack.dgbsv  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE DGBSV( N, KL, KU, NRHS, AB, LDAB, IPIV, B, LDB, INFO )
-
-*  Purpose
-*  =======
-*
-*  DGBSV computes the solution to a real system of linear equations
-*  A * X = B, where A is a band matrix of order N with KL subdiagonals
-*  and KU superdiagonals, and X and B are N-by-NRHS matrices.
-*
-*  The LU decomposition with partial pivoting and row interchanges is
-*  used to factor A as A = L * U, where L is a product of permutation
-*  and unit lower triangular matrices with KL subdiagonals, and U is
-*  upper triangular with KL+KU superdiagonals.  The factored form of A
-*  is then used to solve the system of equations A * X = B.
-*
-
-*  Arguments
-*  =========
-*
-*  N       (input) INTEGER
-*          The number of linear equations, i.e., the order of the
-*          matrix A.  N >= 0.
-*
-*  KL      (input) INTEGER
-*          The number of subdiagonals within the band of A.  KL >= 0.
-*
-*  KU      (input) INTEGER
-*          The number of superdiagonals within the band of A.  KU >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
-*  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB,N)
-*          On entry, the matrix A in band storage, in rows KL+1 to
-*          2*KL+KU+1; rows 1 to KL of the array need not be set.
-*          The j-th column of A is stored in the j-th column of the
-*          array AB as follows:
-*          AB(KL+KU+1+i-j,j) = A(i,j) for max(1,j-KU)<=i<=min(N,j+KL)
-*          On exit, details of the factorization: U is stored as an
-*          upper triangular band matrix with KL+KU superdiagonals in
-*          rows 1 to KL+KU+1, and the multipliers used during the
-*          factorization are stored in rows KL+KU+2 to 2*KL+KU+1.
-*          See below for further details.
-*
-*  LDAB    (input) INTEGER
-*          The leading dimension of the array AB.  LDAB >= 2*KL+KU+1.
-*
-*  IPIV    (output) INTEGER array, dimension (N)
-*          The pivot indices that define the permutation matrix P;
-*          row i of the matrix was interchanged with row IPIV(i).
-*
-*  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
-*          On entry, the N-by-NRHS right hand side matrix B.
-*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, U(i,i) is exactly zero.  The factorization
-*                has been completed, but the factor U is exactly
-*                singular, and the solution has not been computed.
-*
-
-*  Further Details
-*  ===============
-*
-*  The band storage scheme is illustrated by the following example, when
-*  M = N = 6, KL = 2, KU = 1:
-*
-*  On entry:                       On exit:
-*
-*      *    *    *    +    +    +       *    *    *   u14  u25  u36
-*      *    *    +    +    +    +       *    *   u13  u24  u35  u46
-*      *   a12  a23  a34  a45  a56      *   u12  u23  u34  u45  u56
-*     a11  a22  a33  a44  a55  a66     u11  u22  u33  u44  u55  u66
-*     a21  a32  a43  a54  a65   *      m21  m32  m43  m54  m65   *
-*     a31  a42  a53  a64   *    *      m31  m42  m53  m64   *    *
-*
-*  Array elements marked * are not used by the routine; elements marked
-*  + need not be set on entry, but are required by the routine to store
-*  elements of U because of fill-in resulting from the row interchanges.
-*
-*  =====================================================================
-*
-*     .. External Subroutines ..
-      EXTERNAL           DGBTRF, DGBTRS, XERBLA
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="dgbrfs"></A>
-  <H2>dgbrfs</H2>
-  Improves the computed solution to a general banded system of
-  <PRE>
-USAGE:
-  ferr, berr, info, x = NumRu::Lapack.dgbrfs( trans, kl, ku, ab, afb, ipiv, b, x)
-    or
-  NumRu::Lapack.dgbrfs  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE DGBRFS( TRANS, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB, IPIV, B, LDB, X, LDX, FERR, BERR, WORK, IWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  DGBRFS improves the computed solution to a system of linear
-*  equations when the coefficient matrix is banded, and provides
-*  error bounds and backward error estimates for the solution.
-*
-
-*  Arguments
-*  =========
-*
-*  TRANS   (input) CHARACTER*1
-*          Specifies the form of the system of equations:
-*          = 'N':  A * X = B     (No transpose)
-*          = 'T':  A**T * X = B  (Transpose)
-*          = 'C':  A**H * X = B  (Conjugate transpose = Transpose)
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  KL      (input) INTEGER
-*          The number of subdiagonals within the band of A.  KL >= 0.
-*
-*  KU      (input) INTEGER
-*          The number of superdiagonals within the band of A.  KU >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrices B and X.  NRHS >= 0.
-*
-*  AB      (input) DOUBLE PRECISION array, dimension (LDAB,N)
-*          The original band matrix A, stored in rows 1 to KL+KU+1.
-*          The j-th column of A is stored in the j-th column of the
-*          array AB as follows:
-*          AB(ku+1+i-j,j) = A(i,j) for max(1,j-ku)<=i<=min(n,j+kl).
-*
-*  LDAB    (input) INTEGER
-*          The leading dimension of the array AB.  LDAB >= KL+KU+1.
-*
-*  AFB     (input) DOUBLE PRECISION array, dimension (LDAFB,N)
-*          Details of the LU factorization of the band matrix A, as
-*          computed by DGBTRF.  U is stored as an upper triangular band
-*          matrix with KL+KU superdiagonals in rows 1 to KL+KU+1, and
-*          the multipliers used during the factorization are stored in
-*          rows KL+KU+2 to 2*KL+KU+1.
-*
-*  LDAFB   (input) INTEGER
-*          The leading dimension of the array AFB.  LDAFB >= 2*KL*KU+1.
-*
-*  IPIV    (input) INTEGER array, dimension (N)
-*          The pivot indices from DGBTRF; for 1<=i<=N, row i of the
-*          matrix was interchanged with row IPIV(i).
-*
-*  B       (input) DOUBLE PRECISION array, dimension (LDB,NRHS)
-*          The right hand side matrix B.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  X       (input/output) DOUBLE PRECISION array, dimension (LDX,NRHS)
-*          On entry, the solution matrix X, as computed by DGBTRS.
-*          On exit, the improved solution matrix X.
-*
-*  LDX     (input) INTEGER
-*          The leading dimension of the array X.  LDX >= max(1,N).
-*
-*  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)
-*          The estimated forward error bound for each solution vector
-*          X(j) (the j-th column of the solution matrix X).
-*          If XTRUE is the true solution corresponding to X(j), FERR(j)
-*          is an estimated upper bound for the magnitude of the largest
-*          element in (X(j) - XTRUE) divided by the magnitude of the
-*          largest element in X(j).  The estimate is as reliable as
-*          the estimate for RCOND, and is almost always a slight
-*          overestimate of the true error.
-*
-*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
-*          The componentwise relative backward error of each solution
-*          vector X(j) (i.e., the smallest relative change in
-*          any element of A or B that makes X(j) an exact solution).
-*
-*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
-*
-*  IWORK   (workspace) INTEGER array, dimension (N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-*  Internal Parameters
-*  ===================
-*
-*  ITMAX is the maximum number of steps of iterative refinement.
-*
-
 *  =====================================================================
 *
 

@@ -6,96 +6,80 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for symmetric or Hermitian positive definite tridiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#zpttrs">zpttrs</A>: Solves a Hermitian positive definite tridiagonal</LI>
-      <LI><A HREF="#zpteqr">zpteqr</A>: Computes all eigenvalues and eigenvectors of a complex symmetric</LI>
       <LI><A HREF="#zptcon">zptcon</A>: Computes the reciprocal of the condition number of a</LI>
-      <LI><A HREF="#zpttrf">zpttrf</A>: Computes the LDL**H factorization of a Hermitian</LI>
-      <LI><A HREF="#zptts2">zptts2</A>: </LI>
+      <LI><A HREF="#zpteqr">zpteqr</A>: Computes all eigenvalues and eigenvectors of a complex symmetric</LI>
       <LI><A HREF="#zptrfs">zptrfs</A>: Improves the computed solution to a Hermitian positive</LI>
       <LI><A HREF="#zptsv">zptsv</A>: Solves a Hermitian positive definite tridiagonal system</LI>
       <LI><A HREF="#zptsvx">zptsvx</A>: Solves a Hermitian positive definite tridiagonal</LI>
+      <LI><A HREF="#zpttrf">zpttrf</A>: Computes the LDL**H factorization of a Hermitian</LI>
+      <LI><A HREF="#zpttrs">zpttrs</A>: Solves a Hermitian positive definite tridiagonal</LI>
+      <LI><A HREF="#zptts2">zptts2</A>: </LI>
     </UL>
 
-  <A NAME="zpttrs"></A>
-  <H2>zpttrs</H2>
-  Solves a Hermitian positive definite tridiagonal
+  <A NAME="zptcon"></A>
+  <H2>zptcon</H2>
+  Computes the reciprocal of the condition number of a
   <PRE>
 USAGE:
-  info, b = NumRu::Lapack.zpttrs( uplo, d, e, b)
+  rcond, info = NumRu::Lapack.zptcon( d, e, anorm)
     or
-  NumRu::Lapack.zpttrs  # print help
+  NumRu::Lapack.zptcon  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE ZPTTRS( UPLO, N, NRHS, D, E, B, LDB, INFO )
+      SUBROUTINE ZPTCON( N, D, E, ANORM, RCOND, RWORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  ZPTTRS solves a tridiagonal system of the form
-*     A * X = B
-*  using the factorization A = U'*D*U or A = L*D*L' computed by ZPTTRF.
-*  D is a diagonal matrix specified in the vector D, U (or L) is a unit
-*  bidiagonal matrix whose superdiagonal (subdiagonal) is specified in
-*  the vector E, and X and B are N by NRHS matrices.
+*  ZPTCON computes the reciprocal of the condition number (in the
+*  1-norm) of a complex Hermitian positive definite tridiagonal matrix
+*  using the factorization A = L*D*L**H or A = U**H*D*U computed by
+*  ZPTTRF.
+*
+*  Norm(inv(A)) is computed by a direct method, and the reciprocal of
+*  the condition number is computed as
+*                   RCOND = 1 / (ANORM * norm(inv(A))).
 *
 
 *  Arguments
 *  =========
 *
-*  UPLO    (input) CHARACTER*1
-*          Specifies the form of the factorization and whether the
-*          vector E is the superdiagonal of the upper bidiagonal factor
-*          U or the subdiagonal of the lower bidiagonal factor L.
-*          = 'U':  A = U'*D*U, E is the superdiagonal of U
-*          = 'L':  A = L*D*L', E is the subdiagonal of L
-*
 *  N       (input) INTEGER
-*          The order of the tridiagonal matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
+*          The order of the matrix A.  N >= 0.
 *
 *  D       (input) DOUBLE PRECISION array, dimension (N)
 *          The n diagonal elements of the diagonal matrix D from the
-*          factorization A = U'*D*U or A = L*D*L'.
+*          factorization of A, as computed by ZPTTRF.
 *
 *  E       (input) COMPLEX*16 array, dimension (N-1)
-*          If UPLO = 'U', the (n-1) superdiagonal elements of the unit
-*          bidiagonal factor U from the factorization A = U'*D*U.
-*          If UPLO = 'L', the (n-1) subdiagonal elements of the unit
-*          bidiagonal factor L from the factorization A = L*D*L'.
+*          The (n-1) off-diagonal elements of the unit bidiagonal factor
+*          U or L from the factorization of A, as computed by ZPTTRF.
 *
-*  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
-*          On entry, the right hand side vectors B for the system of
-*          linear equations.
-*          On exit, the solution vectors, X.
+*  ANORM   (input) DOUBLE PRECISION
+*          The 1-norm of the original matrix A.
 *
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
+*  RCOND   (output) DOUBLE PRECISION
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is the
+*          1-norm of inv(A) computed in this routine.
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)
 *
 *  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -k, the k-th argument had an illegal value
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
 *
 
+*  Further Details
+*  ===============
+*
+*  The method used is described in Nicholas J. Higham, "Efficient
+*  Algorithms for Computing the Condition Number of a Tridiagonal
+*  Matrix", SIAM J. Sci. Stat. Comput., Vol. 7, No. 1, January 1986.
+*
 *  =====================================================================
 *
-*     .. Local Scalars ..
-      LOGICAL            UPPER
-      INTEGER            IUPLO, J, JB, NB
-*     ..
-*     .. External Functions ..
-      INTEGER            ILAENV
-      EXTERNAL           ILAENV
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           XERBLA, ZPTTS2
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX, MIN
-*     ..
 
 
     </PRE>
@@ -191,206 +175,6 @@ FORTRAN MANUAL
 
 *  ====================================================================
 *
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zptcon"></A>
-  <H2>zptcon</H2>
-  Computes the reciprocal of the condition number of a
-  <PRE>
-USAGE:
-  rcond, info = NumRu::Lapack.zptcon( d, e, anorm)
-    or
-  NumRu::Lapack.zptcon  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZPTCON( N, D, E, ANORM, RCOND, RWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZPTCON computes the reciprocal of the condition number (in the
-*  1-norm) of a complex Hermitian positive definite tridiagonal matrix
-*  using the factorization A = L*D*L**H or A = U**H*D*U computed by
-*  ZPTTRF.
-*
-*  Norm(inv(A)) is computed by a direct method, and the reciprocal of
-*  the condition number is computed as
-*                   RCOND = 1 / (ANORM * norm(inv(A))).
-*
-
-*  Arguments
-*  =========
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  D       (input) DOUBLE PRECISION array, dimension (N)
-*          The n diagonal elements of the diagonal matrix D from the
-*          factorization of A, as computed by ZPTTRF.
-*
-*  E       (input) COMPLEX*16 array, dimension (N-1)
-*          The (n-1) off-diagonal elements of the unit bidiagonal factor
-*          U or L from the factorization of A, as computed by ZPTTRF.
-*
-*  ANORM   (input) DOUBLE PRECISION
-*          The 1-norm of the original matrix A.
-*
-*  RCOND   (output) DOUBLE PRECISION
-*          The reciprocal of the condition number of the matrix A,
-*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is the
-*          1-norm of inv(A) computed in this routine.
-*
-*  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  Further Details
-*  ===============
-*
-*  The method used is described in Nicholas J. Higham, "Efficient
-*  Algorithms for Computing the Condition Number of a Tridiagonal
-*  Matrix", SIAM J. Sci. Stat. Comput., Vol. 7, No. 1, January 1986.
-*
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zpttrf"></A>
-  <H2>zpttrf</H2>
-  Computes the LDL**H factorization of a Hermitian
-  <PRE>
-USAGE:
-  info, d, e = NumRu::Lapack.zpttrf( d, e)
-    or
-  NumRu::Lapack.zpttrf  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZPTTRF( N, D, E, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZPTTRF computes the L*D*L' factorization of a complex Hermitian
-*  positive definite tridiagonal matrix A.  The factorization may also
-*  be regarded as having the form A = U'*D*U.
-*
-
-*  Arguments
-*  =========
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  D       (input/output) DOUBLE PRECISION array, dimension (N)
-*          On entry, the n diagonal elements of the tridiagonal matrix
-*          A.  On exit, the n diagonal elements of the diagonal matrix
-*          D from the L*D*L' factorization of A.
-*
-*  E       (input/output) COMPLEX*16 array, dimension (N-1)
-*          On entry, the (n-1) subdiagonal elements of the tridiagonal
-*          matrix A.  On exit, the (n-1) subdiagonal elements of the
-*          unit bidiagonal factor L from the L*D*L' factorization of A.
-*          E can also be regarded as the superdiagonal of the unit
-*          bidiagonal factor U from the U'*D*U factorization of A.
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -k, the k-th argument had an illegal value
-*          > 0: if INFO = k, the leading minor of order k is not
-*               positive definite; if k < N, the factorization could not
-*               be completed, while if k = N, the factorization was
-*               completed, but D(N) <= 0.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zptts2"></A>
-  <H2>zptts2</H2>
-  
-  <PRE>
-USAGE:
-  b = NumRu::Lapack.zptts2( iuplo, d, e, b)
-    or
-  NumRu::Lapack.zptts2  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZPTTS2( IUPLO, N, NRHS, D, E, B, LDB )
-
-*  Purpose
-*  =======
-*
-*  ZPTTS2 solves a tridiagonal system of the form
-*     A * X = B
-*  using the factorization A = U'*D*U or A = L*D*L' computed by ZPTTRF.
-*  D is a diagonal matrix specified in the vector D, U (or L) is a unit
-*  bidiagonal matrix whose superdiagonal (subdiagonal) is specified in
-*  the vector E, and X and B are N by NRHS matrices.
-*
-
-*  Arguments
-*  =========
-*
-*  IUPLO   (input) INTEGER
-*          Specifies the form of the factorization and whether the
-*          vector E is the superdiagonal of the upper bidiagonal factor
-*          U or the subdiagonal of the lower bidiagonal factor L.
-*          = 1:  A = U'*D*U, E is the superdiagonal of U
-*          = 0:  A = L*D*L', E is the subdiagonal of L
-*
-*  N       (input) INTEGER
-*          The order of the tridiagonal matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
-*  D       (input) DOUBLE PRECISION array, dimension (N)
-*          The n diagonal elements of the diagonal matrix D from the
-*          factorization A = U'*D*U or A = L*D*L'.
-*
-*  E       (input) COMPLEX*16 array, dimension (N-1)
-*          If IUPLO = 1, the (n-1) superdiagonal elements of the unit
-*          bidiagonal factor U from the factorization A = U'*D*U.
-*          If IUPLO = 0, the (n-1) subdiagonal elements of the unit
-*          bidiagonal factor L from the factorization A = L*D*L'.
-*
-*  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
-*          On entry, the right hand side vectors B for the system of
-*          linear equations.
-*          On exit, the solution vectors, X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      INTEGER            I, J
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           ZDSCAL
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          DCONJG
-*     ..
 
 
     </PRE>
@@ -718,6 +502,222 @@ FORTRAN MANUAL
 
 *  =====================================================================
 *
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zpttrf"></A>
+  <H2>zpttrf</H2>
+  Computes the LDL**H factorization of a Hermitian
+  <PRE>
+USAGE:
+  info, d, e = NumRu::Lapack.zpttrf( d, e)
+    or
+  NumRu::Lapack.zpttrf  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZPTTRF( N, D, E, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZPTTRF computes the L*D*L' factorization of a complex Hermitian
+*  positive definite tridiagonal matrix A.  The factorization may also
+*  be regarded as having the form A = U'*D*U.
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  D       (input/output) DOUBLE PRECISION array, dimension (N)
+*          On entry, the n diagonal elements of the tridiagonal matrix
+*          A.  On exit, the n diagonal elements of the diagonal matrix
+*          D from the L*D*L' factorization of A.
+*
+*  E       (input/output) COMPLEX*16 array, dimension (N-1)
+*          On entry, the (n-1) subdiagonal elements of the tridiagonal
+*          matrix A.  On exit, the (n-1) subdiagonal elements of the
+*          unit bidiagonal factor L from the L*D*L' factorization of A.
+*          E can also be regarded as the superdiagonal of the unit
+*          bidiagonal factor U from the U'*D*U factorization of A.
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*          > 0: if INFO = k, the leading minor of order k is not
+*               positive definite; if k < N, the factorization could not
+*               be completed, while if k = N, the factorization was
+*               completed, but D(N) <= 0.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zpttrs"></A>
+  <H2>zpttrs</H2>
+  Solves a Hermitian positive definite tridiagonal
+  <PRE>
+USAGE:
+  info, b = NumRu::Lapack.zpttrs( uplo, d, e, b)
+    or
+  NumRu::Lapack.zpttrs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZPTTRS( UPLO, N, NRHS, D, E, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZPTTRS solves a tridiagonal system of the form
+*     A * X = B
+*  using the factorization A = U'*D*U or A = L*D*L' computed by ZPTTRF.
+*  D is a diagonal matrix specified in the vector D, U (or L) is a unit
+*  bidiagonal matrix whose superdiagonal (subdiagonal) is specified in
+*  the vector E, and X and B are N by NRHS matrices.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies the form of the factorization and whether the
+*          vector E is the superdiagonal of the upper bidiagonal factor
+*          U or the subdiagonal of the lower bidiagonal factor L.
+*          = 'U':  A = U'*D*U, E is the superdiagonal of U
+*          = 'L':  A = L*D*L', E is the subdiagonal of L
+*
+*  N       (input) INTEGER
+*          The order of the tridiagonal matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  D       (input) DOUBLE PRECISION array, dimension (N)
+*          The n diagonal elements of the diagonal matrix D from the
+*          factorization A = U'*D*U or A = L*D*L'.
+*
+*  E       (input) COMPLEX*16 array, dimension (N-1)
+*          If UPLO = 'U', the (n-1) superdiagonal elements of the unit
+*          bidiagonal factor U from the factorization A = U'*D*U.
+*          If UPLO = 'L', the (n-1) subdiagonal elements of the unit
+*          bidiagonal factor L from the factorization A = L*D*L'.
+*
+*  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+*          On entry, the right hand side vectors B for the system of
+*          linear equations.
+*          On exit, the solution vectors, X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            UPPER
+      INTEGER            IUPLO, J, JB, NB
+*     ..
+*     .. External Functions ..
+      INTEGER            ILAENV
+      EXTERNAL           ILAENV
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           XERBLA, ZPTTS2
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX, MIN
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zptts2"></A>
+  <H2>zptts2</H2>
+  
+  <PRE>
+USAGE:
+  b = NumRu::Lapack.zptts2( iuplo, d, e, b)
+    or
+  NumRu::Lapack.zptts2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZPTTS2( IUPLO, N, NRHS, D, E, B, LDB )
+
+*  Purpose
+*  =======
+*
+*  ZPTTS2 solves a tridiagonal system of the form
+*     A * X = B
+*  using the factorization A = U'*D*U or A = L*D*L' computed by ZPTTRF.
+*  D is a diagonal matrix specified in the vector D, U (or L) is a unit
+*  bidiagonal matrix whose superdiagonal (subdiagonal) is specified in
+*  the vector E, and X and B are N by NRHS matrices.
+*
+
+*  Arguments
+*  =========
+*
+*  IUPLO   (input) INTEGER
+*          Specifies the form of the factorization and whether the
+*          vector E is the superdiagonal of the upper bidiagonal factor
+*          U or the subdiagonal of the lower bidiagonal factor L.
+*          = 1:  A = U'*D*U, E is the superdiagonal of U
+*          = 0:  A = L*D*L', E is the subdiagonal of L
+*
+*  N       (input) INTEGER
+*          The order of the tridiagonal matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  D       (input) DOUBLE PRECISION array, dimension (N)
+*          The n diagonal elements of the diagonal matrix D from the
+*          factorization A = U'*D*U or A = L*D*L'.
+*
+*  E       (input) COMPLEX*16 array, dimension (N-1)
+*          If IUPLO = 1, the (n-1) superdiagonal elements of the unit
+*          bidiagonal factor U from the factorization A = U'*D*U.
+*          If IUPLO = 0, the (n-1) subdiagonal elements of the unit
+*          bidiagonal factor L from the factorization A = L*D*L'.
+*
+*  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+*          On entry, the right hand side vectors B for the system of
+*          linear equations.
+*          On exit, the solution vectors, X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      INTEGER            I, J
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           ZDSCAL
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          DCONJG
+*     ..
 
 
     </PRE>

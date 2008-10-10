@@ -6,183 +6,14 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for general tridiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#cgttrs">cgttrs</A>: Solves a general tridiagonal system of linear equations AX=B,</LI>
-      <LI><A HREF="#cgttrf">cgttrf</A>: Computes an LU factorization of a general tridiagonal matrix,</LI>
       <LI><A HREF="#cgtcon">cgtcon</A>: Estimates the reciprocal of the condition number of a general</LI>
       <LI><A HREF="#cgtrfs">cgtrfs</A>: Improves the computed solution to a general tridiagonal system</LI>
-      <LI><A HREF="#cgtsvx">cgtsvx</A>: Solves a general tridiagonal system of linear equations AX=B,</LI>
-      <LI><A HREF="#cgtts2">cgtts2</A>: </LI>
       <LI><A HREF="#cgtsv">cgtsv</A>: Solves a general tridiagonal system of linear equations AX=B.</LI>
+      <LI><A HREF="#cgtsvx">cgtsvx</A>: Solves a general tridiagonal system of linear equations AX=B,</LI>
+      <LI><A HREF="#cgttrf">cgttrf</A>: Computes an LU factorization of a general tridiagonal matrix,</LI>
+      <LI><A HREF="#cgttrs">cgttrs</A>: Solves a general tridiagonal system of linear equations AX=B,</LI>
+      <LI><A HREF="#cgtts2">cgtts2</A>: </LI>
     </UL>
-
-  <A NAME="cgttrs"></A>
-  <H2>cgttrs</H2>
-  Solves a general tridiagonal system of linear equations AX=B,
-  <PRE>
-USAGE:
-  info, b = NumRu::Lapack.cgttrs( trans, dl, d, du, du2, ipiv, b)
-    or
-  NumRu::Lapack.cgttrs  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CGTTRS( TRANS, N, NRHS, DL, D, DU, DU2, IPIV, B, LDB, INFO )
-
-*  Purpose
-*  =======
-*
-*  CGTTRS solves one of the systems of equations
-*     A * X = B,  A**T * X = B,  or  A**H * X = B,
-*  with a tridiagonal matrix A using the LU factorization computed
-*  by CGTTRF.
-*
-
-*  Arguments
-*  =========
-*
-*  TRANS   (input) CHARACTER*1
-*          Specifies the form of the system of equations.
-*          = 'N':  A * X = B     (No transpose)
-*          = 'T':  A**T * X = B  (Transpose)
-*          = 'C':  A**H * X = B  (Conjugate transpose)
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
-*  DL      (input) COMPLEX array, dimension (N-1)
-*          The (n-1) multipliers that define the matrix L from the
-*          LU factorization of A.
-*
-*  D       (input) COMPLEX array, dimension (N)
-*          The n diagonal elements of the upper triangular matrix U from
-*          the LU factorization of A.
-*
-*  DU      (input) COMPLEX array, dimension (N-1)
-*          The (n-1) elements of the first super-diagonal of U.
-*
-*  DU2     (input) COMPLEX array, dimension (N-2)
-*          The (n-2) elements of the second super-diagonal of U.
-*
-*  IPIV    (input) INTEGER array, dimension (N)
-*          The pivot indices; for 1 <= i <= n, row i of the matrix was
-*          interchanged with row IPIV(i).  IPIV(i) will always be either
-*          i or i+1; IPIV(i) = i indicates a row interchange was not
-*          required.
-*
-*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)
-*          On entry, the matrix of right hand side vectors B.
-*          On exit, B is overwritten by the solution vectors X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -k, the k-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      LOGICAL            NOTRAN
-      INTEGER            ITRANS, J, JB, NB
-*     ..
-*     .. External Functions ..
-      INTEGER            ILAENV
-      EXTERNAL           ILAENV
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           CGTTS2, XERBLA
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX, MIN
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="cgttrf"></A>
-  <H2>cgttrf</H2>
-  Computes an LU factorization of a general tridiagonal matrix,
-  <PRE>
-USAGE:
-  du2, ipiv, info, dl, d, du = NumRu::Lapack.cgttrf( dl, d, du)
-    or
-  NumRu::Lapack.cgttrf  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CGTTRF( N, DL, D, DU, DU2, IPIV, INFO )
-
-*  Purpose
-*  =======
-*
-*  CGTTRF computes an LU factorization of a complex tridiagonal matrix A
-*  using elimination with partial pivoting and row interchanges.
-*
-*  The factorization has the form
-*     A = L * U
-*  where L is a product of permutation and unit lower bidiagonal
-*  matrices and U is upper triangular with nonzeros in only the main
-*  diagonal and first two superdiagonals.
-*
-
-*  Arguments
-*  =========
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.
-*
-*  DL      (input/output) COMPLEX array, dimension (N-1)
-*          On entry, DL must contain the (n-1) sub-diagonal elements of
-*          A.
-*
-*          On exit, DL is overwritten by the (n-1) multipliers that
-*          define the matrix L from the LU factorization of A.
-*
-*  D       (input/output) COMPLEX array, dimension (N)
-*          On entry, D must contain the diagonal elements of A.
-*
-*          On exit, D is overwritten by the n diagonal elements of the
-*          upper triangular matrix U from the LU factorization of A.
-*
-*  DU      (input/output) COMPLEX array, dimension (N-1)
-*          On entry, DU must contain the (n-1) super-diagonal elements
-*          of A.
-*
-*          On exit, DU is overwritten by the (n-1) elements of the first
-*          super-diagonal of U.
-*
-*  DU2     (output) COMPLEX array, dimension (N-2)
-*          On exit, DU2 is overwritten by the (n-2) elements of the
-*          second super-diagonal of U.
-*
-*  IPIV    (output) INTEGER array, dimension (N)
-*          The pivot indices; for 1 <= i <= n, row i of the matrix was
-*          interchanged with row IPIV(i).  IPIV(i) will always be either
-*          i or i+1; IPIV(i) = i indicates a row interchange was not
-*          required.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -k, the k-th argument had an illegal value
-*          > 0:  if INFO = k, U(k,k) is exactly zero. The factorization
-*                has been completed, but the factor U is exactly
-*                singular, and division by zero will occur if it is used
-*                to solve a system of equations.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
 
   <A NAME="cgtcon"></A>
   <H2>cgtcon</H2>
@@ -369,6 +200,82 @@ FORTRAN MANUAL
 *  ===================
 *
 *  ITMAX is the maximum number of steps of iterative refinement.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cgtsv"></A>
+  <H2>cgtsv</H2>
+  Solves a general tridiagonal system of linear equations AX=B.
+  <PRE>
+USAGE:
+  info, dl, d, du, b = NumRu::Lapack.cgtsv( dl, d, du, b)
+    or
+  NumRu::Lapack.cgtsv  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CGTSV( N, NRHS, DL, D, DU, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  CGTSV  solves the equation
+*
+*     A*X = B,
+*
+*  where A is an N-by-N tridiagonal matrix, by Gaussian elimination with
+*  partial pivoting.
+*
+*  Note that the equation  A'*X = B  may be solved by interchanging the
+*  order of the arguments DU and DL.
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  DL      (input/output) COMPLEX array, dimension (N-1)
+*          On entry, DL must contain the (n-1) subdiagonal elements of
+*          A.
+*          On exit, DL is overwritten by the (n-2) elements of the
+*          second superdiagonal of the upper triangular matrix U from
+*          the LU factorization of A, in DL(1), ..., DL(n-2).
+*
+*  D       (input/output) COMPLEX array, dimension (N)
+*          On entry, D must contain the diagonal elements of A.
+*          On exit, D is overwritten by the n diagonal elements of U.
+*
+*  DU      (input/output) COMPLEX array, dimension (N-1)
+*          On entry, DU must contain the (n-1) superdiagonal elements
+*          of A.
+*          On exit, DU is overwritten by the (n-1) elements of the first
+*          superdiagonal of U.
+*
+*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)
+*          On entry, the N-by-NRHS right hand side matrix B.
+*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, U(i,i) is exactly zero, and the solution
+*                has not been computed.  The factorization has not been
+*                completed unless i = N.
 *
 
 *  =====================================================================
@@ -569,6 +476,175 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
+  <A NAME="cgttrf"></A>
+  <H2>cgttrf</H2>
+  Computes an LU factorization of a general tridiagonal matrix,
+  <PRE>
+USAGE:
+  du2, ipiv, info, dl, d, du = NumRu::Lapack.cgttrf( dl, d, du)
+    or
+  NumRu::Lapack.cgttrf  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CGTTRF( N, DL, D, DU, DU2, IPIV, INFO )
+
+*  Purpose
+*  =======
+*
+*  CGTTRF computes an LU factorization of a complex tridiagonal matrix A
+*  using elimination with partial pivoting and row interchanges.
+*
+*  The factorization has the form
+*     A = L * U
+*  where L is a product of permutation and unit lower bidiagonal
+*  matrices and U is upper triangular with nonzeros in only the main
+*  diagonal and first two superdiagonals.
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.
+*
+*  DL      (input/output) COMPLEX array, dimension (N-1)
+*          On entry, DL must contain the (n-1) sub-diagonal elements of
+*          A.
+*
+*          On exit, DL is overwritten by the (n-1) multipliers that
+*          define the matrix L from the LU factorization of A.
+*
+*  D       (input/output) COMPLEX array, dimension (N)
+*          On entry, D must contain the diagonal elements of A.
+*
+*          On exit, D is overwritten by the n diagonal elements of the
+*          upper triangular matrix U from the LU factorization of A.
+*
+*  DU      (input/output) COMPLEX array, dimension (N-1)
+*          On entry, DU must contain the (n-1) super-diagonal elements
+*          of A.
+*
+*          On exit, DU is overwritten by the (n-1) elements of the first
+*          super-diagonal of U.
+*
+*  DU2     (output) COMPLEX array, dimension (N-2)
+*          On exit, DU2 is overwritten by the (n-2) elements of the
+*          second super-diagonal of U.
+*
+*  IPIV    (output) INTEGER array, dimension (N)
+*          The pivot indices; for 1 <= i <= n, row i of the matrix was
+*          interchanged with row IPIV(i).  IPIV(i) will always be either
+*          i or i+1; IPIV(i) = i indicates a row interchange was not
+*          required.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -k, the k-th argument had an illegal value
+*          > 0:  if INFO = k, U(k,k) is exactly zero. The factorization
+*                has been completed, but the factor U is exactly
+*                singular, and division by zero will occur if it is used
+*                to solve a system of equations.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cgttrs"></A>
+  <H2>cgttrs</H2>
+  Solves a general tridiagonal system of linear equations AX=B,
+  <PRE>
+USAGE:
+  info, b = NumRu::Lapack.cgttrs( trans, dl, d, du, du2, ipiv, b)
+    or
+  NumRu::Lapack.cgttrs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CGTTRS( TRANS, N, NRHS, DL, D, DU, DU2, IPIV, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  CGTTRS solves one of the systems of equations
+*     A * X = B,  A**T * X = B,  or  A**H * X = B,
+*  with a tridiagonal matrix A using the LU factorization computed
+*  by CGTTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  TRANS   (input) CHARACTER*1
+*          Specifies the form of the system of equations.
+*          = 'N':  A * X = B     (No transpose)
+*          = 'T':  A**T * X = B  (Transpose)
+*          = 'C':  A**H * X = B  (Conjugate transpose)
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  DL      (input) COMPLEX array, dimension (N-1)
+*          The (n-1) multipliers that define the matrix L from the
+*          LU factorization of A.
+*
+*  D       (input) COMPLEX array, dimension (N)
+*          The n diagonal elements of the upper triangular matrix U from
+*          the LU factorization of A.
+*
+*  DU      (input) COMPLEX array, dimension (N-1)
+*          The (n-1) elements of the first super-diagonal of U.
+*
+*  DU2     (input) COMPLEX array, dimension (N-2)
+*          The (n-2) elements of the second super-diagonal of U.
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          The pivot indices; for 1 <= i <= n, row i of the matrix was
+*          interchanged with row IPIV(i).  IPIV(i) will always be either
+*          i or i+1; IPIV(i) = i indicates a row interchange was not
+*          required.
+*
+*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)
+*          On entry, the matrix of right hand side vectors B.
+*          On exit, B is overwritten by the solution vectors X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -k, the k-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            NOTRAN
+      INTEGER            ITRANS, J, JB, NB
+*     ..
+*     .. External Functions ..
+      INTEGER            ILAENV
+      EXTERNAL           ILAENV
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CGTTS2, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX, MIN
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
   <A NAME="cgtts2"></A>
   <H2>cgtts2</H2>
   
@@ -644,82 +720,6 @@ FORTRAN MANUAL
 *     .. Intrinsic Functions ..
       INTRINSIC          CONJG
 *     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="cgtsv"></A>
-  <H2>cgtsv</H2>
-  Solves a general tridiagonal system of linear equations AX=B.
-  <PRE>
-USAGE:
-  info, dl, d, du, b = NumRu::Lapack.cgtsv( dl, d, du, b)
-    or
-  NumRu::Lapack.cgtsv  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CGTSV( N, NRHS, DL, D, DU, B, LDB, INFO )
-
-*  Purpose
-*  =======
-*
-*  CGTSV  solves the equation
-*
-*     A*X = B,
-*
-*  where A is an N-by-N tridiagonal matrix, by Gaussian elimination with
-*  partial pivoting.
-*
-*  Note that the equation  A'*X = B  may be solved by interchanging the
-*  order of the arguments DU and DL.
-*
-
-*  Arguments
-*  =========
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
-*  DL      (input/output) COMPLEX array, dimension (N-1)
-*          On entry, DL must contain the (n-1) subdiagonal elements of
-*          A.
-*          On exit, DL is overwritten by the (n-2) elements of the
-*          second superdiagonal of the upper triangular matrix U from
-*          the LU factorization of A, in DL(1), ..., DL(n-2).
-*
-*  D       (input/output) COMPLEX array, dimension (N)
-*          On entry, D must contain the diagonal elements of A.
-*          On exit, D is overwritten by the n diagonal elements of U.
-*
-*  DU      (input/output) COMPLEX array, dimension (N-1)
-*          On entry, DU must contain the (n-1) superdiagonal elements
-*          of A.
-*          On exit, DU is overwritten by the (n-1) elements of the first
-*          superdiagonal of U.
-*
-*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)
-*          On entry, the N-by-NRHS right hand side matrix B.
-*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, U(i,i) is exactly zero, and the solution
-*                has not been computed.  The factorization has not been
-*                completed unless i = N.
-*
-
-*  =====================================================================
-*
 
 
     </PRE>

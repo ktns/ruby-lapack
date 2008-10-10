@@ -6,84 +6,200 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for general tridiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#zgttrf">zgttrf</A>: Computes an LU factorization of a general tridiagonal matrix,</LI>
+      <LI><A HREF="#zgtcon">zgtcon</A>: Estimates the reciprocal of the condition number of a general</LI>
+      <LI><A HREF="#zgtrfs">zgtrfs</A>: Improves the computed solution to a general tridiagonal system</LI>
       <LI><A HREF="#zgtsv">zgtsv</A>: Solves a general tridiagonal system of linear equations AX=B.</LI>
       <LI><A HREF="#zgtsvx">zgtsvx</A>: Solves a general tridiagonal system of linear equations AX=B,</LI>
-      <LI><A HREF="#zgtrfs">zgtrfs</A>: Improves the computed solution to a general tridiagonal system</LI>
-      <LI><A HREF="#zgtts2">zgtts2</A>: </LI>
-      <LI><A HREF="#zgtcon">zgtcon</A>: Estimates the reciprocal of the condition number of a general</LI>
+      <LI><A HREF="#zgttrf">zgttrf</A>: Computes an LU factorization of a general tridiagonal matrix,</LI>
       <LI><A HREF="#zgttrs">zgttrs</A>: Solves a general tridiagonal system of linear equations AX=B,</LI>
+      <LI><A HREF="#zgtts2">zgtts2</A>: </LI>
     </UL>
 
-  <A NAME="zgttrf"></A>
-  <H2>zgttrf</H2>
-  Computes an LU factorization of a general tridiagonal matrix,
+  <A NAME="zgtcon"></A>
+  <H2>zgtcon</H2>
+  Estimates the reciprocal of the condition number of a general
   <PRE>
 USAGE:
-  du2, ipiv, info, dl, d, du = NumRu::Lapack.zgttrf( dl, d, du)
+  rcond, info = NumRu::Lapack.zgtcon( norm, dl, d, du, du2, ipiv, anorm)
     or
-  NumRu::Lapack.zgttrf  # print help
+  NumRu::Lapack.zgtcon  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE ZGTTRF( N, DL, D, DU, DU2, IPIV, INFO )
+      SUBROUTINE ZGTCON( NORM, N, DL, D, DU, DU2, IPIV, ANORM, RCOND, WORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  ZGTTRF computes an LU factorization of a complex tridiagonal matrix A
-*  using elimination with partial pivoting and row interchanges.
+*  ZGTCON estimates the reciprocal of the condition number of a complex
+*  tridiagonal matrix A using the LU factorization as computed by
+*  ZGTTRF.
 *
-*  The factorization has the form
-*     A = L * U
-*  where L is a product of permutation and unit lower bidiagonal
-*  matrices and U is upper triangular with nonzeros in only the main
-*  diagonal and first two superdiagonals.
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
 *
 
 *  Arguments
 *  =========
 *
+*  NORM    (input) CHARACTER*1
+*          Specifies whether the 1-norm condition number or the
+*          infinity-norm condition number is required:
+*          = '1' or 'O':  1-norm;
+*          = 'I':         Infinity-norm.
+*
 *  N       (input) INTEGER
-*          The order of the matrix A.
+*          The order of the matrix A.  N >= 0.
 *
-*  DL      (input/output) COMPLEX*16 array, dimension (N-1)
-*          On entry, DL must contain the (n-1) sub-diagonal elements of
-*          A.
+*  DL      (input) COMPLEX*16 array, dimension (N-1)
+*          The (n-1) multipliers that define the matrix L from the
+*          LU factorization of A as computed by ZGTTRF.
 *
-*          On exit, DL is overwritten by the (n-1) multipliers that
-*          define the matrix L from the LU factorization of A.
+*  D       (input) COMPLEX*16 array, dimension (N)
+*          The n diagonal elements of the upper triangular matrix U from
+*          the LU factorization of A.
 *
-*  D       (input/output) COMPLEX*16 array, dimension (N)
-*          On entry, D must contain the diagonal elements of A.
+*  DU      (input) COMPLEX*16 array, dimension (N-1)
+*          The (n-1) elements of the first superdiagonal of U.
 *
-*          On exit, D is overwritten by the n diagonal elements of the
-*          upper triangular matrix U from the LU factorization of A.
+*  DU2     (input) COMPLEX*16 array, dimension (N-2)
+*          The (n-2) elements of the second superdiagonal of U.
 *
-*  DU      (input/output) COMPLEX*16 array, dimension (N-1)
-*          On entry, DU must contain the (n-1) super-diagonal elements
-*          of A.
-*
-*          On exit, DU is overwritten by the (n-1) elements of the first
-*          super-diagonal of U.
-*
-*  DU2     (output) COMPLEX*16 array, dimension (N-2)
-*          On exit, DU2 is overwritten by the (n-2) elements of the
-*          second super-diagonal of U.
-*
-*  IPIV    (output) INTEGER array, dimension (N)
+*  IPIV    (input) INTEGER array, dimension (N)
 *          The pivot indices; for 1 <= i <= n, row i of the matrix was
 *          interchanged with row IPIV(i).  IPIV(i) will always be either
 *          i or i+1; IPIV(i) = i indicates a row interchange was not
 *          required.
 *
+*  ANORM   (input) DOUBLE PRECISION
+*          If NORM = '1' or 'O', the 1-norm of the original matrix A.
+*          If NORM = 'I', the infinity-norm of the original matrix A.
+*
+*  RCOND   (output) DOUBLE PRECISION
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
+*          estimate of the 1-norm of inv(A) computed in this routine.
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
+*
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
-*          < 0:  if INFO = -k, the k-th argument had an illegal value
-*          > 0:  if INFO = k, U(k,k) is exactly zero. The factorization
-*                has been completed, but the factor U is exactly
-*                singular, and division by zero will occur if it is used
-*                to solve a system of equations.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zgtrfs"></A>
+  <H2>zgtrfs</H2>
+  Improves the computed solution to a general tridiagonal system
+  <PRE>
+USAGE:
+  ferr, berr, info, x = NumRu::Lapack.zgtrfs( trans, dl, d, du, dlf, df, duf, du2, ipiv, b, x)
+    or
+  NumRu::Lapack.zgtrfs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZGTRFS( TRANS, N, NRHS, DL, D, DU, DLF, DF, DUF, DU2, IPIV, B, LDB, X, LDX, FERR, BERR, WORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZGTRFS improves the computed solution to a system of linear
+*  equations when the coefficient matrix is tridiagonal, and provides
+*  error bounds and backward error estimates for the solution.
+*
+
+*  Arguments
+*  =========
+*
+*  TRANS   (input) CHARACTER*1
+*          Specifies the form of the system of equations:
+*          = 'N':  A * X = B     (No transpose)
+*          = 'T':  A**T * X = B  (Transpose)
+*          = 'C':  A**H * X = B  (Conjugate transpose)
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  DL      (input) COMPLEX*16 array, dimension (N-1)
+*          The (n-1) subdiagonal elements of A.
+*
+*  D       (input) COMPLEX*16 array, dimension (N)
+*          The diagonal elements of A.
+*
+*  DU      (input) COMPLEX*16 array, dimension (N-1)
+*          The (n-1) superdiagonal elements of A.
+*
+*  DLF     (input) COMPLEX*16 array, dimension (N-1)
+*          The (n-1) multipliers that define the matrix L from the
+*          LU factorization of A as computed by ZGTTRF.
+*
+*  DF      (input) COMPLEX*16 array, dimension (N)
+*          The n diagonal elements of the upper triangular matrix U from
+*          the LU factorization of A.
+*
+*  DUF     (input) COMPLEX*16 array, dimension (N-1)
+*          The (n-1) elements of the first superdiagonal of U.
+*
+*  DU2     (input) COMPLEX*16 array, dimension (N-2)
+*          The (n-2) elements of the second superdiagonal of U.
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          The pivot indices; for 1 <= i <= n, row i of the matrix was
+*          interchanged with row IPIV(i).  IPIV(i) will always be either
+*          i or i+1; IPIV(i) = i indicates a row interchange was not
+*          required.
+*
+*  B       (input) COMPLEX*16 array, dimension (LDB,NRHS)
+*          The right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (input/output) COMPLEX*16 array, dimension (LDX,NRHS)
+*          On entry, the solution matrix X, as computed by ZGTTRS.
+*          On exit, the improved solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+*  Internal Parameters
+*  ===================
+*
+*  ITMAX is the maximum number of steps of iterative refinement.
 *
 
 *  =====================================================================
@@ -360,271 +476,75 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="zgtrfs"></A>
-  <H2>zgtrfs</H2>
-  Improves the computed solution to a general tridiagonal system
+  <A NAME="zgttrf"></A>
+  <H2>zgttrf</H2>
+  Computes an LU factorization of a general tridiagonal matrix,
   <PRE>
 USAGE:
-  ferr, berr, info, x = NumRu::Lapack.zgtrfs( trans, dl, d, du, dlf, df, duf, du2, ipiv, b, x)
+  du2, ipiv, info, dl, d, du = NumRu::Lapack.zgttrf( dl, d, du)
     or
-  NumRu::Lapack.zgtrfs  # print help
+  NumRu::Lapack.zgttrf  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE ZGTRFS( TRANS, N, NRHS, DL, D, DU, DLF, DF, DUF, DU2, IPIV, B, LDB, X, LDX, FERR, BERR, WORK, RWORK, INFO )
+      SUBROUTINE ZGTTRF( N, DL, D, DU, DU2, IPIV, INFO )
 
 *  Purpose
 *  =======
 *
-*  ZGTRFS improves the computed solution to a system of linear
-*  equations when the coefficient matrix is tridiagonal, and provides
-*  error bounds and backward error estimates for the solution.
+*  ZGTTRF computes an LU factorization of a complex tridiagonal matrix A
+*  using elimination with partial pivoting and row interchanges.
+*
+*  The factorization has the form
+*     A = L * U
+*  where L is a product of permutation and unit lower bidiagonal
+*  matrices and U is upper triangular with nonzeros in only the main
+*  diagonal and first two superdiagonals.
 *
 
 *  Arguments
 *  =========
-*
-*  TRANS   (input) CHARACTER*1
-*          Specifies the form of the system of equations:
-*          = 'N':  A * X = B     (No transpose)
-*          = 'T':  A**T * X = B  (Transpose)
-*          = 'C':  A**H * X = B  (Conjugate transpose)
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
-*  DL      (input) COMPLEX*16 array, dimension (N-1)
-*          The (n-1) subdiagonal elements of A.
-*
-*  D       (input) COMPLEX*16 array, dimension (N)
-*          The diagonal elements of A.
-*
-*  DU      (input) COMPLEX*16 array, dimension (N-1)
-*          The (n-1) superdiagonal elements of A.
-*
-*  DLF     (input) COMPLEX*16 array, dimension (N-1)
-*          The (n-1) multipliers that define the matrix L from the
-*          LU factorization of A as computed by ZGTTRF.
-*
-*  DF      (input) COMPLEX*16 array, dimension (N)
-*          The n diagonal elements of the upper triangular matrix U from
-*          the LU factorization of A.
-*
-*  DUF     (input) COMPLEX*16 array, dimension (N-1)
-*          The (n-1) elements of the first superdiagonal of U.
-*
-*  DU2     (input) COMPLEX*16 array, dimension (N-2)
-*          The (n-2) elements of the second superdiagonal of U.
-*
-*  IPIV    (input) INTEGER array, dimension (N)
-*          The pivot indices; for 1 <= i <= n, row i of the matrix was
-*          interchanged with row IPIV(i).  IPIV(i) will always be either
-*          i or i+1; IPIV(i) = i indicates a row interchange was not
-*          required.
-*
-*  B       (input) COMPLEX*16 array, dimension (LDB,NRHS)
-*          The right hand side matrix B.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  X       (input/output) COMPLEX*16 array, dimension (LDX,NRHS)
-*          On entry, the solution matrix X, as computed by ZGTTRS.
-*          On exit, the improved solution matrix X.
-*
-*  LDX     (input) INTEGER
-*          The leading dimension of the array X.  LDX >= max(1,N).
-*
-*  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)
-*          The estimated forward error bound for each solution vector
-*          X(j) (the j-th column of the solution matrix X).
-*          If XTRUE is the true solution corresponding to X(j), FERR(j)
-*          is an estimated upper bound for the magnitude of the largest
-*          element in (X(j) - XTRUE) divided by the magnitude of the
-*          largest element in X(j).  The estimate is as reliable as
-*          the estimate for RCOND, and is almost always a slight
-*          overestimate of the true error.
-*
-*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
-*          The componentwise relative backward error of each solution
-*          vector X(j) (i.e., the smallest relative change in
-*          any element of A or B that makes X(j) an exact solution).
-*
-*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
-*
-*  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-*  Internal Parameters
-*  ===================
-*
-*  ITMAX is the maximum number of steps of iterative refinement.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zgtts2"></A>
-  <H2>zgtts2</H2>
-  
-  <PRE>
-USAGE:
-  b = NumRu::Lapack.zgtts2( itrans, dl, d, du, du2, ipiv, b)
-    or
-  NumRu::Lapack.zgtts2  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZGTTS2( ITRANS, N, NRHS, DL, D, DU, DU2, IPIV, B, LDB )
-
-*  Purpose
-*  =======
-*
-*  ZGTTS2 solves one of the systems of equations
-*     A * X = B,  A**T * X = B,  or  A**H * X = B,
-*  with a tridiagonal matrix A using the LU factorization computed
-*  by ZGTTRF.
-*
-
-*  Arguments
-*  =========
-*
-*  ITRANS  (input) INTEGER
-*          Specifies the form of the system of equations.
-*          = 0:  A * X = B     (No transpose)
-*          = 1:  A**T * X = B  (Transpose)
-*          = 2:  A**H * X = B  (Conjugate transpose)
 *
 *  N       (input) INTEGER
 *          The order of the matrix A.
 *
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
+*  DL      (input/output) COMPLEX*16 array, dimension (N-1)
+*          On entry, DL must contain the (n-1) sub-diagonal elements of
+*          A.
 *
-*  DL      (input) COMPLEX*16 array, dimension (N-1)
-*          The (n-1) multipliers that define the matrix L from the
-*          LU factorization of A.
+*          On exit, DL is overwritten by the (n-1) multipliers that
+*          define the matrix L from the LU factorization of A.
 *
-*  D       (input) COMPLEX*16 array, dimension (N)
-*          The n diagonal elements of the upper triangular matrix U from
-*          the LU factorization of A.
+*  D       (input/output) COMPLEX*16 array, dimension (N)
+*          On entry, D must contain the diagonal elements of A.
 *
-*  DU      (input) COMPLEX*16 array, dimension (N-1)
-*          The (n-1) elements of the first super-diagonal of U.
+*          On exit, D is overwritten by the n diagonal elements of the
+*          upper triangular matrix U from the LU factorization of A.
 *
-*  DU2     (input) COMPLEX*16 array, dimension (N-2)
-*          The (n-2) elements of the second super-diagonal of U.
+*  DU      (input/output) COMPLEX*16 array, dimension (N-1)
+*          On entry, DU must contain the (n-1) super-diagonal elements
+*          of A.
 *
-*  IPIV    (input) INTEGER array, dimension (N)
+*          On exit, DU is overwritten by the (n-1) elements of the first
+*          super-diagonal of U.
+*
+*  DU2     (output) COMPLEX*16 array, dimension (N-2)
+*          On exit, DU2 is overwritten by the (n-2) elements of the
+*          second super-diagonal of U.
+*
+*  IPIV    (output) INTEGER array, dimension (N)
 *          The pivot indices; for 1 <= i <= n, row i of the matrix was
 *          interchanged with row IPIV(i).  IPIV(i) will always be either
 *          i or i+1; IPIV(i) = i indicates a row interchange was not
 *          required.
-*
-*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
-*          On entry, the matrix of right hand side vectors B.
-*          On exit, B is overwritten by the solution vectors X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      INTEGER            I, J
-      COMPLEX*16         TEMP
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          DCONJG
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zgtcon"></A>
-  <H2>zgtcon</H2>
-  Estimates the reciprocal of the condition number of a general
-  <PRE>
-USAGE:
-  rcond, info = NumRu::Lapack.zgtcon( norm, dl, d, du, du2, ipiv, anorm)
-    or
-  NumRu::Lapack.zgtcon  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZGTCON( NORM, N, DL, D, DU, DU2, IPIV, ANORM, RCOND, WORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZGTCON estimates the reciprocal of the condition number of a complex
-*  tridiagonal matrix A using the LU factorization as computed by
-*  ZGTTRF.
-*
-*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
-*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
-*
-
-*  Arguments
-*  =========
-*
-*  NORM    (input) CHARACTER*1
-*          Specifies whether the 1-norm condition number or the
-*          infinity-norm condition number is required:
-*          = '1' or 'O':  1-norm;
-*          = 'I':         Infinity-norm.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  DL      (input) COMPLEX*16 array, dimension (N-1)
-*          The (n-1) multipliers that define the matrix L from the
-*          LU factorization of A as computed by ZGTTRF.
-*
-*  D       (input) COMPLEX*16 array, dimension (N)
-*          The n diagonal elements of the upper triangular matrix U from
-*          the LU factorization of A.
-*
-*  DU      (input) COMPLEX*16 array, dimension (N-1)
-*          The (n-1) elements of the first superdiagonal of U.
-*
-*  DU2     (input) COMPLEX*16 array, dimension (N-2)
-*          The (n-2) elements of the second superdiagonal of U.
-*
-*  IPIV    (input) INTEGER array, dimension (N)
-*          The pivot indices; for 1 <= i <= n, row i of the matrix was
-*          interchanged with row IPIV(i).  IPIV(i) will always be either
-*          i or i+1; IPIV(i) = i indicates a row interchange was not
-*          required.
-*
-*  ANORM   (input) DOUBLE PRECISION
-*          If NORM = '1' or 'O', the 1-norm of the original matrix A.
-*          If NORM = 'I', the infinity-norm of the original matrix A.
-*
-*  RCOND   (output) DOUBLE PRECISION
-*          The reciprocal of the condition number of the matrix A,
-*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
-*          estimate of the 1-norm of inv(A) computed in this routine.
-*
-*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
 *
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          < 0:  if INFO = -k, the k-th argument had an illegal value
+*          > 0:  if INFO = k, U(k,k) is exactly zero. The factorization
+*                has been completed, but the factor U is exactly
+*                singular, and division by zero will occur if it is used
+*                to solve a system of equations.
 *
 
 *  =====================================================================
@@ -719,6 +639,86 @@ FORTRAN MANUAL
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX, MIN
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zgtts2"></A>
+  <H2>zgtts2</H2>
+  
+  <PRE>
+USAGE:
+  b = NumRu::Lapack.zgtts2( itrans, dl, d, du, du2, ipiv, b)
+    or
+  NumRu::Lapack.zgtts2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZGTTS2( ITRANS, N, NRHS, DL, D, DU, DU2, IPIV, B, LDB )
+
+*  Purpose
+*  =======
+*
+*  ZGTTS2 solves one of the systems of equations
+*     A * X = B,  A**T * X = B,  or  A**H * X = B,
+*  with a tridiagonal matrix A using the LU factorization computed
+*  by ZGTTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  ITRANS  (input) INTEGER
+*          Specifies the form of the system of equations.
+*          = 0:  A * X = B     (No transpose)
+*          = 1:  A**T * X = B  (Transpose)
+*          = 2:  A**H * X = B  (Conjugate transpose)
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  DL      (input) COMPLEX*16 array, dimension (N-1)
+*          The (n-1) multipliers that define the matrix L from the
+*          LU factorization of A.
+*
+*  D       (input) COMPLEX*16 array, dimension (N)
+*          The n diagonal elements of the upper triangular matrix U from
+*          the LU factorization of A.
+*
+*  DU      (input) COMPLEX*16 array, dimension (N-1)
+*          The (n-1) elements of the first super-diagonal of U.
+*
+*  DU2     (input) COMPLEX*16 array, dimension (N-2)
+*          The (n-2) elements of the second super-diagonal of U.
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          The pivot indices; for 1 <= i <= n, row i of the matrix was
+*          interchanged with row IPIV(i).  IPIV(i) will always be either
+*          i or i+1; IPIV(i) = i indicates a row interchange was not
+*          required.
+*
+*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
+*          On entry, the matrix of right hand side vectors B.
+*          On exit, B is overwritten by the solution vectors X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      INTEGER            I, J
+      COMPLEX*16         TEMP
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          DCONJG
 *     ..
 
 

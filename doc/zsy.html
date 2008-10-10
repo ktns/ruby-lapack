@@ -6,37 +6,40 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for symmetric matrix</H1>
     <UL>
-      <LI><A HREF="#zsytrs">zsytrs</A>: Solves a complex symmetric indefinite system of linear equations AX=B,</LI>
-      <LI><A HREF="#zsymv">zsymv</A>: </LI>
       <LI><A HREF="#zsycon">zsycon</A>: Estimates the reciprocal of the condition number of a</LI>
+      <LI><A HREF="#zsymv">zsymv</A>: </LI>
       <LI><A HREF="#zsyr">zsyr</A>: </LI>
-      <LI><A HREF="#zsysvx">zsysvx</A>: Solves a complex symmetric</LI>
-      <LI><A HREF="#zsytri">zsytri</A>: Computes the inverse of a complex symmetric indefinite matrix,</LI>
-      <LI><A HREF="#zsytrf">zsytrf</A>: Computes the factorization of a complex symmetric-indefinite matrix,</LI>
-      <LI><A HREF="#zsytf2">zsytf2</A>: </LI>
-      <LI><A HREF="#zsysv">zsysv</A>: </LI>
       <LI><A HREF="#zsyrfs">zsyrfs</A>: Improves the computed solution to a complex</LI>
+      <LI><A HREF="#zsysv">zsysv</A>: </LI>
+      <LI><A HREF="#zsysvx">zsysvx</A>: Solves a complex symmetric</LI>
+      <LI><A HREF="#zsytf2">zsytf2</A>: </LI>
+      <LI><A HREF="#zsytrf">zsytrf</A>: Computes the factorization of a complex symmetric-indefinite matrix,</LI>
+      <LI><A HREF="#zsytri">zsytri</A>: Computes the inverse of a complex symmetric indefinite matrix,</LI>
+      <LI><A HREF="#zsytrs">zsytrs</A>: Solves a complex symmetric indefinite system of linear equations AX=B,</LI>
     </UL>
 
-  <A NAME="zsytrs"></A>
-  <H2>zsytrs</H2>
-  Solves a complex symmetric indefinite system of linear equations AX=B,
+  <A NAME="zsycon"></A>
+  <H2>zsycon</H2>
+  Estimates the reciprocal of the condition number of a
   <PRE>
 USAGE:
-  info, b = NumRu::Lapack.zsytrs( uplo, a, ipiv, b)
+  rcond, info = NumRu::Lapack.zsycon( uplo, a, ipiv, anorm)
     or
-  NumRu::Lapack.zsytrs  # print help
+  NumRu::Lapack.zsycon  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE ZSYTRS( UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO )
+      SUBROUTINE ZSYCON( UPLO, N, A, LDA, IPIV, ANORM, RCOND, WORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  ZSYTRS solves a system of linear equations A*X = B with a complex
-*  symmetric matrix A using the factorization A = U*D*U**T or
-*  A = L*D*L**T computed by ZSYTRF.
+*  ZSYCON estimates the reciprocal of the condition number (in the
+*  1-norm) of a complex symmetric matrix A using the factorization
+*  A = U*D*U**T or A = L*D*L**T computed by ZSYTRF.
+*
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
 *
 
 *  Arguments
@@ -51,10 +54,6 @@ FORTRAN MANUAL
 *  N       (input) INTEGER
 *          The order of the matrix A.  N >= 0.
 *
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
 *  A       (input) COMPLEX*16 array, dimension (LDA,N)
 *          The block diagonal matrix D and the multipliers used to
 *          obtain the factor U or L as computed by ZSYTRF.
@@ -66,12 +65,15 @@ FORTRAN MANUAL
 *          Details of the interchanges and the block structure of D
 *          as determined by ZSYTRF.
 *
-*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
-*          On entry, the right hand side matrix B.
-*          On exit, the solution matrix X.
+*  ANORM   (input) DOUBLE PRECISION
+*          The 1-norm of the original matrix A.
 *
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
+*  RCOND   (output) DOUBLE PRECISION
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
+*          estimate of the 1-norm of inv(A) computed in this routine.
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
 *
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
@@ -186,75 +188,6 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="zsycon"></A>
-  <H2>zsycon</H2>
-  Estimates the reciprocal of the condition number of a
-  <PRE>
-USAGE:
-  rcond, info = NumRu::Lapack.zsycon( uplo, a, ipiv, anorm)
-    or
-  NumRu::Lapack.zsycon  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZSYCON( UPLO, N, A, LDA, IPIV, ANORM, RCOND, WORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZSYCON estimates the reciprocal of the condition number (in the
-*  1-norm) of a complex symmetric matrix A using the factorization
-*  A = U*D*U**T or A = L*D*L**T computed by ZSYTRF.
-*
-*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
-*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          Specifies whether the details of the factorization are stored
-*          as an upper or lower triangular matrix.
-*          = 'U':  Upper triangular, form is A = U*D*U**T;
-*          = 'L':  Lower triangular, form is A = L*D*L**T.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input) COMPLEX*16 array, dimension (LDA,N)
-*          The block diagonal matrix D and the multipliers used to
-*          obtain the factor U or L as computed by ZSYTRF.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  IPIV    (input) INTEGER array, dimension (N)
-*          Details of the interchanges and the block structure of D
-*          as determined by ZSYTRF.
-*
-*  ANORM   (input) DOUBLE PRECISION
-*          The 1-norm of the original matrix A.
-*
-*  RCOND   (output) DOUBLE PRECISION
-*          The reciprocal of the condition number of the matrix A,
-*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
-*          estimate of the 1-norm of inv(A) computed in this routine.
-*
-*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
   <A NAME="zsyr"></A>
   <H2>zsyr</H2>
   
@@ -338,6 +271,238 @@ FORTRAN MANUAL
 
 * =====================================================================
 *
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zsyrfs"></A>
+  <H2>zsyrfs</H2>
+  Improves the computed solution to a complex
+  <PRE>
+USAGE:
+  ferr, berr, info, x = NumRu::Lapack.zsyrfs( uplo, a, af, ipiv, b, x)
+    or
+  NumRu::Lapack.zsyrfs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZSYRFS( UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB, X, LDX, FERR, BERR, WORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZSYRFS improves the computed solution to a system of linear
+*  equations when the coefficient matrix is symmetric indefinite, and
+*  provides error bounds and backward error estimates for the solution.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrices B and X.  NRHS >= 0.
+*
+*  A       (input) COMPLEX*16 array, dimension (LDA,N)
+*          The symmetric matrix A.  If UPLO = 'U', the leading N-by-N
+*          upper triangular part of A contains the upper triangular part
+*          of the matrix A, and the strictly lower triangular part of A
+*          is not referenced.  If UPLO = 'L', the leading N-by-N lower
+*          triangular part of A contains the lower triangular part of
+*          the matrix A, and the strictly upper triangular part of A is
+*          not referenced.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  AF      (input) COMPLEX*16 array, dimension (LDAF,N)
+*          The factored form of the matrix A.  AF contains the block
+*          diagonal matrix D and the multipliers used to obtain the
+*          factor U or L from the factorization A = U*D*U**T or
+*          A = L*D*L**T as computed by ZSYTRF.
+*
+*  LDAF    (input) INTEGER
+*          The leading dimension of the array AF.  LDAF >= max(1,N).
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D
+*          as determined by ZSYTRF.
+*
+*  B       (input) COMPLEX*16 array, dimension (LDB,NRHS)
+*          The right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (input/output) COMPLEX*16 array, dimension (LDX,NRHS)
+*          On entry, the solution matrix X, as computed by ZSYTRS.
+*          On exit, the improved solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+*  Internal Parameters
+*  ===================
+*
+*  ITMAX is the maximum number of steps of iterative refinement.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zsysv"></A>
+  <H2>zsysv</H2>
+  
+  <PRE>
+USAGE:
+  ipiv, work, info, a, b = NumRu::Lapack.zsysv( uplo, a, b, lwork)
+    or
+  NumRu::Lapack.zsysv  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZSYSV( UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZSYSV computes the solution to a complex system of linear equations
+*     A * X = B,
+*  where A is an N-by-N symmetric matrix and X and B are N-by-NRHS
+*  matrices.
+*
+*  The diagonal pivoting method is used to factor A as
+*     A = U * D * U**T,  if UPLO = 'U', or
+*     A = L * D * L**T,  if UPLO = 'L',
+*  where U (or L) is a product of permutation and unit upper (lower)
+*  triangular matrices, and D is symmetric and block diagonal with
+*  1-by-1 and 2-by-2 diagonal blocks.  The factored form of A is then
+*  used to solve the system of equations A * X = B.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The number of linear equations, i.e., the order of the
+*          matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+*          On entry, the symmetric matrix A.  If UPLO = 'U', the leading
+*          N-by-N upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading N-by-N lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*
+*          On exit, if INFO = 0, the block diagonal matrix D and the
+*          multipliers used to obtain the factor U or L from the
+*          factorization A = U*D*U**T or A = L*D*L**T as computed by
+*          ZSYTRF.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  IPIV    (output) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D, as
+*          determined by ZSYTRF.  If IPIV(k) > 0, then rows and columns
+*          k and IPIV(k) were interchanged, and D(k,k) is a 1-by-1
+*          diagonal block.  If UPLO = 'U' and IPIV(k) = IPIV(k-1) < 0,
+*          then rows and columns k-1 and -IPIV(k) were interchanged and
+*          D(k-1:k,k-1:k) is a 2-by-2 diagonal block.  If UPLO = 'L' and
+*          IPIV(k) = IPIV(k+1) < 0, then rows and columns k+1 and
+*          -IPIV(k) were interchanged and D(k:k+1,k:k+1) is a 2-by-2
+*          diagonal block.
+*
+*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
+*          On entry, the N-by-NRHS right hand side matrix B.
+*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The length of WORK.  LWORK >= 1, and for best performance
+*          LWORK >= max(1,N*NB), where NB is the optimal blocksize for
+*          ZSYTRF.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, D(i,i) is exactly zero.  The factorization
+*               has been completed, but the block diagonal matrix D is
+*               exactly singular, so the solution could not be computed.
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            LQUERY
+      INTEGER            LWKOPT, NB
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      INTEGER            ILAENV
+      EXTERNAL           LSAME, ILAENV
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           XERBLA, ZSYTRF, ZSYTRS
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
 
 
     </PRE>
@@ -532,66 +697,128 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="zsytri"></A>
-  <H2>zsytri</H2>
-  Computes the inverse of a complex symmetric indefinite matrix,
+  <A NAME="zsytf2"></A>
+  <H2>zsytf2</H2>
+  
   <PRE>
 USAGE:
-  info, a = NumRu::Lapack.zsytri( uplo, a, ipiv)
+  ipiv, info, a = NumRu::Lapack.zsytf2( uplo, a)
     or
-  NumRu::Lapack.zsytri  # print help
+  NumRu::Lapack.zsytf2  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE ZSYTRI( UPLO, N, A, LDA, IPIV, WORK, INFO )
+      SUBROUTINE ZSYTF2( UPLO, N, A, LDA, IPIV, INFO )
 
 *  Purpose
 *  =======
 *
-*  ZSYTRI computes the inverse of a complex symmetric indefinite matrix
-*  A using the factorization A = U*D*U**T or A = L*D*L**T computed by
-*  ZSYTRF.
+*  ZSYTF2 computes the factorization of a complex symmetric matrix A
+*  using the Bunch-Kaufman diagonal pivoting method:
+*
+*     A = U*D*U'  or  A = L*D*L'
+*
+*  where U (or L) is a product of permutation and unit upper (lower)
+*  triangular matrices, U' is the transpose of U, and D is symmetric and
+*  block diagonal with 1-by-1 and 2-by-2 diagonal blocks.
+*
+*  This is the unblocked version of the algorithm, calling Level 2 BLAS.
 *
 
 *  Arguments
 *  =========
 *
 *  UPLO    (input) CHARACTER*1
-*          Specifies whether the details of the factorization are stored
-*          as an upper or lower triangular matrix.
-*          = 'U':  Upper triangular, form is A = U*D*U**T;
-*          = 'L':  Lower triangular, form is A = L*D*L**T.
+*          Specifies whether the upper or lower triangular part of the
+*          symmetric matrix A is stored:
+*          = 'U':  Upper triangular
+*          = 'L':  Lower triangular
 *
 *  N       (input) INTEGER
 *          The order of the matrix A.  N >= 0.
 *
 *  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
-*          On entry, the block diagonal matrix D and the multipliers
-*          used to obtain the factor U or L as computed by ZSYTRF.
+*          On entry, the symmetric matrix A.  If UPLO = 'U', the leading
+*          n-by-n upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading n-by-n lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
 *
-*          On exit, if INFO = 0, the (symmetric) inverse of the original
-*          matrix.  If UPLO = 'U', the upper triangular part of the
-*          inverse is formed and the part of A below the diagonal is not
-*          referenced; if UPLO = 'L' the lower triangular part of the
-*          inverse is formed and the part of A above the diagonal is
-*          not referenced.
+*          On exit, the block diagonal matrix D and the multipliers used
+*          to obtain the factor U or L (see below for further details).
 *
 *  LDA     (input) INTEGER
 *          The leading dimension of the array A.  LDA >= max(1,N).
 *
-*  IPIV    (input) INTEGER array, dimension (N)
-*          Details of the interchanges and the block structure of D
-*          as determined by ZSYTRF.
-*
-*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
+*  IPIV    (output) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D.
+*          If IPIV(k) > 0, then rows and columns k and IPIV(k) were
+*          interchanged and D(k,k) is a 1-by-1 diagonal block.
+*          If UPLO = 'U' and IPIV(k) = IPIV(k-1) < 0, then rows and
+*          columns k-1 and -IPIV(k) were interchanged and D(k-1:k,k-1:k)
+*          is a 2-by-2 diagonal block.  If UPLO = 'L' and IPIV(k) =
+*          IPIV(k+1) < 0, then rows and columns k+1 and -IPIV(k) were
+*          interchanged and D(k:k+1,k:k+1) is a 2-by-2 diagonal block.
 *
 *  INFO    (output) INTEGER
 *          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*          > 0: if INFO = i, D(i,i) = 0; the matrix is singular and its
-*               inverse could not be computed.
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*          > 0: if INFO = k, D(k,k) is exactly zero.  The factorization
+*               has been completed, but the block diagonal matrix D is
+*               exactly singular, and division by zero will occur if it
+*               is used to solve a system of equations.
 *
 
+*  Further Details
+*  ===============
+*
+*  09-29-06 - patch from
+*    Bobby Cheng, MathWorks
+*
+*    Replace l.209 and l.377
+*         IF( MAX( ABSAKK, COLMAX ).EQ.ZERO ) THEN
+*    by
+*         IF( (MAX( ABSAKK, COLMAX ).EQ.ZERO) .OR. DISNAN(ABSAKK) ) THEN
+*
+*  1-96 - Based on modifications by J. Lewis, Boeing Computer Services
+*         Company
+*
+*  If UPLO = 'U', then A = U*D*U', where
+*     U = P(n)*U(n)* ... *P(k)U(k)* ...,
+*  i.e., U is a product of terms P(k)*U(k), where k decreases from n to
+*  1 in steps of 1 or 2, and D is a block diagonal matrix with 1-by-1
+*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
+*  defined by IPIV(k), and U(k) is a unit upper triangular matrix, such
+*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
+*
+*             (   I    v    0   )   k-s
+*     U(k) =  (   0    I    0   )   s
+*             (   0    0    I   )   n-k
+*                k-s   s   n-k
+*
+*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(1:k-1,k).
+*  If s = 2, the upper triangle of D(k) overwrites A(k-1,k-1), A(k-1,k),
+*  and A(k,k), and v overwrites A(1:k-2,k-1:k).
+*
+*  If UPLO = 'L', then A = L*D*L', where
+*     L = P(1)*L(1)* ... *P(k)*L(k)* ...,
+*  i.e., L is a product of terms P(k)*L(k), where k increases from 1 to
+*  n in steps of 1 or 2, and D is a block diagonal matrix with 1-by-1
+*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
+*  defined by IPIV(k), and L(k) is a unit lower triangular matrix, such
+*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
+*
+*             (   I    0     0   )  k-1
+*     L(k) =  (   0    I     0   )  s
+*             (   0    v     I   )  n-k-s+1
+*                k-1   s  n-k-s+1
+*
+*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(k+1:n,k).
+*  If s = 2, the lower triangle of D(k) overwrites A(k,k), A(k+1,k),
+*  and A(k+1,k+1), and v overwrites A(k+2:n,k:k+1).
+*
 *  =====================================================================
 *
 
@@ -743,358 +970,131 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="zsytf2"></A>
-  <H2>zsytf2</H2>
-  
+  <A NAME="zsytri"></A>
+  <H2>zsytri</H2>
+  Computes the inverse of a complex symmetric indefinite matrix,
   <PRE>
 USAGE:
-  ipiv, info, a = NumRu::Lapack.zsytf2( uplo, a)
+  info, a = NumRu::Lapack.zsytri( uplo, a, ipiv)
     or
-  NumRu::Lapack.zsytf2  # print help
+  NumRu::Lapack.zsytri  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE ZSYTF2( UPLO, N, A, LDA, IPIV, INFO )
+      SUBROUTINE ZSYTRI( UPLO, N, A, LDA, IPIV, WORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  ZSYTF2 computes the factorization of a complex symmetric matrix A
-*  using the Bunch-Kaufman diagonal pivoting method:
-*
-*     A = U*D*U'  or  A = L*D*L'
-*
-*  where U (or L) is a product of permutation and unit upper (lower)
-*  triangular matrices, U' is the transpose of U, and D is symmetric and
-*  block diagonal with 1-by-1 and 2-by-2 diagonal blocks.
-*
-*  This is the unblocked version of the algorithm, calling Level 2 BLAS.
+*  ZSYTRI computes the inverse of a complex symmetric indefinite matrix
+*  A using the factorization A = U*D*U**T or A = L*D*L**T computed by
+*  ZSYTRF.
 *
 
 *  Arguments
 *  =========
 *
 *  UPLO    (input) CHARACTER*1
-*          Specifies whether the upper or lower triangular part of the
-*          symmetric matrix A is stored:
-*          = 'U':  Upper triangular
-*          = 'L':  Lower triangular
+*          Specifies whether the details of the factorization are stored
+*          as an upper or lower triangular matrix.
+*          = 'U':  Upper triangular, form is A = U*D*U**T;
+*          = 'L':  Lower triangular, form is A = L*D*L**T.
 *
 *  N       (input) INTEGER
 *          The order of the matrix A.  N >= 0.
 *
 *  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
-*          On entry, the symmetric matrix A.  If UPLO = 'U', the leading
-*          n-by-n upper triangular part of A contains the upper
-*          triangular part of the matrix A, and the strictly lower
-*          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading n-by-n lower triangular part of A contains the lower
-*          triangular part of the matrix A, and the strictly upper
-*          triangular part of A is not referenced.
+*          On entry, the block diagonal matrix D and the multipliers
+*          used to obtain the factor U or L as computed by ZSYTRF.
 *
-*          On exit, the block diagonal matrix D and the multipliers used
-*          to obtain the factor U or L (see below for further details).
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  IPIV    (output) INTEGER array, dimension (N)
-*          Details of the interchanges and the block structure of D.
-*          If IPIV(k) > 0, then rows and columns k and IPIV(k) were
-*          interchanged and D(k,k) is a 1-by-1 diagonal block.
-*          If UPLO = 'U' and IPIV(k) = IPIV(k-1) < 0, then rows and
-*          columns k-1 and -IPIV(k) were interchanged and D(k-1:k,k-1:k)
-*          is a 2-by-2 diagonal block.  If UPLO = 'L' and IPIV(k) =
-*          IPIV(k+1) < 0, then rows and columns k+1 and -IPIV(k) were
-*          interchanged and D(k:k+1,k:k+1) is a 2-by-2 diagonal block.
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -k, the k-th argument had an illegal value
-*          > 0: if INFO = k, D(k,k) is exactly zero.  The factorization
-*               has been completed, but the block diagonal matrix D is
-*               exactly singular, and division by zero will occur if it
-*               is used to solve a system of equations.
-*
-
-*  Further Details
-*  ===============
-*
-*  09-29-06 - patch from
-*    Bobby Cheng, MathWorks
-*
-*    Replace l.209 and l.377
-*         IF( MAX( ABSAKK, COLMAX ).EQ.ZERO ) THEN
-*    by
-*         IF( (MAX( ABSAKK, COLMAX ).EQ.ZERO) .OR. DISNAN(ABSAKK) ) THEN
-*
-*  1-96 - Based on modifications by J. Lewis, Boeing Computer Services
-*         Company
-*
-*  If UPLO = 'U', then A = U*D*U', where
-*     U = P(n)*U(n)* ... *P(k)U(k)* ...,
-*  i.e., U is a product of terms P(k)*U(k), where k decreases from n to
-*  1 in steps of 1 or 2, and D is a block diagonal matrix with 1-by-1
-*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
-*  defined by IPIV(k), and U(k) is a unit upper triangular matrix, such
-*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
-*
-*             (   I    v    0   )   k-s
-*     U(k) =  (   0    I    0   )   s
-*             (   0    0    I   )   n-k
-*                k-s   s   n-k
-*
-*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(1:k-1,k).
-*  If s = 2, the upper triangle of D(k) overwrites A(k-1,k-1), A(k-1,k),
-*  and A(k,k), and v overwrites A(1:k-2,k-1:k).
-*
-*  If UPLO = 'L', then A = L*D*L', where
-*     L = P(1)*L(1)* ... *P(k)*L(k)* ...,
-*  i.e., L is a product of terms P(k)*L(k), where k increases from 1 to
-*  n in steps of 1 or 2, and D is a block diagonal matrix with 1-by-1
-*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
-*  defined by IPIV(k), and L(k) is a unit lower triangular matrix, such
-*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
-*
-*             (   I    0     0   )  k-1
-*     L(k) =  (   0    I     0   )  s
-*             (   0    v     I   )  n-k-s+1
-*                k-1   s  n-k-s+1
-*
-*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(k+1:n,k).
-*  If s = 2, the lower triangle of D(k) overwrites A(k,k), A(k+1,k),
-*  and A(k+1,k+1), and v overwrites A(k+2:n,k:k+1).
-*
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zsysv"></A>
-  <H2>zsysv</H2>
-  
-  <PRE>
-USAGE:
-  ipiv, work, info, a, b = NumRu::Lapack.zsysv( uplo, a, b, lwork)
-    or
-  NumRu::Lapack.zsysv  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZSYSV( UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZSYSV computes the solution to a complex system of linear equations
-*     A * X = B,
-*  where A is an N-by-N symmetric matrix and X and B are N-by-NRHS
-*  matrices.
-*
-*  The diagonal pivoting method is used to factor A as
-*     A = U * D * U**T,  if UPLO = 'U', or
-*     A = L * D * L**T,  if UPLO = 'L',
-*  where U (or L) is a product of permutation and unit upper (lower)
-*  triangular matrices, and D is symmetric and block diagonal with
-*  1-by-1 and 2-by-2 diagonal blocks.  The factored form of A is then
-*  used to solve the system of equations A * X = B.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The number of linear equations, i.e., the order of the
-*          matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
-*          On entry, the symmetric matrix A.  If UPLO = 'U', the leading
-*          N-by-N upper triangular part of A contains the upper
-*          triangular part of the matrix A, and the strictly lower
-*          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading N-by-N lower triangular part of A contains the lower
-*          triangular part of the matrix A, and the strictly upper
-*          triangular part of A is not referenced.
-*
-*          On exit, if INFO = 0, the block diagonal matrix D and the
-*          multipliers used to obtain the factor U or L from the
-*          factorization A = U*D*U**T or A = L*D*L**T as computed by
-*          ZSYTRF.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  IPIV    (output) INTEGER array, dimension (N)
-*          Details of the interchanges and the block structure of D, as
-*          determined by ZSYTRF.  If IPIV(k) > 0, then rows and columns
-*          k and IPIV(k) were interchanged, and D(k,k) is a 1-by-1
-*          diagonal block.  If UPLO = 'U' and IPIV(k) = IPIV(k-1) < 0,
-*          then rows and columns k-1 and -IPIV(k) were interchanged and
-*          D(k-1:k,k-1:k) is a 2-by-2 diagonal block.  If UPLO = 'L' and
-*          IPIV(k) = IPIV(k+1) < 0, then rows and columns k+1 and
-*          -IPIV(k) were interchanged and D(k:k+1,k:k+1) is a 2-by-2
-*          diagonal block.
-*
-*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
-*          On entry, the N-by-NRHS right hand side matrix B.
-*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The length of WORK.  LWORK >= 1, and for best performance
-*          LWORK >= max(1,N*NB), where NB is the optimal blocksize for
-*          ZSYTRF.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*          > 0: if INFO = i, D(i,i) is exactly zero.  The factorization
-*               has been completed, but the block diagonal matrix D is
-*               exactly singular, so the solution could not be computed.
-*
-
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      LOGICAL            LQUERY
-      INTEGER            LWKOPT, NB
-*     ..
-*     .. External Functions ..
-      LOGICAL            LSAME
-      INTEGER            ILAENV
-      EXTERNAL           LSAME, ILAENV
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           XERBLA, ZSYTRF, ZSYTRS
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zsyrfs"></A>
-  <H2>zsyrfs</H2>
-  Improves the computed solution to a complex
-  <PRE>
-USAGE:
-  ferr, berr, info, x = NumRu::Lapack.zsyrfs( uplo, a, af, ipiv, b, x)
-    or
-  NumRu::Lapack.zsyrfs  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZSYRFS( UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, B, LDB, X, LDX, FERR, BERR, WORK, RWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZSYRFS improves the computed solution to a system of linear
-*  equations when the coefficient matrix is symmetric indefinite, and
-*  provides error bounds and backward error estimates for the solution.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrices B and X.  NRHS >= 0.
-*
-*  A       (input) COMPLEX*16 array, dimension (LDA,N)
-*          The symmetric matrix A.  If UPLO = 'U', the leading N-by-N
-*          upper triangular part of A contains the upper triangular part
-*          of the matrix A, and the strictly lower triangular part of A
-*          is not referenced.  If UPLO = 'L', the leading N-by-N lower
-*          triangular part of A contains the lower triangular part of
-*          the matrix A, and the strictly upper triangular part of A is
+*          On exit, if INFO = 0, the (symmetric) inverse of the original
+*          matrix.  If UPLO = 'U', the upper triangular part of the
+*          inverse is formed and the part of A below the diagonal is not
+*          referenced; if UPLO = 'L' the lower triangular part of the
+*          inverse is formed and the part of A above the diagonal is
 *          not referenced.
 *
 *  LDA     (input) INTEGER
 *          The leading dimension of the array A.  LDA >= max(1,N).
 *
-*  AF      (input) COMPLEX*16 array, dimension (LDAF,N)
-*          The factored form of the matrix A.  AF contains the block
-*          diagonal matrix D and the multipliers used to obtain the
-*          factor U or L from the factorization A = U*D*U**T or
-*          A = L*D*L**T as computed by ZSYTRF.
+*  IPIV    (input) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D
+*          as determined by ZSYTRF.
 *
-*  LDAF    (input) INTEGER
-*          The leading dimension of the array AF.  LDAF >= max(1,N).
+*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, D(i,i) = 0; the matrix is singular and its
+*               inverse could not be computed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zsytrs"></A>
+  <H2>zsytrs</H2>
+  Solves a complex symmetric indefinite system of linear equations AX=B,
+  <PRE>
+USAGE:
+  info, b = NumRu::Lapack.zsytrs( uplo, a, ipiv, b)
+    or
+  NumRu::Lapack.zsytrs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZSYTRS( UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZSYTRS solves a system of linear equations A*X = B with a complex
+*  symmetric matrix A using the factorization A = U*D*U**T or
+*  A = L*D*L**T computed by ZSYTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the details of the factorization are stored
+*          as an upper or lower triangular matrix.
+*          = 'U':  Upper triangular, form is A = U*D*U**T;
+*          = 'L':  Lower triangular, form is A = L*D*L**T.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  A       (input) COMPLEX*16 array, dimension (LDA,N)
+*          The block diagonal matrix D and the multipliers used to
+*          obtain the factor U or L as computed by ZSYTRF.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
 *
 *  IPIV    (input) INTEGER array, dimension (N)
 *          Details of the interchanges and the block structure of D
 *          as determined by ZSYTRF.
 *
-*  B       (input) COMPLEX*16 array, dimension (LDB,NRHS)
-*          The right hand side matrix B.
+*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
+*          On entry, the right hand side matrix B.
+*          On exit, the solution matrix X.
 *
 *  LDB     (input) INTEGER
 *          The leading dimension of the array B.  LDB >= max(1,N).
 *
-*  X       (input/output) COMPLEX*16 array, dimension (LDX,NRHS)
-*          On entry, the solution matrix X, as computed by ZSYTRS.
-*          On exit, the improved solution matrix X.
-*
-*  LDX     (input) INTEGER
-*          The leading dimension of the array X.  LDX >= max(1,N).
-*
-*  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)
-*          The estimated forward error bound for each solution vector
-*          X(j) (the j-th column of the solution matrix X).
-*          If XTRUE is the true solution corresponding to X(j), FERR(j)
-*          is an estimated upper bound for the magnitude of the largest
-*          element in (X(j) - XTRUE) divided by the magnitude of the
-*          largest element in X(j).  The estimate is as reliable as
-*          the estimate for RCOND, and is almost always a slight
-*          overestimate of the true error.
-*
-*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
-*          The componentwise relative backward error of each solution
-*          vector X(j) (i.e., the smallest relative change in
-*          any element of A or B that makes X(j) an exact solution).
-*
-*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
-*
-*  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)
-*
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
 *          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-*  Internal Parameters
-*  ===================
-*
-*  ITMAX is the maximum number of steps of iterative refinement.
 *
 
 *  =====================================================================

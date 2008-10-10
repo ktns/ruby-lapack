@@ -8,14 +8,14 @@
     <UL>
       <LI><A HREF="#ztrcon">ztrcon</A>: Estimates the reciprocal of the condition number of a triangular</LI>
       <LI><A HREF="#ztrevc">ztrevc</A>: Computes left and right eigenvectors of an complex upper triangular</LI>
-      <LI><A HREF="#ztrrfs">ztrrfs</A>: Provides forward and backward error bounds for the solution</LI>
-      <LI><A HREF="#ztrtri">ztrtri</A>: Computes the inverse of a triangular matrix.</LI>
-      <LI><A HREF="#ztrsen">ztrsen</A>: Reorders the Schur factorization of a matrix in order to find</LI>
-      <LI><A HREF="#ztrti2">ztrti2</A>: </LI>
-      <LI><A HREF="#ztrtrs">ztrtrs</A>: Solves a triangular system of linear equations AX=B,</LI>
-      <LI><A HREF="#ztrsyl">ztrsyl</A>: Solves the Sylvester matrix equation A X +/- X B=C where A</LI>
-      <LI><A HREF="#ztrsna">ztrsna</A>: Estimates the reciprocal condition numbers (sensitivities)</LI>
       <LI><A HREF="#ztrexc">ztrexc</A>: Reorders the Schur factorization of a matrix by a unitary</LI>
+      <LI><A HREF="#ztrrfs">ztrrfs</A>: Provides forward and backward error bounds for the solution</LI>
+      <LI><A HREF="#ztrsen">ztrsen</A>: Reorders the Schur factorization of a matrix in order to find</LI>
+      <LI><A HREF="#ztrsna">ztrsna</A>: Estimates the reciprocal condition numbers (sensitivities)</LI>
+      <LI><A HREF="#ztrsyl">ztrsyl</A>: Solves the Sylvester matrix equation A X +/- X B=C where A</LI>
+      <LI><A HREF="#ztrti2">ztrti2</A>: </LI>
+      <LI><A HREF="#ztrtri">ztrtri</A>: Computes the inverse of a triangular matrix.</LI>
+      <LI><A HREF="#ztrtrs">ztrtrs</A>: Solves a triangular system of linear equations AX=B,</LI>
     </UL>
 
   <A NAME="ztrcon"></A>
@@ -236,6 +236,92 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
+  <A NAME="ztrexc"></A>
+  <H2>ztrexc</H2>
+  Reorders the Schur factorization of a matrix by a unitary
+  <PRE>
+USAGE:
+  info, t, q = NumRu::Lapack.ztrexc( compq, t, q, ifst, ilst)
+    or
+  NumRu::Lapack.ztrexc  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZTREXC( COMPQ, N, T, LDT, Q, LDQ, IFST, ILST, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZTREXC reorders the Schur factorization of a complex matrix
+*  A = Q*T*Q**H, so that the diagonal element of T with row index IFST
+*  is moved to row ILST.
+*
+*  The Schur form T is reordered by a unitary similarity transformation
+*  Z**H*T*Z, and optionally the matrix Q of Schur vectors is updated by
+*  postmultplying it with Z.
+*
+
+*  Arguments
+*  =========
+*
+*  COMPQ   (input) CHARACTER*1
+*          = 'V':  update the matrix Q of Schur vectors;
+*          = 'N':  do not update Q.
+*
+*  N       (input) INTEGER
+*          The order of the matrix T. N >= 0.
+*
+*  T       (input/output) COMPLEX*16 array, dimension (LDT,N)
+*          On entry, the upper triangular matrix T.
+*          On exit, the reordered upper triangular matrix.
+*
+*  LDT     (input) INTEGER
+*          The leading dimension of the array T. LDT >= max(1,N).
+*
+*  Q       (input/output) COMPLEX*16 array, dimension (LDQ,N)
+*          On entry, if COMPQ = 'V', the matrix Q of Schur vectors.
+*          On exit, if COMPQ = 'V', Q has been postmultiplied by the
+*          unitary transformation matrix Z which reorders T.
+*          If COMPQ = 'N', Q is not referenced.
+*
+*  LDQ     (input) INTEGER
+*          The leading dimension of the array Q.  LDQ >= max(1,N).
+*
+*  IFST    (input) INTEGER
+*  ILST    (input) INTEGER
+*          Specify the reordering of the diagonal elements of T:
+*          The element with row index IFST is moved to row ILST by a
+*          sequence of transpositions between adjacent elements.
+*          1 <= IFST <= N; 1 <= ILST <= N.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            WANTQ
+      INTEGER            K, M1, M2, M3
+      DOUBLE PRECISION   CS
+      COMPLEX*16         SN, T11, T22, TEMP
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           XERBLA, ZLARTG, ZROT
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          DCONJG, MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
   <A NAME="ztrrfs"></A>
   <H2>ztrrfs</H2>
   Provides forward and backward error bounds for the solution
@@ -332,72 +418,6 @@ FORTRAN MANUAL
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
 *          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="ztrtri"></A>
-  <H2>ztrtri</H2>
-  Computes the inverse of a triangular matrix.
-  <PRE>
-USAGE:
-  info, a = NumRu::Lapack.ztrtri( uplo, diag, a)
-    or
-  NumRu::Lapack.ztrtri  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZTRTRI( UPLO, DIAG, N, A, LDA, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZTRTRI computes the inverse of a complex upper or lower triangular
-*  matrix A.
-*
-*  This is the Level 3 BLAS version of the algorithm.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  A is upper triangular;
-*          = 'L':  A is lower triangular.
-*
-*  DIAG    (input) CHARACTER*1
-*          = 'N':  A is non-unit triangular;
-*          = 'U':  A is unit triangular.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
-*          On entry, the triangular matrix A.  If UPLO = 'U', the
-*          leading N-by-N upper triangular part of the array A contains
-*          the upper triangular matrix, and the strictly lower
-*          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading N-by-N lower triangular part of the array A contains
-*          the lower triangular matrix, and the strictly upper
-*          triangular part of A is not referenced.  If DIAG = 'U', the
-*          diagonal elements of A are also not referenced and are
-*          assumed to be 1.
-*          On exit, the (triangular) inverse of the original matrix, in
-*          the same storage format.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*          > 0: if INFO = i, A(i,i) is exactly zero.  The triangular
-*               matrix is singular and its inverse can not be computed.
 *
 
 *  =====================================================================
@@ -594,246 +614,6 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="ztrti2"></A>
-  <H2>ztrti2</H2>
-  
-  <PRE>
-USAGE:
-  info, a = NumRu::Lapack.ztrti2( uplo, diag, a)
-    or
-  NumRu::Lapack.ztrti2  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZTRTI2( UPLO, DIAG, N, A, LDA, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZTRTI2 computes the inverse of a complex upper or lower triangular
-*  matrix.
-*
-*  This is the Level 2 BLAS version of the algorithm.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          Specifies whether the matrix A is upper or lower triangular.
-*          = 'U':  Upper triangular
-*          = 'L':  Lower triangular
-*
-*  DIAG    (input) CHARACTER*1
-*          Specifies whether or not the matrix A is unit triangular.
-*          = 'N':  Non-unit triangular
-*          = 'U':  Unit triangular
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
-*          On entry, the triangular matrix A.  If UPLO = 'U', the
-*          leading n by n upper triangular part of the array A contains
-*          the upper triangular matrix, and the strictly lower
-*          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading n by n lower triangular part of the array A contains
-*          the lower triangular matrix, and the strictly upper
-*          triangular part of A is not referenced.  If DIAG = 'U', the
-*          diagonal elements of A are also not referenced and are
-*          assumed to be 1.
-*
-*          On exit, the (triangular) inverse of the original matrix, in
-*          the same storage format.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -k, the k-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="ztrtrs"></A>
-  <H2>ztrtrs</H2>
-  Solves a triangular system of linear equations AX=B,
-  <PRE>
-USAGE:
-  info, b = NumRu::Lapack.ztrtrs( uplo, trans, diag, a, b)
-    or
-  NumRu::Lapack.ztrtrs  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZTRTRS( UPLO, TRANS, DIAG, N, NRHS, A, LDA, B, LDB, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZTRTRS solves a triangular system of the form
-*
-*     A * X = B,  A**T * X = B,  or  A**H * X = B,
-*
-*  where A is a triangular matrix of order N, and B is an N-by-NRHS
-*  matrix.  A check is made to verify that A is nonsingular.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  A is upper triangular;
-*          = 'L':  A is lower triangular.
-*
-*  TRANS   (input) CHARACTER*1
-*          Specifies the form of the system of equations:
-*          = 'N':  A * X = B     (No transpose)
-*          = 'T':  A**T * X = B  (Transpose)
-*          = 'C':  A**H * X = B  (Conjugate transpose)
-*
-*  DIAG    (input) CHARACTER*1
-*          = 'N':  A is non-unit triangular;
-*          = 'U':  A is unit triangular.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
-*  A       (input) COMPLEX*16 array, dimension (LDA,N)
-*          The triangular matrix A.  If UPLO = 'U', the leading N-by-N
-*          upper triangular part of the array A contains the upper
-*          triangular matrix, and the strictly lower triangular part of
-*          A is not referenced.  If UPLO = 'L', the leading N-by-N lower
-*          triangular part of the array A contains the lower triangular
-*          matrix, and the strictly upper triangular part of A is not
-*          referenced.  If DIAG = 'U', the diagonal elements of A are
-*          also not referenced and are assumed to be 1.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
-*          On entry, the right hand side matrix B.
-*          On exit, if INFO = 0, the solution matrix X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*          > 0: if INFO = i, the i-th diagonal element of A is zero,
-*               indicating that the matrix is singular and the solutions
-*               X have not been computed.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="ztrsyl"></A>
-  <H2>ztrsyl</H2>
-  Solves the Sylvester matrix equation A X +/- X B=C where A
-  <PRE>
-USAGE:
-  scale, info, c = NumRu::Lapack.ztrsyl( trana, tranb, isgn, a, b, c)
-    or
-  NumRu::Lapack.ztrsyl  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZTRSYL( TRANA, TRANB, ISGN, M, N, A, LDA, B, LDB, C, LDC, SCALE, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZTRSYL solves the complex Sylvester matrix equation:
-*
-*     op(A)*X + X*op(B) = scale*C or
-*     op(A)*X - X*op(B) = scale*C,
-*
-*  where op(A) = A or A**H, and A and B are both upper triangular. A is
-*  M-by-M and B is N-by-N; the right hand side C and the solution X are
-*  M-by-N; and scale is an output scale factor, set <= 1 to avoid
-*  overflow in X.
-*
-
-*  Arguments
-*  =========
-*
-*  TRANA   (input) CHARACTER*1
-*          Specifies the option op(A):
-*          = 'N': op(A) = A    (No transpose)
-*          = 'C': op(A) = A**H (Conjugate transpose)
-*
-*  TRANB   (input) CHARACTER*1
-*          Specifies the option op(B):
-*          = 'N': op(B) = B    (No transpose)
-*          = 'C': op(B) = B**H (Conjugate transpose)
-*
-*  ISGN    (input) INTEGER
-*          Specifies the sign in the equation:
-*          = +1: solve op(A)*X + X*op(B) = scale*C
-*          = -1: solve op(A)*X - X*op(B) = scale*C
-*
-*  M       (input) INTEGER
-*          The order of the matrix A, and the number of rows in the
-*          matrices X and C. M >= 0.
-*
-*  N       (input) INTEGER
-*          The order of the matrix B, and the number of columns in the
-*          matrices X and C. N >= 0.
-*
-*  A       (input) COMPLEX*16 array, dimension (LDA,M)
-*          The upper triangular matrix A.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A. LDA >= max(1,M).
-*
-*  B       (input) COMPLEX*16 array, dimension (LDB,N)
-*          The upper triangular matrix B.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B. LDB >= max(1,N).
-*
-*  C       (input/output) COMPLEX*16 array, dimension (LDC,N)
-*          On entry, the M-by-N right hand side matrix C.
-*          On exit, C is overwritten by the solution matrix X.
-*
-*  LDC     (input) INTEGER
-*          The leading dimension of the array C. LDC >= max(1,M)
-*
-*  SCALE   (output) DOUBLE PRECISION
-*          The scale factor, scale, set <= 1 to avoid overflow in X.
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*          = 1: A and B have common or very close eigenvalues; perturbed
-*               values were used to solve the equation (but the matrices
-*               A and B are unchanged).
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
   <A NAME="ztrsna"></A>
   <H2>ztrsna</H2>
   Estimates the reciprocal condition numbers (sensitivities)
@@ -994,87 +774,307 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="ztrexc"></A>
-  <H2>ztrexc</H2>
-  Reorders the Schur factorization of a matrix by a unitary
+  <A NAME="ztrsyl"></A>
+  <H2>ztrsyl</H2>
+  Solves the Sylvester matrix equation A X +/- X B=C where A
   <PRE>
 USAGE:
-  info, t, q = NumRu::Lapack.ztrexc( compq, t, q, ifst, ilst)
+  scale, info, c = NumRu::Lapack.ztrsyl( trana, tranb, isgn, a, b, c)
     or
-  NumRu::Lapack.ztrexc  # print help
+  NumRu::Lapack.ztrsyl  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE ZTREXC( COMPQ, N, T, LDT, Q, LDQ, IFST, ILST, INFO )
+      SUBROUTINE ZTRSYL( TRANA, TRANB, ISGN, M, N, A, LDA, B, LDB, C, LDC, SCALE, INFO )
 
 *  Purpose
 *  =======
 *
-*  ZTREXC reorders the Schur factorization of a complex matrix
-*  A = Q*T*Q**H, so that the diagonal element of T with row index IFST
-*  is moved to row ILST.
+*  ZTRSYL solves the complex Sylvester matrix equation:
 *
-*  The Schur form T is reordered by a unitary similarity transformation
-*  Z**H*T*Z, and optionally the matrix Q of Schur vectors is updated by
-*  postmultplying it with Z.
+*     op(A)*X + X*op(B) = scale*C or
+*     op(A)*X - X*op(B) = scale*C,
+*
+*  where op(A) = A or A**H, and A and B are both upper triangular. A is
+*  M-by-M and B is N-by-N; the right hand side C and the solution X are
+*  M-by-N; and scale is an output scale factor, set <= 1 to avoid
+*  overflow in X.
 *
 
 *  Arguments
 *  =========
 *
-*  COMPQ   (input) CHARACTER*1
-*          = 'V':  update the matrix Q of Schur vectors;
-*          = 'N':  do not update Q.
+*  TRANA   (input) CHARACTER*1
+*          Specifies the option op(A):
+*          = 'N': op(A) = A    (No transpose)
+*          = 'C': op(A) = A**H (Conjugate transpose)
+*
+*  TRANB   (input) CHARACTER*1
+*          Specifies the option op(B):
+*          = 'N': op(B) = B    (No transpose)
+*          = 'C': op(B) = B**H (Conjugate transpose)
+*
+*  ISGN    (input) INTEGER
+*          Specifies the sign in the equation:
+*          = +1: solve op(A)*X + X*op(B) = scale*C
+*          = -1: solve op(A)*X - X*op(B) = scale*C
+*
+*  M       (input) INTEGER
+*          The order of the matrix A, and the number of rows in the
+*          matrices X and C. M >= 0.
 *
 *  N       (input) INTEGER
-*          The order of the matrix T. N >= 0.
+*          The order of the matrix B, and the number of columns in the
+*          matrices X and C. N >= 0.
 *
-*  T       (input/output) COMPLEX*16 array, dimension (LDT,N)
-*          On entry, the upper triangular matrix T.
-*          On exit, the reordered upper triangular matrix.
+*  A       (input) COMPLEX*16 array, dimension (LDA,M)
+*          The upper triangular matrix A.
 *
-*  LDT     (input) INTEGER
-*          The leading dimension of the array T. LDT >= max(1,N).
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A. LDA >= max(1,M).
 *
-*  Q       (input/output) COMPLEX*16 array, dimension (LDQ,N)
-*          On entry, if COMPQ = 'V', the matrix Q of Schur vectors.
-*          On exit, if COMPQ = 'V', Q has been postmultiplied by the
-*          unitary transformation matrix Z which reorders T.
-*          If COMPQ = 'N', Q is not referenced.
+*  B       (input) COMPLEX*16 array, dimension (LDB,N)
+*          The upper triangular matrix B.
 *
-*  LDQ     (input) INTEGER
-*          The leading dimension of the array Q.  LDQ >= max(1,N).
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B. LDB >= max(1,N).
 *
-*  IFST    (input) INTEGER
-*  ILST    (input) INTEGER
-*          Specify the reordering of the diagonal elements of T:
-*          The element with row index IFST is moved to row ILST by a
-*          sequence of transpositions between adjacent elements.
-*          1 <= IFST <= N; 1 <= ILST <= N.
+*  C       (input/output) COMPLEX*16 array, dimension (LDC,N)
+*          On entry, the M-by-N right hand side matrix C.
+*          On exit, C is overwritten by the solution matrix X.
+*
+*  LDC     (input) INTEGER
+*          The leading dimension of the array C. LDC >= max(1,M)
+*
+*  SCALE   (output) DOUBLE PRECISION
+*          The scale factor, scale, set <= 1 to avoid overflow in X.
 *
 *  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          = 1: A and B have common or very close eigenvalues; perturbed
+*               values were used to solve the equation (but the matrices
+*               A and B are unchanged).
 *
 
 *  =====================================================================
 *
-*     .. Local Scalars ..
-      LOGICAL            WANTQ
-      INTEGER            K, M1, M2, M3
-      DOUBLE PRECISION   CS
-      COMPLEX*16         SN, T11, T22, TEMP
-*     ..
-*     .. External Functions ..
-      LOGICAL            LSAME
-      EXTERNAL           LSAME
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           XERBLA, ZLARTG, ZROT
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          DCONJG, MAX
-*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztrti2"></A>
+  <H2>ztrti2</H2>
+  
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.ztrti2( uplo, diag, a)
+    or
+  NumRu::Lapack.ztrti2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZTRTI2( UPLO, DIAG, N, A, LDA, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZTRTI2 computes the inverse of a complex upper or lower triangular
+*  matrix.
+*
+*  This is the Level 2 BLAS version of the algorithm.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the matrix A is upper or lower triangular.
+*          = 'U':  Upper triangular
+*          = 'L':  Lower triangular
+*
+*  DIAG    (input) CHARACTER*1
+*          Specifies whether or not the matrix A is unit triangular.
+*          = 'N':  Non-unit triangular
+*          = 'U':  Unit triangular
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+*          On entry, the triangular matrix A.  If UPLO = 'U', the
+*          leading n by n upper triangular part of the array A contains
+*          the upper triangular matrix, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading n by n lower triangular part of the array A contains
+*          the lower triangular matrix, and the strictly upper
+*          triangular part of A is not referenced.  If DIAG = 'U', the
+*          diagonal elements of A are also not referenced and are
+*          assumed to be 1.
+*
+*          On exit, the (triangular) inverse of the original matrix, in
+*          the same storage format.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztrtri"></A>
+  <H2>ztrtri</H2>
+  Computes the inverse of a triangular matrix.
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.ztrtri( uplo, diag, a)
+    or
+  NumRu::Lapack.ztrtri  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZTRTRI( UPLO, DIAG, N, A, LDA, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZTRTRI computes the inverse of a complex upper or lower triangular
+*  matrix A.
+*
+*  This is the Level 3 BLAS version of the algorithm.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  A is upper triangular;
+*          = 'L':  A is lower triangular.
+*
+*  DIAG    (input) CHARACTER*1
+*          = 'N':  A is non-unit triangular;
+*          = 'U':  A is unit triangular.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+*          On entry, the triangular matrix A.  If UPLO = 'U', the
+*          leading N-by-N upper triangular part of the array A contains
+*          the upper triangular matrix, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading N-by-N lower triangular part of the array A contains
+*          the lower triangular matrix, and the strictly upper
+*          triangular part of A is not referenced.  If DIAG = 'U', the
+*          diagonal elements of A are also not referenced and are
+*          assumed to be 1.
+*          On exit, the (triangular) inverse of the original matrix, in
+*          the same storage format.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, A(i,i) is exactly zero.  The triangular
+*               matrix is singular and its inverse can not be computed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztrtrs"></A>
+  <H2>ztrtrs</H2>
+  Solves a triangular system of linear equations AX=B,
+  <PRE>
+USAGE:
+  info, b = NumRu::Lapack.ztrtrs( uplo, trans, diag, a, b)
+    or
+  NumRu::Lapack.ztrtrs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZTRTRS( UPLO, TRANS, DIAG, N, NRHS, A, LDA, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZTRTRS solves a triangular system of the form
+*
+*     A * X = B,  A**T * X = B,  or  A**H * X = B,
+*
+*  where A is a triangular matrix of order N, and B is an N-by-NRHS
+*  matrix.  A check is made to verify that A is nonsingular.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  A is upper triangular;
+*          = 'L':  A is lower triangular.
+*
+*  TRANS   (input) CHARACTER*1
+*          Specifies the form of the system of equations:
+*          = 'N':  A * X = B     (No transpose)
+*          = 'T':  A**T * X = B  (Transpose)
+*          = 'C':  A**H * X = B  (Conjugate transpose)
+*
+*  DIAG    (input) CHARACTER*1
+*          = 'N':  A is non-unit triangular;
+*          = 'U':  A is unit triangular.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  A       (input) COMPLEX*16 array, dimension (LDA,N)
+*          The triangular matrix A.  If UPLO = 'U', the leading N-by-N
+*          upper triangular part of the array A contains the upper
+*          triangular matrix, and the strictly lower triangular part of
+*          A is not referenced.  If UPLO = 'L', the leading N-by-N lower
+*          triangular part of the array A contains the lower triangular
+*          matrix, and the strictly upper triangular part of A is not
+*          referenced.  If DIAG = 'U', the diagonal elements of A are
+*          also not referenced and are assumed to be 1.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
+*          On entry, the right hand side matrix B.
+*          On exit, if INFO = 0, the solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, the i-th diagonal element of A is zero,
+*               indicating that the matrix is singular and the solutions
+*               X have not been computed.
+*
+
+*  =====================================================================
+*
 
 
     </PRE>

@@ -6,351 +6,89 @@
     <A NAME="top"></A>
     <H1>REAL routines for triangular (or in some cases quasi-triangular) matrix</H1>
     <UL>
+      <LI><A HREF="#strcon">strcon</A>: Estimates the reciprocal of the condition number of a triangular</LI>
+      <LI><A HREF="#strevc">strevc</A>: Computes some or all of the right and/or left eigenvectors of</LI>
+      <LI><A HREF="#strexc">strexc</A>: Reorders the Schur factorization of a matrix by an orthogonal</LI>
+      <LI><A HREF="#strrfs">strrfs</A>: Provides forward and backward error bounds for the solution</LI>
+      <LI><A HREF="#strsen">strsen</A>: Reorders the Schur factorization of a matrix in order to find</LI>
+      <LI><A HREF="#strsna">strsna</A>: Estimates the reciprocal condition numbers (sensitivities)</LI>
       <LI><A HREF="#strsyl">strsyl</A>: Solves the Sylvester matrix equation A X +/- X B=C where A</LI>
       <LI><A HREF="#strti2">strti2</A>: </LI>
-      <LI><A HREF="#strsna">strsna</A>: Estimates the reciprocal condition numbers (sensitivities)</LI>
-      <LI><A HREF="#strevc">strevc</A>: Computes some or all of the right and/or left eigenvectors of</LI>
       <LI><A HREF="#strtri">strtri</A>: Computes the inverse of a triangular matrix.</LI>
-      <LI><A HREF="#strrfs">strrfs</A>: Provides forward and backward error bounds for the solution</LI>
-      <LI><A HREF="#strcon">strcon</A>: Estimates the reciprocal of the condition number of a triangular</LI>
-      <LI><A HREF="#strsen">strsen</A>: Reorders the Schur factorization of a matrix in order to find</LI>
-      <LI><A HREF="#strexc">strexc</A>: Reorders the Schur factorization of a matrix by an orthogonal</LI>
       <LI><A HREF="#strtrs">strtrs</A>: Solves a triangular system of linear equations AX=B,</LI>
     </UL>
 
-  <A NAME="strsyl"></A>
-  <H2>strsyl</H2>
-  Solves the Sylvester matrix equation A X +/- X B=C where A
+  <A NAME="strcon"></A>
+  <H2>strcon</H2>
+  Estimates the reciprocal of the condition number of a triangular
   <PRE>
 USAGE:
-  scale, info, c = NumRu::Lapack.strsyl( trana, tranb, isgn, a, b, c)
+  rcond, info = NumRu::Lapack.strcon( norm, uplo, diag, a)
     or
-  NumRu::Lapack.strsyl  # print help
+  NumRu::Lapack.strcon  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE STRSYL( TRANA, TRANB, ISGN, M, N, A, LDA, B, LDB, C, LDC, SCALE, INFO )
+      SUBROUTINE STRCON( NORM, UPLO, DIAG, N, A, LDA, RCOND, WORK, IWORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  STRSYL solves the real Sylvester matrix equation:
+*  STRCON estimates the reciprocal of the condition number of a
+*  triangular matrix A, in either the 1-norm or the infinity-norm.
 *
-*     op(A)*X + X*op(B) = scale*C or
-*     op(A)*X - X*op(B) = scale*C,
-*
-*  where op(A) = A or A**T, and  A and B are both upper quasi-
-*  triangular. A is M-by-M and B is N-by-N; the right hand side C and
-*  the solution X are M-by-N; and scale is an output scale factor, set
-*  <= 1 to avoid overflow in X.
-*
-*  A and B must be in Schur canonical form (as returned by SHSEQR), that
-*  is, block upper triangular with 1-by-1 and 2-by-2 diagonal blocks;
-*  each 2-by-2 diagonal block has its diagonal elements equal and its
-*  off-diagonal elements of opposite sign.
+*  The norm of A is computed and an estimate is obtained for
+*  norm(inv(A)), then the reciprocal of the condition number is
+*  computed as
+*     RCOND = 1 / ( norm(A) * norm(inv(A)) ).
 *
 
 *  Arguments
 *  =========
 *
-*  TRANA   (input) CHARACTER*1
-*          Specifies the option op(A):
-*          = 'N': op(A) = A    (No transpose)
-*          = 'T': op(A) = A**T (Transpose)
-*          = 'C': op(A) = A**H (Conjugate transpose = Transpose)
-*
-*  TRANB   (input) CHARACTER*1
-*          Specifies the option op(B):
-*          = 'N': op(B) = B    (No transpose)
-*          = 'T': op(B) = B**T (Transpose)
-*          = 'C': op(B) = B**H (Conjugate transpose = Transpose)
-*
-*  ISGN    (input) INTEGER
-*          Specifies the sign in the equation:
-*          = +1: solve op(A)*X + X*op(B) = scale*C
-*          = -1: solve op(A)*X - X*op(B) = scale*C
-*
-*  M       (input) INTEGER
-*          The order of the matrix A, and the number of rows in the
-*          matrices X and C. M >= 0.
-*
-*  N       (input) INTEGER
-*          The order of the matrix B, and the number of columns in the
-*          matrices X and C. N >= 0.
-*
-*  A       (input) REAL array, dimension (LDA,M)
-*          The upper quasi-triangular matrix A, in Schur canonical form.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A. LDA >= max(1,M).
-*
-*  B       (input) REAL array, dimension (LDB,N)
-*          The upper quasi-triangular matrix B, in Schur canonical form.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B. LDB >= max(1,N).
-*
-*  C       (input/output) REAL array, dimension (LDC,N)
-*          On entry, the M-by-N right hand side matrix C.
-*          On exit, C is overwritten by the solution matrix X.
-*
-*  LDC     (input) INTEGER
-*          The leading dimension of the array C. LDC >= max(1,M)
-*
-*  SCALE   (output) REAL
-*          The scale factor, scale, set <= 1 to avoid overflow in X.
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*          = 1: A and B have common or very close eigenvalues; perturbed
-*               values were used to solve the equation (but the matrices
-*               A and B are unchanged).
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="strti2"></A>
-  <H2>strti2</H2>
-  
-  <PRE>
-USAGE:
-  info, a = NumRu::Lapack.strti2( uplo, diag, a)
-    or
-  NumRu::Lapack.strti2  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE STRTI2( UPLO, DIAG, N, A, LDA, INFO )
-
-*  Purpose
-*  =======
-*
-*  STRTI2 computes the inverse of a real upper or lower triangular
-*  matrix.
-*
-*  This is the Level 2 BLAS version of the algorithm.
-*
-
-*  Arguments
-*  =========
+*  NORM    (input) CHARACTER*1
+*          Specifies whether the 1-norm condition number or the
+*          infinity-norm condition number is required:
+*          = '1' or 'O':  1-norm;
+*          = 'I':         Infinity-norm.
 *
 *  UPLO    (input) CHARACTER*1
-*          Specifies whether the matrix A is upper or lower triangular.
-*          = 'U':  Upper triangular
-*          = 'L':  Lower triangular
+*          = 'U':  A is upper triangular;
+*          = 'L':  A is lower triangular.
 *
 *  DIAG    (input) CHARACTER*1
-*          Specifies whether or not the matrix A is unit triangular.
-*          = 'N':  Non-unit triangular
-*          = 'U':  Unit triangular
+*          = 'N':  A is non-unit triangular;
+*          = 'U':  A is unit triangular.
 *
 *  N       (input) INTEGER
 *          The order of the matrix A.  N >= 0.
 *
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the triangular matrix A.  If UPLO = 'U', the
-*          leading n by n upper triangular part of the array A contains
-*          the upper triangular matrix, and the strictly lower
-*          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading n by n lower triangular part of the array A contains
-*          the lower triangular matrix, and the strictly upper
-*          triangular part of A is not referenced.  If DIAG = 'U', the
-*          diagonal elements of A are also not referenced and are
-*          assumed to be 1.
-*
-*          On exit, the (triangular) inverse of the original matrix, in
-*          the same storage format.
+*  A       (input) REAL array, dimension (LDA,N)
+*          The triangular matrix A.  If UPLO = 'U', the leading N-by-N
+*          upper triangular part of the array A contains the upper
+*          triangular matrix, and the strictly lower triangular part of
+*          A is not referenced.  If UPLO = 'L', the leading N-by-N lower
+*          triangular part of the array A contains the lower triangular
+*          matrix, and the strictly upper triangular part of A is not
+*          referenced.  If DIAG = 'U', the diagonal elements of A are
+*          also not referenced and are assumed to be 1.
 *
 *  LDA     (input) INTEGER
 *          The leading dimension of the array A.  LDA >= max(1,N).
 *
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -k, the k-th argument had an illegal value
+*  RCOND   (output) REAL
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(norm(A) * norm(inv(A))).
 *
-
-*  =====================================================================
+*  WORK    (workspace) REAL array, dimension (3*N)
 *
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="strsna"></A>
-  <H2>strsna</H2>
-  Estimates the reciprocal condition numbers (sensitivities)
-  <PRE>
-USAGE:
-  s, sep, m, info = NumRu::Lapack.strsna( job, howmny, select, t, vl, vr, ldwork)
-    or
-  NumRu::Lapack.strsna  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE STRSNA( JOB, HOWMNY, SELECT, N, T, LDT, VL, LDVL, VR, LDVR, S, SEP, MM, M, WORK, LDWORK, IWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  STRSNA estimates reciprocal condition numbers for specified
-*  eigenvalues and/or right eigenvectors of a real upper
-*  quasi-triangular matrix T (or of any matrix Q*T*Q**T with Q
-*  orthogonal).
-*
-*  T must be in Schur canonical form (as returned by SHSEQR), that is,
-*  block upper triangular with 1-by-1 and 2-by-2 diagonal blocks; each
-*  2-by-2 diagonal block has its diagonal elements equal and its
-*  off-diagonal elements of opposite sign.
-*
-
-*  Arguments
-*  =========
-*
-*  JOB     (input) CHARACTER*1
-*          Specifies whether condition numbers are required for
-*          eigenvalues (S) or eigenvectors (SEP):
-*          = 'E': for eigenvalues only (S);
-*          = 'V': for eigenvectors only (SEP);
-*          = 'B': for both eigenvalues and eigenvectors (S and SEP).
-*
-*  HOWMNY  (input) CHARACTER*1
-*          = 'A': compute condition numbers for all eigenpairs;
-*          = 'S': compute condition numbers for selected eigenpairs
-*                 specified by the array SELECT.
-*
-*  SELECT  (input) LOGICAL array, dimension (N)
-*          If HOWMNY = 'S', SELECT specifies the eigenpairs for which
-*          condition numbers are required. To select condition numbers
-*          for the eigenpair corresponding to a real eigenvalue w(j),
-*          SELECT(j) must be set to .TRUE.. To select condition numbers
-*          corresponding to a complex conjugate pair of eigenvalues w(j)
-*          and w(j+1), either SELECT(j) or SELECT(j+1) or both, must be
-*          set to .TRUE..
-*          If HOWMNY = 'A', SELECT is not referenced.
-*
-*  N       (input) INTEGER
-*          The order of the matrix T. N >= 0.
-*
-*  T       (input) REAL array, dimension (LDT,N)
-*          The upper quasi-triangular matrix T, in Schur canonical form.
-*
-*  LDT     (input) INTEGER
-*          The leading dimension of the array T. LDT >= max(1,N).
-*
-*  VL      (input) REAL array, dimension (LDVL,M)
-*          If JOB = 'E' or 'B', VL must contain left eigenvectors of T
-*          (or of any Q*T*Q**T with Q orthogonal), corresponding to the
-*          eigenpairs specified by HOWMNY and SELECT. The eigenvectors
-*          must be stored in consecutive columns of VL, as returned by
-*          SHSEIN or STREVC.
-*          If JOB = 'V', VL is not referenced.
-*
-*  LDVL    (input) INTEGER
-*          The leading dimension of the array VL.
-*          LDVL >= 1; and if JOB = 'E' or 'B', LDVL >= N.
-*
-*  VR      (input) REAL array, dimension (LDVR,M)
-*          If JOB = 'E' or 'B', VR must contain right eigenvectors of T
-*          (or of any Q*T*Q**T with Q orthogonal), corresponding to the
-*          eigenpairs specified by HOWMNY and SELECT. The eigenvectors
-*          must be stored in consecutive columns of VR, as returned by
-*          SHSEIN or STREVC.
-*          If JOB = 'V', VR is not referenced.
-*
-*  LDVR    (input) INTEGER
-*          The leading dimension of the array VR.
-*          LDVR >= 1; and if JOB = 'E' or 'B', LDVR >= N.
-*
-*  S       (output) REAL array, dimension (MM)
-*          If JOB = 'E' or 'B', the reciprocal condition numbers of the
-*          selected eigenvalues, stored in consecutive elements of the
-*          array. For a complex conjugate pair of eigenvalues two
-*          consecutive elements of S are set to the same value. Thus
-*          S(j), SEP(j), and the j-th columns of VL and VR all
-*          correspond to the same eigenpair (but not in general the
-*          j-th eigenpair, unless all eigenpairs are selected).
-*          If JOB = 'V', S is not referenced.
-*
-*  SEP     (output) REAL array, dimension (MM)
-*          If JOB = 'V' or 'B', the estimated reciprocal condition
-*          numbers of the selected eigenvectors, stored in consecutive
-*          elements of the array. For a complex eigenvector two
-*          consecutive elements of SEP are set to the same value. If
-*          the eigenvalues cannot be reordered to compute SEP(j), SEP(j)
-*          is set to 0; this can only occur when the true value would be
-*          very small anyway.
-*          If JOB = 'E', SEP is not referenced.
-*
-*  MM      (input) INTEGER
-*          The number of elements in the arrays S (if JOB = 'E' or 'B')
-*           and/or SEP (if JOB = 'V' or 'B'). MM >= M.
-*
-*  M       (output) INTEGER
-*          The number of elements of the arrays S and/or SEP actually
-*          used to store the estimated condition numbers.
-*          If HOWMNY = 'A', M is set to N.
-*
-*  WORK    (workspace) REAL array, dimension (LDWORK,N+6)
-*          If JOB = 'E', WORK is not referenced.
-*
-*  LDWORK  (input) INTEGER
-*          The leading dimension of the array WORK.
-*          LDWORK >= 1; and if JOB = 'V' or 'B', LDWORK >= N.
-*
-*  IWORK   (workspace) INTEGER array, dimension (2*(N-1))
-*          If JOB = 'E', IWORK is not referenced.
+*  IWORK   (workspace) INTEGER array, dimension (N)
 *
 *  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
 *
 
-*  Further Details
-*  ===============
-*
-*  The reciprocal of the condition number of an eigenvalue lambda is
-*  defined as
-*
-*          S(lambda) = |v'*u| / (norm(u)*norm(v))
-*
-*  where u and v are the right and left eigenvectors of T corresponding
-*  to lambda; v' denotes the conjugate-transpose of v, and norm(u)
-*  denotes the Euclidean norm. These reciprocal condition numbers always
-*  lie between zero (very badly conditioned) and one (very well
-*  conditioned). If n = 1, S(lambda) is defined to be 1.
-*
-*  An approximate error bound for a computed eigenvalue W(i) is given by
-*
-*                      EPS * norm(T) / S(i)
-*
-*  where EPS is the machine precision.
-*
-*  The reciprocal of the condition number of the right eigenvector u
-*  corresponding to lambda is defined as follows. Suppose
-*
-*              T = ( lambda  c  )
-*                  (   0    T22 )
-*
-*  Then the reciprocal condition number is
-*
-*          SEP( lambda, T22 ) = sigma-min( T22 - lambda*I )
-*
-*  where sigma-min denotes the smallest singular value. We approximate
-*  the smallest singular value by the reciprocal of an estimate of the
-*  one-norm of the inverse of T22 - lambda*I. If n = 1, SEP(1) is
-*  defined to be abs(T(1,1)).
-*
-*  An approximate error bound for a computed right eigenvector VR(i)
-*  is given by
-*
-*                      EPS * norm(T) / SEP(i)
-*
 *  =====================================================================
 *
 
@@ -506,63 +244,84 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="strtri"></A>
-  <H2>strtri</H2>
-  Computes the inverse of a triangular matrix.
+  <A NAME="strexc"></A>
+  <H2>strexc</H2>
+  Reorders the Schur factorization of a matrix by an orthogonal
   <PRE>
 USAGE:
-  info, a = NumRu::Lapack.strtri( uplo, diag, a)
+  info, t, q, ifst, ilst = NumRu::Lapack.strexc( compq, t, q, ifst, ilst)
     or
-  NumRu::Lapack.strtri  # print help
+  NumRu::Lapack.strexc  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE STRTRI( UPLO, DIAG, N, A, LDA, INFO )
+      SUBROUTINE STREXC( COMPQ, N, T, LDT, Q, LDQ, IFST, ILST, WORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  STRTRI computes the inverse of a real upper or lower triangular
-*  matrix A.
+*  STREXC reorders the real Schur factorization of a real matrix
+*  A = Q*T*Q**T, so that the diagonal block of T with row index IFST is
+*  moved to row ILST.
 *
-*  This is the Level 3 BLAS version of the algorithm.
+*  The real Schur form T is reordered by an orthogonal similarity
+*  transformation Z**T*T*Z, and optionally the matrix Q of Schur vectors
+*  is updated by postmultiplying it with Z.
+*
+*  T must be in Schur canonical form (as returned by SHSEQR), that is,
+*  block upper triangular with 1-by-1 and 2-by-2 diagonal blocks; each
+*  2-by-2 diagonal block has its diagonal elements equal and its
+*  off-diagonal elements of opposite sign.
 *
 
 *  Arguments
 *  =========
 *
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  A is upper triangular;
-*          = 'L':  A is lower triangular.
-*
-*  DIAG    (input) CHARACTER*1
-*          = 'N':  A is non-unit triangular;
-*          = 'U':  A is unit triangular.
+*  COMPQ   (input) CHARACTER*1
+*          = 'V':  update the matrix Q of Schur vectors;
+*          = 'N':  do not update Q.
 *
 *  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
+*          The order of the matrix T. N >= 0.
 *
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the triangular matrix A.  If UPLO = 'U', the
-*          leading N-by-N upper triangular part of the array A contains
-*          the upper triangular matrix, and the strictly lower
-*          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading N-by-N lower triangular part of the array A contains
-*          the lower triangular matrix, and the strictly upper
-*          triangular part of A is not referenced.  If DIAG = 'U', the
-*          diagonal elements of A are also not referenced and are
-*          assumed to be 1.
-*          On exit, the (triangular) inverse of the original matrix, in
-*          the same storage format.
+*  T       (input/output) REAL array, dimension (LDT,N)
+*          On entry, the upper quasi-triangular matrix T, in Schur
+*          Schur canonical form.
+*          On exit, the reordered upper quasi-triangular matrix, again
+*          in Schur canonical form.
 *
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
+*  LDT     (input) INTEGER
+*          The leading dimension of the array T. LDT >= max(1,N).
+*
+*  Q       (input/output) REAL array, dimension (LDQ,N)
+*          On entry, if COMPQ = 'V', the matrix Q of Schur vectors.
+*          On exit, if COMPQ = 'V', Q has been postmultiplied by the
+*          orthogonal transformation matrix Z which reorders T.
+*          If COMPQ = 'N', Q is not referenced.
+*
+*  LDQ     (input) INTEGER
+*          The leading dimension of the array Q.  LDQ >= max(1,N).
+*
+*  IFST    (input/output) INTEGER
+*  ILST    (input/output) INTEGER
+*          Specify the reordering of the diagonal blocks of T.
+*          The block with row index IFST is moved to row ILST, by a
+*          sequence of transpositions between adjacent blocks.
+*          On exit, if IFST pointed on entry to the second row of a
+*          2-by-2 block, it is changed to point to the first row; ILST
+*          always points to the first row of the block in its final
+*          position (which may differ from its input value by +1 or -1).
+*          1 <= IFST <= N; 1 <= ILST <= N.
+*
+*  WORK    (workspace) REAL array, dimension (N)
 *
 *  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*          > 0: if INFO = i, A(i,i) is exactly zero.  The triangular
-*               matrix is singular and its inverse can not be computed.
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          = 1:  two adjacent blocks were too close to swap (the problem
+*                is very ill-conditioned); T may have been partially
+*                reordered, and ILST points to the first row of the
+*                current position of the block being moved.
 *
 
 *  =====================================================================
@@ -660,84 +419,6 @@ FORTRAN MANUAL
 *          The componentwise relative backward error of each solution
 *          vector X(j) (i.e., the smallest relative change in
 *          any element of A or B that makes X(j) an exact solution).
-*
-*  WORK    (workspace) REAL array, dimension (3*N)
-*
-*  IWORK   (workspace) INTEGER array, dimension (N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="strcon"></A>
-  <H2>strcon</H2>
-  Estimates the reciprocal of the condition number of a triangular
-  <PRE>
-USAGE:
-  rcond, info = NumRu::Lapack.strcon( norm, uplo, diag, a)
-    or
-  NumRu::Lapack.strcon  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE STRCON( NORM, UPLO, DIAG, N, A, LDA, RCOND, WORK, IWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  STRCON estimates the reciprocal of the condition number of a
-*  triangular matrix A, in either the 1-norm or the infinity-norm.
-*
-*  The norm of A is computed and an estimate is obtained for
-*  norm(inv(A)), then the reciprocal of the condition number is
-*  computed as
-*     RCOND = 1 / ( norm(A) * norm(inv(A)) ).
-*
-
-*  Arguments
-*  =========
-*
-*  NORM    (input) CHARACTER*1
-*          Specifies whether the 1-norm condition number or the
-*          infinity-norm condition number is required:
-*          = '1' or 'O':  1-norm;
-*          = 'I':         Infinity-norm.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  A is upper triangular;
-*          = 'L':  A is lower triangular.
-*
-*  DIAG    (input) CHARACTER*1
-*          = 'N':  A is non-unit triangular;
-*          = 'U':  A is unit triangular.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input) REAL array, dimension (LDA,N)
-*          The triangular matrix A.  If UPLO = 'U', the leading N-by-N
-*          upper triangular part of the array A contains the upper
-*          triangular matrix, and the strictly lower triangular part of
-*          A is not referenced.  If UPLO = 'L', the leading N-by-N lower
-*          triangular part of the array A contains the lower triangular
-*          matrix, and the strictly upper triangular part of A is not
-*          referenced.  If DIAG = 'U', the diagonal elements of A are
-*          also not referenced and are assumed to be 1.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  RCOND   (output) REAL
-*          The reciprocal of the condition number of the matrix A,
-*          computed as RCOND = 1/(norm(A) * norm(inv(A))).
 *
 *  WORK    (workspace) REAL array, dimension (3*N)
 *
@@ -979,29 +660,26 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="strexc"></A>
-  <H2>strexc</H2>
-  Reorders the Schur factorization of a matrix by an orthogonal
+  <A NAME="strsna"></A>
+  <H2>strsna</H2>
+  Estimates the reciprocal condition numbers (sensitivities)
   <PRE>
 USAGE:
-  info, t, q, ifst, ilst = NumRu::Lapack.strexc( compq, t, q, ifst, ilst)
+  s, sep, m, info = NumRu::Lapack.strsna( job, howmny, select, t, vl, vr, ldwork)
     or
-  NumRu::Lapack.strexc  # print help
+  NumRu::Lapack.strsna  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE STREXC( COMPQ, N, T, LDT, Q, LDQ, IFST, ILST, WORK, INFO )
+      SUBROUTINE STRSNA( JOB, HOWMNY, SELECT, N, T, LDT, VL, LDVL, VR, LDVR, S, SEP, MM, M, WORK, LDWORK, IWORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  STREXC reorders the real Schur factorization of a real matrix
-*  A = Q*T*Q**T, so that the diagonal block of T with row index IFST is
-*  moved to row ILST.
-*
-*  The real Schur form T is reordered by an orthogonal similarity
-*  transformation Z**T*T*Z, and optionally the matrix Q of Schur vectors
-*  is updated by postmultiplying it with Z.
+*  STRSNA estimates reciprocal condition numbers for specified
+*  eigenvalues and/or right eigenvectors of a real upper
+*  quasi-triangular matrix T (or of any matrix Q*T*Q**T with Q
+*  orthogonal).
 *
 *  T must be in Schur canonical form (as returned by SHSEQR), that is,
 *  block upper triangular with 1-by-1 and 2-by-2 diagonal blocks; each
@@ -1012,51 +690,373 @@ FORTRAN MANUAL
 *  Arguments
 *  =========
 *
-*  COMPQ   (input) CHARACTER*1
-*          = 'V':  update the matrix Q of Schur vectors;
-*          = 'N':  do not update Q.
+*  JOB     (input) CHARACTER*1
+*          Specifies whether condition numbers are required for
+*          eigenvalues (S) or eigenvectors (SEP):
+*          = 'E': for eigenvalues only (S);
+*          = 'V': for eigenvectors only (SEP);
+*          = 'B': for both eigenvalues and eigenvectors (S and SEP).
+*
+*  HOWMNY  (input) CHARACTER*1
+*          = 'A': compute condition numbers for all eigenpairs;
+*          = 'S': compute condition numbers for selected eigenpairs
+*                 specified by the array SELECT.
+*
+*  SELECT  (input) LOGICAL array, dimension (N)
+*          If HOWMNY = 'S', SELECT specifies the eigenpairs for which
+*          condition numbers are required. To select condition numbers
+*          for the eigenpair corresponding to a real eigenvalue w(j),
+*          SELECT(j) must be set to .TRUE.. To select condition numbers
+*          corresponding to a complex conjugate pair of eigenvalues w(j)
+*          and w(j+1), either SELECT(j) or SELECT(j+1) or both, must be
+*          set to .TRUE..
+*          If HOWMNY = 'A', SELECT is not referenced.
 *
 *  N       (input) INTEGER
 *          The order of the matrix T. N >= 0.
 *
-*  T       (input/output) REAL array, dimension (LDT,N)
-*          On entry, the upper quasi-triangular matrix T, in Schur
-*          Schur canonical form.
-*          On exit, the reordered upper quasi-triangular matrix, again
-*          in Schur canonical form.
+*  T       (input) REAL array, dimension (LDT,N)
+*          The upper quasi-triangular matrix T, in Schur canonical form.
 *
 *  LDT     (input) INTEGER
 *          The leading dimension of the array T. LDT >= max(1,N).
 *
-*  Q       (input/output) REAL array, dimension (LDQ,N)
-*          On entry, if COMPQ = 'V', the matrix Q of Schur vectors.
-*          On exit, if COMPQ = 'V', Q has been postmultiplied by the
-*          orthogonal transformation matrix Z which reorders T.
-*          If COMPQ = 'N', Q is not referenced.
+*  VL      (input) REAL array, dimension (LDVL,M)
+*          If JOB = 'E' or 'B', VL must contain left eigenvectors of T
+*          (or of any Q*T*Q**T with Q orthogonal), corresponding to the
+*          eigenpairs specified by HOWMNY and SELECT. The eigenvectors
+*          must be stored in consecutive columns of VL, as returned by
+*          SHSEIN or STREVC.
+*          If JOB = 'V', VL is not referenced.
 *
-*  LDQ     (input) INTEGER
-*          The leading dimension of the array Q.  LDQ >= max(1,N).
+*  LDVL    (input) INTEGER
+*          The leading dimension of the array VL.
+*          LDVL >= 1; and if JOB = 'E' or 'B', LDVL >= N.
 *
-*  IFST    (input/output) INTEGER
-*  ILST    (input/output) INTEGER
-*          Specify the reordering of the diagonal blocks of T.
-*          The block with row index IFST is moved to row ILST, by a
-*          sequence of transpositions between adjacent blocks.
-*          On exit, if IFST pointed on entry to the second row of a
-*          2-by-2 block, it is changed to point to the first row; ILST
-*          always points to the first row of the block in its final
-*          position (which may differ from its input value by +1 or -1).
-*          1 <= IFST <= N; 1 <= ILST <= N.
+*  VR      (input) REAL array, dimension (LDVR,M)
+*          If JOB = 'E' or 'B', VR must contain right eigenvectors of T
+*          (or of any Q*T*Q**T with Q orthogonal), corresponding to the
+*          eigenpairs specified by HOWMNY and SELECT. The eigenvectors
+*          must be stored in consecutive columns of VR, as returned by
+*          SHSEIN or STREVC.
+*          If JOB = 'V', VR is not referenced.
 *
-*  WORK    (workspace) REAL array, dimension (N)
+*  LDVR    (input) INTEGER
+*          The leading dimension of the array VR.
+*          LDVR >= 1; and if JOB = 'E' or 'B', LDVR >= N.
+*
+*  S       (output) REAL array, dimension (MM)
+*          If JOB = 'E' or 'B', the reciprocal condition numbers of the
+*          selected eigenvalues, stored in consecutive elements of the
+*          array. For a complex conjugate pair of eigenvalues two
+*          consecutive elements of S are set to the same value. Thus
+*          S(j), SEP(j), and the j-th columns of VL and VR all
+*          correspond to the same eigenpair (but not in general the
+*          j-th eigenpair, unless all eigenpairs are selected).
+*          If JOB = 'V', S is not referenced.
+*
+*  SEP     (output) REAL array, dimension (MM)
+*          If JOB = 'V' or 'B', the estimated reciprocal condition
+*          numbers of the selected eigenvectors, stored in consecutive
+*          elements of the array. For a complex eigenvector two
+*          consecutive elements of SEP are set to the same value. If
+*          the eigenvalues cannot be reordered to compute SEP(j), SEP(j)
+*          is set to 0; this can only occur when the true value would be
+*          very small anyway.
+*          If JOB = 'E', SEP is not referenced.
+*
+*  MM      (input) INTEGER
+*          The number of elements in the arrays S (if JOB = 'E' or 'B')
+*           and/or SEP (if JOB = 'V' or 'B'). MM >= M.
+*
+*  M       (output) INTEGER
+*          The number of elements of the arrays S and/or SEP actually
+*          used to store the estimated condition numbers.
+*          If HOWMNY = 'A', M is set to N.
+*
+*  WORK    (workspace) REAL array, dimension (LDWORK,N+6)
+*          If JOB = 'E', WORK is not referenced.
+*
+*  LDWORK  (input) INTEGER
+*          The leading dimension of the array WORK.
+*          LDWORK >= 1; and if JOB = 'V' or 'B', LDWORK >= N.
+*
+*  IWORK   (workspace) INTEGER array, dimension (2*(N-1))
+*          If JOB = 'E', IWORK is not referenced.
 *
 *  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          = 1:  two adjacent blocks were too close to swap (the problem
-*                is very ill-conditioned); T may have been partially
-*                reordered, and ILST points to the first row of the
-*                current position of the block being moved.
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*
+
+*  Further Details
+*  ===============
+*
+*  The reciprocal of the condition number of an eigenvalue lambda is
+*  defined as
+*
+*          S(lambda) = |v'*u| / (norm(u)*norm(v))
+*
+*  where u and v are the right and left eigenvectors of T corresponding
+*  to lambda; v' denotes the conjugate-transpose of v, and norm(u)
+*  denotes the Euclidean norm. These reciprocal condition numbers always
+*  lie between zero (very badly conditioned) and one (very well
+*  conditioned). If n = 1, S(lambda) is defined to be 1.
+*
+*  An approximate error bound for a computed eigenvalue W(i) is given by
+*
+*                      EPS * norm(T) / S(i)
+*
+*  where EPS is the machine precision.
+*
+*  The reciprocal of the condition number of the right eigenvector u
+*  corresponding to lambda is defined as follows. Suppose
+*
+*              T = ( lambda  c  )
+*                  (   0    T22 )
+*
+*  Then the reciprocal condition number is
+*
+*          SEP( lambda, T22 ) = sigma-min( T22 - lambda*I )
+*
+*  where sigma-min denotes the smallest singular value. We approximate
+*  the smallest singular value by the reciprocal of an estimate of the
+*  one-norm of the inverse of T22 - lambda*I. If n = 1, SEP(1) is
+*  defined to be abs(T(1,1)).
+*
+*  An approximate error bound for a computed right eigenvector VR(i)
+*  is given by
+*
+*                      EPS * norm(T) / SEP(i)
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="strsyl"></A>
+  <H2>strsyl</H2>
+  Solves the Sylvester matrix equation A X +/- X B=C where A
+  <PRE>
+USAGE:
+  scale, info, c = NumRu::Lapack.strsyl( trana, tranb, isgn, a, b, c)
+    or
+  NumRu::Lapack.strsyl  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE STRSYL( TRANA, TRANB, ISGN, M, N, A, LDA, B, LDB, C, LDC, SCALE, INFO )
+
+*  Purpose
+*  =======
+*
+*  STRSYL solves the real Sylvester matrix equation:
+*
+*     op(A)*X + X*op(B) = scale*C or
+*     op(A)*X - X*op(B) = scale*C,
+*
+*  where op(A) = A or A**T, and  A and B are both upper quasi-
+*  triangular. A is M-by-M and B is N-by-N; the right hand side C and
+*  the solution X are M-by-N; and scale is an output scale factor, set
+*  <= 1 to avoid overflow in X.
+*
+*  A and B must be in Schur canonical form (as returned by SHSEQR), that
+*  is, block upper triangular with 1-by-1 and 2-by-2 diagonal blocks;
+*  each 2-by-2 diagonal block has its diagonal elements equal and its
+*  off-diagonal elements of opposite sign.
+*
+
+*  Arguments
+*  =========
+*
+*  TRANA   (input) CHARACTER*1
+*          Specifies the option op(A):
+*          = 'N': op(A) = A    (No transpose)
+*          = 'T': op(A) = A**T (Transpose)
+*          = 'C': op(A) = A**H (Conjugate transpose = Transpose)
+*
+*  TRANB   (input) CHARACTER*1
+*          Specifies the option op(B):
+*          = 'N': op(B) = B    (No transpose)
+*          = 'T': op(B) = B**T (Transpose)
+*          = 'C': op(B) = B**H (Conjugate transpose = Transpose)
+*
+*  ISGN    (input) INTEGER
+*          Specifies the sign in the equation:
+*          = +1: solve op(A)*X + X*op(B) = scale*C
+*          = -1: solve op(A)*X - X*op(B) = scale*C
+*
+*  M       (input) INTEGER
+*          The order of the matrix A, and the number of rows in the
+*          matrices X and C. M >= 0.
+*
+*  N       (input) INTEGER
+*          The order of the matrix B, and the number of columns in the
+*          matrices X and C. N >= 0.
+*
+*  A       (input) REAL array, dimension (LDA,M)
+*          The upper quasi-triangular matrix A, in Schur canonical form.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A. LDA >= max(1,M).
+*
+*  B       (input) REAL array, dimension (LDB,N)
+*          The upper quasi-triangular matrix B, in Schur canonical form.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B. LDB >= max(1,N).
+*
+*  C       (input/output) REAL array, dimension (LDC,N)
+*          On entry, the M-by-N right hand side matrix C.
+*          On exit, C is overwritten by the solution matrix X.
+*
+*  LDC     (input) INTEGER
+*          The leading dimension of the array C. LDC >= max(1,M)
+*
+*  SCALE   (output) REAL
+*          The scale factor, scale, set <= 1 to avoid overflow in X.
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          = 1: A and B have common or very close eigenvalues; perturbed
+*               values were used to solve the equation (but the matrices
+*               A and B are unchanged).
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="strti2"></A>
+  <H2>strti2</H2>
+  
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.strti2( uplo, diag, a)
+    or
+  NumRu::Lapack.strti2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE STRTI2( UPLO, DIAG, N, A, LDA, INFO )
+
+*  Purpose
+*  =======
+*
+*  STRTI2 computes the inverse of a real upper or lower triangular
+*  matrix.
+*
+*  This is the Level 2 BLAS version of the algorithm.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the matrix A is upper or lower triangular.
+*          = 'U':  Upper triangular
+*          = 'L':  Lower triangular
+*
+*  DIAG    (input) CHARACTER*1
+*          Specifies whether or not the matrix A is unit triangular.
+*          = 'N':  Non-unit triangular
+*          = 'U':  Unit triangular
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the triangular matrix A.  If UPLO = 'U', the
+*          leading n by n upper triangular part of the array A contains
+*          the upper triangular matrix, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading n by n lower triangular part of the array A contains
+*          the lower triangular matrix, and the strictly upper
+*          triangular part of A is not referenced.  If DIAG = 'U', the
+*          diagonal elements of A are also not referenced and are
+*          assumed to be 1.
+*
+*          On exit, the (triangular) inverse of the original matrix, in
+*          the same storage format.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="strtri"></A>
+  <H2>strtri</H2>
+  Computes the inverse of a triangular matrix.
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.strtri( uplo, diag, a)
+    or
+  NumRu::Lapack.strtri  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE STRTRI( UPLO, DIAG, N, A, LDA, INFO )
+
+*  Purpose
+*  =======
+*
+*  STRTRI computes the inverse of a real upper or lower triangular
+*  matrix A.
+*
+*  This is the Level 3 BLAS version of the algorithm.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  A is upper triangular;
+*          = 'L':  A is lower triangular.
+*
+*  DIAG    (input) CHARACTER*1
+*          = 'N':  A is non-unit triangular;
+*          = 'U':  A is unit triangular.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the triangular matrix A.  If UPLO = 'U', the
+*          leading N-by-N upper triangular part of the array A contains
+*          the upper triangular matrix, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading N-by-N lower triangular part of the array A contains
+*          the lower triangular matrix, and the strictly upper
+*          triangular part of A is not referenced.  If DIAG = 'U', the
+*          diagonal elements of A are also not referenced and are
+*          assumed to be 1.
+*          On exit, the (triangular) inverse of the original matrix, in
+*          the same storage format.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, A(i,i) is exactly zero.  The triangular
+*               matrix is singular and its inverse can not be computed.
 *
 
 *  =====================================================================

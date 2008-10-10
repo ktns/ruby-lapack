@@ -6,89 +6,11 @@
     <A NAME="top"></A>
     <H1>REAL routines for triangular, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#stptrs">stptrs</A>: Solves a triangular system of linear equations AX=B,</LI>
       <LI><A HREF="#stpcon">stpcon</A>: Estimates the reciprocal of the condition number of a triangular</LI>
-      <LI><A HREF="#stptri">stptri</A>: Computes the inverse of a triangular matrix in packed storage.</LI>
       <LI><A HREF="#stprfs">stprfs</A>: Provides forward and backward error bounds for the solution</LI>
+      <LI><A HREF="#stptri">stptri</A>: Computes the inverse of a triangular matrix in packed storage.</LI>
+      <LI><A HREF="#stptrs">stptrs</A>: Solves a triangular system of linear equations AX=B,</LI>
     </UL>
-
-  <A NAME="stptrs"></A>
-  <H2>stptrs</H2>
-  Solves a triangular system of linear equations AX=B,
-  <PRE>
-USAGE:
-  info, b = NumRu::Lapack.stptrs( uplo, trans, diag, n, ap, b)
-    or
-  NumRu::Lapack.stptrs  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE STPTRS( UPLO, TRANS, DIAG, N, NRHS, AP, B, LDB, INFO )
-
-*  Purpose
-*  =======
-*
-*  STPTRS solves a triangular system of the form
-*
-*     A * X = B  or  A**T * X = B,
-*
-*  where A is a triangular matrix of order N stored in packed format,
-*  and B is an N-by-NRHS matrix.  A check is made to verify that A is
-*  nonsingular.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  A is upper triangular;
-*          = 'L':  A is lower triangular.
-*
-*  TRANS   (input) CHARACTER*1
-*          Specifies the form of the system of equations:
-*          = 'N':  A * X = B  (No transpose)
-*          = 'T':  A**T * X = B  (Transpose)
-*          = 'C':  A**H * X = B  (Conjugate transpose = Transpose)
-*
-*  DIAG    (input) CHARACTER*1
-*          = 'N':  A is non-unit triangular;
-*          = 'U':  A is unit triangular.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
-*  AP      (input) REAL array, dimension (N*(N+1)/2)
-*          The upper or lower triangular matrix A, packed columnwise in
-*          a linear array.  The j-th column of A is stored in the array
-*          AP as follows:
-*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
-*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
-*
-*  B       (input/output) REAL array, dimension (LDB,NRHS)
-*          On entry, the right hand side matrix B.
-*          On exit, if INFO = 0, the solution matrix X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, the i-th diagonal element of A is zero,
-*                indicating that the matrix is singular and the
-*                solutions X have not been computed.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
 
   <A NAME="stpcon"></A>
   <H2>stpcon</H2>
@@ -157,80 +79,6 @@ FORTRAN MANUAL
 *          < 0:  if INFO = -i, the i-th argument had an illegal value
 *
 
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="stptri"></A>
-  <H2>stptri</H2>
-  Computes the inverse of a triangular matrix in packed storage.
-  <PRE>
-USAGE:
-  info, ap = NumRu::Lapack.stptri( uplo, diag, n, ap)
-    or
-  NumRu::Lapack.stptri  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE STPTRI( UPLO, DIAG, N, AP, INFO )
-
-*  Purpose
-*  =======
-*
-*  STPTRI computes the inverse of a real upper or lower triangular
-*  matrix A stored in packed format.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  A is upper triangular;
-*          = 'L':  A is lower triangular.
-*
-*  DIAG    (input) CHARACTER*1
-*          = 'N':  A is non-unit triangular;
-*          = 'U':  A is unit triangular.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  AP      (input/output) REAL array, dimension (N*(N+1)/2)
-*          On entry, the upper or lower triangular matrix A, stored
-*          columnwise in a linear array.  The j-th column of A is stored
-*          in the array AP as follows:
-*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
-*          if UPLO = 'L', AP(i + (j-1)*((2*n-j)/2) = A(i,j) for j<=i<=n.
-*          See below for further details.
-*          On exit, the (triangular) inverse of the original matrix, in
-*          the same packed storage format.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, A(i,i) is exactly zero.  The triangular
-*                matrix is singular and its inverse can not be computed.
-*
-
-*  Further Details
-*  ===============
-*
-*  A triangular matrix A can be transferred to packed storage using one
-*  of the following program segments:
-*
-*  UPLO = 'U':                      UPLO = 'L':
-*
-*        JC = 1                           JC = 1
-*        DO 2 J = 1, N                    DO 2 J = 1, N
-*           DO 1 I = 1, J                    DO 1 I = J, N
-*              AP(JC+I-1) = A(I,J)              AP(JC+I-J) = A(I,J)
-*      1    CONTINUE                    1    CONTINUE
-*           JC = JC + J                      JC = JC + N - J + 1
-*      2 CONTINUE                       2 CONTINUE
-*
 *  =====================================================================
 *
 
@@ -330,6 +178,158 @@ FORTRAN MANUAL
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
 *          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="stptri"></A>
+  <H2>stptri</H2>
+  Computes the inverse of a triangular matrix in packed storage.
+  <PRE>
+USAGE:
+  info, ap = NumRu::Lapack.stptri( uplo, diag, n, ap)
+    or
+  NumRu::Lapack.stptri  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE STPTRI( UPLO, DIAG, N, AP, INFO )
+
+*  Purpose
+*  =======
+*
+*  STPTRI computes the inverse of a real upper or lower triangular
+*  matrix A stored in packed format.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  A is upper triangular;
+*          = 'L':  A is lower triangular.
+*
+*  DIAG    (input) CHARACTER*1
+*          = 'N':  A is non-unit triangular;
+*          = 'U':  A is unit triangular.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input/output) REAL array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangular matrix A, stored
+*          columnwise in a linear array.  The j-th column of A is stored
+*          in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*((2*n-j)/2) = A(i,j) for j<=i<=n.
+*          See below for further details.
+*          On exit, the (triangular) inverse of the original matrix, in
+*          the same packed storage format.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, A(i,i) is exactly zero.  The triangular
+*                matrix is singular and its inverse can not be computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  A triangular matrix A can be transferred to packed storage using one
+*  of the following program segments:
+*
+*  UPLO = 'U':                      UPLO = 'L':
+*
+*        JC = 1                           JC = 1
+*        DO 2 J = 1, N                    DO 2 J = 1, N
+*           DO 1 I = 1, J                    DO 1 I = J, N
+*              AP(JC+I-1) = A(I,J)              AP(JC+I-J) = A(I,J)
+*      1    CONTINUE                    1    CONTINUE
+*           JC = JC + J                      JC = JC + N - J + 1
+*      2 CONTINUE                       2 CONTINUE
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="stptrs"></A>
+  <H2>stptrs</H2>
+  Solves a triangular system of linear equations AX=B,
+  <PRE>
+USAGE:
+  info, b = NumRu::Lapack.stptrs( uplo, trans, diag, n, ap, b)
+    or
+  NumRu::Lapack.stptrs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE STPTRS( UPLO, TRANS, DIAG, N, NRHS, AP, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  STPTRS solves a triangular system of the form
+*
+*     A * X = B  or  A**T * X = B,
+*
+*  where A is a triangular matrix of order N stored in packed format,
+*  and B is an N-by-NRHS matrix.  A check is made to verify that A is
+*  nonsingular.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  A is upper triangular;
+*          = 'L':  A is lower triangular.
+*
+*  TRANS   (input) CHARACTER*1
+*          Specifies the form of the system of equations:
+*          = 'N':  A * X = B  (No transpose)
+*          = 'T':  A**T * X = B  (Transpose)
+*          = 'C':  A**H * X = B  (Conjugate transpose = Transpose)
+*
+*  DIAG    (input) CHARACTER*1
+*          = 'N':  A is non-unit triangular;
+*          = 'U':  A is unit triangular.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  AP      (input) REAL array, dimension (N*(N+1)/2)
+*          The upper or lower triangular matrix A, packed columnwise in
+*          a linear array.  The j-th column of A is stored in the array
+*          AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*
+*  B       (input/output) REAL array, dimension (LDB,NRHS)
+*          On entry, the right hand side matrix B.
+*          On exit, if INFO = 0, the solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the i-th diagonal element of A is zero,
+*                indicating that the matrix is singular and the
+*                solutions X have not been computed.
 *
 
 *  =====================================================================

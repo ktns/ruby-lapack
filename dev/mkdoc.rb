@@ -81,6 +81,7 @@ DataTypes.each{|cdt, dt|
       next unless reg =~ m
       ms.push m
     }
+    ms.sort!
     unless ms.empty?
       mts.push [cmt,mt]
       File.open(File.join(prefix,"#{cdt}#{cmt}.html"),"w"){|file|

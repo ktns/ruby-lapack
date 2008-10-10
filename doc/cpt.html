@@ -7,13 +7,13 @@
     <H1>COMPLEX routines for symmetric or Hermitian positive definite tridiagonal matrix</H1>
     <UL>
       <LI><A HREF="#cptcon">cptcon</A>: Computes the reciprocal of the condition number of a</LI>
-      <LI><A HREF="#cptts2">cptts2</A>: </LI>
-      <LI><A HREF="#cpttrf">cpttrf</A>: Computes the LDL**H factorization of a Hermitian</LI>
+      <LI><A HREF="#cpteqr">cpteqr</A>: Computes all eigenvalues and eigenvectors of a complex symmetric</LI>
       <LI><A HREF="#cptrfs">cptrfs</A>: Improves the computed solution to a Hermitian positive</LI>
       <LI><A HREF="#cptsv">cptsv</A>: Solves a Hermitian positive definite tridiagonal system</LI>
       <LI><A HREF="#cptsvx">cptsvx</A>: Solves a Hermitian positive definite tridiagonal</LI>
-      <LI><A HREF="#cpteqr">cpteqr</A>: Computes all eigenvalues and eigenvectors of a complex symmetric</LI>
+      <LI><A HREF="#cpttrf">cpttrf</A>: Computes the LDL**H factorization of a Hermitian</LI>
       <LI><A HREF="#cpttrs">cpttrs</A>: Solves a Hermitian positive definite tridiagonal</LI>
+      <LI><A HREF="#cptts2">cptts2</A>: </LI>
     </UL>
 
   <A NAME="cptcon"></A>
@@ -85,131 +85,95 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="cptts2"></A>
-  <H2>cptts2</H2>
-  
+  <A NAME="cpteqr"></A>
+  <H2>cpteqr</H2>
+  Computes all eigenvalues and eigenvectors of a complex symmetric
   <PRE>
 USAGE:
-  b = NumRu::Lapack.cptts2( iuplo, d, e, b)
+  info, d, e, z = NumRu::Lapack.cpteqr( compz, d, e, z)
     or
-  NumRu::Lapack.cptts2  # print help
+  NumRu::Lapack.cpteqr  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE CPTTS2( IUPLO, N, NRHS, D, E, B, LDB )
+      SUBROUTINE CPTEQR( COMPZ, N, D, E, Z, LDZ, WORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  CPTTS2 solves a tridiagonal system of the form
-*     A * X = B
-*  using the factorization A = U'*D*U or A = L*D*L' computed by CPTTRF.
-*  D is a diagonal matrix specified in the vector D, U (or L) is a unit
-*  bidiagonal matrix whose superdiagonal (subdiagonal) is specified in
-*  the vector E, and X and B are N by NRHS matrices.
+*  CPTEQR computes all eigenvalues and, optionally, eigenvectors of a
+*  symmetric positive definite tridiagonal matrix by first factoring the
+*  matrix using SPTTRF and then calling CBDSQR to compute the singular
+*  values of the bidiagonal factor.
+*
+*  This routine computes the eigenvalues of the positive definite
+*  tridiagonal matrix to high relative accuracy.  This means that if the
+*  eigenvalues range over many orders of magnitude in size, then the
+*  small eigenvalues and corresponding eigenvectors will be computed
+*  more accurately than, for example, with the standard QR method.
+*
+*  The eigenvectors of a full or band positive definite Hermitian matrix
+*  can also be found if CHETRD, CHPTRD, or CHBTRD has been used to
+*  reduce this matrix to tridiagonal form.  (The reduction to
+*  tridiagonal form, however, may preclude the possibility of obtaining
+*  high relative accuracy in the small eigenvalues of the original
+*  matrix, if these eigenvalues range over many orders of magnitude.)
 *
 
 *  Arguments
 *  =========
 *
-*  IUPLO   (input) INTEGER
-*          Specifies the form of the factorization and whether the
-*          vector E is the superdiagonal of the upper bidiagonal factor
-*          U or the subdiagonal of the lower bidiagonal factor L.
-*          = 1:  A = U'*D*U, E is the superdiagonal of U
-*          = 0:  A = L*D*L', E is the subdiagonal of L
+*  COMPZ   (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only.
+*          = 'V':  Compute eigenvectors of original Hermitian
+*                  matrix also.  Array Z contains the unitary matrix
+*                  used to reduce the original matrix to tridiagonal
+*                  form.
+*          = 'I':  Compute eigenvectors of tridiagonal matrix also.
 *
 *  N       (input) INTEGER
-*          The order of the tridiagonal matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
-*  D       (input) REAL array, dimension (N)
-*          The n diagonal elements of the diagonal matrix D from the
-*          factorization A = U'*D*U or A = L*D*L'.
-*
-*  E       (input) COMPLEX array, dimension (N-1)
-*          If IUPLO = 1, the (n-1) superdiagonal elements of the unit
-*          bidiagonal factor U from the factorization A = U'*D*U.
-*          If IUPLO = 0, the (n-1) subdiagonal elements of the unit
-*          bidiagonal factor L from the factorization A = L*D*L'.
-*
-*  B       (input/output) REAL array, dimension (LDB,NRHS)
-*          On entry, the right hand side vectors B for the system of
-*          linear equations.
-*          On exit, the solution vectors, X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      INTEGER            I, J
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           CSSCAL
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          CONJG
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="cpttrf"></A>
-  <H2>cpttrf</H2>
-  Computes the LDL**H factorization of a Hermitian
-  <PRE>
-USAGE:
-  info, d, e = NumRu::Lapack.cpttrf( d, e)
-    or
-  NumRu::Lapack.cpttrf  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CPTTRF( N, D, E, INFO )
-
-*  Purpose
-*  =======
-*
-*  CPTTRF computes the L*D*L' factorization of a complex Hermitian
-*  positive definite tridiagonal matrix A.  The factorization may also
-*  be regarded as having the form A = U'*D*U.
-*
-
-*  Arguments
-*  =========
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
+*          The order of the matrix.  N >= 0.
 *
 *  D       (input/output) REAL array, dimension (N)
-*          On entry, the n diagonal elements of the tridiagonal matrix
-*          A.  On exit, the n diagonal elements of the diagonal matrix
-*          D from the L*D*L' factorization of A.
+*          On entry, the n diagonal elements of the tridiagonal matrix.
+*          On normal exit, D contains the eigenvalues, in descending
+*          order.
 *
-*  E       (input/output) COMPLEX array, dimension (N-1)
+*  E       (input/output) REAL array, dimension (N-1)
 *          On entry, the (n-1) subdiagonal elements of the tridiagonal
-*          matrix A.  On exit, the (n-1) subdiagonal elements of the
-*          unit bidiagonal factor L from the L*D*L' factorization of A.
-*          E can also be regarded as the superdiagonal of the unit
-*          bidiagonal factor U from the U'*D*U factorization of A.
+*          matrix.
+*          On exit, E has been destroyed.
+*
+*  Z       (input/output) COMPLEX array, dimension (LDZ, N)
+*          On entry, if COMPZ = 'V', the unitary matrix used in the
+*          reduction to tridiagonal form.
+*          On exit, if COMPZ = 'V', the orthonormal eigenvectors of the
+*          original Hermitian matrix;
+*          if COMPZ = 'I', the orthonormal eigenvectors of the
+*          tridiagonal matrix.
+*          If INFO > 0 on exit, Z contains the eigenvectors associated
+*          with only the stored eigenvalues.
+*          If  COMPZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          COMPZ = 'V' or 'I', LDZ >= max(1,N).
+*
+*  WORK    (workspace) REAL array, dimension (4*N)
 *
 *  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -k, the k-th argument had an illegal value
-*          > 0: if INFO = k, the leading minor of order k is not
-*               positive definite; if k < N, the factorization could not
-*               be completed, while if k = N, the factorization was
-*               completed, but D(N) <= 0.
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, and i is:
+*                <= N  the Cholesky factorization of the matrix could
+*                      not be performed because the i-th principal minor
+*                      was not positive definite.
+*                > N   the SVD algorithm failed to converge;
+*                      if INFO = N+i, i off-diagonal elements of the
+*                      bidiagonal factor did not converge to zero.
 *
 
-*  =====================================================================
+*  ====================================================================
 *
 
 
@@ -543,95 +507,55 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="cpteqr"></A>
-  <H2>cpteqr</H2>
-  Computes all eigenvalues and eigenvectors of a complex symmetric
+  <A NAME="cpttrf"></A>
+  <H2>cpttrf</H2>
+  Computes the LDL**H factorization of a Hermitian
   <PRE>
 USAGE:
-  info, d, e, z = NumRu::Lapack.cpteqr( compz, d, e, z)
+  info, d, e = NumRu::Lapack.cpttrf( d, e)
     or
-  NumRu::Lapack.cpteqr  # print help
+  NumRu::Lapack.cpttrf  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE CPTEQR( COMPZ, N, D, E, Z, LDZ, WORK, INFO )
+      SUBROUTINE CPTTRF( N, D, E, INFO )
 
 *  Purpose
 *  =======
 *
-*  CPTEQR computes all eigenvalues and, optionally, eigenvectors of a
-*  symmetric positive definite tridiagonal matrix by first factoring the
-*  matrix using SPTTRF and then calling CBDSQR to compute the singular
-*  values of the bidiagonal factor.
-*
-*  This routine computes the eigenvalues of the positive definite
-*  tridiagonal matrix to high relative accuracy.  This means that if the
-*  eigenvalues range over many orders of magnitude in size, then the
-*  small eigenvalues and corresponding eigenvectors will be computed
-*  more accurately than, for example, with the standard QR method.
-*
-*  The eigenvectors of a full or band positive definite Hermitian matrix
-*  can also be found if CHETRD, CHPTRD, or CHBTRD has been used to
-*  reduce this matrix to tridiagonal form.  (The reduction to
-*  tridiagonal form, however, may preclude the possibility of obtaining
-*  high relative accuracy in the small eigenvalues of the original
-*  matrix, if these eigenvalues range over many orders of magnitude.)
+*  CPTTRF computes the L*D*L' factorization of a complex Hermitian
+*  positive definite tridiagonal matrix A.  The factorization may also
+*  be regarded as having the form A = U'*D*U.
 *
 
 *  Arguments
 *  =========
 *
-*  COMPZ   (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only.
-*          = 'V':  Compute eigenvectors of original Hermitian
-*                  matrix also.  Array Z contains the unitary matrix
-*                  used to reduce the original matrix to tridiagonal
-*                  form.
-*          = 'I':  Compute eigenvectors of tridiagonal matrix also.
-*
 *  N       (input) INTEGER
-*          The order of the matrix.  N >= 0.
+*          The order of the matrix A.  N >= 0.
 *
 *  D       (input/output) REAL array, dimension (N)
-*          On entry, the n diagonal elements of the tridiagonal matrix.
-*          On normal exit, D contains the eigenvalues, in descending
-*          order.
+*          On entry, the n diagonal elements of the tridiagonal matrix
+*          A.  On exit, the n diagonal elements of the diagonal matrix
+*          D from the L*D*L' factorization of A.
 *
-*  E       (input/output) REAL array, dimension (N-1)
+*  E       (input/output) COMPLEX array, dimension (N-1)
 *          On entry, the (n-1) subdiagonal elements of the tridiagonal
-*          matrix.
-*          On exit, E has been destroyed.
-*
-*  Z       (input/output) COMPLEX array, dimension (LDZ, N)
-*          On entry, if COMPZ = 'V', the unitary matrix used in the
-*          reduction to tridiagonal form.
-*          On exit, if COMPZ = 'V', the orthonormal eigenvectors of the
-*          original Hermitian matrix;
-*          if COMPZ = 'I', the orthonormal eigenvectors of the
-*          tridiagonal matrix.
-*          If INFO > 0 on exit, Z contains the eigenvectors associated
-*          with only the stored eigenvalues.
-*          If  COMPZ = 'N', then Z is not referenced.
-*
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z.  LDZ >= 1, and if
-*          COMPZ = 'V' or 'I', LDZ >= max(1,N).
-*
-*  WORK    (workspace) REAL array, dimension (4*N)
+*          matrix A.  On exit, the (n-1) subdiagonal elements of the
+*          unit bidiagonal factor L from the L*D*L' factorization of A.
+*          E can also be regarded as the superdiagonal of the unit
+*          bidiagonal factor U from the U'*D*U factorization of A.
 *
 *  INFO    (output) INTEGER
-*          = 0:  successful exit.
-*          < 0:  if INFO = -i, the i-th argument had an illegal value.
-*          > 0:  if INFO = i, and i is:
-*                <= N  the Cholesky factorization of the matrix could
-*                      not be performed because the i-th principal minor
-*                      was not positive definite.
-*                > N   the SVD algorithm failed to converge;
-*                      if INFO = N+i, i off-diagonal elements of the
-*                      bidiagonal factor did not converge to zero.
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*          > 0: if INFO = k, the leading minor of order k is not
+*               positive definite; if k < N, the factorization could not
+*               be completed, while if k = N, the factorization was
+*               completed, but D(N) <= 0.
 *
 
-*  ====================================================================
+*  =====================================================================
 *
 
 
@@ -717,6 +641,82 @@ FORTRAN MANUAL
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX, MIN
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cptts2"></A>
+  <H2>cptts2</H2>
+  
+  <PRE>
+USAGE:
+  b = NumRu::Lapack.cptts2( iuplo, d, e, b)
+    or
+  NumRu::Lapack.cptts2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPTTS2( IUPLO, N, NRHS, D, E, B, LDB )
+
+*  Purpose
+*  =======
+*
+*  CPTTS2 solves a tridiagonal system of the form
+*     A * X = B
+*  using the factorization A = U'*D*U or A = L*D*L' computed by CPTTRF.
+*  D is a diagonal matrix specified in the vector D, U (or L) is a unit
+*  bidiagonal matrix whose superdiagonal (subdiagonal) is specified in
+*  the vector E, and X and B are N by NRHS matrices.
+*
+
+*  Arguments
+*  =========
+*
+*  IUPLO   (input) INTEGER
+*          Specifies the form of the factorization and whether the
+*          vector E is the superdiagonal of the upper bidiagonal factor
+*          U or the subdiagonal of the lower bidiagonal factor L.
+*          = 1:  A = U'*D*U, E is the superdiagonal of U
+*          = 0:  A = L*D*L', E is the subdiagonal of L
+*
+*  N       (input) INTEGER
+*          The order of the tridiagonal matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  D       (input) REAL array, dimension (N)
+*          The n diagonal elements of the diagonal matrix D from the
+*          factorization A = U'*D*U or A = L*D*L'.
+*
+*  E       (input) COMPLEX array, dimension (N-1)
+*          If IUPLO = 1, the (n-1) superdiagonal elements of the unit
+*          bidiagonal factor U from the factorization A = U'*D*U.
+*          If IUPLO = 0, the (n-1) subdiagonal elements of the unit
+*          bidiagonal factor L from the factorization A = L*D*L'.
+*
+*  B       (input/output) REAL array, dimension (LDB,NRHS)
+*          On entry, the right hand side vectors B for the system of
+*          linear equations.
+*          On exit, the solution vectors, X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      INTEGER            I, J
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CSSCAL
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          CONJG
 *     ..
 
 

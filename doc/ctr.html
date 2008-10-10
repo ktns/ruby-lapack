@@ -7,15 +7,15 @@
     <H1>COMPLEX routines for triangular (or in some cases quasi-triangular) matrix</H1>
     <UL>
       <LI><A HREF="#ctrcon">ctrcon</A>: Estimates the reciprocal of the condition number of a triangular</LI>
-      <LI><A HREF="#ctrsna">ctrsna</A>: Estimates the reciprocal condition numbers (sensitivities)</LI>
-      <LI><A HREF="#ctrexc">ctrexc</A>: Reorders the Schur factorization of a matrix by a unitary</LI>
       <LI><A HREF="#ctrevc">ctrevc</A>: Computes left and right eigenvectors of an complex upper triangular</LI>
-      <LI><A HREF="#ctrsen">ctrsen</A>: Reorders the Schur factorization of a matrix in order to find</LI>
-      <LI><A HREF="#ctrtri">ctrtri</A>: Computes the inverse of a triangular matrix.</LI>
+      <LI><A HREF="#ctrexc">ctrexc</A>: Reorders the Schur factorization of a matrix by a unitary</LI>
       <LI><A HREF="#ctrrfs">ctrrfs</A>: Provides forward and backward error bounds for the solution</LI>
+      <LI><A HREF="#ctrsen">ctrsen</A>: Reorders the Schur factorization of a matrix in order to find</LI>
+      <LI><A HREF="#ctrsna">ctrsna</A>: Estimates the reciprocal condition numbers (sensitivities)</LI>
       <LI><A HREF="#ctrsyl">ctrsyl</A>: Solves the Sylvester matrix equation A X +/- X B=C where A</LI>
-      <LI><A HREF="#ctrtrs">ctrtrs</A>: Solves a triangular system of linear equations AX=B,</LI>
       <LI><A HREF="#ctrti2">ctrti2</A>: </LI>
+      <LI><A HREF="#ctrtri">ctrtri</A>: Computes the inverse of a triangular matrix.</LI>
+      <LI><A HREF="#ctrtrs">ctrtrs</A>: Solves a triangular system of linear equations AX=B,</LI>
     </UL>
 
   <A NAME="ctrcon"></A>
@@ -91,252 +91,6 @@ FORTRAN MANUAL
 
 *  =====================================================================
 *
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="ctrsna"></A>
-  <H2>ctrsna</H2>
-  Estimates the reciprocal condition numbers (sensitivities)
-  <PRE>
-USAGE:
-  s, sep, m, info = NumRu::Lapack.ctrsna( job, howmny, select, t, vl, vr, ldwork)
-    or
-  NumRu::Lapack.ctrsna  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CTRSNA( JOB, HOWMNY, SELECT, N, T, LDT, VL, LDVL, VR, LDVR, S, SEP, MM, M, WORK, LDWORK, RWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  CTRSNA estimates reciprocal condition numbers for specified
-*  eigenvalues and/or right eigenvectors of a complex upper triangular
-*  matrix T (or of any matrix Q*T*Q**H with Q unitary).
-*
-
-*  Arguments
-*  =========
-*
-*  JOB     (input) CHARACTER*1
-*          Specifies whether condition numbers are required for
-*          eigenvalues (S) or eigenvectors (SEP):
-*          = 'E': for eigenvalues only (S);
-*          = 'V': for eigenvectors only (SEP);
-*          = 'B': for both eigenvalues and eigenvectors (S and SEP).
-*
-*  HOWMNY  (input) CHARACTER*1
-*          = 'A': compute condition numbers for all eigenpairs;
-*          = 'S': compute condition numbers for selected eigenpairs
-*                 specified by the array SELECT.
-*
-*  SELECT  (input) LOGICAL array, dimension (N)
-*          If HOWMNY = 'S', SELECT specifies the eigenpairs for which
-*          condition numbers are required. To select condition numbers
-*          for the j-th eigenpair, SELECT(j) must be set to .TRUE..
-*          If HOWMNY = 'A', SELECT is not referenced.
-*
-*  N       (input) INTEGER
-*          The order of the matrix T. N >= 0.
-*
-*  T       (input) COMPLEX array, dimension (LDT,N)
-*          The upper triangular matrix T.
-*
-*  LDT     (input) INTEGER
-*          The leading dimension of the array T. LDT >= max(1,N).
-*
-*  VL      (input) COMPLEX array, dimension (LDVL,M)
-*          If JOB = 'E' or 'B', VL must contain left eigenvectors of T
-*          (or of any Q*T*Q**H with Q unitary), corresponding to the
-*          eigenpairs specified by HOWMNY and SELECT. The eigenvectors
-*          must be stored in consecutive columns of VL, as returned by
-*          CHSEIN or CTREVC.
-*          If JOB = 'V', VL is not referenced.
-*
-*  LDVL    (input) INTEGER
-*          The leading dimension of the array VL.
-*          LDVL >= 1; and if JOB = 'E' or 'B', LDVL >= N.
-*
-*  VR      (input) COMPLEX array, dimension (LDVR,M)
-*          If JOB = 'E' or 'B', VR must contain right eigenvectors of T
-*          (or of any Q*T*Q**H with Q unitary), corresponding to the
-*          eigenpairs specified by HOWMNY and SELECT. The eigenvectors
-*          must be stored in consecutive columns of VR, as returned by
-*          CHSEIN or CTREVC.
-*          If JOB = 'V', VR is not referenced.
-*
-*  LDVR    (input) INTEGER
-*          The leading dimension of the array VR.
-*          LDVR >= 1; and if JOB = 'E' or 'B', LDVR >= N.
-*
-*  S       (output) REAL array, dimension (MM)
-*          If JOB = 'E' or 'B', the reciprocal condition numbers of the
-*          selected eigenvalues, stored in consecutive elements of the
-*          array. Thus S(j), SEP(j), and the j-th columns of VL and VR
-*          all correspond to the same eigenpair (but not in general the
-*          j-th eigenpair, unless all eigenpairs are selected).
-*          If JOB = 'V', S is not referenced.
-*
-*  SEP     (output) REAL array, dimension (MM)
-*          If JOB = 'V' or 'B', the estimated reciprocal condition
-*          numbers of the selected eigenvectors, stored in consecutive
-*          elements of the array.
-*          If JOB = 'E', SEP is not referenced.
-*
-*  MM      (input) INTEGER
-*          The number of elements in the arrays S (if JOB = 'E' or 'B')
-*           and/or SEP (if JOB = 'V' or 'B'). MM >= M.
-*
-*  M       (output) INTEGER
-*          The number of elements of the arrays S and/or SEP actually
-*          used to store the estimated condition numbers.
-*          If HOWMNY = 'A', M is set to N.
-*
-*  WORK    (workspace) COMPLEX array, dimension (LDWORK,N+6)
-*          If JOB = 'E', WORK is not referenced.
-*
-*  LDWORK  (input) INTEGER
-*          The leading dimension of the array WORK.
-*          LDWORK >= 1; and if JOB = 'V' or 'B', LDWORK >= N.
-*
-*  RWORK   (workspace) REAL array, dimension (N)
-*          If JOB = 'E', RWORK is not referenced.
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*
-
-*  Further Details
-*  ===============
-*
-*  The reciprocal of the condition number of an eigenvalue lambda is
-*  defined as
-*
-*          S(lambda) = |v'*u| / (norm(u)*norm(v))
-*
-*  where u and v are the right and left eigenvectors of T corresponding
-*  to lambda; v' denotes the conjugate transpose of v, and norm(u)
-*  denotes the Euclidean norm. These reciprocal condition numbers always
-*  lie between zero (very badly conditioned) and one (very well
-*  conditioned). If n = 1, S(lambda) is defined to be 1.
-*
-*  An approximate error bound for a computed eigenvalue W(i) is given by
-*
-*                      EPS * norm(T) / S(i)
-*
-*  where EPS is the machine precision.
-*
-*  The reciprocal of the condition number of the right eigenvector u
-*  corresponding to lambda is defined as follows. Suppose
-*
-*              T = ( lambda  c  )
-*                  (   0    T22 )
-*
-*  Then the reciprocal condition number is
-*
-*          SEP( lambda, T22 ) = sigma-min( T22 - lambda*I )
-*
-*  where sigma-min denotes the smallest singular value. We approximate
-*  the smallest singular value by the reciprocal of an estimate of the
-*  one-norm of the inverse of T22 - lambda*I. If n = 1, SEP(1) is
-*  defined to be abs(T(1,1)).
-*
-*  An approximate error bound for a computed right eigenvector VR(i)
-*  is given by
-*
-*                      EPS * norm(T) / SEP(i)
-*
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="ctrexc"></A>
-  <H2>ctrexc</H2>
-  Reorders the Schur factorization of a matrix by a unitary
-  <PRE>
-USAGE:
-  info, t, q = NumRu::Lapack.ctrexc( compq, t, q, ifst, ilst)
-    or
-  NumRu::Lapack.ctrexc  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CTREXC( COMPQ, N, T, LDT, Q, LDQ, IFST, ILST, INFO )
-
-*  Purpose
-*  =======
-*
-*  CTREXC reorders the Schur factorization of a complex matrix
-*  A = Q*T*Q**H, so that the diagonal element of T with row index IFST
-*  is moved to row ILST.
-*
-*  The Schur form T is reordered by a unitary similarity transformation
-*  Z**H*T*Z, and optionally the matrix Q of Schur vectors is updated by
-*  postmultplying it with Z.
-*
-
-*  Arguments
-*  =========
-*
-*  COMPQ   (input) CHARACTER*1
-*          = 'V':  update the matrix Q of Schur vectors;
-*          = 'N':  do not update Q.
-*
-*  N       (input) INTEGER
-*          The order of the matrix T. N >= 0.
-*
-*  T       (input/output) COMPLEX array, dimension (LDT,N)
-*          On entry, the upper triangular matrix T.
-*          On exit, the reordered upper triangular matrix.
-*
-*  LDT     (input) INTEGER
-*          The leading dimension of the array T. LDT >= max(1,N).
-*
-*  Q       (input/output) COMPLEX array, dimension (LDQ,N)
-*          On entry, if COMPQ = 'V', the matrix Q of Schur vectors.
-*          On exit, if COMPQ = 'V', Q has been postmultiplied by the
-*          unitary transformation matrix Z which reorders T.
-*          If COMPQ = 'N', Q is not referenced.
-*
-*  LDQ     (input) INTEGER
-*          The leading dimension of the array Q.  LDQ >= max(1,N).
-*
-*  IFST    (input) INTEGER
-*  ILST    (input) INTEGER
-*          Specify the reordering of the diagonal elements of T:
-*          The element with row index IFST is moved to row ILST by a
-*          sequence of transpositions between adjacent elements.
-*          1 <= IFST <= N; 1 <= ILST <= N.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      LOGICAL            WANTQ
-      INTEGER            K, M1, M2, M3
-      REAL               CS
-      COMPLEX            SN, T11, T22, TEMP
-*     ..
-*     .. External Functions ..
-      LOGICAL            LSAME
-      EXTERNAL           LSAME
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           CLARTG, CROT, XERBLA
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          CONJG, MAX
-*     ..
 
 
     </PRE>
@@ -475,6 +229,197 @@ FORTRAN MANUAL
 *  magnitude has magnitude 1; here the magnitude of a complex number
 *  (x,y) is taken to be |x| + |y|.
 *
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ctrexc"></A>
+  <H2>ctrexc</H2>
+  Reorders the Schur factorization of a matrix by a unitary
+  <PRE>
+USAGE:
+  info, t, q = NumRu::Lapack.ctrexc( compq, t, q, ifst, ilst)
+    or
+  NumRu::Lapack.ctrexc  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CTREXC( COMPQ, N, T, LDT, Q, LDQ, IFST, ILST, INFO )
+
+*  Purpose
+*  =======
+*
+*  CTREXC reorders the Schur factorization of a complex matrix
+*  A = Q*T*Q**H, so that the diagonal element of T with row index IFST
+*  is moved to row ILST.
+*
+*  The Schur form T is reordered by a unitary similarity transformation
+*  Z**H*T*Z, and optionally the matrix Q of Schur vectors is updated by
+*  postmultplying it with Z.
+*
+
+*  Arguments
+*  =========
+*
+*  COMPQ   (input) CHARACTER*1
+*          = 'V':  update the matrix Q of Schur vectors;
+*          = 'N':  do not update Q.
+*
+*  N       (input) INTEGER
+*          The order of the matrix T. N >= 0.
+*
+*  T       (input/output) COMPLEX array, dimension (LDT,N)
+*          On entry, the upper triangular matrix T.
+*          On exit, the reordered upper triangular matrix.
+*
+*  LDT     (input) INTEGER
+*          The leading dimension of the array T. LDT >= max(1,N).
+*
+*  Q       (input/output) COMPLEX array, dimension (LDQ,N)
+*          On entry, if COMPQ = 'V', the matrix Q of Schur vectors.
+*          On exit, if COMPQ = 'V', Q has been postmultiplied by the
+*          unitary transformation matrix Z which reorders T.
+*          If COMPQ = 'N', Q is not referenced.
+*
+*  LDQ     (input) INTEGER
+*          The leading dimension of the array Q.  LDQ >= max(1,N).
+*
+*  IFST    (input) INTEGER
+*  ILST    (input) INTEGER
+*          Specify the reordering of the diagonal elements of T:
+*          The element with row index IFST is moved to row ILST by a
+*          sequence of transpositions between adjacent elements.
+*          1 <= IFST <= N; 1 <= ILST <= N.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            WANTQ
+      INTEGER            K, M1, M2, M3
+      REAL               CS
+      COMPLEX            SN, T11, T22, TEMP
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CLARTG, CROT, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          CONJG, MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ctrrfs"></A>
+  <H2>ctrrfs</H2>
+  Provides forward and backward error bounds for the solution
+  <PRE>
+USAGE:
+  ferr, berr, info = NumRu::Lapack.ctrrfs( uplo, trans, diag, a, b, x)
+    or
+  NumRu::Lapack.ctrrfs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CTRRFS( UPLO, TRANS, DIAG, N, NRHS, A, LDA, B, LDB, X, LDX, FERR, BERR, WORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CTRRFS provides error bounds and backward error estimates for the
+*  solution to a system of linear equations with a triangular
+*  coefficient matrix.
+*
+*  The solution matrix X must be computed by CTRTRS or some other
+*  means before entering this routine.  CTRRFS does not do iterative
+*  refinement because doing so cannot improve the backward error.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  A is upper triangular;
+*          = 'L':  A is lower triangular.
+*
+*  TRANS   (input) CHARACTER*1
+*          Specifies the form of the system of equations:
+*          = 'N':  A * X = B     (No transpose)
+*          = 'T':  A**T * X = B  (Transpose)
+*          = 'C':  A**H * X = B  (Conjugate transpose)
+*
+*  DIAG    (input) CHARACTER*1
+*          = 'N':  A is non-unit triangular;
+*          = 'U':  A is unit triangular.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrices B and X.  NRHS >= 0.
+*
+*  A       (input) COMPLEX array, dimension (LDA,N)
+*          The triangular matrix A.  If UPLO = 'U', the leading N-by-N
+*          upper triangular part of the array A contains the upper
+*          triangular matrix, and the strictly lower triangular part of
+*          A is not referenced.  If UPLO = 'L', the leading N-by-N lower
+*          triangular part of the array A contains the lower triangular
+*          matrix, and the strictly upper triangular part of A is not
+*          referenced.  If DIAG = 'U', the diagonal elements of A are
+*          also not referenced and are assumed to be 1.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input) COMPLEX array, dimension (LDB,NRHS)
+*          The right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (input) COMPLEX array, dimension (LDX,NRHS)
+*          The solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  FERR    (output) REAL array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) REAL array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*  RWORK   (workspace) REAL array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
 *  =====================================================================
 *
 
@@ -669,170 +614,159 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="ctrtri"></A>
-  <H2>ctrtri</H2>
-  Computes the inverse of a triangular matrix.
+  <A NAME="ctrsna"></A>
+  <H2>ctrsna</H2>
+  Estimates the reciprocal condition numbers (sensitivities)
   <PRE>
 USAGE:
-  info, a = NumRu::Lapack.ctrtri( uplo, diag, a)
+  s, sep, m, info = NumRu::Lapack.ctrsna( job, howmny, select, t, vl, vr, ldwork)
     or
-  NumRu::Lapack.ctrtri  # print help
+  NumRu::Lapack.ctrsna  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE CTRTRI( UPLO, DIAG, N, A, LDA, INFO )
+      SUBROUTINE CTRSNA( JOB, HOWMNY, SELECT, N, T, LDT, VL, LDVL, VR, LDVR, S, SEP, MM, M, WORK, LDWORK, RWORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  CTRTRI computes the inverse of a complex upper or lower triangular
-*  matrix A.
-*
-*  This is the Level 3 BLAS version of the algorithm.
+*  CTRSNA estimates reciprocal condition numbers for specified
+*  eigenvalues and/or right eigenvectors of a complex upper triangular
+*  matrix T (or of any matrix Q*T*Q**H with Q unitary).
 *
 
 *  Arguments
 *  =========
 *
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  A is upper triangular;
-*          = 'L':  A is lower triangular.
+*  JOB     (input) CHARACTER*1
+*          Specifies whether condition numbers are required for
+*          eigenvalues (S) or eigenvectors (SEP):
+*          = 'E': for eigenvalues only (S);
+*          = 'V': for eigenvectors only (SEP);
+*          = 'B': for both eigenvalues and eigenvectors (S and SEP).
 *
-*  DIAG    (input) CHARACTER*1
-*          = 'N':  A is non-unit triangular;
-*          = 'U':  A is unit triangular.
+*  HOWMNY  (input) CHARACTER*1
+*          = 'A': compute condition numbers for all eigenpairs;
+*          = 'S': compute condition numbers for selected eigenpairs
+*                 specified by the array SELECT.
+*
+*  SELECT  (input) LOGICAL array, dimension (N)
+*          If HOWMNY = 'S', SELECT specifies the eigenpairs for which
+*          condition numbers are required. To select condition numbers
+*          for the j-th eigenpair, SELECT(j) must be set to .TRUE..
+*          If HOWMNY = 'A', SELECT is not referenced.
 *
 *  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
+*          The order of the matrix T. N >= 0.
 *
-*  A       (input/output) COMPLEX array, dimension (LDA,N)
-*          On entry, the triangular matrix A.  If UPLO = 'U', the
-*          leading N-by-N upper triangular part of the array A contains
-*          the upper triangular matrix, and the strictly lower
-*          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading N-by-N lower triangular part of the array A contains
-*          the lower triangular matrix, and the strictly upper
-*          triangular part of A is not referenced.  If DIAG = 'U', the
-*          diagonal elements of A are also not referenced and are
-*          assumed to be 1.
-*          On exit, the (triangular) inverse of the original matrix, in
-*          the same storage format.
+*  T       (input) COMPLEX array, dimension (LDT,N)
+*          The upper triangular matrix T.
 *
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
+*  LDT     (input) INTEGER
+*          The leading dimension of the array T. LDT >= max(1,N).
+*
+*  VL      (input) COMPLEX array, dimension (LDVL,M)
+*          If JOB = 'E' or 'B', VL must contain left eigenvectors of T
+*          (or of any Q*T*Q**H with Q unitary), corresponding to the
+*          eigenpairs specified by HOWMNY and SELECT. The eigenvectors
+*          must be stored in consecutive columns of VL, as returned by
+*          CHSEIN or CTREVC.
+*          If JOB = 'V', VL is not referenced.
+*
+*  LDVL    (input) INTEGER
+*          The leading dimension of the array VL.
+*          LDVL >= 1; and if JOB = 'E' or 'B', LDVL >= N.
+*
+*  VR      (input) COMPLEX array, dimension (LDVR,M)
+*          If JOB = 'E' or 'B', VR must contain right eigenvectors of T
+*          (or of any Q*T*Q**H with Q unitary), corresponding to the
+*          eigenpairs specified by HOWMNY and SELECT. The eigenvectors
+*          must be stored in consecutive columns of VR, as returned by
+*          CHSEIN or CTREVC.
+*          If JOB = 'V', VR is not referenced.
+*
+*  LDVR    (input) INTEGER
+*          The leading dimension of the array VR.
+*          LDVR >= 1; and if JOB = 'E' or 'B', LDVR >= N.
+*
+*  S       (output) REAL array, dimension (MM)
+*          If JOB = 'E' or 'B', the reciprocal condition numbers of the
+*          selected eigenvalues, stored in consecutive elements of the
+*          array. Thus S(j), SEP(j), and the j-th columns of VL and VR
+*          all correspond to the same eigenpair (but not in general the
+*          j-th eigenpair, unless all eigenpairs are selected).
+*          If JOB = 'V', S is not referenced.
+*
+*  SEP     (output) REAL array, dimension (MM)
+*          If JOB = 'V' or 'B', the estimated reciprocal condition
+*          numbers of the selected eigenvectors, stored in consecutive
+*          elements of the array.
+*          If JOB = 'E', SEP is not referenced.
+*
+*  MM      (input) INTEGER
+*          The number of elements in the arrays S (if JOB = 'E' or 'B')
+*           and/or SEP (if JOB = 'V' or 'B'). MM >= M.
+*
+*  M       (output) INTEGER
+*          The number of elements of the arrays S and/or SEP actually
+*          used to store the estimated condition numbers.
+*          If HOWMNY = 'A', M is set to N.
+*
+*  WORK    (workspace) COMPLEX array, dimension (LDWORK,N+6)
+*          If JOB = 'E', WORK is not referenced.
+*
+*  LDWORK  (input) INTEGER
+*          The leading dimension of the array WORK.
+*          LDWORK >= 1; and if JOB = 'V' or 'B', LDWORK >= N.
+*
+*  RWORK   (workspace) REAL array, dimension (N)
+*          If JOB = 'E', RWORK is not referenced.
 *
 *  INFO    (output) INTEGER
 *          = 0: successful exit
 *          < 0: if INFO = -i, the i-th argument had an illegal value
-*          > 0: if INFO = i, A(i,i) is exactly zero.  The triangular
-*               matrix is singular and its inverse can not be computed.
 *
 
-*  =====================================================================
+*  Further Details
+*  ===============
 *
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="ctrrfs"></A>
-  <H2>ctrrfs</H2>
-  Provides forward and backward error bounds for the solution
-  <PRE>
-USAGE:
-  ferr, berr, info = NumRu::Lapack.ctrrfs( uplo, trans, diag, a, b, x)
-    or
-  NumRu::Lapack.ctrrfs  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CTRRFS( UPLO, TRANS, DIAG, N, NRHS, A, LDA, B, LDB, X, LDX, FERR, BERR, WORK, RWORK, INFO )
-
-*  Purpose
-*  =======
+*  The reciprocal of the condition number of an eigenvalue lambda is
+*  defined as
 *
-*  CTRRFS provides error bounds and backward error estimates for the
-*  solution to a system of linear equations with a triangular
-*  coefficient matrix.
+*          S(lambda) = |v'*u| / (norm(u)*norm(v))
 *
-*  The solution matrix X must be computed by CTRTRS or some other
-*  means before entering this routine.  CTRRFS does not do iterative
-*  refinement because doing so cannot improve the backward error.
+*  where u and v are the right and left eigenvectors of T corresponding
+*  to lambda; v' denotes the conjugate transpose of v, and norm(u)
+*  denotes the Euclidean norm. These reciprocal condition numbers always
+*  lie between zero (very badly conditioned) and one (very well
+*  conditioned). If n = 1, S(lambda) is defined to be 1.
 *
-
-*  Arguments
-*  =========
+*  An approximate error bound for a computed eigenvalue W(i) is given by
 *
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  A is upper triangular;
-*          = 'L':  A is lower triangular.
+*                      EPS * norm(T) / S(i)
 *
-*  TRANS   (input) CHARACTER*1
-*          Specifies the form of the system of equations:
-*          = 'N':  A * X = B     (No transpose)
-*          = 'T':  A**T * X = B  (Transpose)
-*          = 'C':  A**H * X = B  (Conjugate transpose)
+*  where EPS is the machine precision.
 *
-*  DIAG    (input) CHARACTER*1
-*          = 'N':  A is non-unit triangular;
-*          = 'U':  A is unit triangular.
+*  The reciprocal of the condition number of the right eigenvector u
+*  corresponding to lambda is defined as follows. Suppose
 *
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
+*              T = ( lambda  c  )
+*                  (   0    T22 )
 *
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrices B and X.  NRHS >= 0.
+*  Then the reciprocal condition number is
 *
-*  A       (input) COMPLEX array, dimension (LDA,N)
-*          The triangular matrix A.  If UPLO = 'U', the leading N-by-N
-*          upper triangular part of the array A contains the upper
-*          triangular matrix, and the strictly lower triangular part of
-*          A is not referenced.  If UPLO = 'L', the leading N-by-N lower
-*          triangular part of the array A contains the lower triangular
-*          matrix, and the strictly upper triangular part of A is not
-*          referenced.  If DIAG = 'U', the diagonal elements of A are
-*          also not referenced and are assumed to be 1.
+*          SEP( lambda, T22 ) = sigma-min( T22 - lambda*I )
 *
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
+*  where sigma-min denotes the smallest singular value. We approximate
+*  the smallest singular value by the reciprocal of an estimate of the
+*  one-norm of the inverse of T22 - lambda*I. If n = 1, SEP(1) is
+*  defined to be abs(T(1,1)).
 *
-*  B       (input) COMPLEX array, dimension (LDB,NRHS)
-*          The right hand side matrix B.
+*  An approximate error bound for a computed right eigenvector VR(i)
+*  is given by
 *
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
+*                      EPS * norm(T) / SEP(i)
 *
-*  X       (input) COMPLEX array, dimension (LDX,NRHS)
-*          The solution matrix X.
-*
-*  LDX     (input) INTEGER
-*          The leading dimension of the array X.  LDX >= max(1,N).
-*
-*  FERR    (output) REAL array, dimension (NRHS)
-*          The estimated forward error bound for each solution vector
-*          X(j) (the j-th column of the solution matrix X).
-*          If XTRUE is the true solution corresponding to X(j), FERR(j)
-*          is an estimated upper bound for the magnitude of the largest
-*          element in (X(j) - XTRUE) divided by the magnitude of the
-*          largest element in X(j).  The estimate is as reliable as
-*          the estimate for RCOND, and is almost always a slight
-*          overestimate of the true error.
-*
-*  BERR    (output) REAL array, dimension (NRHS)
-*          The componentwise relative backward error of each solution
-*          vector X(j) (i.e., the smallest relative change in
-*          any element of A or B that makes X(j) an exact solution).
-*
-*  WORK    (workspace) COMPLEX array, dimension (2*N)
-*
-*  RWORK   (workspace) REAL array, dimension (N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
 *  =====================================================================
 *
 
@@ -930,6 +864,139 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
+  <A NAME="ctrti2"></A>
+  <H2>ctrti2</H2>
+  
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.ctrti2( uplo, diag, a)
+    or
+  NumRu::Lapack.ctrti2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CTRTI2( UPLO, DIAG, N, A, LDA, INFO )
+
+*  Purpose
+*  =======
+*
+*  CTRTI2 computes the inverse of a complex upper or lower triangular
+*  matrix.
+*
+*  This is the Level 2 BLAS version of the algorithm.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the matrix A is upper or lower triangular.
+*          = 'U':  Upper triangular
+*          = 'L':  Lower triangular
+*
+*  DIAG    (input) CHARACTER*1
+*          Specifies whether or not the matrix A is unit triangular.
+*          = 'N':  Non-unit triangular
+*          = 'U':  Unit triangular
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the triangular matrix A.  If UPLO = 'U', the
+*          leading n by n upper triangular part of the array A contains
+*          the upper triangular matrix, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading n by n lower triangular part of the array A contains
+*          the lower triangular matrix, and the strictly upper
+*          triangular part of A is not referenced.  If DIAG = 'U', the
+*          diagonal elements of A are also not referenced and are
+*          assumed to be 1.
+*
+*          On exit, the (triangular) inverse of the original matrix, in
+*          the same storage format.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ctrtri"></A>
+  <H2>ctrtri</H2>
+  Computes the inverse of a triangular matrix.
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.ctrtri( uplo, diag, a)
+    or
+  NumRu::Lapack.ctrtri  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CTRTRI( UPLO, DIAG, N, A, LDA, INFO )
+
+*  Purpose
+*  =======
+*
+*  CTRTRI computes the inverse of a complex upper or lower triangular
+*  matrix A.
+*
+*  This is the Level 3 BLAS version of the algorithm.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  A is upper triangular;
+*          = 'L':  A is lower triangular.
+*
+*  DIAG    (input) CHARACTER*1
+*          = 'N':  A is non-unit triangular;
+*          = 'U':  A is unit triangular.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the triangular matrix A.  If UPLO = 'U', the
+*          leading N-by-N upper triangular part of the array A contains
+*          the upper triangular matrix, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading N-by-N lower triangular part of the array A contains
+*          the lower triangular matrix, and the strictly upper
+*          triangular part of A is not referenced.  If DIAG = 'U', the
+*          diagonal elements of A are also not referenced and are
+*          assumed to be 1.
+*          On exit, the (triangular) inverse of the original matrix, in
+*          the same storage format.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, A(i,i) is exactly zero.  The triangular
+*               matrix is singular and its inverse can not be computed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
   <A NAME="ctrtrs"></A>
   <H2>ctrtrs</H2>
   Solves a triangular system of linear equations AX=B,
@@ -1004,73 +1071,6 @@ FORTRAN MANUAL
 *          > 0: if INFO = i, the i-th diagonal element of A is zero,
 *               indicating that the matrix is singular and the solutions
 *               X have not been computed.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="ctrti2"></A>
-  <H2>ctrti2</H2>
-  
-  <PRE>
-USAGE:
-  info, a = NumRu::Lapack.ctrti2( uplo, diag, a)
-    or
-  NumRu::Lapack.ctrti2  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CTRTI2( UPLO, DIAG, N, A, LDA, INFO )
-
-*  Purpose
-*  =======
-*
-*  CTRTI2 computes the inverse of a complex upper or lower triangular
-*  matrix.
-*
-*  This is the Level 2 BLAS version of the algorithm.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          Specifies whether the matrix A is upper or lower triangular.
-*          = 'U':  Upper triangular
-*          = 'L':  Lower triangular
-*
-*  DIAG    (input) CHARACTER*1
-*          Specifies whether or not the matrix A is unit triangular.
-*          = 'N':  Non-unit triangular
-*          = 'U':  Unit triangular
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input/output) COMPLEX array, dimension (LDA,N)
-*          On entry, the triangular matrix A.  If UPLO = 'U', the
-*          leading n by n upper triangular part of the array A contains
-*          the upper triangular matrix, and the strictly lower
-*          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading n by n lower triangular part of the array A contains
-*          the lower triangular matrix, and the strictly upper
-*          triangular part of A is not referenced.  If DIAG = 'U', the
-*          diagonal elements of A are also not referenced and are
-*          assumed to be 1.
-*
-*          On exit, the (triangular) inverse of the original matrix, in
-*          the same storage format.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -k, the k-th argument had an illegal value
 *
 
 *  =====================================================================

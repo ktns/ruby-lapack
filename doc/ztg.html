@@ -6,15 +6,408 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for triangular matrices, generalized problem (i.e., a pair of triangular matrices) matrix</H1>
     <UL>
-      <LI><A HREF="#ztgsen">ztgsen</A>: Reorders the generalized Schur decomposition of a complex</LI>
-      <LI><A HREF="#ztgsyl">ztgsyl</A>: Solves the generalized Sylvester equation.</LI>
-      <LI><A HREF="#ztgexc">ztgexc</A>: Reorders the generalized Schur decomposition of a complex</LI>
-      <LI><A HREF="#ztgsna">ztgsna</A>: Estimates reciprocal condition numbers for specified</LI>
-      <LI><A HREF="#ztgex2">ztgex2</A>: </LI>
       <LI><A HREF="#ztgevc">ztgevc</A>: Computes some or all of the right and/or left generalized eigenvectors</LI>
-      <LI><A HREF="#ztgsy2">ztgsy2</A>: </LI>
+      <LI><A HREF="#ztgex2">ztgex2</A>: </LI>
+      <LI><A HREF="#ztgexc">ztgexc</A>: Reorders the generalized Schur decomposition of a complex</LI>
+      <LI><A HREF="#ztgsen">ztgsen</A>: Reorders the generalized Schur decomposition of a complex</LI>
       <LI><A HREF="#ztgsja">ztgsja</A>: Computes the generalized singular value decomposition of two complex</LI>
+      <LI><A HREF="#ztgsna">ztgsna</A>: Estimates reciprocal condition numbers for specified</LI>
+      <LI><A HREF="#ztgsy2">ztgsy2</A>: </LI>
+      <LI><A HREF="#ztgsyl">ztgsyl</A>: Solves the generalized Sylvester equation.</LI>
     </UL>
+
+  <A NAME="ztgevc"></A>
+  <H2>ztgevc</H2>
+  Computes some or all of the right and/or left generalized eigenvectors
+  <PRE>
+USAGE:
+  m, info, vl, vr = NumRu::Lapack.ztgevc( side, howmny, select, s, p, vl, vr)
+    or
+  NumRu::Lapack.ztgevc  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZTGEVC( SIDE, HOWMNY, SELECT, N, S, LDS, P, LDP, VL, LDVL, VR, LDVR, MM, M, WORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZTGEVC computes some or all of the right and/or left eigenvectors of
+*  a pair of complex matrices (S,P), where S and P are upper triangular.
+*  Matrix pairs of this type are produced by the generalized Schur
+*  factorization of a complex matrix pair (A,B):
+*  
+*     A = Q*S*Z**H,  B = Q*P*Z**H
+*  
+*  as computed by ZGGHRD + ZHGEQZ.
+*  
+*  The right eigenvector x and the left eigenvector y of (S,P)
+*  corresponding to an eigenvalue w are defined by:
+*  
+*     S*x = w*P*x,  (y**H)*S = w*(y**H)*P,
+*  
+*  where y**H denotes the conjugate tranpose of y.
+*  The eigenvalues are not input to this routine, but are computed
+*  directly from the diagonal elements of S and P.
+*  
+*  This routine returns the matrices X and/or Y of right and left
+*  eigenvectors of (S,P), or the products Z*X and/or Q*Y,
+*  where Z and Q are input matrices.
+*  If Q and Z are the unitary factors from the generalized Schur
+*  factorization of a matrix pair (A,B), then Z*X and Q*Y
+*  are the matrices of right and left eigenvectors of (A,B).
+*
+
+*  Arguments
+*  =========
+*
+*  SIDE    (input) CHARACTER*1
+*          = 'R': compute right eigenvectors only;
+*          = 'L': compute left eigenvectors only;
+*          = 'B': compute both right and left eigenvectors.
+*
+*  HOWMNY  (input) CHARACTER*1
+*          = 'A': compute all right and/or left eigenvectors;
+*          = 'B': compute all right and/or left eigenvectors,
+*                 backtransformed by the matrices in VR and/or VL;
+*          = 'S': compute selected right and/or left eigenvectors,
+*                 specified by the logical array SELECT.
+*
+*  SELECT  (input) LOGICAL array, dimension (N)
+*          If HOWMNY='S', SELECT specifies the eigenvectors to be
+*          computed.  The eigenvector corresponding to the j-th
+*          eigenvalue is computed if SELECT(j) = .TRUE..
+*          Not referenced if HOWMNY = 'A' or 'B'.
+*
+*  N       (input) INTEGER
+*          The order of the matrices S and P.  N >= 0.
+*
+*  S       (input) COMPLEX*16 array, dimension (LDS,N)
+*          The upper triangular matrix S from a generalized Schur
+*          factorization, as computed by ZHGEQZ.
+*
+*  LDS     (input) INTEGER
+*          The leading dimension of array S.  LDS >= max(1,N).
+*
+*  P       (input) COMPLEX*16 array, dimension (LDP,N)
+*          The upper triangular matrix P from a generalized Schur
+*          factorization, as computed by ZHGEQZ.  P must have real
+*          diagonal elements.
+*
+*  LDP     (input) INTEGER
+*          The leading dimension of array P.  LDP >= max(1,N).
+*
+*  VL      (input/output) COMPLEX*16 array, dimension (LDVL,MM)
+*          On entry, if SIDE = 'L' or 'B' and HOWMNY = 'B', VL must
+*          contain an N-by-N matrix Q (usually the unitary matrix Q
+*          of left Schur vectors returned by ZHGEQZ).
+*          On exit, if SIDE = 'L' or 'B', VL contains:
+*          if HOWMNY = 'A', the matrix Y of left eigenvectors of (S,P);
+*          if HOWMNY = 'B', the matrix Q*Y;
+*          if HOWMNY = 'S', the left eigenvectors of (S,P) specified by
+*                      SELECT, stored consecutively in the columns of
+*                      VL, in the same order as their eigenvalues.
+*          Not referenced if SIDE = 'R'.
+*
+*  LDVL    (input) INTEGER
+*          The leading dimension of array VL.  LDVL >= 1, and if
+*          SIDE = 'L' or 'l' or 'B' or 'b', LDVL >= N.
+*
+*  VR      (input/output) COMPLEX*16 array, dimension (LDVR,MM)
+*          On entry, if SIDE = 'R' or 'B' and HOWMNY = 'B', VR must
+*          contain an N-by-N matrix Q (usually the unitary matrix Z
+*          of right Schur vectors returned by ZHGEQZ).
+*          On exit, if SIDE = 'R' or 'B', VR contains:
+*          if HOWMNY = 'A', the matrix X of right eigenvectors of (S,P);
+*          if HOWMNY = 'B', the matrix Z*X;
+*          if HOWMNY = 'S', the right eigenvectors of (S,P) specified by
+*                      SELECT, stored consecutively in the columns of
+*                      VR, in the same order as their eigenvalues.
+*          Not referenced if SIDE = 'L'.
+*
+*  LDVR    (input) INTEGER
+*          The leading dimension of the array VR.  LDVR >= 1, and if
+*          SIDE = 'R' or 'B', LDVR >= N.
+*
+*  MM      (input) INTEGER
+*          The number of columns in the arrays VL and/or VR. MM >= M.
+*
+*  M       (output) INTEGER
+*          The number of columns in the arrays VL and/or VR actually
+*          used to store the eigenvectors.  If HOWMNY = 'A' or 'B', M
+*          is set to N.  Each selected eigenvector occupies one column.
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (2*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztgex2"></A>
+  <H2>ztgex2</H2>
+  
+  <PRE>
+USAGE:
+  info, a, b, q, z = NumRu::Lapack.ztgex2( wantq, wantz, a, b, q, ldq, z, ldz, j1)
+    or
+  NumRu::Lapack.ztgex2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZTGEX2( WANTQ, WANTZ, N, A, LDA, B, LDB, Q, LDQ, Z, LDZ, J1, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZTGEX2 swaps adjacent diagonal 1 by 1 blocks (A11,B11) and (A22,B22)
+*  in an upper triangular matrix pair (A, B) by an unitary equivalence
+*  transformation.
+*
+*  (A, B) must be in generalized Schur canonical form, that is, A and
+*  B are both upper triangular.
+*
+*  Optionally, the matrices Q and Z of generalized Schur vectors are
+*  updated.
+*
+*         Q(in) * A(in) * Z(in)' = Q(out) * A(out) * Z(out)'
+*         Q(in) * B(in) * Z(in)' = Q(out) * B(out) * Z(out)'
+*
+*
+
+*  Arguments
+*  =========
+*
+*  WANTQ   (input) LOGICAL
+*          .TRUE. : update the left transformation matrix Q;
+*          .FALSE.: do not update Q.
+*
+*  WANTZ   (input) LOGICAL
+*          .TRUE. : update the right transformation matrix Z;
+*          .FALSE.: do not update Z.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B. N >= 0.
+*
+*  A       (input/output) COMPLEX*16 arrays, dimensions (LDA,N)
+*          On entry, the matrix A in the pair (A, B).
+*          On exit, the updated matrix A.
+*
+*  LDA     (input)  INTEGER
+*          The leading dimension of the array A. LDA >= max(1,N).
+*
+*  B       (input/output) COMPLEX*16 arrays, dimensions (LDB,N)
+*          On entry, the matrix B in the pair (A, B).
+*          On exit, the updated matrix B.
+*
+*  LDB     (input)  INTEGER
+*          The leading dimension of the array B. LDB >= max(1,N).
+*
+*  Q       (input/output) COMPLEX*16 array, dimension (LDZ,N)
+*          If WANTQ = .TRUE, on entry, the unitary matrix Q. On exit,
+*          the updated matrix Q.
+*          Not referenced if WANTQ = .FALSE..
+*
+*  LDQ     (input) INTEGER
+*          The leading dimension of the array Q. LDQ >= 1;
+*          If WANTQ = .TRUE., LDQ >= N.
+*
+*  Z       (input/output) COMPLEX*16 array, dimension (LDZ,N)
+*          If WANTZ = .TRUE, on entry, the unitary matrix Z. On exit,
+*          the updated matrix Z.
+*          Not referenced if WANTZ = .FALSE..
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z. LDZ >= 1;
+*          If WANTZ = .TRUE., LDZ >= N.
+*
+*  J1      (input) INTEGER
+*          The index to the first block (A11, B11).
+*
+*  INFO    (output) INTEGER
+*           =0:  Successful exit.
+*           =1:  The transformed matrix pair (A, B) would be too far
+*                from generalized Schur form; the problem is ill-
+*                conditioned. 
+*
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
+*     Umea University, S-901 87 Umea, Sweden.
+*
+*  In the current code both weak and strong stability tests are
+*  performed. The user can omit the strong stability test by changing
+*  the internal logical parameter WANDS to .FALSE.. See ref. [2] for
+*  details.
+*
+*  [1] B. Kagstrom; A Direct Method for Reordering Eigenvalues in the
+*      Generalized Real Schur Form of a Regular Matrix Pair (A, B), in
+*      M.S. Moonen et al (eds), Linear Algebra for Large Scale and
+*      Real-Time Applications, Kluwer Academic Publ. 1993, pp 195-218.
+*
+*  [2] B. Kagstrom and P. Poromaa; Computing Eigenspaces with Specified
+*      Eigenvalues of a Regular Matrix Pair (A, B) and Condition
+*      Estimation: Theory, Algorithms and Software, Report UMINF-94.04,
+*      Department of Computing Science, Umea University, S-901 87 Umea,
+*      Sweden, 1994. Also as LAPACK Working Note 87. To appear in
+*      Numerical Algorithms, 1996.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztgexc"></A>
+  <H2>ztgexc</H2>
+  Reorders the generalized Schur decomposition of a complex
+  <PRE>
+USAGE:
+  info, a, b, q, z, ilst = NumRu::Lapack.ztgexc( wantq, wantz, a, b, q, ldq, z, ifst, ilst)
+    or
+  NumRu::Lapack.ztgexc  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZTGEXC( WANTQ, WANTZ, N, A, LDA, B, LDB, Q, LDQ, Z, LDZ, IFST, ILST, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZTGEXC reorders the generalized Schur decomposition of a complex
+*  matrix pair (A,B), using an unitary equivalence transformation
+*  (A, B) := Q * (A, B) * Z', so that the diagonal block of (A, B) with
+*  row index IFST is moved to row ILST.
+*
+*  (A, B) must be in generalized Schur canonical form, that is, A and
+*  B are both upper triangular.
+*
+*  Optionally, the matrices Q and Z of generalized Schur vectors are
+*  updated.
+*
+*         Q(in) * A(in) * Z(in)' = Q(out) * A(out) * Z(out)'
+*         Q(in) * B(in) * Z(in)' = Q(out) * B(out) * Z(out)'
+*
+
+*  Arguments
+*  =========
+*
+*  WANTQ   (input) LOGICAL
+*          .TRUE. : update the left transformation matrix Q;
+*          .FALSE.: do not update Q.
+*
+*  WANTZ   (input) LOGICAL
+*          .TRUE. : update the right transformation matrix Z;
+*          .FALSE.: do not update Z.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B. N >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+*          On entry, the upper triangular matrix A in the pair (A, B).
+*          On exit, the updated matrix A.
+*
+*  LDA     (input)  INTEGER
+*          The leading dimension of the array A. LDA >= max(1,N).
+*
+*  B       (input/output) COMPLEX*16 array, dimension (LDB,N)
+*          On entry, the upper triangular matrix B in the pair (A, B).
+*          On exit, the updated matrix B.
+*
+*  LDB     (input)  INTEGER
+*          The leading dimension of the array B. LDB >= max(1,N).
+*
+*  Q       (input/output) COMPLEX*16 array, dimension (LDZ,N)
+*          On entry, if WANTQ = .TRUE., the unitary matrix Q.
+*          On exit, the updated matrix Q.
+*          If WANTQ = .FALSE., Q is not referenced.
+*
+*  LDQ     (input) INTEGER
+*          The leading dimension of the array Q. LDQ >= 1;
+*          If WANTQ = .TRUE., LDQ >= N.
+*
+*  Z       (input/output) COMPLEX*16 array, dimension (LDZ,N)
+*          On entry, if WANTZ = .TRUE., the unitary matrix Z.
+*          On exit, the updated matrix Z.
+*          If WANTZ = .FALSE., Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z. LDZ >= 1;
+*          If WANTZ = .TRUE., LDZ >= N.
+*
+*  IFST    (input) INTEGER
+*  ILST    (input/output) INTEGER
+*          Specify the reordering of the diagonal blocks of (A, B).
+*          The block with row index IFST is moved to row ILST, by a
+*          sequence of swapping between adjacent blocks.
+*
+*  INFO    (output) INTEGER
+*           =0:  Successful exit.
+*           <0:  if INFO = -i, the i-th argument had an illegal value.
+*           =1:  The transformed matrix pair (A, B) would be too far
+*                from generalized Schur form; the problem is ill-
+*                conditioned. (A, B) may have been partially reordered,
+*                and ILST points to the first row of the current
+*                position of the block being moved.
+*
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
+*     Umea University, S-901 87 Umea, Sweden.
+*
+*  [1] B. Kagstrom; A Direct Method for Reordering Eigenvalues in the
+*      Generalized Real Schur Form of a Regular Matrix Pair (A, B), in
+*      M.S. Moonen et al (eds), Linear Algebra for Large Scale and
+*      Real-Time Applications, Kluwer Academic Publ. 1993, pp 195-218.
+*
+*  [2] B. Kagstrom and P. Poromaa; Computing Eigenspaces with Specified
+*      Eigenvalues of a Regular Matrix Pair (A, B) and Condition
+*      Estimation: Theory, Algorithms and Software, Report
+*      UMINF - 94.04, Department of Computing Science, Umea University,
+*      S-901 87 Umea, Sweden, 1994. Also as LAPACK Working Note 87.
+*      To appear in Numerical Algorithms, 1996.
+*
+*  [3] B. Kagstrom and P. Poromaa, LAPACK-Style Algorithms and Software
+*      for Solving the Generalized Sylvester Equation and Estimating the
+*      Separation between Regular Matrix Pairs, Report UMINF - 93.23,
+*      Department of Computing Science, Umea University, S-901 87 Umea,
+*      Sweden, December 1993, Revised April 1994, Also as LAPACK working
+*      Note 75. To appear in ACM Trans. on Math. Software, Vol 22, No 1,
+*      1996.
+*
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      INTEGER            HERE
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           XERBLA, ZTGEX2
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="ztgsen"></A>
   <H2>ztgsen</H2>
@@ -336,973 +729,6 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="ztgsyl"></A>
-  <H2>ztgsyl</H2>
-  Solves the generalized Sylvester equation.
-  <PRE>
-USAGE:
-  scale, dif, work, info, c, f = NumRu::Lapack.ztgsyl( trans, ijob, a, b, c, d, e, f, lwork)
-    or
-  NumRu::Lapack.ztgsyl  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZTGSYL( TRANS, IJOB, M, N, A, LDA, B, LDB, C, LDC, D, LDD, E, LDE, F, LDF, SCALE, DIF, WORK, LWORK, IWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZTGSYL solves the generalized Sylvester equation:
-*
-*              A * R - L * B = scale * C            (1)
-*              D * R - L * E = scale * F
-*
-*  where R and L are unknown m-by-n matrices, (A, D), (B, E) and
-*  (C, F) are given matrix pairs of size m-by-m, n-by-n and m-by-n,
-*  respectively, with complex entries. A, B, D and E are upper
-*  triangular (i.e., (A,D) and (B,E) in generalized Schur form).
-*
-*  The solution (R, L) overwrites (C, F). 0 <= SCALE <= 1
-*  is an output scaling factor chosen to avoid overflow.
-*
-*  In matrix notation (1) is equivalent to solve Zx = scale*b, where Z
-*  is defined as
-*
-*         Z = [ kron(In, A)  -kron(B', Im) ]        (2)
-*             [ kron(In, D)  -kron(E', Im) ],
-*
-*  Here Ix is the identity matrix of size x and X' is the conjugate
-*  transpose of X. Kron(X, Y) is the Kronecker product between the
-*  matrices X and Y.
-*
-*  If TRANS = 'C', y in the conjugate transposed system Z'*y = scale*b
-*  is solved for, which is equivalent to solve for R and L in
-*
-*              A' * R + D' * L = scale * C           (3)
-*              R * B' + L * E' = scale * -F
-*
-*  This case (TRANS = 'C') is used to compute an one-norm-based estimate
-*  of Dif[(A,D), (B,E)], the separation between the matrix pairs (A,D)
-*  and (B,E), using ZLACON.
-*
-*  If IJOB >= 1, ZTGSYL computes a Frobenius norm-based estimate of
-*  Dif[(A,D),(B,E)]. That is, the reciprocal of a lower bound on the
-*  reciprocal of the smallest singular value of Z.
-*
-*  This is a level-3 BLAS algorithm.
-*
-
-*  Arguments
-*  =========
-*
-*  TRANS   (input) CHARACTER*1
-*          = 'N': solve the generalized sylvester equation (1).
-*          = 'C': solve the "conjugate transposed" system (3).
-*
-*  IJOB    (input) INTEGER
-*          Specifies what kind of functionality to be performed.
-*          =0: solve (1) only.
-*          =1: The functionality of 0 and 3.
-*          =2: The functionality of 0 and 4.
-*          =3: Only an estimate of Dif[(A,D), (B,E)] is computed.
-*              (look ahead strategy is used).
-*          =4: Only an estimate of Dif[(A,D), (B,E)] is computed.
-*              (ZGECON on sub-systems is used).
-*          Not referenced if TRANS = 'C'.
-*
-*  M       (input) INTEGER
-*          The order of the matrices A and D, and the row dimension of
-*          the matrices C, F, R and L.
-*
-*  N       (input) INTEGER
-*          The order of the matrices B and E, and the column dimension
-*          of the matrices C, F, R and L.
-*
-*  A       (input) COMPLEX*16 array, dimension (LDA, M)
-*          The upper triangular matrix A.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A. LDA >= max(1, M).
-*
-*  B       (input) COMPLEX*16 array, dimension (LDB, N)
-*          The upper triangular matrix B.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B. LDB >= max(1, N).
-*
-*  C       (input/output) COMPLEX*16 array, dimension (LDC, N)
-*          On entry, C contains the right-hand-side of the first matrix
-*          equation in (1) or (3).
-*          On exit, if IJOB = 0, 1 or 2, C has been overwritten by
-*          the solution R. If IJOB = 3 or 4 and TRANS = 'N', C holds R,
-*          the solution achieved during the computation of the
-*          Dif-estimate.
-*
-*  LDC     (input) INTEGER
-*          The leading dimension of the array C. LDC >= max(1, M).
-*
-*  D       (input) COMPLEX*16 array, dimension (LDD, M)
-*          The upper triangular matrix D.
-*
-*  LDD     (input) INTEGER
-*          The leading dimension of the array D. LDD >= max(1, M).
-*
-*  E       (input) COMPLEX*16 array, dimension (LDE, N)
-*          The upper triangular matrix E.
-*
-*  LDE     (input) INTEGER
-*          The leading dimension of the array E. LDE >= max(1, N).
-*
-*  F       (input/output) COMPLEX*16 array, dimension (LDF, N)
-*          On entry, F contains the right-hand-side of the second matrix
-*          equation in (1) or (3).
-*          On exit, if IJOB = 0, 1 or 2, F has been overwritten by
-*          the solution L. If IJOB = 3 or 4 and TRANS = 'N', F holds L,
-*          the solution achieved during the computation of the
-*          Dif-estimate.
-*
-*  LDF     (input) INTEGER
-*          The leading dimension of the array F. LDF >= max(1, M).
-*
-*  DIF     (output) DOUBLE PRECISION
-*          On exit DIF is the reciprocal of a lower bound of the
-*          reciprocal of the Dif-function, i.e. DIF is an upper bound of
-*          Dif[(A,D), (B,E)] = sigma-min(Z), where Z as in (2).
-*          IF IJOB = 0 or TRANS = 'C', DIF is not referenced.
-*
-*  SCALE   (output) DOUBLE PRECISION
-*          On exit SCALE is the scaling factor in (1) or (3).
-*          If 0 < SCALE < 1, C and F hold the solutions R and L, resp.,
-*          to a slightly perturbed system but the input matrices A, B,
-*          D and E have not been changed. If SCALE = 0, R and L will
-*          hold the solutions to the homogenious system with C = F = 0.
-*
-*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK. LWORK > = 1.
-*          If IJOB = 1 or 2 and TRANS = 'N', LWORK >= max(1,2*M*N).
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  IWORK   (workspace) INTEGER array, dimension (M+N+2)
-*
-*  INFO    (output) INTEGER
-*            =0: successful exit
-*            <0: If INFO = -i, the i-th argument had an illegal value.
-*            >0: (A, D) and (B, E) have common or very close
-*                eigenvalues.
-*
-
-*  Further Details
-*  ===============
-*
-*  Based on contributions by
-*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
-*     Umea University, S-901 87 Umea, Sweden.
-*
-*  [1] B. Kagstrom and P. Poromaa, LAPACK-Style Algorithms and Software
-*      for Solving the Generalized Sylvester Equation and Estimating the
-*      Separation between Regular Matrix Pairs, Report UMINF - 93.23,
-*      Department of Computing Science, Umea University, S-901 87 Umea,
-*      Sweden, December 1993, Revised April 1994, Also as LAPACK Working
-*      Note 75.  To appear in ACM Trans. on Math. Software, Vol 22,
-*      No 1, 1996.
-*
-*  [2] B. Kagstrom, A Perturbation Analysis of the Generalized Sylvester
-*      Equation (AR - LB, DR - LE ) = (C, F), SIAM J. Matrix Anal.
-*      Appl., 15(4):1045-1060, 1994.
-*
-*  [3] B. Kagstrom and L. Westin, Generalized Schur Methods with
-*      Condition Estimators for Solving the Generalized Sylvester
-*      Equation, IEEE Transactions on Automatic Control, Vol. 34, No. 7,
-*      July 1989, pp 745-751.
-*
-*  =====================================================================
-*  Replaced various illegal calls to CCOPY by calls to CLASET.
-*  Sven Hammarling, 1/5/02.
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="ztgexc"></A>
-  <H2>ztgexc</H2>
-  Reorders the generalized Schur decomposition of a complex
-  <PRE>
-USAGE:
-  info, a, b, q, z, ilst = NumRu::Lapack.ztgexc( wantq, wantz, a, b, q, ldq, z, ifst, ilst)
-    or
-  NumRu::Lapack.ztgexc  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZTGEXC( WANTQ, WANTZ, N, A, LDA, B, LDB, Q, LDQ, Z, LDZ, IFST, ILST, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZTGEXC reorders the generalized Schur decomposition of a complex
-*  matrix pair (A,B), using an unitary equivalence transformation
-*  (A, B) := Q * (A, B) * Z', so that the diagonal block of (A, B) with
-*  row index IFST is moved to row ILST.
-*
-*  (A, B) must be in generalized Schur canonical form, that is, A and
-*  B are both upper triangular.
-*
-*  Optionally, the matrices Q and Z of generalized Schur vectors are
-*  updated.
-*
-*         Q(in) * A(in) * Z(in)' = Q(out) * A(out) * Z(out)'
-*         Q(in) * B(in) * Z(in)' = Q(out) * B(out) * Z(out)'
-*
-
-*  Arguments
-*  =========
-*
-*  WANTQ   (input) LOGICAL
-*          .TRUE. : update the left transformation matrix Q;
-*          .FALSE.: do not update Q.
-*
-*  WANTZ   (input) LOGICAL
-*          .TRUE. : update the right transformation matrix Z;
-*          .FALSE.: do not update Z.
-*
-*  N       (input) INTEGER
-*          The order of the matrices A and B. N >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
-*          On entry, the upper triangular matrix A in the pair (A, B).
-*          On exit, the updated matrix A.
-*
-*  LDA     (input)  INTEGER
-*          The leading dimension of the array A. LDA >= max(1,N).
-*
-*  B       (input/output) COMPLEX*16 array, dimension (LDB,N)
-*          On entry, the upper triangular matrix B in the pair (A, B).
-*          On exit, the updated matrix B.
-*
-*  LDB     (input)  INTEGER
-*          The leading dimension of the array B. LDB >= max(1,N).
-*
-*  Q       (input/output) COMPLEX*16 array, dimension (LDZ,N)
-*          On entry, if WANTQ = .TRUE., the unitary matrix Q.
-*          On exit, the updated matrix Q.
-*          If WANTQ = .FALSE., Q is not referenced.
-*
-*  LDQ     (input) INTEGER
-*          The leading dimension of the array Q. LDQ >= 1;
-*          If WANTQ = .TRUE., LDQ >= N.
-*
-*  Z       (input/output) COMPLEX*16 array, dimension (LDZ,N)
-*          On entry, if WANTZ = .TRUE., the unitary matrix Z.
-*          On exit, the updated matrix Z.
-*          If WANTZ = .FALSE., Z is not referenced.
-*
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z. LDZ >= 1;
-*          If WANTZ = .TRUE., LDZ >= N.
-*
-*  IFST    (input) INTEGER
-*  ILST    (input/output) INTEGER
-*          Specify the reordering of the diagonal blocks of (A, B).
-*          The block with row index IFST is moved to row ILST, by a
-*          sequence of swapping between adjacent blocks.
-*
-*  INFO    (output) INTEGER
-*           =0:  Successful exit.
-*           <0:  if INFO = -i, the i-th argument had an illegal value.
-*           =1:  The transformed matrix pair (A, B) would be too far
-*                from generalized Schur form; the problem is ill-
-*                conditioned. (A, B) may have been partially reordered,
-*                and ILST points to the first row of the current
-*                position of the block being moved.
-*
-*
-
-*  Further Details
-*  ===============
-*
-*  Based on contributions by
-*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
-*     Umea University, S-901 87 Umea, Sweden.
-*
-*  [1] B. Kagstrom; A Direct Method for Reordering Eigenvalues in the
-*      Generalized Real Schur Form of a Regular Matrix Pair (A, B), in
-*      M.S. Moonen et al (eds), Linear Algebra for Large Scale and
-*      Real-Time Applications, Kluwer Academic Publ. 1993, pp 195-218.
-*
-*  [2] B. Kagstrom and P. Poromaa; Computing Eigenspaces with Specified
-*      Eigenvalues of a Regular Matrix Pair (A, B) and Condition
-*      Estimation: Theory, Algorithms and Software, Report
-*      UMINF - 94.04, Department of Computing Science, Umea University,
-*      S-901 87 Umea, Sweden, 1994. Also as LAPACK Working Note 87.
-*      To appear in Numerical Algorithms, 1996.
-*
-*  [3] B. Kagstrom and P. Poromaa, LAPACK-Style Algorithms and Software
-*      for Solving the Generalized Sylvester Equation and Estimating the
-*      Separation between Regular Matrix Pairs, Report UMINF - 93.23,
-*      Department of Computing Science, Umea University, S-901 87 Umea,
-*      Sweden, December 1993, Revised April 1994, Also as LAPACK working
-*      Note 75. To appear in ACM Trans. on Math. Software, Vol 22, No 1,
-*      1996.
-*
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      INTEGER            HERE
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           XERBLA, ZTGEX2
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="ztgsna"></A>
-  <H2>ztgsna</H2>
-  Estimates reciprocal condition numbers for specified
-  <PRE>
-USAGE:
-  s, dif, m, work, info = NumRu::Lapack.ztgsna( job, howmny, select, a, b, vl, vr, lwork)
-    or
-  NumRu::Lapack.ztgsna  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZTGSNA( JOB, HOWMNY, SELECT, N, A, LDA, B, LDB, VL, LDVL, VR, LDVR, S, DIF, MM, M, WORK, LWORK, IWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZTGSNA estimates reciprocal condition numbers for specified
-*  eigenvalues and/or eigenvectors of a matrix pair (A, B).
-*
-*  (A, B) must be in generalized Schur canonical form, that is, A and
-*  B are both upper triangular.
-*
-
-*  Arguments
-*  =========
-*
-*  JOB     (input) CHARACTER*1
-*          Specifies whether condition numbers are required for
-*          eigenvalues (S) or eigenvectors (DIF):
-*          = 'E': for eigenvalues only (S);
-*          = 'V': for eigenvectors only (DIF);
-*          = 'B': for both eigenvalues and eigenvectors (S and DIF).
-*
-*  HOWMNY  (input) CHARACTER*1
-*          = 'A': compute condition numbers for all eigenpairs;
-*          = 'S': compute condition numbers for selected eigenpairs
-*                 specified by the array SELECT.
-*
-*  SELECT  (input) LOGICAL array, dimension (N)
-*          If HOWMNY = 'S', SELECT specifies the eigenpairs for which
-*          condition numbers are required. To select condition numbers
-*          for the corresponding j-th eigenvalue and/or eigenvector,
-*          SELECT(j) must be set to .TRUE..
-*          If HOWMNY = 'A', SELECT is not referenced.
-*
-*  N       (input) INTEGER
-*          The order of the square matrix pair (A, B). N >= 0.
-*
-*  A       (input) COMPLEX*16 array, dimension (LDA,N)
-*          The upper triangular matrix A in the pair (A,B).
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A. LDA >= max(1,N).
-*
-*  B       (input) COMPLEX*16 array, dimension (LDB,N)
-*          The upper triangular matrix B in the pair (A, B).
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B. LDB >= max(1,N).
-*
-*  VL      (input) COMPLEX*16 array, dimension (LDVL,M)
-*          IF JOB = 'E' or 'B', VL must contain left eigenvectors of
-*          (A, B), corresponding to the eigenpairs specified by HOWMNY
-*          and SELECT.  The eigenvectors must be stored in consecutive
-*          columns of VL, as returned by ZTGEVC.
-*          If JOB = 'V', VL is not referenced.
-*
-*  LDVL    (input) INTEGER
-*          The leading dimension of the array VL. LDVL >= 1; and
-*          If JOB = 'E' or 'B', LDVL >= N.
-*
-*  VR      (input) COMPLEX*16 array, dimension (LDVR,M)
-*          IF JOB = 'E' or 'B', VR must contain right eigenvectors of
-*          (A, B), corresponding to the eigenpairs specified by HOWMNY
-*          and SELECT.  The eigenvectors must be stored in consecutive
-*          columns of VR, as returned by ZTGEVC.
-*          If JOB = 'V', VR is not referenced.
-*
-*  LDVR    (input) INTEGER
-*          The leading dimension of the array VR. LDVR >= 1;
-*          If JOB = 'E' or 'B', LDVR >= N.
-*
-*  S       (output) DOUBLE PRECISION array, dimension (MM)
-*          If JOB = 'E' or 'B', the reciprocal condition numbers of the
-*          selected eigenvalues, stored in consecutive elements of the
-*          array.
-*          If JOB = 'V', S is not referenced.
-*
-*  DIF     (output) DOUBLE PRECISION array, dimension (MM)
-*          If JOB = 'V' or 'B', the estimated reciprocal condition
-*          numbers of the selected eigenvectors, stored in consecutive
-*          elements of the array.
-*          If the eigenvalues cannot be reordered to compute DIF(j),
-*          DIF(j) is set to 0; this can only occur when the true value
-*          would be very small anyway.
-*          For each eigenvalue/vector specified by SELECT, DIF stores
-*          a Frobenius norm-based estimate of Difl.
-*          If JOB = 'E', DIF is not referenced.
-*
-*  MM      (input) INTEGER
-*          The number of elements in the arrays S and DIF. MM >= M.
-*
-*  M       (output) INTEGER
-*          The number of elements of the arrays S and DIF used to store
-*          the specified condition numbers; for each selected eigenvalue
-*          one element is used. If HOWMNY = 'A', M is set to N.
-*
-*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK  (input) INTEGER
-*          The dimension of the array WORK. LWORK >= max(1,N).
-*          If JOB = 'V' or 'B', LWORK >= max(1,2*N*N).
-*
-*  IWORK   (workspace) INTEGER array, dimension (N+2)
-*          If JOB = 'E', IWORK is not referenced.
-*
-*  INFO    (output) INTEGER
-*          = 0: Successful exit
-*          < 0: If INFO = -i, the i-th argument had an illegal value
-*
-
-*  Further Details
-*  ===============
-*
-*  The reciprocal of the condition number of the i-th generalized
-*  eigenvalue w = (a, b) is defined as
-*
-*          S(I) = (|v'Au|**2 + |v'Bu|**2)**(1/2) / (norm(u)*norm(v))
-*
-*  where u and v are the right and left eigenvectors of (A, B)
-*  corresponding to w; |z| denotes the absolute value of the complex
-*  number, and norm(u) denotes the 2-norm of the vector u. The pair
-*  (a, b) corresponds to an eigenvalue w = a/b (= v'Au/v'Bu) of the
-*  matrix pair (A, B). If both a and b equal zero, then (A,B) is
-*  singular and S(I) = -1 is returned.
-*
-*  An approximate error bound on the chordal distance between the i-th
-*  computed generalized eigenvalue w and the corresponding exact
-*  eigenvalue lambda is
-*
-*          chord(w, lambda) <=   EPS * norm(A, B) / S(I),
-*
-*  where EPS is the machine precision.
-*
-*  The reciprocal of the condition number of the right eigenvector u
-*  and left eigenvector v corresponding to the generalized eigenvalue w
-*  is defined as follows. Suppose
-*
-*                   (A, B) = ( a   *  ) ( b  *  )  1
-*                            ( 0  A22 ),( 0 B22 )  n-1
-*                              1  n-1     1 n-1
-*
-*  Then the reciprocal condition number DIF(I) is
-*
-*          Difl[(a, b), (A22, B22)]  = sigma-min( Zl )
-*
-*  where sigma-min(Zl) denotes the smallest singular value of
-*
-*         Zl = [ kron(a, In-1) -kron(1, A22) ]
-*              [ kron(b, In-1) -kron(1, B22) ].
-*
-*  Here In-1 is the identity matrix of size n-1 and X' is the conjugate
-*  transpose of X. kron(X, Y) is the Kronecker product between the
-*  matrices X and Y.
-*
-*  We approximate the smallest singular value of Zl with an upper
-*  bound. This is done by ZLATDF.
-*
-*  An approximate error bound for a computed eigenvector VL(i) or
-*  VR(i) is given by
-*
-*                      EPS * norm(A, B) / DIF(i).
-*
-*  See ref. [2-3] for more details and further references.
-*
-*  Based on contributions by
-*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
-*     Umea University, S-901 87 Umea, Sweden.
-*
-*  References
-*  ==========
-*
-*  [1] B. Kagstrom; A Direct Method for Reordering Eigenvalues in the
-*      Generalized Real Schur Form of a Regular Matrix Pair (A, B), in
-*      M.S. Moonen et al (eds), Linear Algebra for Large Scale and
-*      Real-Time Applications, Kluwer Academic Publ. 1993, pp 195-218.
-*
-*  [2] B. Kagstrom and P. Poromaa; Computing Eigenspaces with Specified
-*      Eigenvalues of a Regular Matrix Pair (A, B) and Condition
-*      Estimation: Theory, Algorithms and Software, Report
-*      UMINF - 94.04, Department of Computing Science, Umea University,
-*      S-901 87 Umea, Sweden, 1994. Also as LAPACK Working Note 87.
-*      To appear in Numerical Algorithms, 1996.
-*
-*  [3] B. Kagstrom and P. Poromaa, LAPACK-Style Algorithms and Software
-*      for Solving the Generalized Sylvester Equation and Estimating the
-*      Separation between Regular Matrix Pairs, Report UMINF - 93.23,
-*      Department of Computing Science, Umea University, S-901 87 Umea,
-*      Sweden, December 1993, Revised April 1994, Also as LAPACK Working
-*      Note 75.
-*      To appear in ACM Trans. on Math. Software, Vol 22, No 1, 1996.
-*
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="ztgex2"></A>
-  <H2>ztgex2</H2>
-  
-  <PRE>
-USAGE:
-  info, a, b, q, z = NumRu::Lapack.ztgex2( wantq, wantz, a, b, q, ldq, z, ldz, j1)
-    or
-  NumRu::Lapack.ztgex2  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZTGEX2( WANTQ, WANTZ, N, A, LDA, B, LDB, Q, LDQ, Z, LDZ, J1, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZTGEX2 swaps adjacent diagonal 1 by 1 blocks (A11,B11) and (A22,B22)
-*  in an upper triangular matrix pair (A, B) by an unitary equivalence
-*  transformation.
-*
-*  (A, B) must be in generalized Schur canonical form, that is, A and
-*  B are both upper triangular.
-*
-*  Optionally, the matrices Q and Z of generalized Schur vectors are
-*  updated.
-*
-*         Q(in) * A(in) * Z(in)' = Q(out) * A(out) * Z(out)'
-*         Q(in) * B(in) * Z(in)' = Q(out) * B(out) * Z(out)'
-*
-*
-
-*  Arguments
-*  =========
-*
-*  WANTQ   (input) LOGICAL
-*          .TRUE. : update the left transformation matrix Q;
-*          .FALSE.: do not update Q.
-*
-*  WANTZ   (input) LOGICAL
-*          .TRUE. : update the right transformation matrix Z;
-*          .FALSE.: do not update Z.
-*
-*  N       (input) INTEGER
-*          The order of the matrices A and B. N >= 0.
-*
-*  A       (input/output) COMPLEX*16 arrays, dimensions (LDA,N)
-*          On entry, the matrix A in the pair (A, B).
-*          On exit, the updated matrix A.
-*
-*  LDA     (input)  INTEGER
-*          The leading dimension of the array A. LDA >= max(1,N).
-*
-*  B       (input/output) COMPLEX*16 arrays, dimensions (LDB,N)
-*          On entry, the matrix B in the pair (A, B).
-*          On exit, the updated matrix B.
-*
-*  LDB     (input)  INTEGER
-*          The leading dimension of the array B. LDB >= max(1,N).
-*
-*  Q       (input/output) COMPLEX*16 array, dimension (LDZ,N)
-*          If WANTQ = .TRUE, on entry, the unitary matrix Q. On exit,
-*          the updated matrix Q.
-*          Not referenced if WANTQ = .FALSE..
-*
-*  LDQ     (input) INTEGER
-*          The leading dimension of the array Q. LDQ >= 1;
-*          If WANTQ = .TRUE., LDQ >= N.
-*
-*  Z       (input/output) COMPLEX*16 array, dimension (LDZ,N)
-*          If WANTZ = .TRUE, on entry, the unitary matrix Z. On exit,
-*          the updated matrix Z.
-*          Not referenced if WANTZ = .FALSE..
-*
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z. LDZ >= 1;
-*          If WANTZ = .TRUE., LDZ >= N.
-*
-*  J1      (input) INTEGER
-*          The index to the first block (A11, B11).
-*
-*  INFO    (output) INTEGER
-*           =0:  Successful exit.
-*           =1:  The transformed matrix pair (A, B) would be too far
-*                from generalized Schur form; the problem is ill-
-*                conditioned. 
-*
-*
-
-*  Further Details
-*  ===============
-*
-*  Based on contributions by
-*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
-*     Umea University, S-901 87 Umea, Sweden.
-*
-*  In the current code both weak and strong stability tests are
-*  performed. The user can omit the strong stability test by changing
-*  the internal logical parameter WANDS to .FALSE.. See ref. [2] for
-*  details.
-*
-*  [1] B. Kagstrom; A Direct Method for Reordering Eigenvalues in the
-*      Generalized Real Schur Form of a Regular Matrix Pair (A, B), in
-*      M.S. Moonen et al (eds), Linear Algebra for Large Scale and
-*      Real-Time Applications, Kluwer Academic Publ. 1993, pp 195-218.
-*
-*  [2] B. Kagstrom and P. Poromaa; Computing Eigenspaces with Specified
-*      Eigenvalues of a Regular Matrix Pair (A, B) and Condition
-*      Estimation: Theory, Algorithms and Software, Report UMINF-94.04,
-*      Department of Computing Science, Umea University, S-901 87 Umea,
-*      Sweden, 1994. Also as LAPACK Working Note 87. To appear in
-*      Numerical Algorithms, 1996.
-*
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="ztgevc"></A>
-  <H2>ztgevc</H2>
-  Computes some or all of the right and/or left generalized eigenvectors
-  <PRE>
-USAGE:
-  m, info, vl, vr = NumRu::Lapack.ztgevc( side, howmny, select, s, p, vl, vr)
-    or
-  NumRu::Lapack.ztgevc  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZTGEVC( SIDE, HOWMNY, SELECT, N, S, LDS, P, LDP, VL, LDVL, VR, LDVR, MM, M, WORK, RWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZTGEVC computes some or all of the right and/or left eigenvectors of
-*  a pair of complex matrices (S,P), where S and P are upper triangular.
-*  Matrix pairs of this type are produced by the generalized Schur
-*  factorization of a complex matrix pair (A,B):
-*  
-*     A = Q*S*Z**H,  B = Q*P*Z**H
-*  
-*  as computed by ZGGHRD + ZHGEQZ.
-*  
-*  The right eigenvector x and the left eigenvector y of (S,P)
-*  corresponding to an eigenvalue w are defined by:
-*  
-*     S*x = w*P*x,  (y**H)*S = w*(y**H)*P,
-*  
-*  where y**H denotes the conjugate tranpose of y.
-*  The eigenvalues are not input to this routine, but are computed
-*  directly from the diagonal elements of S and P.
-*  
-*  This routine returns the matrices X and/or Y of right and left
-*  eigenvectors of (S,P), or the products Z*X and/or Q*Y,
-*  where Z and Q are input matrices.
-*  If Q and Z are the unitary factors from the generalized Schur
-*  factorization of a matrix pair (A,B), then Z*X and Q*Y
-*  are the matrices of right and left eigenvectors of (A,B).
-*
-
-*  Arguments
-*  =========
-*
-*  SIDE    (input) CHARACTER*1
-*          = 'R': compute right eigenvectors only;
-*          = 'L': compute left eigenvectors only;
-*          = 'B': compute both right and left eigenvectors.
-*
-*  HOWMNY  (input) CHARACTER*1
-*          = 'A': compute all right and/or left eigenvectors;
-*          = 'B': compute all right and/or left eigenvectors,
-*                 backtransformed by the matrices in VR and/or VL;
-*          = 'S': compute selected right and/or left eigenvectors,
-*                 specified by the logical array SELECT.
-*
-*  SELECT  (input) LOGICAL array, dimension (N)
-*          If HOWMNY='S', SELECT specifies the eigenvectors to be
-*          computed.  The eigenvector corresponding to the j-th
-*          eigenvalue is computed if SELECT(j) = .TRUE..
-*          Not referenced if HOWMNY = 'A' or 'B'.
-*
-*  N       (input) INTEGER
-*          The order of the matrices S and P.  N >= 0.
-*
-*  S       (input) COMPLEX*16 array, dimension (LDS,N)
-*          The upper triangular matrix S from a generalized Schur
-*          factorization, as computed by ZHGEQZ.
-*
-*  LDS     (input) INTEGER
-*          The leading dimension of array S.  LDS >= max(1,N).
-*
-*  P       (input) COMPLEX*16 array, dimension (LDP,N)
-*          The upper triangular matrix P from a generalized Schur
-*          factorization, as computed by ZHGEQZ.  P must have real
-*          diagonal elements.
-*
-*  LDP     (input) INTEGER
-*          The leading dimension of array P.  LDP >= max(1,N).
-*
-*  VL      (input/output) COMPLEX*16 array, dimension (LDVL,MM)
-*          On entry, if SIDE = 'L' or 'B' and HOWMNY = 'B', VL must
-*          contain an N-by-N matrix Q (usually the unitary matrix Q
-*          of left Schur vectors returned by ZHGEQZ).
-*          On exit, if SIDE = 'L' or 'B', VL contains:
-*          if HOWMNY = 'A', the matrix Y of left eigenvectors of (S,P);
-*          if HOWMNY = 'B', the matrix Q*Y;
-*          if HOWMNY = 'S', the left eigenvectors of (S,P) specified by
-*                      SELECT, stored consecutively in the columns of
-*                      VL, in the same order as their eigenvalues.
-*          Not referenced if SIDE = 'R'.
-*
-*  LDVL    (input) INTEGER
-*          The leading dimension of array VL.  LDVL >= 1, and if
-*          SIDE = 'L' or 'l' or 'B' or 'b', LDVL >= N.
-*
-*  VR      (input/output) COMPLEX*16 array, dimension (LDVR,MM)
-*          On entry, if SIDE = 'R' or 'B' and HOWMNY = 'B', VR must
-*          contain an N-by-N matrix Q (usually the unitary matrix Z
-*          of right Schur vectors returned by ZHGEQZ).
-*          On exit, if SIDE = 'R' or 'B', VR contains:
-*          if HOWMNY = 'A', the matrix X of right eigenvectors of (S,P);
-*          if HOWMNY = 'B', the matrix Z*X;
-*          if HOWMNY = 'S', the right eigenvectors of (S,P) specified by
-*                      SELECT, stored consecutively in the columns of
-*                      VR, in the same order as their eigenvalues.
-*          Not referenced if SIDE = 'L'.
-*
-*  LDVR    (input) INTEGER
-*          The leading dimension of the array VR.  LDVR >= 1, and if
-*          SIDE = 'R' or 'B', LDVR >= N.
-*
-*  MM      (input) INTEGER
-*          The number of columns in the arrays VL and/or VR. MM >= M.
-*
-*  M       (output) INTEGER
-*          The number of columns in the arrays VL and/or VR actually
-*          used to store the eigenvectors.  If HOWMNY = 'A' or 'B', M
-*          is set to N.  Each selected eigenvector occupies one column.
-*
-*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
-*
-*  RWORK   (workspace) DOUBLE PRECISION array, dimension (2*N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit.
-*          < 0:  if INFO = -i, the i-th argument had an illegal value.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="ztgsy2"></A>
-  <H2>ztgsy2</H2>
-  
-  <PRE>
-USAGE:
-  scale, info, c, f, rdsum, rdscal = NumRu::Lapack.ztgsy2( trans, ijob, a, b, c, d, e, f, rdsum, rdscal)
-    or
-  NumRu::Lapack.ztgsy2  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZTGSY2( TRANS, IJOB, M, N, A, LDA, B, LDB, C, LDC, D, LDD, E, LDE, F, LDF, SCALE, RDSUM, RDSCAL, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZTGSY2 solves the generalized Sylvester equation
-*
-*              A * R - L * B = scale *   C               (1)
-*              D * R - L * E = scale * F
-*
-*  using Level 1 and 2 BLAS, where R and L are unknown M-by-N matrices,
-*  (A, D), (B, E) and (C, F) are given matrix pairs of size M-by-M,
-*  N-by-N and M-by-N, respectively. A, B, D and E are upper triangular
-*  (i.e., (A,D) and (B,E) in generalized Schur form).
-*
-*  The solution (R, L) overwrites (C, F). 0 <= SCALE <= 1 is an output
-*  scaling factor chosen to avoid overflow.
-*
-*  In matrix notation solving equation (1) corresponds to solve
-*  Zx = scale * b, where Z is defined as
-*
-*         Z = [ kron(In, A)  -kron(B', Im) ]             (2)
-*             [ kron(In, D)  -kron(E', Im) ],
-*
-*  Ik is the identity matrix of size k and X' is the transpose of X.
-*  kron(X, Y) is the Kronecker product between the matrices X and Y.
-*
-*  If TRANS = 'C', y in the conjugate transposed system Z'y = scale*b
-*  is solved for, which is equivalent to solve for R and L in
-*
-*              A' * R  + D' * L   = scale *  C           (3)
-*              R  * B' + L  * E'  = scale * -F
-*
-*  This case is used to compute an estimate of Dif[(A, D), (B, E)] =
-*  = sigma_min(Z) using reverse communicaton with ZLACON.
-*
-*  ZTGSY2 also (IJOB >= 1) contributes to the computation in ZTGSYL
-*  of an upper bound on the separation between to matrix pairs. Then
-*  the input (A, D), (B, E) are sub-pencils of two matrix pairs in
-*  ZTGSYL.
-*
-
-*  Arguments
-*  =========
-*
-*  TRANS   (input) CHARACTER*1
-*          = 'N', solve the generalized Sylvester equation (1).
-*          = 'T': solve the 'transposed' system (3).
-*
-*  IJOB    (input) INTEGER
-*          Specifies what kind of functionality to be performed.
-*          =0: solve (1) only.
-*          =1: A contribution from this subsystem to a Frobenius
-*              norm-based estimate of the separation between two matrix
-*              pairs is computed. (look ahead strategy is used).
-*          =2: A contribution from this subsystem to a Frobenius
-*              norm-based estimate of the separation between two matrix
-*              pairs is computed. (DGECON on sub-systems is used.)
-*          Not referenced if TRANS = 'T'.
-*
-*  M       (input) INTEGER
-*          On entry, M specifies the order of A and D, and the row
-*          dimension of C, F, R and L.
-*
-*  N       (input) INTEGER
-*          On entry, N specifies the order of B and E, and the column
-*          dimension of C, F, R and L.
-*
-*  A       (input) COMPLEX*16 array, dimension (LDA, M)
-*          On entry, A contains an upper triangular matrix.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the matrix A. LDA >= max(1, M).
-*
-*  B       (input) COMPLEX*16 array, dimension (LDB, N)
-*          On entry, B contains an upper triangular matrix.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the matrix B. LDB >= max(1, N).
-*
-*  C       (input/output) COMPLEX*16 array, dimension (LDC, N)
-*          On entry, C contains the right-hand-side of the first matrix
-*          equation in (1).
-*          On exit, if IJOB = 0, C has been overwritten by the solution
-*          R.
-*
-*  LDC     (input) INTEGER
-*          The leading dimension of the matrix C. LDC >= max(1, M).
-*
-*  D       (input) COMPLEX*16 array, dimension (LDD, M)
-*          On entry, D contains an upper triangular matrix.
-*
-*  LDD     (input) INTEGER
-*          The leading dimension of the matrix D. LDD >= max(1, M).
-*
-*  E       (input) COMPLEX*16 array, dimension (LDE, N)
-*          On entry, E contains an upper triangular matrix.
-*
-*  LDE     (input) INTEGER
-*          The leading dimension of the matrix E. LDE >= max(1, N).
-*
-*  F       (input/output) COMPLEX*16 array, dimension (LDF, N)
-*          On entry, F contains the right-hand-side of the second matrix
-*          equation in (1).
-*          On exit, if IJOB = 0, F has been overwritten by the solution
-*          L.
-*
-*  LDF     (input) INTEGER
-*          The leading dimension of the matrix F. LDF >= max(1, M).
-*
-*  SCALE   (output) DOUBLE PRECISION
-*          On exit, 0 <= SCALE <= 1. If 0 < SCALE < 1, the solutions
-*          R and L (C and F on entry) will hold the solutions to a
-*          slightly perturbed system but the input matrices A, B, D and
-*          E have not been changed. If SCALE = 0, R and L will hold the
-*          solutions to the homogeneous system with C = F = 0.
-*          Normally, SCALE = 1.
-*
-*  RDSUM   (input/output) DOUBLE PRECISION
-*          On entry, the sum of squares of computed contributions to
-*          the Dif-estimate under computation by ZTGSYL, where the
-*          scaling factor RDSCAL (see below) has been factored out.
-*          On exit, the corresponding sum of squares updated with the
-*          contributions from the current sub-system.
-*          If TRANS = 'T' RDSUM is not touched.
-*          NOTE: RDSUM only makes sense when ZTGSY2 is called by
-*          ZTGSYL.
-*
-*  RDSCAL  (input/output) DOUBLE PRECISION
-*          On entry, scaling factor used to prevent overflow in RDSUM.
-*          On exit, RDSCAL is updated w.r.t. the current contributions
-*          in RDSUM.
-*          If TRANS = 'T', RDSCAL is not touched.
-*          NOTE: RDSCAL only makes sense when ZTGSY2 is called by
-*          ZTGSYL.
-*
-*  INFO    (output) INTEGER
-*          On exit, if INFO is set to
-*            =0: Successful exit
-*            <0: If INFO = -i, input argument number i is illegal.
-*            >0: The matrix pairs (A, D) and (B, E) have common or very
-*                close eigenvalues.
-*
-
-*  Further Details
-*  ===============
-*
-*  Based on contributions by
-*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
-*     Umea University, S-901 87 Umea, Sweden.
-*
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
   <A NAME="ztgsja"></A>
   <H2>ztgsja</H2>
   Computes the generalized singular value decomposition of two complex
@@ -1557,6 +983,580 @@ FORTRAN MANUAL
 *  and R1 is an L-by-L nonsingular upper triangular matrix.
 *
 *  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztgsna"></A>
+  <H2>ztgsna</H2>
+  Estimates reciprocal condition numbers for specified
+  <PRE>
+USAGE:
+  s, dif, m, work, info = NumRu::Lapack.ztgsna( job, howmny, select, a, b, vl, vr, lwork)
+    or
+  NumRu::Lapack.ztgsna  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZTGSNA( JOB, HOWMNY, SELECT, N, A, LDA, B, LDB, VL, LDVL, VR, LDVR, S, DIF, MM, M, WORK, LWORK, IWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZTGSNA estimates reciprocal condition numbers for specified
+*  eigenvalues and/or eigenvectors of a matrix pair (A, B).
+*
+*  (A, B) must be in generalized Schur canonical form, that is, A and
+*  B are both upper triangular.
+*
+
+*  Arguments
+*  =========
+*
+*  JOB     (input) CHARACTER*1
+*          Specifies whether condition numbers are required for
+*          eigenvalues (S) or eigenvectors (DIF):
+*          = 'E': for eigenvalues only (S);
+*          = 'V': for eigenvectors only (DIF);
+*          = 'B': for both eigenvalues and eigenvectors (S and DIF).
+*
+*  HOWMNY  (input) CHARACTER*1
+*          = 'A': compute condition numbers for all eigenpairs;
+*          = 'S': compute condition numbers for selected eigenpairs
+*                 specified by the array SELECT.
+*
+*  SELECT  (input) LOGICAL array, dimension (N)
+*          If HOWMNY = 'S', SELECT specifies the eigenpairs for which
+*          condition numbers are required. To select condition numbers
+*          for the corresponding j-th eigenvalue and/or eigenvector,
+*          SELECT(j) must be set to .TRUE..
+*          If HOWMNY = 'A', SELECT is not referenced.
+*
+*  N       (input) INTEGER
+*          The order of the square matrix pair (A, B). N >= 0.
+*
+*  A       (input) COMPLEX*16 array, dimension (LDA,N)
+*          The upper triangular matrix A in the pair (A,B).
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A. LDA >= max(1,N).
+*
+*  B       (input) COMPLEX*16 array, dimension (LDB,N)
+*          The upper triangular matrix B in the pair (A, B).
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B. LDB >= max(1,N).
+*
+*  VL      (input) COMPLEX*16 array, dimension (LDVL,M)
+*          IF JOB = 'E' or 'B', VL must contain left eigenvectors of
+*          (A, B), corresponding to the eigenpairs specified by HOWMNY
+*          and SELECT.  The eigenvectors must be stored in consecutive
+*          columns of VL, as returned by ZTGEVC.
+*          If JOB = 'V', VL is not referenced.
+*
+*  LDVL    (input) INTEGER
+*          The leading dimension of the array VL. LDVL >= 1; and
+*          If JOB = 'E' or 'B', LDVL >= N.
+*
+*  VR      (input) COMPLEX*16 array, dimension (LDVR,M)
+*          IF JOB = 'E' or 'B', VR must contain right eigenvectors of
+*          (A, B), corresponding to the eigenpairs specified by HOWMNY
+*          and SELECT.  The eigenvectors must be stored in consecutive
+*          columns of VR, as returned by ZTGEVC.
+*          If JOB = 'V', VR is not referenced.
+*
+*  LDVR    (input) INTEGER
+*          The leading dimension of the array VR. LDVR >= 1;
+*          If JOB = 'E' or 'B', LDVR >= N.
+*
+*  S       (output) DOUBLE PRECISION array, dimension (MM)
+*          If JOB = 'E' or 'B', the reciprocal condition numbers of the
+*          selected eigenvalues, stored in consecutive elements of the
+*          array.
+*          If JOB = 'V', S is not referenced.
+*
+*  DIF     (output) DOUBLE PRECISION array, dimension (MM)
+*          If JOB = 'V' or 'B', the estimated reciprocal condition
+*          numbers of the selected eigenvectors, stored in consecutive
+*          elements of the array.
+*          If the eigenvalues cannot be reordered to compute DIF(j),
+*          DIF(j) is set to 0; this can only occur when the true value
+*          would be very small anyway.
+*          For each eigenvalue/vector specified by SELECT, DIF stores
+*          a Frobenius norm-based estimate of Difl.
+*          If JOB = 'E', DIF is not referenced.
+*
+*  MM      (input) INTEGER
+*          The number of elements in the arrays S and DIF. MM >= M.
+*
+*  M       (output) INTEGER
+*          The number of elements of the arrays S and DIF used to store
+*          the specified condition numbers; for each selected eigenvalue
+*          one element is used. If HOWMNY = 'A', M is set to N.
+*
+*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK  (input) INTEGER
+*          The dimension of the array WORK. LWORK >= max(1,N).
+*          If JOB = 'V' or 'B', LWORK >= max(1,2*N*N).
+*
+*  IWORK   (workspace) INTEGER array, dimension (N+2)
+*          If JOB = 'E', IWORK is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0: Successful exit
+*          < 0: If INFO = -i, the i-th argument had an illegal value
+*
+
+*  Further Details
+*  ===============
+*
+*  The reciprocal of the condition number of the i-th generalized
+*  eigenvalue w = (a, b) is defined as
+*
+*          S(I) = (|v'Au|**2 + |v'Bu|**2)**(1/2) / (norm(u)*norm(v))
+*
+*  where u and v are the right and left eigenvectors of (A, B)
+*  corresponding to w; |z| denotes the absolute value of the complex
+*  number, and norm(u) denotes the 2-norm of the vector u. The pair
+*  (a, b) corresponds to an eigenvalue w = a/b (= v'Au/v'Bu) of the
+*  matrix pair (A, B). If both a and b equal zero, then (A,B) is
+*  singular and S(I) = -1 is returned.
+*
+*  An approximate error bound on the chordal distance between the i-th
+*  computed generalized eigenvalue w and the corresponding exact
+*  eigenvalue lambda is
+*
+*          chord(w, lambda) <=   EPS * norm(A, B) / S(I),
+*
+*  where EPS is the machine precision.
+*
+*  The reciprocal of the condition number of the right eigenvector u
+*  and left eigenvector v corresponding to the generalized eigenvalue w
+*  is defined as follows. Suppose
+*
+*                   (A, B) = ( a   *  ) ( b  *  )  1
+*                            ( 0  A22 ),( 0 B22 )  n-1
+*                              1  n-1     1 n-1
+*
+*  Then the reciprocal condition number DIF(I) is
+*
+*          Difl[(a, b), (A22, B22)]  = sigma-min( Zl )
+*
+*  where sigma-min(Zl) denotes the smallest singular value of
+*
+*         Zl = [ kron(a, In-1) -kron(1, A22) ]
+*              [ kron(b, In-1) -kron(1, B22) ].
+*
+*  Here In-1 is the identity matrix of size n-1 and X' is the conjugate
+*  transpose of X. kron(X, Y) is the Kronecker product between the
+*  matrices X and Y.
+*
+*  We approximate the smallest singular value of Zl with an upper
+*  bound. This is done by ZLATDF.
+*
+*  An approximate error bound for a computed eigenvector VL(i) or
+*  VR(i) is given by
+*
+*                      EPS * norm(A, B) / DIF(i).
+*
+*  See ref. [2-3] for more details and further references.
+*
+*  Based on contributions by
+*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
+*     Umea University, S-901 87 Umea, Sweden.
+*
+*  References
+*  ==========
+*
+*  [1] B. Kagstrom; A Direct Method for Reordering Eigenvalues in the
+*      Generalized Real Schur Form of a Regular Matrix Pair (A, B), in
+*      M.S. Moonen et al (eds), Linear Algebra for Large Scale and
+*      Real-Time Applications, Kluwer Academic Publ. 1993, pp 195-218.
+*
+*  [2] B. Kagstrom and P. Poromaa; Computing Eigenspaces with Specified
+*      Eigenvalues of a Regular Matrix Pair (A, B) and Condition
+*      Estimation: Theory, Algorithms and Software, Report
+*      UMINF - 94.04, Department of Computing Science, Umea University,
+*      S-901 87 Umea, Sweden, 1994. Also as LAPACK Working Note 87.
+*      To appear in Numerical Algorithms, 1996.
+*
+*  [3] B. Kagstrom and P. Poromaa, LAPACK-Style Algorithms and Software
+*      for Solving the Generalized Sylvester Equation and Estimating the
+*      Separation between Regular Matrix Pairs, Report UMINF - 93.23,
+*      Department of Computing Science, Umea University, S-901 87 Umea,
+*      Sweden, December 1993, Revised April 1994, Also as LAPACK Working
+*      Note 75.
+*      To appear in ACM Trans. on Math. Software, Vol 22, No 1, 1996.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztgsy2"></A>
+  <H2>ztgsy2</H2>
+  
+  <PRE>
+USAGE:
+  scale, info, c, f, rdsum, rdscal = NumRu::Lapack.ztgsy2( trans, ijob, a, b, c, d, e, f, rdsum, rdscal)
+    or
+  NumRu::Lapack.ztgsy2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZTGSY2( TRANS, IJOB, M, N, A, LDA, B, LDB, C, LDC, D, LDD, E, LDE, F, LDF, SCALE, RDSUM, RDSCAL, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZTGSY2 solves the generalized Sylvester equation
+*
+*              A * R - L * B = scale *   C               (1)
+*              D * R - L * E = scale * F
+*
+*  using Level 1 and 2 BLAS, where R and L are unknown M-by-N matrices,
+*  (A, D), (B, E) and (C, F) are given matrix pairs of size M-by-M,
+*  N-by-N and M-by-N, respectively. A, B, D and E are upper triangular
+*  (i.e., (A,D) and (B,E) in generalized Schur form).
+*
+*  The solution (R, L) overwrites (C, F). 0 <= SCALE <= 1 is an output
+*  scaling factor chosen to avoid overflow.
+*
+*  In matrix notation solving equation (1) corresponds to solve
+*  Zx = scale * b, where Z is defined as
+*
+*         Z = [ kron(In, A)  -kron(B', Im) ]             (2)
+*             [ kron(In, D)  -kron(E', Im) ],
+*
+*  Ik is the identity matrix of size k and X' is the transpose of X.
+*  kron(X, Y) is the Kronecker product between the matrices X and Y.
+*
+*  If TRANS = 'C', y in the conjugate transposed system Z'y = scale*b
+*  is solved for, which is equivalent to solve for R and L in
+*
+*              A' * R  + D' * L   = scale *  C           (3)
+*              R  * B' + L  * E'  = scale * -F
+*
+*  This case is used to compute an estimate of Dif[(A, D), (B, E)] =
+*  = sigma_min(Z) using reverse communicaton with ZLACON.
+*
+*  ZTGSY2 also (IJOB >= 1) contributes to the computation in ZTGSYL
+*  of an upper bound on the separation between to matrix pairs. Then
+*  the input (A, D), (B, E) are sub-pencils of two matrix pairs in
+*  ZTGSYL.
+*
+
+*  Arguments
+*  =========
+*
+*  TRANS   (input) CHARACTER*1
+*          = 'N', solve the generalized Sylvester equation (1).
+*          = 'T': solve the 'transposed' system (3).
+*
+*  IJOB    (input) INTEGER
+*          Specifies what kind of functionality to be performed.
+*          =0: solve (1) only.
+*          =1: A contribution from this subsystem to a Frobenius
+*              norm-based estimate of the separation between two matrix
+*              pairs is computed. (look ahead strategy is used).
+*          =2: A contribution from this subsystem to a Frobenius
+*              norm-based estimate of the separation between two matrix
+*              pairs is computed. (DGECON on sub-systems is used.)
+*          Not referenced if TRANS = 'T'.
+*
+*  M       (input) INTEGER
+*          On entry, M specifies the order of A and D, and the row
+*          dimension of C, F, R and L.
+*
+*  N       (input) INTEGER
+*          On entry, N specifies the order of B and E, and the column
+*          dimension of C, F, R and L.
+*
+*  A       (input) COMPLEX*16 array, dimension (LDA, M)
+*          On entry, A contains an upper triangular matrix.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the matrix A. LDA >= max(1, M).
+*
+*  B       (input) COMPLEX*16 array, dimension (LDB, N)
+*          On entry, B contains an upper triangular matrix.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the matrix B. LDB >= max(1, N).
+*
+*  C       (input/output) COMPLEX*16 array, dimension (LDC, N)
+*          On entry, C contains the right-hand-side of the first matrix
+*          equation in (1).
+*          On exit, if IJOB = 0, C has been overwritten by the solution
+*          R.
+*
+*  LDC     (input) INTEGER
+*          The leading dimension of the matrix C. LDC >= max(1, M).
+*
+*  D       (input) COMPLEX*16 array, dimension (LDD, M)
+*          On entry, D contains an upper triangular matrix.
+*
+*  LDD     (input) INTEGER
+*          The leading dimension of the matrix D. LDD >= max(1, M).
+*
+*  E       (input) COMPLEX*16 array, dimension (LDE, N)
+*          On entry, E contains an upper triangular matrix.
+*
+*  LDE     (input) INTEGER
+*          The leading dimension of the matrix E. LDE >= max(1, N).
+*
+*  F       (input/output) COMPLEX*16 array, dimension (LDF, N)
+*          On entry, F contains the right-hand-side of the second matrix
+*          equation in (1).
+*          On exit, if IJOB = 0, F has been overwritten by the solution
+*          L.
+*
+*  LDF     (input) INTEGER
+*          The leading dimension of the matrix F. LDF >= max(1, M).
+*
+*  SCALE   (output) DOUBLE PRECISION
+*          On exit, 0 <= SCALE <= 1. If 0 < SCALE < 1, the solutions
+*          R and L (C and F on entry) will hold the solutions to a
+*          slightly perturbed system but the input matrices A, B, D and
+*          E have not been changed. If SCALE = 0, R and L will hold the
+*          solutions to the homogeneous system with C = F = 0.
+*          Normally, SCALE = 1.
+*
+*  RDSUM   (input/output) DOUBLE PRECISION
+*          On entry, the sum of squares of computed contributions to
+*          the Dif-estimate under computation by ZTGSYL, where the
+*          scaling factor RDSCAL (see below) has been factored out.
+*          On exit, the corresponding sum of squares updated with the
+*          contributions from the current sub-system.
+*          If TRANS = 'T' RDSUM is not touched.
+*          NOTE: RDSUM only makes sense when ZTGSY2 is called by
+*          ZTGSYL.
+*
+*  RDSCAL  (input/output) DOUBLE PRECISION
+*          On entry, scaling factor used to prevent overflow in RDSUM.
+*          On exit, RDSCAL is updated w.r.t. the current contributions
+*          in RDSUM.
+*          If TRANS = 'T', RDSCAL is not touched.
+*          NOTE: RDSCAL only makes sense when ZTGSY2 is called by
+*          ZTGSYL.
+*
+*  INFO    (output) INTEGER
+*          On exit, if INFO is set to
+*            =0: Successful exit
+*            <0: If INFO = -i, input argument number i is illegal.
+*            >0: The matrix pairs (A, D) and (B, E) have common or very
+*                close eigenvalues.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
+*     Umea University, S-901 87 Umea, Sweden.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztgsyl"></A>
+  <H2>ztgsyl</H2>
+  Solves the generalized Sylvester equation.
+  <PRE>
+USAGE:
+  scale, dif, work, info, c, f = NumRu::Lapack.ztgsyl( trans, ijob, a, b, c, d, e, f, lwork)
+    or
+  NumRu::Lapack.ztgsyl  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZTGSYL( TRANS, IJOB, M, N, A, LDA, B, LDB, C, LDC, D, LDD, E, LDE, F, LDF, SCALE, DIF, WORK, LWORK, IWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZTGSYL solves the generalized Sylvester equation:
+*
+*              A * R - L * B = scale * C            (1)
+*              D * R - L * E = scale * F
+*
+*  where R and L are unknown m-by-n matrices, (A, D), (B, E) and
+*  (C, F) are given matrix pairs of size m-by-m, n-by-n and m-by-n,
+*  respectively, with complex entries. A, B, D and E are upper
+*  triangular (i.e., (A,D) and (B,E) in generalized Schur form).
+*
+*  The solution (R, L) overwrites (C, F). 0 <= SCALE <= 1
+*  is an output scaling factor chosen to avoid overflow.
+*
+*  In matrix notation (1) is equivalent to solve Zx = scale*b, where Z
+*  is defined as
+*
+*         Z = [ kron(In, A)  -kron(B', Im) ]        (2)
+*             [ kron(In, D)  -kron(E', Im) ],
+*
+*  Here Ix is the identity matrix of size x and X' is the conjugate
+*  transpose of X. Kron(X, Y) is the Kronecker product between the
+*  matrices X and Y.
+*
+*  If TRANS = 'C', y in the conjugate transposed system Z'*y = scale*b
+*  is solved for, which is equivalent to solve for R and L in
+*
+*              A' * R + D' * L = scale * C           (3)
+*              R * B' + L * E' = scale * -F
+*
+*  This case (TRANS = 'C') is used to compute an one-norm-based estimate
+*  of Dif[(A,D), (B,E)], the separation between the matrix pairs (A,D)
+*  and (B,E), using ZLACON.
+*
+*  If IJOB >= 1, ZTGSYL computes a Frobenius norm-based estimate of
+*  Dif[(A,D),(B,E)]. That is, the reciprocal of a lower bound on the
+*  reciprocal of the smallest singular value of Z.
+*
+*  This is a level-3 BLAS algorithm.
+*
+
+*  Arguments
+*  =========
+*
+*  TRANS   (input) CHARACTER*1
+*          = 'N': solve the generalized sylvester equation (1).
+*          = 'C': solve the "conjugate transposed" system (3).
+*
+*  IJOB    (input) INTEGER
+*          Specifies what kind of functionality to be performed.
+*          =0: solve (1) only.
+*          =1: The functionality of 0 and 3.
+*          =2: The functionality of 0 and 4.
+*          =3: Only an estimate of Dif[(A,D), (B,E)] is computed.
+*              (look ahead strategy is used).
+*          =4: Only an estimate of Dif[(A,D), (B,E)] is computed.
+*              (ZGECON on sub-systems is used).
+*          Not referenced if TRANS = 'C'.
+*
+*  M       (input) INTEGER
+*          The order of the matrices A and D, and the row dimension of
+*          the matrices C, F, R and L.
+*
+*  N       (input) INTEGER
+*          The order of the matrices B and E, and the column dimension
+*          of the matrices C, F, R and L.
+*
+*  A       (input) COMPLEX*16 array, dimension (LDA, M)
+*          The upper triangular matrix A.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A. LDA >= max(1, M).
+*
+*  B       (input) COMPLEX*16 array, dimension (LDB, N)
+*          The upper triangular matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B. LDB >= max(1, N).
+*
+*  C       (input/output) COMPLEX*16 array, dimension (LDC, N)
+*          On entry, C contains the right-hand-side of the first matrix
+*          equation in (1) or (3).
+*          On exit, if IJOB = 0, 1 or 2, C has been overwritten by
+*          the solution R. If IJOB = 3 or 4 and TRANS = 'N', C holds R,
+*          the solution achieved during the computation of the
+*          Dif-estimate.
+*
+*  LDC     (input) INTEGER
+*          The leading dimension of the array C. LDC >= max(1, M).
+*
+*  D       (input) COMPLEX*16 array, dimension (LDD, M)
+*          The upper triangular matrix D.
+*
+*  LDD     (input) INTEGER
+*          The leading dimension of the array D. LDD >= max(1, M).
+*
+*  E       (input) COMPLEX*16 array, dimension (LDE, N)
+*          The upper triangular matrix E.
+*
+*  LDE     (input) INTEGER
+*          The leading dimension of the array E. LDE >= max(1, N).
+*
+*  F       (input/output) COMPLEX*16 array, dimension (LDF, N)
+*          On entry, F contains the right-hand-side of the second matrix
+*          equation in (1) or (3).
+*          On exit, if IJOB = 0, 1 or 2, F has been overwritten by
+*          the solution L. If IJOB = 3 or 4 and TRANS = 'N', F holds L,
+*          the solution achieved during the computation of the
+*          Dif-estimate.
+*
+*  LDF     (input) INTEGER
+*          The leading dimension of the array F. LDF >= max(1, M).
+*
+*  DIF     (output) DOUBLE PRECISION
+*          On exit DIF is the reciprocal of a lower bound of the
+*          reciprocal of the Dif-function, i.e. DIF is an upper bound of
+*          Dif[(A,D), (B,E)] = sigma-min(Z), where Z as in (2).
+*          IF IJOB = 0 or TRANS = 'C', DIF is not referenced.
+*
+*  SCALE   (output) DOUBLE PRECISION
+*          On exit SCALE is the scaling factor in (1) or (3).
+*          If 0 < SCALE < 1, C and F hold the solutions R and L, resp.,
+*          to a slightly perturbed system but the input matrices A, B,
+*          D and E have not been changed. If SCALE = 0, R and L will
+*          hold the solutions to the homogenious system with C = F = 0.
+*
+*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK. LWORK > = 1.
+*          If IJOB = 1 or 2 and TRANS = 'N', LWORK >= max(1,2*M*N).
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  IWORK   (workspace) INTEGER array, dimension (M+N+2)
+*
+*  INFO    (output) INTEGER
+*            =0: successful exit
+*            <0: If INFO = -i, the i-th argument had an illegal value.
+*            >0: (A, D) and (B, E) have common or very close
+*                eigenvalues.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
+*     Umea University, S-901 87 Umea, Sweden.
+*
+*  [1] B. Kagstrom and P. Poromaa, LAPACK-Style Algorithms and Software
+*      for Solving the Generalized Sylvester Equation and Estimating the
+*      Separation between Regular Matrix Pairs, Report UMINF - 93.23,
+*      Department of Computing Science, Umea University, S-901 87 Umea,
+*      Sweden, December 1993, Revised April 1994, Also as LAPACK Working
+*      Note 75.  To appear in ACM Trans. on Math. Software, Vol 22,
+*      No 1, 1996.
+*
+*  [2] B. Kagstrom, A Perturbation Analysis of the Generalized Sylvester
+*      Equation (AR - LB, DR - LE ) = (C, F), SIAM J. Matrix Anal.
+*      Appl., 15(4):1045-1060, 1994.
+*
+*  [3] B. Kagstrom and L. Westin, Generalized Schur Methods with
+*      Condition Estimators for Solving the Generalized Sylvester
+*      Equation, IEEE Transactions on Automatic Control, Vol. 34, No. 7,
+*      July 1989, pp 745-751.
+*
+*  =====================================================================
+*  Replaced various illegal calls to CCOPY by calls to CLASET.
+*  Sven Hammarling, 1/5/02.
 *
 
 

@@ -6,84 +6,275 @@
     <A NAME="top"></A>
     <H1>REAL routines for symmetric, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#sspgst">sspgst</A>: Reduces a symmetric-definite generalized eigenproblem</LI>
-      <LI><A HREF="#sspevx">sspevx</A>: Computes selected eigenvalues and eigenvectors of a</LI>
-      <LI><A HREF="#sspgvx">sspgvx</A>: Computes selected eigenvalues, and optionally, eigenvectors of</LI>
-      <LI><A HREF="#sspevd">sspevd</A>: Computes all eigenvalues, and optionally, eigenvectors of a real</LI>
       <LI><A HREF="#sspcon">sspcon</A>: Estimates the reciprocal of the condition number of a</LI>
       <LI><A HREF="#sspev">sspev</A>: Computes all eigenvalues, and optionally, eigenvectors of a real</LI>
-      <LI><A HREF="#sspsvx">sspsvx</A>: Solves a real symmetric</LI>
-      <LI><A HREF="#ssptri">ssptri</A>: Computes the inverse of a real symmetric</LI>
+      <LI><A HREF="#sspevd">sspevd</A>: Computes all eigenvalues, and optionally, eigenvectors of a real</LI>
+      <LI><A HREF="#sspevx">sspevx</A>: Computes selected eigenvalues and eigenvectors of a</LI>
+      <LI><A HREF="#sspgst">sspgst</A>: Reduces a symmetric-definite generalized eigenproblem</LI>
+      <LI><A HREF="#sspgv">sspgv</A>: Computes all eigenvalues and eigenvectors of  a generalized</LI>
+      <LI><A HREF="#sspgvd">sspgvd</A>: Computes all eigenvalues and eigenvectors of  a generalized</LI>
+      <LI><A HREF="#sspgvx">sspgvx</A>: Computes selected eigenvalues, and optionally, eigenvectors of</LI>
       <LI><A HREF="#ssprfs">ssprfs</A>: Improves the computed solution to a real</LI>
       <LI><A HREF="#sspsv">sspsv</A>: Solves a real symmetric indefinite system of linear equations AX=B,</LI>
-      <LI><A HREF="#sspgvd">sspgvd</A>: Computes all eigenvalues and eigenvectors of  a generalized</LI>
-      <LI><A HREF="#ssptrs">ssptrs</A>: Solves a real symmetric</LI>
-      <LI><A HREF="#ssptrf">ssptrf</A>: Computes the factorization of a real</LI>
+      <LI><A HREF="#sspsvx">sspsvx</A>: Solves a real symmetric</LI>
       <LI><A HREF="#ssptrd">ssptrd</A>: Reduces a symmetric matrix in packed storage to real</LI>
-      <LI><A HREF="#sspgv">sspgv</A>: Computes all eigenvalues and eigenvectors of  a generalized</LI>
+      <LI><A HREF="#ssptrf">ssptrf</A>: Computes the factorization of a real</LI>
+      <LI><A HREF="#ssptri">ssptri</A>: Computes the inverse of a real symmetric</LI>
+      <LI><A HREF="#ssptrs">ssptrs</A>: Solves a real symmetric</LI>
     </UL>
 
-  <A NAME="sspgst"></A>
-  <H2>sspgst</H2>
-  Reduces a symmetric-definite generalized eigenproblem
+  <A NAME="sspcon"></A>
+  <H2>sspcon</H2>
+  Estimates the reciprocal of the condition number of a
   <PRE>
 USAGE:
-  info, ap = NumRu::Lapack.sspgst( itype, uplo, n, ap, bp)
+  rcond, info = NumRu::Lapack.sspcon( uplo, ap, ipiv, anorm)
     or
-  NumRu::Lapack.sspgst  # print help
+  NumRu::Lapack.sspcon  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE SSPGST( ITYPE, UPLO, N, AP, BP, INFO )
+      SUBROUTINE SSPCON( UPLO, N, AP, IPIV, ANORM, RCOND, WORK, IWORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  SSPGST reduces a real symmetric-definite generalized eigenproblem
-*  to standard form, using packed storage.
+*  SSPCON estimates the reciprocal of the condition number (in the
+*  1-norm) of a real symmetric packed matrix A using the factorization
+*  A = U*D*U**T or A = L*D*L**T computed by SSPTRF.
 *
-*  If ITYPE = 1, the problem is A*x = lambda*B*x,
-*  and A is overwritten by inv(U**T)*A*inv(U) or inv(L)*A*inv(L**T)
-*
-*  If ITYPE = 2 or 3, the problem is A*B*x = lambda*x or
-*  B*A*x = lambda*x, and A is overwritten by U*A*U**T or L**T*A*L.
-*
-*  B must have been previously factorized as U**T*U or L*L**T by SPPTRF.
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
 *
 
 *  Arguments
 *  =========
 *
-*  ITYPE   (input) INTEGER
-*          = 1: compute inv(U**T)*A*inv(U) or inv(L)*A*inv(L**T);
-*          = 2 or 3: compute U*A*U**T or L**T*A*L.
-*
 *  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored and B is factored as
-*                  U**T*U;
-*          = 'L':  Lower triangle of A is stored and B is factored as
-*                  L*L**T.
+*          Specifies whether the details of the factorization are stored
+*          as an upper or lower triangular matrix.
+*          = 'U':  Upper triangular, form is A = U*D*U**T;
+*          = 'L':  Lower triangular, form is A = L*D*L**T.
 *
 *  N       (input) INTEGER
-*          The order of the matrices A and B.  N >= 0.
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input) REAL array, dimension (N*(N+1)/2)
+*          The block diagonal matrix D and the multipliers used to
+*          obtain the factor U or L as computed by SSPTRF, stored as a
+*          packed triangular matrix.
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D
+*          as determined by SSPTRF.
+*
+*  ANORM   (input) REAL
+*          The 1-norm of the original matrix A.
+*
+*  RCOND   (output) REAL
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
+*          estimate of the 1-norm of inv(A) computed in this routine.
+*
+*  WORK    (workspace) REAL array, dimension (2*N)
+*
+*  IWORK    (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sspev"></A>
+  <H2>sspev</H2>
+  Computes all eigenvalues, and optionally, eigenvectors of a real
+  <PRE>
+USAGE:
+  w, z, info, ap = NumRu::Lapack.sspev( jobz, uplo, ap)
+    or
+  NumRu::Lapack.sspev  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SSPEV( JOBZ, UPLO, N, AP, W, Z, LDZ, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SSPEV computes all the eigenvalues and, optionally, eigenvectors of a
+*  real symmetric matrix A in packed storage.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
 *
 *  AP      (input/output) REAL array, dimension (N*(N+1)/2)
 *          On entry, the upper or lower triangle of the symmetric matrix
 *          A, packed columnwise in a linear array.  The j-th column of A
 *          is stored in the array AP as follows:
 *          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
-*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
 *
-*          On exit, if INFO = 0, the transformed matrix, stored in the
-*          same format as A.
+*          On exit, AP is overwritten by values generated during the
+*          reduction to tridiagonal form.  If UPLO = 'U', the diagonal
+*          and first superdiagonal of the tridiagonal matrix T overwrite
+*          the corresponding elements of A, and if UPLO = 'L', the
+*          diagonal and first subdiagonal of T overwrite the
+*          corresponding elements of A.
 *
-*  BP      (input) REAL array, dimension (N*(N+1)/2)
-*          The triangular factor from the Cholesky factorization of B,
-*          stored in the same format as A, as returned by SPPTRF.
+*  W       (output) REAL array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) REAL array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
+*          eigenvectors of the matrix A, with the i-th column of Z
+*          holding the eigenvector associated with W(i).
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) REAL array, dimension (3*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, the algorithm failed to converge; i
+*                off-diagonal elements of an intermediate tridiagonal
+*                form did not converge to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sspevd"></A>
+  <H2>sspevd</H2>
+  Computes all eigenvalues, and optionally, eigenvectors of a real
+  <PRE>
+USAGE:
+  w, z, work, iwork, info, ap = NumRu::Lapack.sspevd( jobz, uplo, ap, lwork, liwork)
+    or
+  NumRu::Lapack.sspevd  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SSPEVD( JOBZ, UPLO, N, AP, W, Z, LDZ, WORK, LWORK, IWORK, LIWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SSPEVD computes all the eigenvalues and, optionally, eigenvectors
+*  of a real symmetric matrix A in packed storage. If eigenvectors are
+*  desired, it uses a divide and conquer algorithm.
+*
+*  The divide and conquer algorithm makes very mild assumptions about
+*  floating point arithmetic. It will work on machines with a guard
+*  digit in add/subtract, or on those binary machines without guard
+*  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
+*  Cray-2. It could conceivably fail on hexadecimal or decimal machines
+*  without guard digits, but we know of none.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input/output) REAL array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*
+*          On exit, AP is overwritten by values generated during the
+*          reduction to tridiagonal form.  If UPLO = 'U', the diagonal
+*          and first superdiagonal of the tridiagonal matrix T overwrite
+*          the corresponding elements of A, and if UPLO = 'L', the
+*          diagonal and first subdiagonal of T overwrite the
+*          corresponding elements of A.
+*
+*  W       (output) REAL array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) REAL array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
+*          eigenvectors of the matrix A, with the i-th column of Z
+*          holding the eigenvector associated with W(i).
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the required LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          If N <= 1,               LWORK must be at least 1.
+*          If JOBZ = 'N' and N > 1, LWORK must be at least 2*N.
+*          If JOBZ = 'V' and N > 1, LWORK must be at least
+*                                                 1 + 6*N + N**2.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the required sizes of the WORK and IWORK
+*          arrays, returns these values as the first entries of the WORK
+*          and IWORK arrays, and no error message related to LWORK or
+*          LIWORK is issued by XERBLA.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
+*          On exit, if INFO = 0, IWORK(1) returns the required LIWORK.
+*
+*  LIWORK  (input) INTEGER
+*          The dimension of the array IWORK.
+*          If JOBZ  = 'N' or N <= 1, LIWORK must be at least 1.
+*          If JOBZ  = 'V' and N > 1, LIWORK must be at least 3 + 5*N.
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the required sizes of the WORK and
+*          IWORK arrays, returns these values as the first entries of
+*          the WORK and IWORK arrays, and no error message related to
+*          LWORK or LIWORK is issued by XERBLA.
 *
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, the algorithm failed to converge; i
+*                off-diagonal elements of an intermediate tridiagonal
+*                form did not converge to zero.
 *
 
 *  =====================================================================
@@ -226,6 +417,328 @@ FORTRAN MANUAL
 *                Their indices are stored in array IFAIL.
 *
 
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sspgst"></A>
+  <H2>sspgst</H2>
+  Reduces a symmetric-definite generalized eigenproblem
+  <PRE>
+USAGE:
+  info, ap = NumRu::Lapack.sspgst( itype, uplo, n, ap, bp)
+    or
+  NumRu::Lapack.sspgst  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SSPGST( ITYPE, UPLO, N, AP, BP, INFO )
+
+*  Purpose
+*  =======
+*
+*  SSPGST reduces a real symmetric-definite generalized eigenproblem
+*  to standard form, using packed storage.
+*
+*  If ITYPE = 1, the problem is A*x = lambda*B*x,
+*  and A is overwritten by inv(U**T)*A*inv(U) or inv(L)*A*inv(L**T)
+*
+*  If ITYPE = 2 or 3, the problem is A*B*x = lambda*x or
+*  B*A*x = lambda*x, and A is overwritten by U*A*U**T or L**T*A*L.
+*
+*  B must have been previously factorized as U**T*U or L*L**T by SPPTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  ITYPE   (input) INTEGER
+*          = 1: compute inv(U**T)*A*inv(U) or inv(L)*A*inv(L**T);
+*          = 2 or 3: compute U*A*U**T or L**T*A*L.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored and B is factored as
+*                  U**T*U;
+*          = 'L':  Lower triangle of A is stored and B is factored as
+*                  L*L**T.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  AP      (input/output) REAL array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.
+*
+*          On exit, if INFO = 0, the transformed matrix, stored in the
+*          same format as A.
+*
+*  BP      (input) REAL array, dimension (N*(N+1)/2)
+*          The triangular factor from the Cholesky factorization of B,
+*          stored in the same format as A, as returned by SPPTRF.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sspgv"></A>
+  <H2>sspgv</H2>
+  Computes all eigenvalues and eigenvectors of  a generalized
+  <PRE>
+USAGE:
+  w, z, info, ap, bp = NumRu::Lapack.sspgv( itype, jobz, uplo, ap, bp)
+    or
+  NumRu::Lapack.sspgv  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SSPGV( ITYPE, JOBZ, UPLO, N, AP, BP, W, Z, LDZ, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SSPGV computes all the eigenvalues and, optionally, the eigenvectors
+*  of a real generalized symmetric-definite eigenproblem, of the form
+*  A*x=(lambda)*B*x,  A*Bx=(lambda)*x,  or B*A*x=(lambda)*x.
+*  Here A and B are assumed to be symmetric, stored in packed format,
+*  and B is also positive definite.
+*
+
+*  Arguments
+*  =========
+*
+*  ITYPE   (input) INTEGER
+*          Specifies the problem type to be solved:
+*          = 1:  A*x = (lambda)*B*x
+*          = 2:  A*B*x = (lambda)*x
+*          = 3:  B*A*x = (lambda)*x
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangles of A and B are stored;
+*          = 'L':  Lower triangles of A and B are stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  AP      (input/output) REAL array, dimension
+*                            (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*
+*          On exit, the contents of AP are destroyed.
+*
+*  BP      (input/output) REAL array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          B, packed columnwise in a linear array.  The j-th column of B
+*          is stored in the array BP as follows:
+*          if UPLO = 'U', BP(i + (j-1)*j/2) = B(i,j) for 1<=i<=j;
+*          if UPLO = 'L', BP(i + (j-1)*(2*n-j)/2) = B(i,j) for j<=i<=n.
+*
+*          On exit, the triangular factor U or L from the Cholesky
+*          factorization B = U**T*U or B = L*L**T, in the same storage
+*          format as B.
+*
+*  W       (output) REAL array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) REAL array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
+*          eigenvectors.  The eigenvectors are normalized as follows:
+*          if ITYPE = 1 or 2, Z**T*B*Z = I;
+*          if ITYPE = 3, Z**T*inv(B)*Z = I.
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) REAL array, dimension (3*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  SPPTRF or SSPEV returned an error code:
+*             <= N:  if INFO = i, SSPEV failed to converge;
+*                    i off-diagonal elements of an intermediate
+*                    tridiagonal form did not converge to zero.
+*             > N:   if INFO = n + i, for 1 <= i <= n, then the leading
+*                    minor of order i of B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            UPPER, WANTZ
+      CHARACTER          TRANS
+      INTEGER            J, NEIG
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           SPPTRF, SSPEV, SSPGST, STPMV, STPSV, XERBLA
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sspgvd"></A>
+  <H2>sspgvd</H2>
+  Computes all eigenvalues and eigenvectors of  a generalized
+  <PRE>
+USAGE:
+  w, z, work, iwork, info, ap, bp = NumRu::Lapack.sspgvd( itype, jobz, uplo, ap, bp, lwork, liwork)
+    or
+  NumRu::Lapack.sspgvd  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SSPGVD( ITYPE, JOBZ, UPLO, N, AP, BP, W, Z, LDZ, WORK, LWORK, IWORK, LIWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SSPGVD computes all the eigenvalues, and optionally, the eigenvectors
+*  of a real generalized symmetric-definite eigenproblem, of the form
+*  A*x=(lambda)*B*x,  A*Bx=(lambda)*x,  or B*A*x=(lambda)*x.  Here A and
+*  B are assumed to be symmetric, stored in packed format, and B is also
+*  positive definite.
+*  If eigenvectors are desired, it uses a divide and conquer algorithm.
+*
+*  The divide and conquer algorithm makes very mild assumptions about
+*  floating point arithmetic. It will work on machines with a guard
+*  digit in add/subtract, or on those binary machines without guard
+*  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
+*  Cray-2. It could conceivably fail on hexadecimal or decimal machines
+*  without guard digits, but we know of none.
+*
+
+*  Arguments
+*  =========
+*
+*  ITYPE   (input) INTEGER
+*          Specifies the problem type to be solved:
+*          = 1:  A*x = (lambda)*B*x
+*          = 2:  A*B*x = (lambda)*x
+*          = 3:  B*A*x = (lambda)*x
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangles of A and B are stored;
+*          = 'L':  Lower triangles of A and B are stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  AP      (input/output) REAL array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*
+*          On exit, the contents of AP are destroyed.
+*
+*  BP      (input/output) REAL array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          B, packed columnwise in a linear array.  The j-th column of B
+*          is stored in the array BP as follows:
+*          if UPLO = 'U', BP(i + (j-1)*j/2) = B(i,j) for 1<=i<=j;
+*          if UPLO = 'L', BP(i + (j-1)*(2*n-j)/2) = B(i,j) for j<=i<=n.
+*
+*          On exit, the triangular factor U or L from the Cholesky
+*          factorization B = U**T*U or B = L*L**T, in the same storage
+*          format as B.
+*
+*  W       (output) REAL array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) REAL array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
+*          eigenvectors.  The eigenvectors are normalized as follows:
+*          if ITYPE = 1 or 2, Z**T*B*Z = I;
+*          if ITYPE = 3, Z**T*inv(B)*Z = I.
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the required LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          If N <= 1,               LWORK >= 1.
+*          If JOBZ = 'N' and N > 1, LWORK >= 2*N.
+*          If JOBZ = 'V' and N > 1, LWORK >= 1 + 6*N + 2*N**2.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the required sizes of the WORK and IWORK
+*          arrays, returns these values as the first entries of the WORK
+*          and IWORK arrays, and no error message related to LWORK or
+*          LIWORK is issued by XERBLA.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
+*          On exit, if INFO = 0, IWORK(1) returns the required LIWORK.
+*
+*  LIWORK  (input) INTEGER
+*          The dimension of the array IWORK.
+*          If JOBZ  = 'N' or N <= 1, LIWORK >= 1.
+*          If JOBZ  = 'V' and N > 1, LIWORK >= 3 + 5*N.
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the required sizes of the WORK and
+*          IWORK arrays, returns these values as the first entries of
+*          the WORK and IWORK arrays, and no error message related to
+*          LWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  SPPTRF or SSPEVD returned an error code:
+*             <= N:  if INFO = i, SSPEVD failed to converge;
+*                    i off-diagonal elements of an intermediate
+*                    tridiagonal form did not converge to zero;
+*             > N:   if INFO = N + i, for 1 <= i <= N, then the leading
+*                    minor of order i of B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
+*
 *  =====================================================================
 *
 
@@ -411,522 +924,6 @@ FORTRAN MANUAL
 *     .. Intrinsic Functions ..
       INTRINSIC          MIN
 *     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sspevd"></A>
-  <H2>sspevd</H2>
-  Computes all eigenvalues, and optionally, eigenvectors of a real
-  <PRE>
-USAGE:
-  w, z, work, iwork, info, ap = NumRu::Lapack.sspevd( jobz, uplo, ap, lwork, liwork)
-    or
-  NumRu::Lapack.sspevd  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SSPEVD( JOBZ, UPLO, N, AP, W, Z, LDZ, WORK, LWORK, IWORK, LIWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SSPEVD computes all the eigenvalues and, optionally, eigenvectors
-*  of a real symmetric matrix A in packed storage. If eigenvectors are
-*  desired, it uses a divide and conquer algorithm.
-*
-*  The divide and conquer algorithm makes very mild assumptions about
-*  floating point arithmetic. It will work on machines with a guard
-*  digit in add/subtract, or on those binary machines without guard
-*  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
-*  Cray-2. It could conceivably fail on hexadecimal or decimal machines
-*  without guard digits, but we know of none.
-*
-
-*  Arguments
-*  =========
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  AP      (input/output) REAL array, dimension (N*(N+1)/2)
-*          On entry, the upper or lower triangle of the symmetric matrix
-*          A, packed columnwise in a linear array.  The j-th column of A
-*          is stored in the array AP as follows:
-*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
-*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
-*
-*          On exit, AP is overwritten by values generated during the
-*          reduction to tridiagonal form.  If UPLO = 'U', the diagonal
-*          and first superdiagonal of the tridiagonal matrix T overwrite
-*          the corresponding elements of A, and if UPLO = 'L', the
-*          diagonal and first subdiagonal of T overwrite the
-*          corresponding elements of A.
-*
-*  W       (output) REAL array, dimension (N)
-*          If INFO = 0, the eigenvalues in ascending order.
-*
-*  Z       (output) REAL array, dimension (LDZ, N)
-*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
-*          eigenvectors of the matrix A, with the i-th column of Z
-*          holding the eigenvector associated with W(i).
-*          If JOBZ = 'N', then Z is not referenced.
-*
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z.  LDZ >= 1, and if
-*          JOBZ = 'V', LDZ >= max(1,N).
-*
-*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the required LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.
-*          If N <= 1,               LWORK must be at least 1.
-*          If JOBZ = 'N' and N > 1, LWORK must be at least 2*N.
-*          If JOBZ = 'V' and N > 1, LWORK must be at least
-*                                                 1 + 6*N + N**2.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the required sizes of the WORK and IWORK
-*          arrays, returns these values as the first entries of the WORK
-*          and IWORK arrays, and no error message related to LWORK or
-*          LIWORK is issued by XERBLA.
-*
-*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
-*          On exit, if INFO = 0, IWORK(1) returns the required LIWORK.
-*
-*  LIWORK  (input) INTEGER
-*          The dimension of the array IWORK.
-*          If JOBZ  = 'N' or N <= 1, LIWORK must be at least 1.
-*          If JOBZ  = 'V' and N > 1, LIWORK must be at least 3 + 5*N.
-*
-*          If LIWORK = -1, then a workspace query is assumed; the
-*          routine only calculates the required sizes of the WORK and
-*          IWORK arrays, returns these values as the first entries of
-*          the WORK and IWORK arrays, and no error message related to
-*          LWORK or LIWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value.
-*          > 0:  if INFO = i, the algorithm failed to converge; i
-*                off-diagonal elements of an intermediate tridiagonal
-*                form did not converge to zero.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sspcon"></A>
-  <H2>sspcon</H2>
-  Estimates the reciprocal of the condition number of a
-  <PRE>
-USAGE:
-  rcond, info = NumRu::Lapack.sspcon( uplo, ap, ipiv, anorm)
-    or
-  NumRu::Lapack.sspcon  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SSPCON( UPLO, N, AP, IPIV, ANORM, RCOND, WORK, IWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SSPCON estimates the reciprocal of the condition number (in the
-*  1-norm) of a real symmetric packed matrix A using the factorization
-*  A = U*D*U**T or A = L*D*L**T computed by SSPTRF.
-*
-*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
-*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          Specifies whether the details of the factorization are stored
-*          as an upper or lower triangular matrix.
-*          = 'U':  Upper triangular, form is A = U*D*U**T;
-*          = 'L':  Lower triangular, form is A = L*D*L**T.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  AP      (input) REAL array, dimension (N*(N+1)/2)
-*          The block diagonal matrix D and the multipliers used to
-*          obtain the factor U or L as computed by SSPTRF, stored as a
-*          packed triangular matrix.
-*
-*  IPIV    (input) INTEGER array, dimension (N)
-*          Details of the interchanges and the block structure of D
-*          as determined by SSPTRF.
-*
-*  ANORM   (input) REAL
-*          The 1-norm of the original matrix A.
-*
-*  RCOND   (output) REAL
-*          The reciprocal of the condition number of the matrix A,
-*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
-*          estimate of the 1-norm of inv(A) computed in this routine.
-*
-*  WORK    (workspace) REAL array, dimension (2*N)
-*
-*  IWORK    (workspace) INTEGER array, dimension (N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sspev"></A>
-  <H2>sspev</H2>
-  Computes all eigenvalues, and optionally, eigenvectors of a real
-  <PRE>
-USAGE:
-  w, z, info, ap = NumRu::Lapack.sspev( jobz, uplo, ap)
-    or
-  NumRu::Lapack.sspev  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SSPEV( JOBZ, UPLO, N, AP, W, Z, LDZ, WORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SSPEV computes all the eigenvalues and, optionally, eigenvectors of a
-*  real symmetric matrix A in packed storage.
-*
-
-*  Arguments
-*  =========
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  AP      (input/output) REAL array, dimension (N*(N+1)/2)
-*          On entry, the upper or lower triangle of the symmetric matrix
-*          A, packed columnwise in a linear array.  The j-th column of A
-*          is stored in the array AP as follows:
-*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
-*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
-*
-*          On exit, AP is overwritten by values generated during the
-*          reduction to tridiagonal form.  If UPLO = 'U', the diagonal
-*          and first superdiagonal of the tridiagonal matrix T overwrite
-*          the corresponding elements of A, and if UPLO = 'L', the
-*          diagonal and first subdiagonal of T overwrite the
-*          corresponding elements of A.
-*
-*  W       (output) REAL array, dimension (N)
-*          If INFO = 0, the eigenvalues in ascending order.
-*
-*  Z       (output) REAL array, dimension (LDZ, N)
-*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
-*          eigenvectors of the matrix A, with the i-th column of Z
-*          holding the eigenvector associated with W(i).
-*          If JOBZ = 'N', then Z is not referenced.
-*
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z.  LDZ >= 1, and if
-*          JOBZ = 'V', LDZ >= max(1,N).
-*
-*  WORK    (workspace) REAL array, dimension (3*N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit.
-*          < 0:  if INFO = -i, the i-th argument had an illegal value.
-*          > 0:  if INFO = i, the algorithm failed to converge; i
-*                off-diagonal elements of an intermediate tridiagonal
-*                form did not converge to zero.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sspsvx"></A>
-  <H2>sspsvx</H2>
-  Solves a real symmetric
-  <PRE>
-USAGE:
-  x, rcond, ferr, berr, info, afp, ipiv = NumRu::Lapack.sspsvx( fact, uplo, ap, afp, ipiv, b)
-    or
-  NumRu::Lapack.sspsvx  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SSPSVX( FACT, UPLO, N, NRHS, AP, AFP, IPIV, B, LDB, X, LDX, RCOND, FERR, BERR, WORK, IWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SSPSVX uses the diagonal pivoting factorization A = U*D*U**T or
-*  A = L*D*L**T to compute the solution to a real system of linear
-*  equations A * X = B, where A is an N-by-N symmetric matrix stored
-*  in packed format and X and B are N-by-NRHS matrices.
-*
-*  Error bounds on the solution and a condition estimate are also
-*  provided.
-*
-*  Description
-*  ===========
-*
-*  The following steps are performed:
-*
-*  1. If FACT = 'N', the diagonal pivoting method is used to factor A as
-*        A = U * D * U**T,  if UPLO = 'U', or
-*        A = L * D * L**T,  if UPLO = 'L',
-*     where U (or L) is a product of permutation and unit upper (lower)
-*     triangular matrices and D is symmetric and block diagonal with
-*     1-by-1 and 2-by-2 diagonal blocks.
-*
-*  2. If some D(i,i)=0, so that D is exactly singular, then the routine
-*     returns with INFO = i. Otherwise, the factored form of A is used
-*     to estimate the condition number of the matrix A.  If the
-*     reciprocal of the condition number is less than machine precision,
-*     INFO = N+1 is returned as a warning, but the routine still goes on
-*     to solve for X and compute error bounds as described below.
-*
-*  3. The system of equations is solved for X using the factored form
-*     of A.
-*
-*  4. Iterative refinement is applied to improve the computed solution
-*     matrix and calculate error bounds and backward error estimates
-*     for it.
-*
-
-*  Arguments
-*  =========
-*
-*  FACT    (input) CHARACTER*1
-*          Specifies whether or not the factored form of A has been
-*          supplied on entry.
-*          = 'F':  On entry, AFP and IPIV contain the factored form of
-*                  A.  AP, AFP and IPIV will not be modified.
-*          = 'N':  The matrix A will be copied to AFP and factored.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The number of linear equations, i.e., the order of the
-*          matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrices B and X.  NRHS >= 0.
-*
-*  AP      (input) REAL array, dimension (N*(N+1)/2)
-*          The upper or lower triangle of the symmetric matrix A, packed
-*          columnwise in a linear array.  The j-th column of A is stored
-*          in the array AP as follows:
-*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
-*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
-*          See below for further details.
-*
-*  AFP     (input or output) REAL array, dimension
-*                            (N*(N+1)/2)
-*          If FACT = 'F', then AFP is an input argument and on entry
-*          contains the block diagonal matrix D and the multipliers used
-*          to obtain the factor U or L from the factorization
-*          A = U*D*U**T or A = L*D*L**T as computed by SSPTRF, stored as
-*          a packed triangular matrix in the same storage format as A.
-*
-*          If FACT = 'N', then AFP is an output argument and on exit
-*          contains the block diagonal matrix D and the multipliers used
-*          to obtain the factor U or L from the factorization
-*          A = U*D*U**T or A = L*D*L**T as computed by SSPTRF, stored as
-*          a packed triangular matrix in the same storage format as A.
-*
-*  IPIV    (input or output) INTEGER array, dimension (N)
-*          If FACT = 'F', then IPIV is an input argument and on entry
-*          contains details of the interchanges and the block structure
-*          of D, as determined by SSPTRF.
-*          If IPIV(k) > 0, then rows and columns k and IPIV(k) were
-*          interchanged and D(k,k) is a 1-by-1 diagonal block.
-*          If UPLO = 'U' and IPIV(k) = IPIV(k-1) < 0, then rows and
-*          columns k-1 and -IPIV(k) were interchanged and D(k-1:k,k-1:k)
-*          is a 2-by-2 diagonal block.  If UPLO = 'L' and IPIV(k) =
-*          IPIV(k+1) < 0, then rows and columns k+1 and -IPIV(k) were
-*          interchanged and D(k:k+1,k:k+1) is a 2-by-2 diagonal block.
-*
-*          If FACT = 'N', then IPIV is an output argument and on exit
-*          contains details of the interchanges and the block structure
-*          of D, as determined by SSPTRF.
-*
-*  B       (input) REAL array, dimension (LDB,NRHS)
-*          The N-by-NRHS right hand side matrix B.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  X       (output) REAL array, dimension (LDX,NRHS)
-*          If INFO = 0 or INFO = N+1, the N-by-NRHS solution matrix X.
-*
-*  LDX     (input) INTEGER
-*          The leading dimension of the array X.  LDX >= max(1,N).
-*
-*  RCOND   (output) REAL
-*          The estimate of the reciprocal condition number of the matrix
-*          A.  If RCOND is less than the machine precision (in
-*          particular, if RCOND = 0), the matrix is singular to working
-*          precision.  This condition is indicated by a return code of
-*          INFO > 0.
-*
-*  FERR    (output) REAL array, dimension (NRHS)
-*          The estimated forward error bound for each solution vector
-*          X(j) (the j-th column of the solution matrix X).
-*          If XTRUE is the true solution corresponding to X(j), FERR(j)
-*          is an estimated upper bound for the magnitude of the largest
-*          element in (X(j) - XTRUE) divided by the magnitude of the
-*          largest element in X(j).  The estimate is as reliable as
-*          the estimate for RCOND, and is almost always a slight
-*          overestimate of the true error.
-*
-*  BERR    (output) REAL array, dimension (NRHS)
-*          The componentwise relative backward error of each solution
-*          vector X(j) (i.e., the smallest relative change in
-*          any element of A or B that makes X(j) an exact solution).
-*
-*  WORK    (workspace) REAL array, dimension (3*N)
-*
-*  IWORK   (workspace) INTEGER array, dimension (N)
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, and i is
-*                <= N:  D(i,i) is exactly zero.  The factorization
-*                       has been completed but the factor D is exactly
-*                       singular, so the solution and error bounds could
-*                       not be computed. RCOND = 0 is returned.
-*                = N+1: D is nonsingular, but RCOND is less than machine
-*                       precision, meaning that the matrix is singular
-*                       to working precision.  Nevertheless, the
-*                       solution and error bounds are computed because
-*                       there are a number of situations where the
-*                       computed solution can be more accurate than the
-*                       value of RCOND would suggest.
-*
-
-*  Further Details
-*  ===============
-*
-*  The packed storage scheme is illustrated by the following example
-*  when N = 4, UPLO = 'U':
-*
-*  Two-dimensional storage of the symmetric matrix A:
-*
-*     a11 a12 a13 a14
-*         a22 a23 a24
-*             a33 a34     (aij = aji)
-*                 a44
-*
-*  Packed storage of the upper triangle of A:
-*
-*  AP = [ a11, a12, a22, a13, a23, a33, a14, a24, a34, a44 ]
-*
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="ssptri"></A>
-  <H2>ssptri</H2>
-  Computes the inverse of a real symmetric
-  <PRE>
-USAGE:
-  info, ap = NumRu::Lapack.ssptri( uplo, ap, ipiv)
-    or
-  NumRu::Lapack.ssptri  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SSPTRI( UPLO, N, AP, IPIV, WORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SSPTRI computes the inverse of a real symmetric indefinite matrix
-*  A in packed storage using the factorization A = U*D*U**T or
-*  A = L*D*L**T computed by SSPTRF.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          Specifies whether the details of the factorization are stored
-*          as an upper or lower triangular matrix.
-*          = 'U':  Upper triangular, form is A = U*D*U**T;
-*          = 'L':  Lower triangular, form is A = L*D*L**T.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  AP      (input/output) REAL array, dimension (N*(N+1)/2)
-*          On entry, the block diagonal matrix D and the multipliers
-*          used to obtain the factor U or L as computed by SSPTRF,
-*          stored as a packed triangular matrix.
-*
-*          On exit, if INFO = 0, the (symmetric) inverse of the original
-*          matrix, stored as a packed triangular matrix. The j-th column
-*          of inv(A) is stored in the array AP as follows:
-*          if UPLO = 'U', AP(i + (j-1)*j/2) = inv(A)(i,j) for 1<=i<=j;
-*          if UPLO = 'L',
-*             AP(i + (j-1)*(2n-j)/2) = inv(A)(i,j) for j<=i<=n.
-*
-*  IPIV    (input) INTEGER array, dimension (N)
-*          Details of the interchanges and the block structure of D
-*          as determined by SSPTRF.
-*
-*  WORK    (workspace) REAL array, dimension (N)
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*          > 0: if INFO = i, D(i,i) = 0; the matrix is singular and its
-*               inverse could not be computed.
-*
-
-*  =====================================================================
-*
 
 
     </PRE>
@@ -1154,138 +1151,188 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="sspgvd"></A>
-  <H2>sspgvd</H2>
-  Computes all eigenvalues and eigenvectors of  a generalized
+  <A NAME="sspsvx"></A>
+  <H2>sspsvx</H2>
+  Solves a real symmetric
   <PRE>
 USAGE:
-  w, z, work, iwork, info, ap, bp = NumRu::Lapack.sspgvd( itype, jobz, uplo, ap, bp, lwork, liwork)
+  x, rcond, ferr, berr, info, afp, ipiv = NumRu::Lapack.sspsvx( fact, uplo, ap, afp, ipiv, b)
     or
-  NumRu::Lapack.sspgvd  # print help
+  NumRu::Lapack.sspsvx  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE SSPGVD( ITYPE, JOBZ, UPLO, N, AP, BP, W, Z, LDZ, WORK, LWORK, IWORK, LIWORK, INFO )
+      SUBROUTINE SSPSVX( FACT, UPLO, N, NRHS, AP, AFP, IPIV, B, LDB, X, LDX, RCOND, FERR, BERR, WORK, IWORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  SSPGVD computes all the eigenvalues, and optionally, the eigenvectors
-*  of a real generalized symmetric-definite eigenproblem, of the form
-*  A*x=(lambda)*B*x,  A*Bx=(lambda)*x,  or B*A*x=(lambda)*x.  Here A and
-*  B are assumed to be symmetric, stored in packed format, and B is also
-*  positive definite.
-*  If eigenvectors are desired, it uses a divide and conquer algorithm.
+*  SSPSVX uses the diagonal pivoting factorization A = U*D*U**T or
+*  A = L*D*L**T to compute the solution to a real system of linear
+*  equations A * X = B, where A is an N-by-N symmetric matrix stored
+*  in packed format and X and B are N-by-NRHS matrices.
 *
-*  The divide and conquer algorithm makes very mild assumptions about
-*  floating point arithmetic. It will work on machines with a guard
-*  digit in add/subtract, or on those binary machines without guard
-*  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
-*  Cray-2. It could conceivably fail on hexadecimal or decimal machines
-*  without guard digits, but we know of none.
+*  Error bounds on the solution and a condition estimate are also
+*  provided.
+*
+*  Description
+*  ===========
+*
+*  The following steps are performed:
+*
+*  1. If FACT = 'N', the diagonal pivoting method is used to factor A as
+*        A = U * D * U**T,  if UPLO = 'U', or
+*        A = L * D * L**T,  if UPLO = 'L',
+*     where U (or L) is a product of permutation and unit upper (lower)
+*     triangular matrices and D is symmetric and block diagonal with
+*     1-by-1 and 2-by-2 diagonal blocks.
+*
+*  2. If some D(i,i)=0, so that D is exactly singular, then the routine
+*     returns with INFO = i. Otherwise, the factored form of A is used
+*     to estimate the condition number of the matrix A.  If the
+*     reciprocal of the condition number is less than machine precision,
+*     INFO = N+1 is returned as a warning, but the routine still goes on
+*     to solve for X and compute error bounds as described below.
+*
+*  3. The system of equations is solved for X using the factored form
+*     of A.
+*
+*  4. Iterative refinement is applied to improve the computed solution
+*     matrix and calculate error bounds and backward error estimates
+*     for it.
 *
 
 *  Arguments
 *  =========
 *
-*  ITYPE   (input) INTEGER
-*          Specifies the problem type to be solved:
-*          = 1:  A*x = (lambda)*B*x
-*          = 2:  A*B*x = (lambda)*x
-*          = 3:  B*A*x = (lambda)*x
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
+*  FACT    (input) CHARACTER*1
+*          Specifies whether or not the factored form of A has been
+*          supplied on entry.
+*          = 'F':  On entry, AFP and IPIV contain the factored form of
+*                  A.  AP, AFP and IPIV will not be modified.
+*          = 'N':  The matrix A will be copied to AFP and factored.
 *
 *  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangles of A and B are stored;
-*          = 'L':  Lower triangles of A and B are stored.
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
 *
 *  N       (input) INTEGER
-*          The order of the matrices A and B.  N >= 0.
+*          The number of linear equations, i.e., the order of the
+*          matrix A.  N >= 0.
 *
-*  AP      (input/output) REAL array, dimension (N*(N+1)/2)
-*          On entry, the upper or lower triangle of the symmetric matrix
-*          A, packed columnwise in a linear array.  The j-th column of A
-*          is stored in the array AP as follows:
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrices B and X.  NRHS >= 0.
+*
+*  AP      (input) REAL array, dimension (N*(N+1)/2)
+*          The upper or lower triangle of the symmetric matrix A, packed
+*          columnwise in a linear array.  The j-th column of A is stored
+*          in the array AP as follows:
 *          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
 *          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*          See below for further details.
 *
-*          On exit, the contents of AP are destroyed.
+*  AFP     (input or output) REAL array, dimension
+*                            (N*(N+1)/2)
+*          If FACT = 'F', then AFP is an input argument and on entry
+*          contains the block diagonal matrix D and the multipliers used
+*          to obtain the factor U or L from the factorization
+*          A = U*D*U**T or A = L*D*L**T as computed by SSPTRF, stored as
+*          a packed triangular matrix in the same storage format as A.
 *
-*  BP      (input/output) REAL array, dimension (N*(N+1)/2)
-*          On entry, the upper or lower triangle of the symmetric matrix
-*          B, packed columnwise in a linear array.  The j-th column of B
-*          is stored in the array BP as follows:
-*          if UPLO = 'U', BP(i + (j-1)*j/2) = B(i,j) for 1<=i<=j;
-*          if UPLO = 'L', BP(i + (j-1)*(2*n-j)/2) = B(i,j) for j<=i<=n.
+*          If FACT = 'N', then AFP is an output argument and on exit
+*          contains the block diagonal matrix D and the multipliers used
+*          to obtain the factor U or L from the factorization
+*          A = U*D*U**T or A = L*D*L**T as computed by SSPTRF, stored as
+*          a packed triangular matrix in the same storage format as A.
 *
-*          On exit, the triangular factor U or L from the Cholesky
-*          factorization B = U**T*U or B = L*L**T, in the same storage
-*          format as B.
+*  IPIV    (input or output) INTEGER array, dimension (N)
+*          If FACT = 'F', then IPIV is an input argument and on entry
+*          contains details of the interchanges and the block structure
+*          of D, as determined by SSPTRF.
+*          If IPIV(k) > 0, then rows and columns k and IPIV(k) were
+*          interchanged and D(k,k) is a 1-by-1 diagonal block.
+*          If UPLO = 'U' and IPIV(k) = IPIV(k-1) < 0, then rows and
+*          columns k-1 and -IPIV(k) were interchanged and D(k-1:k,k-1:k)
+*          is a 2-by-2 diagonal block.  If UPLO = 'L' and IPIV(k) =
+*          IPIV(k+1) < 0, then rows and columns k+1 and -IPIV(k) were
+*          interchanged and D(k:k+1,k:k+1) is a 2-by-2 diagonal block.
 *
-*  W       (output) REAL array, dimension (N)
-*          If INFO = 0, the eigenvalues in ascending order.
+*          If FACT = 'N', then IPIV is an output argument and on exit
+*          contains details of the interchanges and the block structure
+*          of D, as determined by SSPTRF.
 *
-*  Z       (output) REAL array, dimension (LDZ, N)
-*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
-*          eigenvectors.  The eigenvectors are normalized as follows:
-*          if ITYPE = 1 or 2, Z**T*B*Z = I;
-*          if ITYPE = 3, Z**T*inv(B)*Z = I.
-*          If JOBZ = 'N', then Z is not referenced.
+*  B       (input) REAL array, dimension (LDB,NRHS)
+*          The N-by-NRHS right hand side matrix B.
 *
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z.  LDZ >= 1, and if
-*          JOBZ = 'V', LDZ >= max(1,N).
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
 *
-*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the required LWORK.
+*  X       (output) REAL array, dimension (LDX,NRHS)
+*          If INFO = 0 or INFO = N+1, the N-by-NRHS solution matrix X.
 *
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.
-*          If N <= 1,               LWORK >= 1.
-*          If JOBZ = 'N' and N > 1, LWORK >= 2*N.
-*          If JOBZ = 'V' and N > 1, LWORK >= 1 + 6*N + 2*N**2.
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
 *
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the required sizes of the WORK and IWORK
-*          arrays, returns these values as the first entries of the WORK
-*          and IWORK arrays, and no error message related to LWORK or
-*          LIWORK is issued by XERBLA.
+*  RCOND   (output) REAL
+*          The estimate of the reciprocal condition number of the matrix
+*          A.  If RCOND is less than the machine precision (in
+*          particular, if RCOND = 0), the matrix is singular to working
+*          precision.  This condition is indicated by a return code of
+*          INFO > 0.
 *
-*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
-*          On exit, if INFO = 0, IWORK(1) returns the required LIWORK.
+*  FERR    (output) REAL array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
 *
-*  LIWORK  (input) INTEGER
-*          The dimension of the array IWORK.
-*          If JOBZ  = 'N' or N <= 1, LIWORK >= 1.
-*          If JOBZ  = 'V' and N > 1, LIWORK >= 3 + 5*N.
+*  BERR    (output) REAL array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
 *
-*          If LIWORK = -1, then a workspace query is assumed; the
-*          routine only calculates the required sizes of the WORK and
-*          IWORK arrays, returns these values as the first entries of
-*          the WORK and IWORK arrays, and no error message related to
-*          LWORK or LIWORK is issued by XERBLA.
+*  WORK    (workspace) REAL array, dimension (3*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
 *
 *  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  SPPTRF or SSPEVD returned an error code:
-*             <= N:  if INFO = i, SSPEVD failed to converge;
-*                    i off-diagonal elements of an intermediate
-*                    tridiagonal form did not converge to zero;
-*             > N:   if INFO = N + i, for 1 <= i <= N, then the leading
-*                    minor of order i of B is not positive definite.
-*                    The factorization of B could not be completed and
-*                    no eigenvalues or eigenvectors were computed.
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is
+*                <= N:  D(i,i) is exactly zero.  The factorization
+*                       has been completed but the factor D is exactly
+*                       singular, so the solution and error bounds could
+*                       not be computed. RCOND = 0 is returned.
+*                = N+1: D is nonsingular, but RCOND is less than machine
+*                       precision, meaning that the matrix is singular
+*                       to working precision.  Nevertheless, the
+*                       solution and error bounds are computed because
+*                       there are a number of situations where the
+*                       computed solution can be more accurate than the
+*                       value of RCOND would suggest.
 *
 
 *  Further Details
 *  ===============
 *
-*  Based on contributions by
-*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
+*  The packed storage scheme is illustrated by the following example
+*  when N = 4, UPLO = 'U':
+*
+*  Two-dimensional storage of the symmetric matrix A:
+*
+*     a11 a12 a13 a14
+*         a22 a23 a24
+*             a33 a34     (aij = aji)
+*                 a44
+*
+*  Packed storage of the upper triangle of A:
+*
+*  AP = [ a11, a12, a22, a13, a23, a33, a14, a24, a34, a44 ]
 *
 *  =====================================================================
 *
@@ -1294,64 +1341,100 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="ssptrs"></A>
-  <H2>ssptrs</H2>
-  Solves a real symmetric
+  <A NAME="ssptrd"></A>
+  <H2>ssptrd</H2>
+  Reduces a symmetric matrix in packed storage to real
   <PRE>
 USAGE:
-  info, b = NumRu::Lapack.ssptrs( uplo, ap, ipiv, b)
+  d, e, tau, info, ap = NumRu::Lapack.ssptrd( uplo, ap)
     or
-  NumRu::Lapack.ssptrs  # print help
+  NumRu::Lapack.ssptrd  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE SSPTRS( UPLO, N, NRHS, AP, IPIV, B, LDB, INFO )
+      SUBROUTINE SSPTRD( UPLO, N, AP, D, E, TAU, INFO )
 
 *  Purpose
 *  =======
 *
-*  SSPTRS solves a system of linear equations A*X = B with a real
-*  symmetric matrix A stored in packed format using the factorization
-*  A = U*D*U**T or A = L*D*L**T computed by SSPTRF.
+*  SSPTRD reduces a real symmetric matrix A stored in packed form to
+*  symmetric tridiagonal form T by an orthogonal similarity
+*  transformation: Q**T * A * Q = T.
 *
 
 *  Arguments
 *  =========
 *
 *  UPLO    (input) CHARACTER*1
-*          Specifies whether the details of the factorization are stored
-*          as an upper or lower triangular matrix.
-*          = 'U':  Upper triangular, form is A = U*D*U**T;
-*          = 'L':  Lower triangular, form is A = L*D*L**T.
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
 *
 *  N       (input) INTEGER
 *          The order of the matrix A.  N >= 0.
 *
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
+*  AP      (input/output) REAL array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*          On exit, if UPLO = 'U', the diagonal and first superdiagonal
+*          of A are overwritten by the corresponding elements of the
+*          tridiagonal matrix T, and the elements above the first
+*          superdiagonal, with the array TAU, represent the orthogonal
+*          matrix Q as a product of elementary reflectors; if UPLO
+*          = 'L', the diagonal and first subdiagonal of A are over-
+*          written by the corresponding elements of the tridiagonal
+*          matrix T, and the elements below the first subdiagonal, with
+*          the array TAU, represent the orthogonal matrix Q as a product
+*          of elementary reflectors. See Further Details.
 *
-*  AP      (input) REAL array, dimension (N*(N+1)/2)
-*          The block diagonal matrix D and the multipliers used to
-*          obtain the factor U or L as computed by SSPTRF, stored as a
-*          packed triangular matrix.
+*  D       (output) REAL array, dimension (N)
+*          The diagonal elements of the tridiagonal matrix T:
+*          D(i) = A(i,i).
 *
-*  IPIV    (input) INTEGER array, dimension (N)
-*          Details of the interchanges and the block structure of D
-*          as determined by SSPTRF.
+*  E       (output) REAL array, dimension (N-1)
+*          The off-diagonal elements of the tridiagonal matrix T:
+*          E(i) = A(i,i+1) if UPLO = 'U', E(i) = A(i+1,i) if UPLO = 'L'.
 *
-*  B       (input/output) REAL array, dimension (LDB,NRHS)
-*          On entry, the right hand side matrix B.
-*          On exit, the solution matrix X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
+*  TAU     (output) REAL array, dimension (N-1)
+*          The scalar factors of the elementary reflectors (see Further
+*          Details).
 *
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
 *
 
+*  Further Details
+*  ===============
+*
+*  If UPLO = 'U', the matrix Q is represented as a product of elementary
+*  reflectors
+*
+*     Q = H(n-1) . . . H(2) H(1).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a real scalar, and v is a real vector with
+*  v(i+1:n) = 0 and v(i) = 1; v(1:i-1) is stored on exit in AP,
+*  overwriting A(1:i-1,i+1), and tau is stored in TAU(i).
+*
+*  If UPLO = 'L', the matrix Q is represented as a product of elementary
+*  reflectors
+*
+*     Q = H(1) H(2) . . . H(n-1).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a real scalar, and v is a real vector with
+*  v(1:i) = 0 and v(i+1) = 1; v(i+2:n) is stored on exit in AP,
+*  overwriting A(i+2:n,i), and tau is stored in TAU(i).
+*
 *  =====================================================================
 *
 
@@ -1472,100 +1555,64 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="ssptrd"></A>
-  <H2>ssptrd</H2>
-  Reduces a symmetric matrix in packed storage to real
+  <A NAME="ssptri"></A>
+  <H2>ssptri</H2>
+  Computes the inverse of a real symmetric
   <PRE>
 USAGE:
-  d, e, tau, info, ap = NumRu::Lapack.ssptrd( uplo, ap)
+  info, ap = NumRu::Lapack.ssptri( uplo, ap, ipiv)
     or
-  NumRu::Lapack.ssptrd  # print help
+  NumRu::Lapack.ssptri  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE SSPTRD( UPLO, N, AP, D, E, TAU, INFO )
+      SUBROUTINE SSPTRI( UPLO, N, AP, IPIV, WORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  SSPTRD reduces a real symmetric matrix A stored in packed form to
-*  symmetric tridiagonal form T by an orthogonal similarity
-*  transformation: Q**T * A * Q = T.
+*  SSPTRI computes the inverse of a real symmetric indefinite matrix
+*  A in packed storage using the factorization A = U*D*U**T or
+*  A = L*D*L**T computed by SSPTRF.
 *
 
 *  Arguments
 *  =========
 *
 *  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
+*          Specifies whether the details of the factorization are stored
+*          as an upper or lower triangular matrix.
+*          = 'U':  Upper triangular, form is A = U*D*U**T;
+*          = 'L':  Lower triangular, form is A = L*D*L**T.
 *
 *  N       (input) INTEGER
 *          The order of the matrix A.  N >= 0.
 *
 *  AP      (input/output) REAL array, dimension (N*(N+1)/2)
-*          On entry, the upper or lower triangle of the symmetric matrix
-*          A, packed columnwise in a linear array.  The j-th column of A
-*          is stored in the array AP as follows:
-*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
-*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
-*          On exit, if UPLO = 'U', the diagonal and first superdiagonal
-*          of A are overwritten by the corresponding elements of the
-*          tridiagonal matrix T, and the elements above the first
-*          superdiagonal, with the array TAU, represent the orthogonal
-*          matrix Q as a product of elementary reflectors; if UPLO
-*          = 'L', the diagonal and first subdiagonal of A are over-
-*          written by the corresponding elements of the tridiagonal
-*          matrix T, and the elements below the first subdiagonal, with
-*          the array TAU, represent the orthogonal matrix Q as a product
-*          of elementary reflectors. See Further Details.
+*          On entry, the block diagonal matrix D and the multipliers
+*          used to obtain the factor U or L as computed by SSPTRF,
+*          stored as a packed triangular matrix.
 *
-*  D       (output) REAL array, dimension (N)
-*          The diagonal elements of the tridiagonal matrix T:
-*          D(i) = A(i,i).
+*          On exit, if INFO = 0, the (symmetric) inverse of the original
+*          matrix, stored as a packed triangular matrix. The j-th column
+*          of inv(A) is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = inv(A)(i,j) for 1<=i<=j;
+*          if UPLO = 'L',
+*             AP(i + (j-1)*(2n-j)/2) = inv(A)(i,j) for j<=i<=n.
 *
-*  E       (output) REAL array, dimension (N-1)
-*          The off-diagonal elements of the tridiagonal matrix T:
-*          E(i) = A(i,i+1) if UPLO = 'U', E(i) = A(i+1,i) if UPLO = 'L'.
+*  IPIV    (input) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D
+*          as determined by SSPTRF.
 *
-*  TAU     (output) REAL array, dimension (N-1)
-*          The scalar factors of the elementary reflectors (see Further
-*          Details).
+*  WORK    (workspace) REAL array, dimension (N)
 *
 *  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, D(i,i) = 0; the matrix is singular and its
+*               inverse could not be computed.
 *
 
-*  Further Details
-*  ===============
-*
-*  If UPLO = 'U', the matrix Q is represented as a product of elementary
-*  reflectors
-*
-*     Q = H(n-1) . . . H(2) H(1).
-*
-*  Each H(i) has the form
-*
-*     H(i) = I - tau * v * v'
-*
-*  where tau is a real scalar, and v is a real vector with
-*  v(i+1:n) = 0 and v(i) = 1; v(1:i-1) is stored on exit in AP,
-*  overwriting A(1:i-1,i+1), and tau is stored in TAU(i).
-*
-*  If UPLO = 'L', the matrix Q is represented as a product of elementary
-*  reflectors
-*
-*     Q = H(1) H(2) . . . H(n-1).
-*
-*  Each H(i) has the form
-*
-*     H(i) = I - tau * v * v'
-*
-*  where tau is a real scalar, and v is a real vector with
-*  v(1:i) = 0 and v(i+1) = 1; v(i+2:n) is stored on exit in AP,
-*  overwriting A(i+2:n,i), and tau is stored in TAU(i).
-*
 *  =====================================================================
 *
 
@@ -1573,113 +1620,66 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="sspgv"></A>
-  <H2>sspgv</H2>
-  Computes all eigenvalues and eigenvectors of  a generalized
+  <A NAME="ssptrs"></A>
+  <H2>ssptrs</H2>
+  Solves a real symmetric
   <PRE>
 USAGE:
-  w, z, info, ap, bp = NumRu::Lapack.sspgv( itype, jobz, uplo, ap, bp)
+  info, b = NumRu::Lapack.ssptrs( uplo, ap, ipiv, b)
     or
-  NumRu::Lapack.sspgv  # print help
+  NumRu::Lapack.ssptrs  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE SSPGV( ITYPE, JOBZ, UPLO, N, AP, BP, W, Z, LDZ, WORK, INFO )
+      SUBROUTINE SSPTRS( UPLO, N, NRHS, AP, IPIV, B, LDB, INFO )
 
 *  Purpose
 *  =======
 *
-*  SSPGV computes all the eigenvalues and, optionally, the eigenvectors
-*  of a real generalized symmetric-definite eigenproblem, of the form
-*  A*x=(lambda)*B*x,  A*Bx=(lambda)*x,  or B*A*x=(lambda)*x.
-*  Here A and B are assumed to be symmetric, stored in packed format,
-*  and B is also positive definite.
+*  SSPTRS solves a system of linear equations A*X = B with a real
+*  symmetric matrix A stored in packed format using the factorization
+*  A = U*D*U**T or A = L*D*L**T computed by SSPTRF.
 *
 
 *  Arguments
 *  =========
 *
-*  ITYPE   (input) INTEGER
-*          Specifies the problem type to be solved:
-*          = 1:  A*x = (lambda)*B*x
-*          = 2:  A*B*x = (lambda)*x
-*          = 3:  B*A*x = (lambda)*x
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
 *  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangles of A and B are stored;
-*          = 'L':  Lower triangles of A and B are stored.
+*          Specifies whether the details of the factorization are stored
+*          as an upper or lower triangular matrix.
+*          = 'U':  Upper triangular, form is A = U*D*U**T;
+*          = 'L':  Lower triangular, form is A = L*D*L**T.
 *
 *  N       (input) INTEGER
-*          The order of the matrices A and B.  N >= 0.
+*          The order of the matrix A.  N >= 0.
 *
-*  AP      (input/output) REAL array, dimension
-*                            (N*(N+1)/2)
-*          On entry, the upper or lower triangle of the symmetric matrix
-*          A, packed columnwise in a linear array.  The j-th column of A
-*          is stored in the array AP as follows:
-*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
-*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
 *
-*          On exit, the contents of AP are destroyed.
+*  AP      (input) REAL array, dimension (N*(N+1)/2)
+*          The block diagonal matrix D and the multipliers used to
+*          obtain the factor U or L as computed by SSPTRF, stored as a
+*          packed triangular matrix.
 *
-*  BP      (input/output) REAL array, dimension (N*(N+1)/2)
-*          On entry, the upper or lower triangle of the symmetric matrix
-*          B, packed columnwise in a linear array.  The j-th column of B
-*          is stored in the array BP as follows:
-*          if UPLO = 'U', BP(i + (j-1)*j/2) = B(i,j) for 1<=i<=j;
-*          if UPLO = 'L', BP(i + (j-1)*(2*n-j)/2) = B(i,j) for j<=i<=n.
+*  IPIV    (input) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D
+*          as determined by SSPTRF.
 *
-*          On exit, the triangular factor U or L from the Cholesky
-*          factorization B = U**T*U or B = L*L**T, in the same storage
-*          format as B.
+*  B       (input/output) REAL array, dimension (LDB,NRHS)
+*          On entry, the right hand side matrix B.
+*          On exit, the solution matrix X.
 *
-*  W       (output) REAL array, dimension (N)
-*          If INFO = 0, the eigenvalues in ascending order.
-*
-*  Z       (output) REAL array, dimension (LDZ, N)
-*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
-*          eigenvectors.  The eigenvectors are normalized as follows:
-*          if ITYPE = 1 or 2, Z**T*B*Z = I;
-*          if ITYPE = 3, Z**T*inv(B)*Z = I.
-*          If JOBZ = 'N', then Z is not referenced.
-*
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z.  LDZ >= 1, and if
-*          JOBZ = 'V', LDZ >= max(1,N).
-*
-*  WORK    (workspace) REAL array, dimension (3*N)
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
 *
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  SPPTRF or SSPEV returned an error code:
-*             <= N:  if INFO = i, SSPEV failed to converge;
-*                    i off-diagonal elements of an intermediate
-*                    tridiagonal form did not converge to zero.
-*             > N:   if INFO = n + i, for 1 <= i <= n, then the leading
-*                    minor of order i of B is not positive definite.
-*                    The factorization of B could not be completed and
-*                    no eigenvalues or eigenvectors were computed.
+*          < 0: if INFO = -i, the i-th argument had an illegal value
 *
 
 *  =====================================================================
 *
-*     .. Local Scalars ..
-      LOGICAL            UPPER, WANTZ
-      CHARACTER          TRANS
-      INTEGER            J, NEIG
-*     ..
-*     .. External Functions ..
-      LOGICAL            LSAME
-      EXTERNAL           LSAME
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           SPPTRF, SSPEV, SSPGST, STPMV, STPSV, XERBLA
-*     ..
 
 
     </PRE>

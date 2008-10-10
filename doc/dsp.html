@@ -6,22 +6,284 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for symmetric, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#dspevx">dspevx</A>: Computes selected eigenvalues and eigenvectors of a</LI>
-      <LI><A HREF="#dsptrd">dsptrd</A>: Reduces a symmetric matrix in packed storage to real</LI>
+      <LI><A HREF="#dspcon">dspcon</A>: Estimates the reciprocal of the condition number of a</LI>
+      <LI><A HREF="#dspev">dspev</A>: Computes all eigenvalues, and optionally, eigenvectors of a real</LI>
       <LI><A HREF="#dspevd">dspevd</A>: Computes all eigenvalues, and optionally, eigenvectors of a real</LI>
+      <LI><A HREF="#dspevx">dspevx</A>: Computes selected eigenvalues and eigenvectors of a</LI>
+      <LI><A HREF="#dspgst">dspgst</A>: Reduces a symmetric-definite generalized eigenproblem</LI>
+      <LI><A HREF="#dspgv">dspgv</A>: Computes all eigenvalues and eigenvectors of  a generalized</LI>
+      <LI><A HREF="#dspgvd">dspgvd</A>: Computes all eigenvalues and eigenvectors of  a generalized</LI>
       <LI><A HREF="#dspgvx">dspgvx</A>: Computes selected eigenvalues, and optionally, eigenvectors of</LI>
       <LI><A HREF="#dsprfs">dsprfs</A>: Improves the computed solution to a real</LI>
       <LI><A HREF="#dspsv">dspsv</A>: Solves a real symmetric indefinite system of linear equations AX=B,</LI>
-      <LI><A HREF="#dspgvd">dspgvd</A>: Computes all eigenvalues and eigenvectors of  a generalized</LI>
-      <LI><A HREF="#dspev">dspev</A>: Computes all eigenvalues, and optionally, eigenvectors of a real</LI>
       <LI><A HREF="#dspsvx">dspsvx</A>: Solves a real symmetric</LI>
+      <LI><A HREF="#dsptrd">dsptrd</A>: Reduces a symmetric matrix in packed storage to real</LI>
       <LI><A HREF="#dsptrf">dsptrf</A>: Computes the factorization of a real</LI>
-      <LI><A HREF="#dspgst">dspgst</A>: Reduces a symmetric-definite generalized eigenproblem</LI>
-      <LI><A HREF="#dspcon">dspcon</A>: Estimates the reciprocal of the condition number of a</LI>
       <LI><A HREF="#dsptri">dsptri</A>: Computes the inverse of a real symmetric</LI>
       <LI><A HREF="#dsptrs">dsptrs</A>: Solves a real symmetric</LI>
-      <LI><A HREF="#dspgv">dspgv</A>: Computes all eigenvalues and eigenvectors of  a generalized</LI>
     </UL>
+
+  <A NAME="dspcon"></A>
+  <H2>dspcon</H2>
+  Estimates the reciprocal of the condition number of a
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.dspcon( uplo, ap, ipiv, anorm)
+    or
+  NumRu::Lapack.dspcon  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSPCON( UPLO, N, AP, IPIV, ANORM, RCOND, WORK, IWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSPCON estimates the reciprocal of the condition number (in the
+*  1-norm) of a real symmetric packed matrix A using the factorization
+*  A = U*D*U**T or A = L*D*L**T computed by DSPTRF.
+*
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the details of the factorization are stored
+*          as an upper or lower triangular matrix.
+*          = 'U':  Upper triangular, form is A = U*D*U**T;
+*          = 'L':  Lower triangular, form is A = L*D*L**T.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+*          The block diagonal matrix D and the multipliers used to
+*          obtain the factor U or L as computed by DSPTRF, stored as a
+*          packed triangular matrix.
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D
+*          as determined by DSPTRF.
+*
+*  ANORM   (input) DOUBLE PRECISION
+*          The 1-norm of the original matrix A.
+*
+*  RCOND   (output) DOUBLE PRECISION
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
+*          estimate of the 1-norm of inv(A) computed in this routine.
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (2*N)
+*
+*  IWORK    (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dspev"></A>
+  <H2>dspev</H2>
+  Computes all eigenvalues, and optionally, eigenvectors of a real
+  <PRE>
+USAGE:
+  w, z, info, ap = NumRu::Lapack.dspev( jobz, uplo, ap)
+    or
+  NumRu::Lapack.dspev  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSPEV( JOBZ, UPLO, N, AP, W, Z, LDZ, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSPEV computes all the eigenvalues and, optionally, eigenvectors of a
+*  real symmetric matrix A in packed storage.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*
+*          On exit, AP is overwritten by values generated during the
+*          reduction to tridiagonal form.  If UPLO = 'U', the diagonal
+*          and first superdiagonal of the tridiagonal matrix T overwrite
+*          the corresponding elements of A, and if UPLO = 'L', the
+*          diagonal and first subdiagonal of T overwrite the
+*          corresponding elements of A.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
+*          eigenvectors of the matrix A, with the i-th column of Z
+*          holding the eigenvector associated with W(i).
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, the algorithm failed to converge; i
+*                off-diagonal elements of an intermediate tridiagonal
+*                form did not converge to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dspevd"></A>
+  <H2>dspevd</H2>
+  Computes all eigenvalues, and optionally, eigenvectors of a real
+  <PRE>
+USAGE:
+  w, z, work, iwork, info, ap = NumRu::Lapack.dspevd( jobz, uplo, ap, lwork, liwork)
+    or
+  NumRu::Lapack.dspevd  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSPEVD( JOBZ, UPLO, N, AP, W, Z, LDZ, WORK, LWORK, IWORK, LIWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSPEVD computes all the eigenvalues and, optionally, eigenvectors
+*  of a real symmetric matrix A in packed storage. If eigenvectors are
+*  desired, it uses a divide and conquer algorithm.
+*
+*  The divide and conquer algorithm makes very mild assumptions about
+*  floating point arithmetic. It will work on machines with a guard
+*  digit in add/subtract, or on those binary machines without guard
+*  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
+*  Cray-2. It could conceivably fail on hexadecimal or decimal machines
+*  without guard digits, but we know of none.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*
+*          On exit, AP is overwritten by values generated during the
+*          reduction to tridiagonal form.  If UPLO = 'U', the diagonal
+*          and first superdiagonal of the tridiagonal matrix T overwrite
+*          the corresponding elements of A, and if UPLO = 'L', the
+*          diagonal and first subdiagonal of T overwrite the
+*          corresponding elements of A.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
+*          eigenvectors of the matrix A, with the i-th column of Z
+*          holding the eigenvector associated with W(i).
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace/output) DOUBLE PRECISION array,
+*                                         dimension (LWORK)
+*          On exit, if INFO = 0, WORK(1) returns the required LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          If N <= 1,               LWORK must be at least 1.
+*          If JOBZ = 'N' and N > 1, LWORK must be at least 2*N.
+*          If JOBZ = 'V' and N > 1, LWORK must be at least
+*                                                 1 + 6*N + N**2.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the required sizes of the WORK and IWORK
+*          arrays, returns these values as the first entries of the WORK
+*          and IWORK arrays, and no error message related to LWORK or
+*          LIWORK is issued by XERBLA.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
+*          On exit, if INFO = 0, IWORK(1) returns the required LIWORK.
+*
+*  LIWORK  (input) INTEGER
+*          The dimension of the array IWORK.
+*          If JOBZ  = 'N' or N <= 1, LIWORK must be at least 1.
+*          If JOBZ  = 'V' and N > 1, LIWORK must be at least 3 + 5*N.
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the required sizes of the WORK and
+*          IWORK arrays, returns these values as the first entries of
+*          the WORK and IWORK arrays, and no error message related to
+*          LWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, the algorithm failed to converge; i
+*                off-diagonal elements of an intermediate tridiagonal
+*                form did not converge to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="dspevx"></A>
   <H2>dspevx</H2>
@@ -163,100 +425,69 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="dsptrd"></A>
-  <H2>dsptrd</H2>
-  Reduces a symmetric matrix in packed storage to real
+  <A NAME="dspgst"></A>
+  <H2>dspgst</H2>
+  Reduces a symmetric-definite generalized eigenproblem
   <PRE>
 USAGE:
-  d, e, tau, info, ap = NumRu::Lapack.dsptrd( uplo, ap)
+  info, ap = NumRu::Lapack.dspgst( itype, uplo, n, ap, bp)
     or
-  NumRu::Lapack.dsptrd  # print help
+  NumRu::Lapack.dspgst  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE DSPTRD( UPLO, N, AP, D, E, TAU, INFO )
+      SUBROUTINE DSPGST( ITYPE, UPLO, N, AP, BP, INFO )
 
 *  Purpose
 *  =======
 *
-*  DSPTRD reduces a real symmetric matrix A stored in packed form to
-*  symmetric tridiagonal form T by an orthogonal similarity
-*  transformation: Q**T * A * Q = T.
+*  DSPGST reduces a real symmetric-definite generalized eigenproblem
+*  to standard form, using packed storage.
+*
+*  If ITYPE = 1, the problem is A*x = lambda*B*x,
+*  and A is overwritten by inv(U**T)*A*inv(U) or inv(L)*A*inv(L**T)
+*
+*  If ITYPE = 2 or 3, the problem is A*B*x = lambda*x or
+*  B*A*x = lambda*x, and A is overwritten by U*A*U**T or L**T*A*L.
+*
+*  B must have been previously factorized as U**T*U or L*L**T by DPPTRF.
 *
 
 *  Arguments
 *  =========
 *
+*  ITYPE   (input) INTEGER
+*          = 1: compute inv(U**T)*A*inv(U) or inv(L)*A*inv(L**T);
+*          = 2 or 3: compute U*A*U**T or L**T*A*L.
+*
 *  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
+*          = 'U':  Upper triangle of A is stored and B is factored as
+*                  U**T*U;
+*          = 'L':  Lower triangle of A is stored and B is factored as
+*                  L*L**T.
 *
 *  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
+*          The order of the matrices A and B.  N >= 0.
 *
 *  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
 *          On entry, the upper or lower triangle of the symmetric matrix
 *          A, packed columnwise in a linear array.  The j-th column of A
 *          is stored in the array AP as follows:
 *          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
-*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
-*          On exit, if UPLO = 'U', the diagonal and first superdiagonal
-*          of A are overwritten by the corresponding elements of the
-*          tridiagonal matrix T, and the elements above the first
-*          superdiagonal, with the array TAU, represent the orthogonal
-*          matrix Q as a product of elementary reflectors; if UPLO
-*          = 'L', the diagonal and first subdiagonal of A are over-
-*          written by the corresponding elements of the tridiagonal
-*          matrix T, and the elements below the first subdiagonal, with
-*          the array TAU, represent the orthogonal matrix Q as a product
-*          of elementary reflectors. See Further Details.
+*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.
 *
-*  D       (output) DOUBLE PRECISION array, dimension (N)
-*          The diagonal elements of the tridiagonal matrix T:
-*          D(i) = A(i,i).
+*          On exit, if INFO = 0, the transformed matrix, stored in the
+*          same format as A.
 *
-*  E       (output) DOUBLE PRECISION array, dimension (N-1)
-*          The off-diagonal elements of the tridiagonal matrix T:
-*          E(i) = A(i,i+1) if UPLO = 'U', E(i) = A(i+1,i) if UPLO = 'L'.
-*
-*  TAU     (output) DOUBLE PRECISION array, dimension (N-1)
-*          The scalar factors of the elementary reflectors (see Further
-*          Details).
+*  BP      (input) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+*          The triangular factor from the Cholesky factorization of B,
+*          stored in the same format as A, as returned by DPPTRF.
 *
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
 *          < 0:  if INFO = -i, the i-th argument had an illegal value
 *
 
-*  Further Details
-*  ===============
-*
-*  If UPLO = 'U', the matrix Q is represented as a product of elementary
-*  reflectors
-*
-*     Q = H(n-1) . . . H(2) H(1).
-*
-*  Each H(i) has the form
-*
-*     H(i) = I - tau * v * v'
-*
-*  where tau is a real scalar, and v is a real vector with
-*  v(i+1:n) = 0 and v(i) = 1; v(1:i-1) is stored on exit in AP,
-*  overwriting A(1:i-1,i+1), and tau is stored in TAU(i).
-*
-*  If UPLO = 'L', the matrix Q is represented as a product of elementary
-*  reflectors
-*
-*     Q = H(1) H(2) . . . H(n-1).
-*
-*  Each H(i) has the form
-*
-*     H(i) = I - tau * v * v'
-*
-*  where tau is a real scalar, and v is a real vector with
-*  v(1:i) = 0 and v(i+1) = 1; v(i+2:n) is stored on exit in AP,
-*  overwriting A(i+2:n,i), and tau is stored in TAU(i).
-*
 *  =====================================================================
 *
 
@@ -264,25 +495,140 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="dspevd"></A>
-  <H2>dspevd</H2>
-  Computes all eigenvalues, and optionally, eigenvectors of a real
+  <A NAME="dspgv"></A>
+  <H2>dspgv</H2>
+  Computes all eigenvalues and eigenvectors of  a generalized
   <PRE>
 USAGE:
-  w, z, work, iwork, info, ap = NumRu::Lapack.dspevd( jobz, uplo, ap, lwork, liwork)
+  w, z, info, ap, bp = NumRu::Lapack.dspgv( itype, jobz, uplo, ap, bp)
     or
-  NumRu::Lapack.dspevd  # print help
+  NumRu::Lapack.dspgv  # print help
 
 
 FORTRAN MANUAL
-      SUBROUTINE DSPEVD( JOBZ, UPLO, N, AP, W, Z, LDZ, WORK, LWORK, IWORK, LIWORK, INFO )
+      SUBROUTINE DSPGV( ITYPE, JOBZ, UPLO, N, AP, BP, W, Z, LDZ, WORK, INFO )
 
 *  Purpose
 *  =======
 *
-*  DSPEVD computes all the eigenvalues and, optionally, eigenvectors
-*  of a real symmetric matrix A in packed storage. If eigenvectors are
-*  desired, it uses a divide and conquer algorithm.
+*  DSPGV computes all the eigenvalues and, optionally, the eigenvectors
+*  of a real generalized symmetric-definite eigenproblem, of the form
+*  A*x=(lambda)*B*x,  A*Bx=(lambda)*x,  or B*A*x=(lambda)*x.
+*  Here A and B are assumed to be symmetric, stored in packed format,
+*  and B is also positive definite.
+*
+
+*  Arguments
+*  =========
+*
+*  ITYPE   (input) INTEGER
+*          Specifies the problem type to be solved:
+*          = 1:  A*x = (lambda)*B*x
+*          = 2:  A*B*x = (lambda)*x
+*          = 3:  B*A*x = (lambda)*x
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangles of A and B are stored;
+*          = 'L':  Lower triangles of A and B are stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  AP      (input/output) DOUBLE PRECISION array, dimension
+*                            (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*
+*          On exit, the contents of AP are destroyed.
+*
+*  BP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          B, packed columnwise in a linear array.  The j-th column of B
+*          is stored in the array BP as follows:
+*          if UPLO = 'U', BP(i + (j-1)*j/2) = B(i,j) for 1<=i<=j;
+*          if UPLO = 'L', BP(i + (j-1)*(2*n-j)/2) = B(i,j) for j<=i<=n.
+*
+*          On exit, the triangular factor U or L from the Cholesky
+*          factorization B = U**T*U or B = L*L**T, in the same storage
+*          format as B.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
+*          eigenvectors.  The eigenvectors are normalized as follows:
+*          if ITYPE = 1 or 2, Z**T*B*Z = I;
+*          if ITYPE = 3, Z**T*inv(B)*Z = I.
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  DPPTRF or DSPEV returned an error code:
+*             <= N:  if INFO = i, DSPEV failed to converge;
+*                    i off-diagonal elements of an intermediate
+*                    tridiagonal form did not converge to zero.
+*             > N:   if INFO = n + i, for 1 <= i <= n, then the leading
+*                    minor of order i of B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            UPPER, WANTZ
+      CHARACTER          TRANS
+      INTEGER            J, NEIG
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           DPPTRF, DSPEV, DSPGST, DTPMV, DTPSV, XERBLA
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dspgvd"></A>
+  <H2>dspgvd</H2>
+  Computes all eigenvalues and eigenvectors of  a generalized
+  <PRE>
+USAGE:
+  w, z, work, iwork, info, ap, bp = NumRu::Lapack.dspgvd( itype, jobz, uplo, ap, bp, lwork, liwork)
+    or
+  NumRu::Lapack.dspgvd  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSPGVD( ITYPE, JOBZ, UPLO, N, AP, BP, W, Z, LDZ, WORK, LWORK, IWORK, LIWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSPGVD computes all the eigenvalues, and optionally, the eigenvectors
+*  of a real generalized symmetric-definite eigenproblem, of the form
+*  A*x=(lambda)*B*x,  A*Bx=(lambda)*x,  or B*A*x=(lambda)*x.  Here A and
+*  B are assumed to be symmetric, stored in packed format, and B is also
+*  positive definite.
+*  If eigenvectors are desired, it uses a divide and conquer algorithm.
 *
 *  The divide and conquer algorithm makes very mild assumptions about
 *  floating point arithmetic. It will work on machines with a guard
@@ -295,16 +641,22 @@ FORTRAN MANUAL
 *  Arguments
 *  =========
 *
+*  ITYPE   (input) INTEGER
+*          Specifies the problem type to be solved:
+*          = 1:  A*x = (lambda)*B*x
+*          = 2:  A*B*x = (lambda)*x
+*          = 3:  B*A*x = (lambda)*x
+*
 *  JOBZ    (input) CHARACTER*1
 *          = 'N':  Compute eigenvalues only;
 *          = 'V':  Compute eigenvalues and eigenvectors.
 *
 *  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
+*          = 'U':  Upper triangles of A and B are stored;
+*          = 'L':  Lower triangles of A and B are stored.
 *
 *  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
+*          The order of the matrices A and B.  N >= 0.
 *
 *  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
 *          On entry, the upper or lower triangle of the symmetric matrix
@@ -313,36 +665,41 @@ FORTRAN MANUAL
 *          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
 *          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
 *
-*          On exit, AP is overwritten by values generated during the
-*          reduction to tridiagonal form.  If UPLO = 'U', the diagonal
-*          and first superdiagonal of the tridiagonal matrix T overwrite
-*          the corresponding elements of A, and if UPLO = 'L', the
-*          diagonal and first subdiagonal of T overwrite the
-*          corresponding elements of A.
+*          On exit, the contents of AP are destroyed.
+*
+*  BP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          B, packed columnwise in a linear array.  The j-th column of B
+*          is stored in the array BP as follows:
+*          if UPLO = 'U', BP(i + (j-1)*j/2) = B(i,j) for 1<=i<=j;
+*          if UPLO = 'L', BP(i + (j-1)*(2*n-j)/2) = B(i,j) for j<=i<=n.
+*
+*          On exit, the triangular factor U or L from the Cholesky
+*          factorization B = U**T*U or B = L*L**T, in the same storage
+*          format as B.
 *
 *  W       (output) DOUBLE PRECISION array, dimension (N)
 *          If INFO = 0, the eigenvalues in ascending order.
 *
 *  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
-*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
-*          eigenvectors of the matrix A, with the i-th column of Z
-*          holding the eigenvector associated with W(i).
+*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
+*          eigenvectors.  The eigenvectors are normalized as follows:
+*          if ITYPE = 1 or 2, Z**T*B*Z = I;
+*          if ITYPE = 3, Z**T*inv(B)*Z = I.
 *          If JOBZ = 'N', then Z is not referenced.
 *
 *  LDZ     (input) INTEGER
 *          The leading dimension of the array Z.  LDZ >= 1, and if
 *          JOBZ = 'V', LDZ >= max(1,N).
 *
-*  WORK    (workspace/output) DOUBLE PRECISION array,
-*                                         dimension (LWORK)
+*  WORK    (workspace/output) DOUBLE PRECISION array, dimension (MAX(1,LWORK))
 *          On exit, if INFO = 0, WORK(1) returns the required LWORK.
 *
 *  LWORK   (input) INTEGER
 *          The dimension of the array WORK.
-*          If N <= 1,               LWORK must be at least 1.
-*          If JOBZ = 'N' and N > 1, LWORK must be at least 2*N.
-*          If JOBZ = 'V' and N > 1, LWORK must be at least
-*                                                 1 + 6*N + N**2.
+*          If N <= 1,               LWORK >= 1.
+*          If JOBZ = 'N' and N > 1, LWORK >= 2*N.
+*          If JOBZ = 'V' and N > 1, LWORK >= 1 + 6*N + 2*N**2.
 *
 *          If LWORK = -1, then a workspace query is assumed; the routine
 *          only calculates the required sizes of the WORK and IWORK
@@ -355,8 +712,8 @@ FORTRAN MANUAL
 *
 *  LIWORK  (input) INTEGER
 *          The dimension of the array IWORK.
-*          If JOBZ  = 'N' or N <= 1, LIWORK must be at least 1.
-*          If JOBZ  = 'V' and N > 1, LIWORK must be at least 3 + 5*N.
+*          If JOBZ  = 'N' or N <= 1, LIWORK >= 1.
+*          If JOBZ  = 'V' and N > 1, LIWORK >= 3 + 5*N.
 *
 *          If LIWORK = -1, then a workspace query is assumed; the
 *          routine only calculates the required sizes of the WORK and
@@ -366,12 +723,23 @@ FORTRAN MANUAL
 *
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value.
-*          > 0:  if INFO = i, the algorithm failed to converge; i
-*                off-diagonal elements of an intermediate tridiagonal
-*                form did not converge to zero.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  DPPTRF or DSPEVD returned an error code:
+*             <= N:  if INFO = i, DSPEVD failed to converge;
+*                    i off-diagonal elements of an intermediate
+*                    tridiagonal form did not converge to zero;
+*             > N:   if INFO = N + i, for 1 <= i <= N, then the leading
+*                    minor of order i of B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
 *
 
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
+*
 *  =====================================================================
 *
 
@@ -784,224 +1152,6 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="dspgvd"></A>
-  <H2>dspgvd</H2>
-  Computes all eigenvalues and eigenvectors of  a generalized
-  <PRE>
-USAGE:
-  w, z, work, iwork, info, ap, bp = NumRu::Lapack.dspgvd( itype, jobz, uplo, ap, bp, lwork, liwork)
-    or
-  NumRu::Lapack.dspgvd  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE DSPGVD( ITYPE, JOBZ, UPLO, N, AP, BP, W, Z, LDZ, WORK, LWORK, IWORK, LIWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  DSPGVD computes all the eigenvalues, and optionally, the eigenvectors
-*  of a real generalized symmetric-definite eigenproblem, of the form
-*  A*x=(lambda)*B*x,  A*Bx=(lambda)*x,  or B*A*x=(lambda)*x.  Here A and
-*  B are assumed to be symmetric, stored in packed format, and B is also
-*  positive definite.
-*  If eigenvectors are desired, it uses a divide and conquer algorithm.
-*
-*  The divide and conquer algorithm makes very mild assumptions about
-*  floating point arithmetic. It will work on machines with a guard
-*  digit in add/subtract, or on those binary machines without guard
-*  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
-*  Cray-2. It could conceivably fail on hexadecimal or decimal machines
-*  without guard digits, but we know of none.
-*
-
-*  Arguments
-*  =========
-*
-*  ITYPE   (input) INTEGER
-*          Specifies the problem type to be solved:
-*          = 1:  A*x = (lambda)*B*x
-*          = 2:  A*B*x = (lambda)*x
-*          = 3:  B*A*x = (lambda)*x
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangles of A and B are stored;
-*          = 'L':  Lower triangles of A and B are stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrices A and B.  N >= 0.
-*
-*  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
-*          On entry, the upper or lower triangle of the symmetric matrix
-*          A, packed columnwise in a linear array.  The j-th column of A
-*          is stored in the array AP as follows:
-*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
-*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
-*
-*          On exit, the contents of AP are destroyed.
-*
-*  BP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
-*          On entry, the upper or lower triangle of the symmetric matrix
-*          B, packed columnwise in a linear array.  The j-th column of B
-*          is stored in the array BP as follows:
-*          if UPLO = 'U', BP(i + (j-1)*j/2) = B(i,j) for 1<=i<=j;
-*          if UPLO = 'L', BP(i + (j-1)*(2*n-j)/2) = B(i,j) for j<=i<=n.
-*
-*          On exit, the triangular factor U or L from the Cholesky
-*          factorization B = U**T*U or B = L*L**T, in the same storage
-*          format as B.
-*
-*  W       (output) DOUBLE PRECISION array, dimension (N)
-*          If INFO = 0, the eigenvalues in ascending order.
-*
-*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
-*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
-*          eigenvectors.  The eigenvectors are normalized as follows:
-*          if ITYPE = 1 or 2, Z**T*B*Z = I;
-*          if ITYPE = 3, Z**T*inv(B)*Z = I.
-*          If JOBZ = 'N', then Z is not referenced.
-*
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z.  LDZ >= 1, and if
-*          JOBZ = 'V', LDZ >= max(1,N).
-*
-*  WORK    (workspace/output) DOUBLE PRECISION array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the required LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.
-*          If N <= 1,               LWORK >= 1.
-*          If JOBZ = 'N' and N > 1, LWORK >= 2*N.
-*          If JOBZ = 'V' and N > 1, LWORK >= 1 + 6*N + 2*N**2.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the required sizes of the WORK and IWORK
-*          arrays, returns these values as the first entries of the WORK
-*          and IWORK arrays, and no error message related to LWORK or
-*          LIWORK is issued by XERBLA.
-*
-*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
-*          On exit, if INFO = 0, IWORK(1) returns the required LIWORK.
-*
-*  LIWORK  (input) INTEGER
-*          The dimension of the array IWORK.
-*          If JOBZ  = 'N' or N <= 1, LIWORK >= 1.
-*          If JOBZ  = 'V' and N > 1, LIWORK >= 3 + 5*N.
-*
-*          If LIWORK = -1, then a workspace query is assumed; the
-*          routine only calculates the required sizes of the WORK and
-*          IWORK arrays, returns these values as the first entries of
-*          the WORK and IWORK arrays, and no error message related to
-*          LWORK or LIWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  DPPTRF or DSPEVD returned an error code:
-*             <= N:  if INFO = i, DSPEVD failed to converge;
-*                    i off-diagonal elements of an intermediate
-*                    tridiagonal form did not converge to zero;
-*             > N:   if INFO = N + i, for 1 <= i <= N, then the leading
-*                    minor of order i of B is not positive definite.
-*                    The factorization of B could not be completed and
-*                    no eigenvalues or eigenvectors were computed.
-*
-
-*  Further Details
-*  ===============
-*
-*  Based on contributions by
-*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
-*
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="dspev"></A>
-  <H2>dspev</H2>
-  Computes all eigenvalues, and optionally, eigenvectors of a real
-  <PRE>
-USAGE:
-  w, z, info, ap = NumRu::Lapack.dspev( jobz, uplo, ap)
-    or
-  NumRu::Lapack.dspev  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE DSPEV( JOBZ, UPLO, N, AP, W, Z, LDZ, WORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  DSPEV computes all the eigenvalues and, optionally, eigenvectors of a
-*  real symmetric matrix A in packed storage.
-*
-
-*  Arguments
-*  =========
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
-*          On entry, the upper or lower triangle of the symmetric matrix
-*          A, packed columnwise in a linear array.  The j-th column of A
-*          is stored in the array AP as follows:
-*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
-*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
-*
-*          On exit, AP is overwritten by values generated during the
-*          reduction to tridiagonal form.  If UPLO = 'U', the diagonal
-*          and first superdiagonal of the tridiagonal matrix T overwrite
-*          the corresponding elements of A, and if UPLO = 'L', the
-*          diagonal and first subdiagonal of T overwrite the
-*          corresponding elements of A.
-*
-*  W       (output) DOUBLE PRECISION array, dimension (N)
-*          If INFO = 0, the eigenvalues in ascending order.
-*
-*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
-*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
-*          eigenvectors of the matrix A, with the i-th column of Z
-*          holding the eigenvector associated with W(i).
-*          If JOBZ = 'N', then Z is not referenced.
-*
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z.  LDZ >= 1, and if
-*          JOBZ = 'V', LDZ >= max(1,N).
-*
-*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit.
-*          < 0:  if INFO = -i, the i-th argument had an illegal value.
-*          > 0:  if INFO = i, the algorithm failed to converge; i
-*                off-diagonal elements of an intermediate tridiagonal
-*                form did not converge to zero.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
   <A NAME="dspsvx"></A>
   <H2>dspsvx</H2>
   Solves a real symmetric
@@ -1192,6 +1342,107 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
+  <A NAME="dsptrd"></A>
+  <H2>dsptrd</H2>
+  Reduces a symmetric matrix in packed storage to real
+  <PRE>
+USAGE:
+  d, e, tau, info, ap = NumRu::Lapack.dsptrd( uplo, ap)
+    or
+  NumRu::Lapack.dsptrd  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSPTRD( UPLO, N, AP, D, E, TAU, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSPTRD reduces a real symmetric matrix A stored in packed form to
+*  symmetric tridiagonal form T by an orthogonal similarity
+*  transformation: Q**T * A * Q = T.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*          On exit, if UPLO = 'U', the diagonal and first superdiagonal
+*          of A are overwritten by the corresponding elements of the
+*          tridiagonal matrix T, and the elements above the first
+*          superdiagonal, with the array TAU, represent the orthogonal
+*          matrix Q as a product of elementary reflectors; if UPLO
+*          = 'L', the diagonal and first subdiagonal of A are over-
+*          written by the corresponding elements of the tridiagonal
+*          matrix T, and the elements below the first subdiagonal, with
+*          the array TAU, represent the orthogonal matrix Q as a product
+*          of elementary reflectors. See Further Details.
+*
+*  D       (output) DOUBLE PRECISION array, dimension (N)
+*          The diagonal elements of the tridiagonal matrix T:
+*          D(i) = A(i,i).
+*
+*  E       (output) DOUBLE PRECISION array, dimension (N-1)
+*          The off-diagonal elements of the tridiagonal matrix T:
+*          E(i) = A(i,i+1) if UPLO = 'U', E(i) = A(i+1,i) if UPLO = 'L'.
+*
+*  TAU     (output) DOUBLE PRECISION array, dimension (N-1)
+*          The scalar factors of the elementary reflectors (see Further
+*          Details).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  Further Details
+*  ===============
+*
+*  If UPLO = 'U', the matrix Q is represented as a product of elementary
+*  reflectors
+*
+*     Q = H(n-1) . . . H(2) H(1).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a real scalar, and v is a real vector with
+*  v(i+1:n) = 0 and v(i) = 1; v(1:i-1) is stored on exit in AP,
+*  overwriting A(1:i-1,i+1), and tau is stored in TAU(i).
+*
+*  If UPLO = 'L', the matrix Q is represented as a product of elementary
+*  reflectors
+*
+*     Q = H(1) H(2) . . . H(n-1).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a real scalar, and v is a real vector with
+*  v(1:i) = 0 and v(i+1) = 1; v(i+2:n) is stored on exit in AP,
+*  overwriting A(i+2:n,i), and tau is stored in TAU(i).
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
   <A NAME="dsptrf"></A>
   <H2>dsptrf</H2>
   Computes the factorization of a real
@@ -1298,145 +1549,6 @@ FORTRAN MANUAL
 *  If s = 2, the lower triangle of D(k) overwrites A(k,k), A(k+1,k),
 *  and A(k+1,k+1), and v overwrites A(k+2:n,k:k+1).
 *
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="dspgst"></A>
-  <H2>dspgst</H2>
-  Reduces a symmetric-definite generalized eigenproblem
-  <PRE>
-USAGE:
-  info, ap = NumRu::Lapack.dspgst( itype, uplo, n, ap, bp)
-    or
-  NumRu::Lapack.dspgst  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE DSPGST( ITYPE, UPLO, N, AP, BP, INFO )
-
-*  Purpose
-*  =======
-*
-*  DSPGST reduces a real symmetric-definite generalized eigenproblem
-*  to standard form, using packed storage.
-*
-*  If ITYPE = 1, the problem is A*x = lambda*B*x,
-*  and A is overwritten by inv(U**T)*A*inv(U) or inv(L)*A*inv(L**T)
-*
-*  If ITYPE = 2 or 3, the problem is A*B*x = lambda*x or
-*  B*A*x = lambda*x, and A is overwritten by U*A*U**T or L**T*A*L.
-*
-*  B must have been previously factorized as U**T*U or L*L**T by DPPTRF.
-*
-
-*  Arguments
-*  =========
-*
-*  ITYPE   (input) INTEGER
-*          = 1: compute inv(U**T)*A*inv(U) or inv(L)*A*inv(L**T);
-*          = 2 or 3: compute U*A*U**T or L**T*A*L.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored and B is factored as
-*                  U**T*U;
-*          = 'L':  Lower triangle of A is stored and B is factored as
-*                  L*L**T.
-*
-*  N       (input) INTEGER
-*          The order of the matrices A and B.  N >= 0.
-*
-*  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
-*          On entry, the upper or lower triangle of the symmetric matrix
-*          A, packed columnwise in a linear array.  The j-th column of A
-*          is stored in the array AP as follows:
-*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
-*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.
-*
-*          On exit, if INFO = 0, the transformed matrix, stored in the
-*          same format as A.
-*
-*  BP      (input) DOUBLE PRECISION array, dimension (N*(N+1)/2)
-*          The triangular factor from the Cholesky factorization of B,
-*          stored in the same format as A, as returned by DPPTRF.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="dspcon"></A>
-  <H2>dspcon</H2>
-  Estimates the reciprocal of the condition number of a
-  <PRE>
-USAGE:
-  rcond, info = NumRu::Lapack.dspcon( uplo, ap, ipiv, anorm)
-    or
-  NumRu::Lapack.dspcon  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE DSPCON( UPLO, N, AP, IPIV, ANORM, RCOND, WORK, IWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  DSPCON estimates the reciprocal of the condition number (in the
-*  1-norm) of a real symmetric packed matrix A using the factorization
-*  A = U*D*U**T or A = L*D*L**T computed by DSPTRF.
-*
-*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
-*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          Specifies whether the details of the factorization are stored
-*          as an upper or lower triangular matrix.
-*          = 'U':  Upper triangular, form is A = U*D*U**T;
-*          = 'L':  Lower triangular, form is A = L*D*L**T.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  AP      (input) DOUBLE PRECISION array, dimension (N*(N+1)/2)
-*          The block diagonal matrix D and the multipliers used to
-*          obtain the factor U or L as computed by DSPTRF, stored as a
-*          packed triangular matrix.
-*
-*  IPIV    (input) INTEGER array, dimension (N)
-*          Details of the interchanges and the block structure of D
-*          as determined by DSPTRF.
-*
-*  ANORM   (input) DOUBLE PRECISION
-*          The 1-norm of the original matrix A.
-*
-*  RCOND   (output) DOUBLE PRECISION
-*          The reciprocal of the condition number of the matrix A,
-*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
-*          estimate of the 1-norm of inv(A) computed in this routine.
-*
-*  WORK    (workspace) DOUBLE PRECISION array, dimension (2*N)
-*
-*  IWORK    (workspace) INTEGER array, dimension (N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
 *  =====================================================================
 *
 
@@ -1569,118 +1681,6 @@ FORTRAN MANUAL
 
 *  =====================================================================
 *
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="dspgv"></A>
-  <H2>dspgv</H2>
-  Computes all eigenvalues and eigenvectors of  a generalized
-  <PRE>
-USAGE:
-  w, z, info, ap, bp = NumRu::Lapack.dspgv( itype, jobz, uplo, ap, bp)
-    or
-  NumRu::Lapack.dspgv  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE DSPGV( ITYPE, JOBZ, UPLO, N, AP, BP, W, Z, LDZ, WORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  DSPGV computes all the eigenvalues and, optionally, the eigenvectors
-*  of a real generalized symmetric-definite eigenproblem, of the form
-*  A*x=(lambda)*B*x,  A*Bx=(lambda)*x,  or B*A*x=(lambda)*x.
-*  Here A and B are assumed to be symmetric, stored in packed format,
-*  and B is also positive definite.
-*
-
-*  Arguments
-*  =========
-*
-*  ITYPE   (input) INTEGER
-*          Specifies the problem type to be solved:
-*          = 1:  A*x = (lambda)*B*x
-*          = 2:  A*B*x = (lambda)*x
-*          = 3:  B*A*x = (lambda)*x
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangles of A and B are stored;
-*          = 'L':  Lower triangles of A and B are stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrices A and B.  N >= 0.
-*
-*  AP      (input/output) DOUBLE PRECISION array, dimension
-*                            (N*(N+1)/2)
-*          On entry, the upper or lower triangle of the symmetric matrix
-*          A, packed columnwise in a linear array.  The j-th column of A
-*          is stored in the array AP as follows:
-*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
-*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
-*
-*          On exit, the contents of AP are destroyed.
-*
-*  BP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
-*          On entry, the upper or lower triangle of the symmetric matrix
-*          B, packed columnwise in a linear array.  The j-th column of B
-*          is stored in the array BP as follows:
-*          if UPLO = 'U', BP(i + (j-1)*j/2) = B(i,j) for 1<=i<=j;
-*          if UPLO = 'L', BP(i + (j-1)*(2*n-j)/2) = B(i,j) for j<=i<=n.
-*
-*          On exit, the triangular factor U or L from the Cholesky
-*          factorization B = U**T*U or B = L*L**T, in the same storage
-*          format as B.
-*
-*  W       (output) DOUBLE PRECISION array, dimension (N)
-*          If INFO = 0, the eigenvalues in ascending order.
-*
-*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
-*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
-*          eigenvectors.  The eigenvectors are normalized as follows:
-*          if ITYPE = 1 or 2, Z**T*B*Z = I;
-*          if ITYPE = 3, Z**T*inv(B)*Z = I.
-*          If JOBZ = 'N', then Z is not referenced.
-*
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z.  LDZ >= 1, and if
-*          JOBZ = 'V', LDZ >= max(1,N).
-*
-*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  DPPTRF or DSPEV returned an error code:
-*             <= N:  if INFO = i, DSPEV failed to converge;
-*                    i off-diagonal elements of an intermediate
-*                    tridiagonal form did not converge to zero.
-*             > N:   if INFO = n + i, for 1 <= i <= n, then the leading
-*                    minor of order i of B is not positive definite.
-*                    The factorization of B could not be completed and
-*                    no eigenvalues or eigenvectors were computed.
-*
-
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      LOGICAL            UPPER, WANTZ
-      CHARACTER          TRANS
-      INTEGER            J, NEIG
-*     ..
-*     .. External Functions ..
-      LOGICAL            LSAME
-      EXTERNAL           LSAME
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           DPPTRF, DSPEV, DSPGST, DTPMV, DTPSV, XERBLA
-*     ..
 
 
     </PRE>
