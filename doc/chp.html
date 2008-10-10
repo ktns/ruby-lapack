@@ -6,25 +6,139 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for (complex) Hermitian, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#chptrd">chptrd</A></LI>
-      <LI><A HREF="#chpsvx">chpsvx</A></LI>
-      <LI><A HREF="#chprfs">chprfs</A></LI>
-      <LI><A HREF="#chpev">chpev</A></LI>
-      <LI><A HREF="#chpgvx">chpgvx</A></LI>
-      <LI><A HREF="#chpgvd">chpgvd</A></LI>
-      <LI><A HREF="#chptrs">chptrs</A></LI>
-      <LI><A HREF="#chpevx">chpevx</A></LI>
-      <LI><A HREF="#chptri">chptri</A></LI>
-      <LI><A HREF="#chpcon">chpcon</A></LI>
-      <LI><A HREF="#chpgst">chpgst</A></LI>
-      <LI><A HREF="#chptrf">chptrf</A></LI>
-      <LI><A HREF="#chpsv">chpsv</A></LI>
-      <LI><A HREF="#chpevd">chpevd</A></LI>
-      <LI><A HREF="#chpgv">chpgv</A></LI>
+      <LI><A HREF="#chpgv">chpgv</A>: Computes all eigenvalues and eigenvectors of  a generalized</LI>
+      <LI><A HREF="#chptrd">chptrd</A>: Reduces a Hermitian matrix in packed storage to real</LI>
+      <LI><A HREF="#chpsvx">chpsvx</A>: Solves a complex Hermitian</LI>
+      <LI><A HREF="#chprfs">chprfs</A>: Improves the computed solution to a complex</LI>
+      <LI><A HREF="#chpev">chpev</A>: Computes all eigenvalues and, optionally, eigenvectors of a complex</LI>
+      <LI><A HREF="#chpgvx">chpgvx</A>: Computes selected eigenvalues, and optionally, the eigenvectors of</LI>
+      <LI><A HREF="#chpgvd">chpgvd</A>: Computes all eigenvalues and eigenvectors of  a generalized</LI>
+      <LI><A HREF="#chptrs">chptrs</A>: Solves a complex Hermitian</LI>
+      <LI><A HREF="#chpevx">chpevx</A>: Computes selected eigenvalues and eigenvectors of a</LI>
+      <LI><A HREF="#chptri">chptri</A>: Computes the inverse of a complex</LI>
+      <LI><A HREF="#chpcon">chpcon</A>: Estimates the reciprocal of the condition number of a</LI>
+      <LI><A HREF="#chpgst">chpgst</A>: Reduces a Hermitian-definite generalized eigenproblem</LI>
+      <LI><A HREF="#chptrf">chptrf</A>: Computes the factorization of a complex</LI>
+      <LI><A HREF="#chpsv">chpsv</A>: Solves a complex Hermitian indefinite system of linear equations AX=B,</LI>
+      <LI><A HREF="#chpevd">chpevd</A>: Computes all eigenvalues and, optionally, eigenvectors of a complex</LI>
     </UL>
+
+  <A NAME="chpgv"></A>
+  <H2>chpgv</H2>
+  Computes all eigenvalues and eigenvectors of  a generalized
+  <PRE>
+USAGE:
+  w, z, info, ap, bp = NumRu::Lapack.chpgv( itype, jobz, uplo, ap, bp)
+    or
+  NumRu::Lapack.chpgv  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CHPGV( ITYPE, JOBZ, UPLO, N, AP, BP, W, Z, LDZ, WORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CHPGV computes all the eigenvalues and, optionally, the eigenvectors
+*  of a complex generalized Hermitian-definite eigenproblem, of the form
+*  A*x=(lambda)*B*x,  A*Bx=(lambda)*x,  or B*A*x=(lambda)*x.
+*  Here A and B are assumed to be Hermitian, stored in packed format,
+*  and B is also positive definite.
+*
+
+*  Arguments
+*  =========
+*
+*  ITYPE   (input) INTEGER
+*          Specifies the problem type to be solved:
+*          = 1:  A*x = (lambda)*B*x
+*          = 2:  A*B*x = (lambda)*x
+*          = 3:  B*A*x = (lambda)*x
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangles of A and B are stored;
+*          = 'L':  Lower triangles of A and B are stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  AP      (input/output) COMPLEX array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the Hermitian matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*
+*          On exit, the contents of AP are destroyed.
+*
+*  BP      (input/output) COMPLEX array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the Hermitian matrix
+*          B, packed columnwise in a linear array.  The j-th column of B
+*          is stored in the array BP as follows:
+*          if UPLO = 'U', BP(i + (j-1)*j/2) = B(i,j) for 1<=i<=j;
+*          if UPLO = 'L', BP(i + (j-1)*(2*n-j)/2) = B(i,j) for j<=i<=n.
+*
+*          On exit, the triangular factor U or L from the Cholesky
+*          factorization B = U**H*U or B = L*L**H, in the same storage
+*          format as B.
+*
+*  W       (output) REAL array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) COMPLEX array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
+*          eigenvectors.  The eigenvectors are normalized as follows:
+*          if ITYPE = 1 or 2, Z**H*B*Z = I;
+*          if ITYPE = 3, Z**H*inv(B)*Z = I.
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) COMPLEX array, dimension (max(1, 2*N-1))
+*
+*  RWORK   (workspace) REAL array, dimension (max(1, 3*N-2))
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  CPPTRF or CHPEV returned an error code:
+*             <= N:  if INFO = i, CHPEV failed to converge;
+*                    i off-diagonal elements of an intermediate
+*                    tridiagonal form did not convergeto zero;
+*             > N:   if INFO = N + i, for 1 <= i <= n, then the leading
+*                    minor of order i of B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            UPPER, WANTZ
+      CHARACTER          TRANS
+      INTEGER            J, NEIG
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CHPEV, CHPGST, CPPTRF, CTPMV, CTPSV, XERBLA
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="chptrd"></A>
   <H2>chptrd</H2>
+  Reduces a Hermitian matrix in packed storage to real
   <PRE>
 USAGE:
   d, e, tau, info, ap = NumRu::Lapack.chptrd( uplo, ap)
@@ -125,6 +239,7 @@ FORTRAN MANUAL
 
   <A NAME="chpsvx"></A>
   <H2>chpsvx</H2>
+  Solves a complex Hermitian
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, afp, ipiv = NumRu::Lapack.chpsvx( fact, uplo, ap, afp, ipiv, b)
@@ -313,6 +428,7 @@ FORTRAN MANUAL
 
   <A NAME="chprfs"></A>
   <H2>chprfs</H2>
+  Improves the computed solution to a complex
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.chprfs( uplo, ap, afp, ipiv, b, x)
@@ -415,6 +531,7 @@ FORTRAN MANUAL
 
   <A NAME="chpev"></A>
   <H2>chpev</H2>
+  Computes all eigenvalues and, optionally, eigenvectors of a complex
   <PRE>
 USAGE:
   w, z, info, ap = NumRu::Lapack.chpev( jobz, uplo, ap)
@@ -494,6 +611,7 @@ FORTRAN MANUAL
 
   <A NAME="chpgvx"></A>
   <H2>chpgvx</H2>
+  Computes selected eigenvalues, and optionally, the eigenvectors of
   <PRE>
 USAGE:
   m, w, z, ifail, info, ap, bp = NumRu::Lapack.chpgvx( itype, jobz, range, uplo, ap, bp, vl, vu, il, iu, abstol, ldz)
@@ -678,6 +796,7 @@ FORTRAN MANUAL
 
   <A NAME="chpgvd"></A>
   <H2>chpgvd</H2>
+  Computes all eigenvalues and eigenvectors of  a generalized
   <PRE>
 USAGE:
   w, z, iwork, info, ap, bp = NumRu::Lapack.chpgvd( itype, jobz, uplo, ap, bp, lwork, lrwork, liwork)
@@ -847,6 +966,7 @@ FORTRAN MANUAL
 
   <A NAME="chptrs"></A>
   <H2>chptrs</H2>
+  Solves a complex Hermitian
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.chptrs( uplo, ap, ipiv, b)
@@ -911,6 +1031,7 @@ FORTRAN MANUAL
 
   <A NAME="chpevx"></A>
   <H2>chpevx</H2>
+  Computes selected eigenvalues and eigenvectors of a
   <PRE>
 USAGE:
   m, w, z, ifail, info, ap = NumRu::Lapack.chpevx( jobz, range, uplo, ap, vl, vu, il, iu, abstol)
@@ -1052,6 +1173,7 @@ FORTRAN MANUAL
 
   <A NAME="chptri"></A>
   <H2>chptri</H2>
+  Computes the inverse of a complex
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.chptri( uplo, ap, ipiv)
@@ -1116,6 +1238,7 @@ FORTRAN MANUAL
 
   <A NAME="chpcon"></A>
   <H2>chpcon</H2>
+  Estimates the reciprocal of the condition number of a
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.chpcon( uplo, ap, ipiv, anorm)
@@ -1182,6 +1305,7 @@ FORTRAN MANUAL
 
   <A NAME="chpgst"></A>
   <H2>chpgst</H2>
+  Reduces a Hermitian-definite generalized eigenproblem
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.chpgst( itype, uplo, n, ap, bp)
@@ -1251,6 +1375,7 @@ FORTRAN MANUAL
 
   <A NAME="chptrf"></A>
   <H2>chptrf</H2>
+  Computes the factorization of a complex
   <PRE>
 USAGE:
   ipiv, info, ap = NumRu::Lapack.chptrf( uplo, ap)
@@ -1363,6 +1488,7 @@ FORTRAN MANUAL
 
   <A NAME="chpsv"></A>
   <H2>chpsv</H2>
+  Solves a complex Hermitian indefinite system of linear equations AX=B,
   <PRE>
 USAGE:
   ipiv, info, ap, b = NumRu::Lapack.chpsv( uplo, ap, b)
@@ -1481,6 +1607,7 @@ FORTRAN MANUAL
 
   <A NAME="chpevd"></A>
   <H2>chpevd</H2>
+  Computes all eigenvalues and, optionally, eigenvectors of a complex
   <PRE>
 USAGE:
   w, z, work, rwork, iwork, info, ap = NumRu::Lapack.chpevd( jobz, uplo, ap, lwork, lrwork, liwork)
@@ -1602,118 +1729,6 @@ FORTRAN MANUAL
 
 *  =====================================================================
 *
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="chpgv"></A>
-  <H2>chpgv</H2>
-  <PRE>
-USAGE:
-  w, z, info, ap, bp = NumRu::Lapack.chpgv( itype, jobz, uplo, ap, bp)
-    or
-  NumRu::Lapack.chpgv  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CHPGV( ITYPE, JOBZ, UPLO, N, AP, BP, W, Z, LDZ, WORK, RWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  CHPGV computes all the eigenvalues and, optionally, the eigenvectors
-*  of a complex generalized Hermitian-definite eigenproblem, of the form
-*  A*x=(lambda)*B*x,  A*Bx=(lambda)*x,  or B*A*x=(lambda)*x.
-*  Here A and B are assumed to be Hermitian, stored in packed format,
-*  and B is also positive definite.
-*
-
-*  Arguments
-*  =========
-*
-*  ITYPE   (input) INTEGER
-*          Specifies the problem type to be solved:
-*          = 1:  A*x = (lambda)*B*x
-*          = 2:  A*B*x = (lambda)*x
-*          = 3:  B*A*x = (lambda)*x
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangles of A and B are stored;
-*          = 'L':  Lower triangles of A and B are stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrices A and B.  N >= 0.
-*
-*  AP      (input/output) COMPLEX array, dimension (N*(N+1)/2)
-*          On entry, the upper or lower triangle of the Hermitian matrix
-*          A, packed columnwise in a linear array.  The j-th column of A
-*          is stored in the array AP as follows:
-*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
-*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
-*
-*          On exit, the contents of AP are destroyed.
-*
-*  BP      (input/output) COMPLEX array, dimension (N*(N+1)/2)
-*          On entry, the upper or lower triangle of the Hermitian matrix
-*          B, packed columnwise in a linear array.  The j-th column of B
-*          is stored in the array BP as follows:
-*          if UPLO = 'U', BP(i + (j-1)*j/2) = B(i,j) for 1<=i<=j;
-*          if UPLO = 'L', BP(i + (j-1)*(2*n-j)/2) = B(i,j) for j<=i<=n.
-*
-*          On exit, the triangular factor U or L from the Cholesky
-*          factorization B = U**H*U or B = L*L**H, in the same storage
-*          format as B.
-*
-*  W       (output) REAL array, dimension (N)
-*          If INFO = 0, the eigenvalues in ascending order.
-*
-*  Z       (output) COMPLEX array, dimension (LDZ, N)
-*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
-*          eigenvectors.  The eigenvectors are normalized as follows:
-*          if ITYPE = 1 or 2, Z**H*B*Z = I;
-*          if ITYPE = 3, Z**H*inv(B)*Z = I.
-*          If JOBZ = 'N', then Z is not referenced.
-*
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z.  LDZ >= 1, and if
-*          JOBZ = 'V', LDZ >= max(1,N).
-*
-*  WORK    (workspace) COMPLEX array, dimension (max(1, 2*N-1))
-*
-*  RWORK   (workspace) REAL array, dimension (max(1, 3*N-2))
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  CPPTRF or CHPEV returned an error code:
-*             <= N:  if INFO = i, CHPEV failed to converge;
-*                    i off-diagonal elements of an intermediate
-*                    tridiagonal form did not convergeto zero;
-*             > N:   if INFO = N + i, for 1 <= i <= n, then the leading
-*                    minor of order i of B is not positive definite.
-*                    The factorization of B could not be completed and
-*                    no eigenvalues or eigenvectors were computed.
-*
-
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      LOGICAL            UPPER, WANTZ
-      CHARACTER          TRANS
-      INTEGER            J, NEIG
-*     ..
-*     .. External Functions ..
-      LOGICAL            LSAME
-      EXTERNAL           LSAME
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           CHPEV, CHPGST, CPPTRF, CTPMV, CTPSV, XERBLA
-*     ..
 
 
     </PRE>

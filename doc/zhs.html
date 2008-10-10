@@ -6,12 +6,13 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for upper Hessenberg matrix</H1>
     <UL>
-      <LI><A HREF="#zhsein">zhsein</A></LI>
-      <LI><A HREF="#zhseqr">zhseqr</A></LI>
+      <LI><A HREF="#zhsein">zhsein</A>: Computes specified right and/or left eigenvectors of an upper</LI>
+      <LI><A HREF="#zhseqr">zhseqr</A>: Computes the eigenvalues and Schur factorization of an upper</LI>
     </UL>
 
   <A NAME="zhsein"></A>
   <H2>zhsein</H2>
+  Computes specified right and/or left eigenvectors of an upper
   <PRE>
 USAGE:
   m, ifaill, ifailr, info, w, vl, vr = NumRu::Lapack.zhsein( side, eigsrc, initv, select, h, w, vl, vr)
@@ -162,6 +163,7 @@ FORTRAN MANUAL
 
   <A NAME="zhseqr"></A>
   <H2>zhseqr</H2>
+  Computes the eigenvalues and Schur factorization of an upper
   <PRE>
 USAGE:
   w, work, info, h, z = NumRu::Lapack.zhseqr( job, compz, ilo, ihi, h, z, ldz, lwork)

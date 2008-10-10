@@ -6,19 +6,180 @@
     <A NAME="top"></A>
     <H1>REAL routines for symmetric or Hermitian positive definite matrix</H1>
     <UL>
-      <LI><A HREF="#spoequ">spoequ</A></LI>
-      <LI><A HREF="#sporfs">sporfs</A></LI>
-      <LI><A HREF="#spocon">spocon</A></LI>
-      <LI><A HREF="#spotrs">spotrs</A></LI>
-      <LI><A HREF="#spotrf">spotrf</A></LI>
-      <LI><A HREF="#sposvx">sposvx</A></LI>
-      <LI><A HREF="#spotri">spotri</A></LI>
-      <LI><A HREF="#spotf2">spotf2</A></LI>
-      <LI><A HREF="#sposv">sposv</A></LI>
+      <LI><A HREF="#spotf2">spotf2</A>: </LI>
+      <LI><A HREF="#sposv">sposv</A>: Solves a symmetric positive definite system of linear</LI>
+      <LI><A HREF="#spoequ">spoequ</A>: Computes row and column scalings to equilibrate a symmetric</LI>
+      <LI><A HREF="#sporfs">sporfs</A>: Improves the computed solution to a symmetric positive</LI>
+      <LI><A HREF="#spocon">spocon</A>: Estimates the reciprocal of the condition number of a</LI>
+      <LI><A HREF="#spotrs">spotrs</A>: Solves a symmetric positive definite system of linear</LI>
+      <LI><A HREF="#spotrf">spotrf</A>: Computes the Cholesky factorization of a symmetric</LI>
+      <LI><A HREF="#sposvx">sposvx</A>: Solves a symmetric positive definite system of linear</LI>
+      <LI><A HREF="#spotri">spotri</A>: Computes the inverse of a symmetric positive definite</LI>
     </UL>
+
+  <A NAME="spotf2"></A>
+  <H2>spotf2</H2>
+  
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.spotf2( uplo, a)
+    or
+  NumRu::Lapack.spotf2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SPOTF2( UPLO, N, A, LDA, INFO )
+
+*  Purpose
+*  =======
+*
+*  SPOTF2 computes the Cholesky factorization of a real symmetric
+*  positive definite matrix A.
+*
+*  The factorization has the form
+*     A = U' * U ,  if UPLO = 'U', or
+*     A = L  * L',  if UPLO = 'L',
+*  where U is an upper triangular matrix and L is lower triangular.
+*
+*  This is the unblocked version of the algorithm, calling Level 2 BLAS.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the upper or lower triangular part of the
+*          symmetric matrix A is stored.
+*          = 'U':  Upper triangular
+*          = 'L':  Lower triangular
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the symmetric matrix A.  If UPLO = 'U', the leading
+*          n by n upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading n by n lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*
+*          On exit, if INFO = 0, the factor U or L from the Cholesky
+*          factorization A = U'*U  or A = L*L'.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*          > 0: if INFO = k, the leading minor of order k is not
+*               positive definite, and the factorization could not be
+*               completed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sposv"></A>
+  <H2>sposv</H2>
+  Solves a symmetric positive definite system of linear
+  <PRE>
+USAGE:
+  info, a, b = NumRu::Lapack.sposv( uplo, a, b)
+    or
+  NumRu::Lapack.sposv  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SPOSV( UPLO, N, NRHS, A, LDA, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  SPOSV computes the solution to a real system of linear equations
+*     A * X = B,
+*  where A is an N-by-N symmetric positive definite matrix and X and B
+*  are N-by-NRHS matrices.
+*
+*  The Cholesky decomposition is used to factor A as
+*     A = U**T* U,  if UPLO = 'U', or
+*     A = L * L**T,  if UPLO = 'L',
+*  where U is an upper triangular matrix and L is a lower triangular
+*  matrix.  The factored form of A is then used to solve the system of
+*  equations A * X = B.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The number of linear equations, i.e., the order of the
+*          matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the symmetric matrix A.  If UPLO = 'U', the leading
+*          N-by-N upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading N-by-N lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*
+*          On exit, if INFO = 0, the factor U or L from the Cholesky
+*          factorization A = U**T*U or A = L*L**T.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input/output) REAL array, dimension (LDB,NRHS)
+*          On entry, the N-by-NRHS right hand side matrix B.
+*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the leading minor of order i of A is not
+*                positive definite, so the factorization could not be
+*                completed, and the solution has not been computed.
+*
+
+*  =====================================================================
+*
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           SPOTRF, SPOTRS, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="spoequ"></A>
   <H2>spoequ</H2>
+  Computes row and column scalings to equilibrate a symmetric
   <PRE>
 USAGE:
   s, scond, amax, info = NumRu::Lapack.spoequ( a)
@@ -84,6 +245,7 @@ FORTRAN MANUAL
 
   <A NAME="sporfs"></A>
   <H2>sporfs</H2>
+  Improves the computed solution to a symmetric positive
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.sporfs( uplo, a, af, b, x)
@@ -187,6 +349,7 @@ FORTRAN MANUAL
 
   <A NAME="spocon"></A>
   <H2>spocon</H2>
+  Estimates the reciprocal of the condition number of a
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.spocon( uplo, a, anorm)
@@ -251,6 +414,7 @@ FORTRAN MANUAL
 
   <A NAME="spotrs"></A>
   <H2>spotrs</H2>
+  Solves a symmetric positive definite system of linear
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.spotrs( uplo, a, b)
@@ -311,6 +475,7 @@ FORTRAN MANUAL
 
   <A NAME="spotrf"></A>
   <H2>spotrf</H2>
+  Computes the Cholesky factorization of a symmetric
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.spotrf( uplo, a)
@@ -377,6 +542,7 @@ FORTRAN MANUAL
 
   <A NAME="sposvx"></A>
   <H2>sposvx</H2>
+  Solves a symmetric positive definite system of linear
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, a, af, equed, s, b = NumRu::Lapack.sposvx( fact, uplo, a, af, equed, s, b)
@@ -587,6 +753,7 @@ FORTRAN MANUAL
 
   <A NAME="spotri"></A>
   <H2>spotri</H2>
+  Computes the inverse of a symmetric positive definite
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.spotri( uplo, a)
@@ -640,164 +807,6 @@ FORTRAN MANUAL
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           SLAUUM, STRTRI, XERBLA
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="spotf2"></A>
-  <H2>spotf2</H2>
-  <PRE>
-USAGE:
-  info, a = NumRu::Lapack.spotf2( uplo, a)
-    or
-  NumRu::Lapack.spotf2  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SPOTF2( UPLO, N, A, LDA, INFO )
-
-*  Purpose
-*  =======
-*
-*  SPOTF2 computes the Cholesky factorization of a real symmetric
-*  positive definite matrix A.
-*
-*  The factorization has the form
-*     A = U' * U ,  if UPLO = 'U', or
-*     A = L  * L',  if UPLO = 'L',
-*  where U is an upper triangular matrix and L is lower triangular.
-*
-*  This is the unblocked version of the algorithm, calling Level 2 BLAS.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          Specifies whether the upper or lower triangular part of the
-*          symmetric matrix A is stored.
-*          = 'U':  Upper triangular
-*          = 'L':  Lower triangular
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the symmetric matrix A.  If UPLO = 'U', the leading
-*          n by n upper triangular part of A contains the upper
-*          triangular part of the matrix A, and the strictly lower
-*          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading n by n lower triangular part of A contains the lower
-*          triangular part of the matrix A, and the strictly upper
-*          triangular part of A is not referenced.
-*
-*          On exit, if INFO = 0, the factor U or L from the Cholesky
-*          factorization A = U'*U  or A = L*L'.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -k, the k-th argument had an illegal value
-*          > 0: if INFO = k, the leading minor of order k is not
-*               positive definite, and the factorization could not be
-*               completed.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sposv"></A>
-  <H2>sposv</H2>
-  <PRE>
-USAGE:
-  info, a, b = NumRu::Lapack.sposv( uplo, a, b)
-    or
-  NumRu::Lapack.sposv  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SPOSV( UPLO, N, NRHS, A, LDA, B, LDB, INFO )
-
-*  Purpose
-*  =======
-*
-*  SPOSV computes the solution to a real system of linear equations
-*     A * X = B,
-*  where A is an N-by-N symmetric positive definite matrix and X and B
-*  are N-by-NRHS matrices.
-*
-*  The Cholesky decomposition is used to factor A as
-*     A = U**T* U,  if UPLO = 'U', or
-*     A = L * L**T,  if UPLO = 'L',
-*  where U is an upper triangular matrix and L is a lower triangular
-*  matrix.  The factored form of A is then used to solve the system of
-*  equations A * X = B.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The number of linear equations, i.e., the order of the
-*          matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the symmetric matrix A.  If UPLO = 'U', the leading
-*          N-by-N upper triangular part of A contains the upper
-*          triangular part of the matrix A, and the strictly lower
-*          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading N-by-N lower triangular part of A contains the lower
-*          triangular part of the matrix A, and the strictly upper
-*          triangular part of A is not referenced.
-*
-*          On exit, if INFO = 0, the factor U or L from the Cholesky
-*          factorization A = U**T*U or A = L*L**T.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  B       (input/output) REAL array, dimension (LDB,NRHS)
-*          On entry, the N-by-NRHS right hand side matrix B.
-*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, the leading minor of order i of A is not
-*                positive definite, so the factorization could not be
-*                completed, and the solution has not been computed.
-*
-
-*  =====================================================================
-*
-*     .. External Functions ..
-      LOGICAL            LSAME
-      EXTERNAL           LSAME
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           SPOTRF, SPOTRS, XERBLA
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX

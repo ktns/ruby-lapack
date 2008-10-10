@@ -6,11 +6,12 @@
     <A NAME="top"></A>
     <H1>Data type in double but solving problem using single precision routines for general (i.e., unsymmetric, in some cases rectangular) matrix</H1>
     <UL>
-      <LI><A HREF="#dsgesv">dsgesv</A></LI>
+      <LI><A HREF="#dsgesv">dsgesv</A>: Solves a general system of linear equations AX=B using iterativement refinement.</LI>
     </UL>
 
   <A NAME="dsgesv"></A>
   <H2>dsgesv</H2>
+  Solves a general system of linear equations AX=B using iterativement refinement.
   <PRE>
 USAGE:
   ipiv, x, iter, info, a = NumRu::Lapack.dsgesv( a, b)

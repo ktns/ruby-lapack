@@ -6,29 +6,196 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for (complex) Hermitian matrix</H1>
     <UL>
-      <LI><A HREF="#zherfs">zherfs</A></LI>
-      <LI><A HREF="#zhesv">zhesv</A></LI>
-      <LI><A HREF="#zhetrf">zhetrf</A></LI>
-      <LI><A HREF="#zhesvx">zhesvx</A></LI>
-      <LI><A HREF="#zhegs2">zhegs2</A></LI>
-      <LI><A HREF="#zhetri">zhetri</A></LI>
-      <LI><A HREF="#zheev">zheev</A></LI>
-      <LI><A HREF="#zhegst">zhegst</A></LI>
-      <LI><A HREF="#zhetf2">zhetf2</A></LI>
-      <LI><A HREF="#zhetrd">zhetrd</A></LI>
-      <LI><A HREF="#zhecon">zhecon</A></LI>
-      <LI><A HREF="#zhetrs">zhetrs</A></LI>
-      <LI><A HREF="#zheevr">zheevr</A></LI>
-      <LI><A HREF="#zheevd">zheevd</A></LI>
-      <LI><A HREF="#zhegvx">zhegvx</A></LI>
-      <LI><A HREF="#zhetd2">zhetd2</A></LI>
-      <LI><A HREF="#zheevx">zheevx</A></LI>
-      <LI><A HREF="#zhegv">zhegv</A></LI>
-      <LI><A HREF="#zhegvd">zhegvd</A></LI>
+      <LI><A HREF="#zhegvd">zhegvd</A>: Computes all eigenvalues and the eigenvectors of  a generalized</LI>
+      <LI><A HREF="#zherfs">zherfs</A>: Improves the computed solution to a complex</LI>
+      <LI><A HREF="#zhesv">zhesv</A>: Solves a complex Hermitian indefinite system of linear equations AX=B.</LI>
+      <LI><A HREF="#zhetrf">zhetrf</A>: Computes the factorization of a complex Hermitian-indefinite matrix,</LI>
+      <LI><A HREF="#zhesvx">zhesvx</A>: Solves a complex Hermitian</LI>
+      <LI><A HREF="#zhegs2">zhegs2</A>: </LI>
+      <LI><A HREF="#zhetri">zhetri</A>: Computes the inverse of a complex Hermitian indefinite matrix,</LI>
+      <LI><A HREF="#zheev">zheev</A>: Computes all eigenvalues and, optionally, eigenvectors of a complex</LI>
+      <LI><A HREF="#zhegst">zhegst</A>: Reduces a Hermitian-definite generalized eigenproblem</LI>
+      <LI><A HREF="#zhetf2">zhetf2</A>: </LI>
+      <LI><A HREF="#zhetrd">zhetrd</A>: Reduces a Hermitian matrix to real symmetric tridiagonal</LI>
+      <LI><A HREF="#zhecon">zhecon</A>: Estimates the reciprocal of the condition number of a</LI>
+      <LI><A HREF="#zhetrs">zhetrs</A>: Solves a complex Hermitian indefinite system of linear equations AX=B,</LI>
+      <LI><A HREF="#zheevr">zheevr</A>: Computes selected eigenvalues, and optionally, eigenvectors of a complex</LI>
+      <LI><A HREF="#zheevd">zheevd</A>: Computes all eigenvalues and, optionally, eigenvectors of a complex</LI>
+      <LI><A HREF="#zhegvx">zhegvx</A>: Computes selected eigenvalues, and optionally, the eigenvectors of</LI>
+      <LI><A HREF="#zhetd2">zhetd2</A>: </LI>
+      <LI><A HREF="#zheevx">zheevx</A>: Computes selected eigenvalues and eigenvectors of a Hermitian matrix.</LI>
+      <LI><A HREF="#zhegv">zhegv</A>: Computes all eigenvalues and the eigenvectors of  a generalized</LI>
     </UL>
+
+  <A NAME="zhegvd"></A>
+  <H2>zhegvd</H2>
+  Computes all eigenvalues and the eigenvectors of  a generalized
+  <PRE>
+USAGE:
+  w, work, rwork, iwork, info, a, b = NumRu::Lapack.zhegvd( itype, jobz, uplo, a, b, lwork, lrwork, liwork)
+    or
+  NumRu::Lapack.zhegvd  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZHEGVD( ITYPE, JOBZ, UPLO, N, A, LDA, B, LDB, W, WORK, LWORK, RWORK, LRWORK, IWORK, LIWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZHEGVD computes all the eigenvalues, and optionally, the eigenvectors
+*  of a complex generalized Hermitian-definite eigenproblem, of the form
+*  A*x=(lambda)*B*x,  A*Bx=(lambda)*x,  or B*A*x=(lambda)*x.  Here A and
+*  B are assumed to be Hermitian and B is also positive definite.
+*  If eigenvectors are desired, it uses a divide and conquer algorithm.
+*
+*  The divide and conquer algorithm makes very mild assumptions about
+*  floating point arithmetic. It will work on machines with a guard
+*  digit in add/subtract, or on those binary machines without guard
+*  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
+*  Cray-2. It could conceivably fail on hexadecimal or decimal machines
+*  without guard digits, but we know of none.
+*
+
+*  Arguments
+*  =========
+*
+*  ITYPE   (input) INTEGER
+*          Specifies the problem type to be solved:
+*          = 1:  A*x = (lambda)*B*x
+*          = 2:  A*B*x = (lambda)*x
+*          = 3:  B*A*x = (lambda)*x
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangles of A and B are stored;
+*          = 'L':  Lower triangles of A and B are stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA, N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the
+*          leading N-by-N upper triangular part of A contains the
+*          upper triangular part of the matrix A.  If UPLO = 'L',
+*          the leading N-by-N lower triangular part of A contains
+*          the lower triangular part of the matrix A.
+*
+*          On exit, if JOBZ = 'V', then if INFO = 0, A contains the
+*          matrix Z of eigenvectors.  The eigenvectors are normalized
+*          as follows:
+*          if ITYPE = 1 or 2, Z**H*B*Z = I;
+*          if ITYPE = 3, Z**H*inv(B)*Z = I.
+*          If JOBZ = 'N', then on exit the upper triangle (if UPLO='U')
+*          or the lower triangle (if UPLO='L') of A, including the
+*          diagonal, is destroyed.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input/output) COMPLEX*16 array, dimension (LDB, N)
+*          On entry, the Hermitian matrix B.  If UPLO = 'U', the
+*          leading N-by-N upper triangular part of B contains the
+*          upper triangular part of the matrix B.  If UPLO = 'L',
+*          the leading N-by-N lower triangular part of B contains
+*          the lower triangular part of the matrix B.
+*
+*          On exit, if INFO <= N, the part of B containing the matrix is
+*          overwritten by the triangular factor U or L from the Cholesky
+*          factorization B = U**H*U or B = L*L**H.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The length of the array WORK.
+*          If N <= 1,                LWORK >= 1.
+*          If JOBZ  = 'N' and N > 1, LWORK >= N + 1.
+*          If JOBZ  = 'V' and N > 1, LWORK >= 2*N + N**2.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal sizes of the WORK, RWORK and
+*          IWORK arrays, returns these values as the first entries of
+*          the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  RWORK   (workspace/output) DOUBLE PRECISION array, dimension (MAX(1,LRWORK))
+*          On exit, if INFO = 0, RWORK(1) returns the optimal LRWORK.
+*
+*  LRWORK  (input) INTEGER
+*          The dimension of the array RWORK.
+*          If N <= 1,                LRWORK >= 1.
+*          If JOBZ  = 'N' and N > 1, LRWORK >= N.
+*          If JOBZ  = 'V' and N > 1, LRWORK >= 1 + 5*N + 2*N**2.
+*
+*          If LRWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal sizes of the WORK, RWORK
+*          and IWORK arrays, returns these values as the first entries
+*          of the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
+*          On exit, if INFO = 0, IWORK(1) returns the optimal LIWORK.
+*
+*  LIWORK  (input) INTEGER
+*          The dimension of the array IWORK.
+*          If N <= 1,                LIWORK >= 1.
+*          If JOBZ  = 'N' and N > 1, LIWORK >= 1.
+*          If JOBZ  = 'V' and N > 1, LIWORK >= 3 + 5*N.
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal sizes of the WORK, RWORK
+*          and IWORK arrays, returns these values as the first entries
+*          of the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  ZPOTRF or ZHEEVD returned an error code:
+*             <= N:  if INFO = i and JOBZ = 'N', then the algorithm
+*                    failed to converge; i off-diagonal elements of an
+*                    intermediate tridiagonal form did not converge to
+*                    zero;
+*                    if INFO = i and JOBZ = 'V', then the algorithm
+*                    failed to compute an eigenvalue while working on
+*                    the submatrix lying in rows and columns INFO/(N+1)
+*                    through mod(INFO,N+1);
+*             > N:   if INFO = N + i, for 1 <= i <= N, then the leading
+*                    minor of order i of B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
+*
+*  Modified so that no backsubstitution is performed if ZHEEVD fails to
+*  converge (NEIG in old code could be greater than N causing out of
+*  bounds reference to A - reported by Ralf Meyer).  Also corrected the
+*  description of INFO and the test on ITYPE. Sven, 16 Feb 05.
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="zherfs"></A>
   <H2>zherfs</H2>
+  Improves the computed solution to a complex
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.zherfs( uplo, a, af, ipiv, b, x)
@@ -137,6 +304,7 @@ FORTRAN MANUAL
 
   <A NAME="zhesv"></A>
   <H2>zhesv</H2>
+  Solves a complex Hermitian indefinite system of linear equations AX=B.
   <PRE>
 USAGE:
   ipiv, work, info, a, b = NumRu::Lapack.zhesv( uplo, a, b, lwork)
@@ -259,6 +427,7 @@ FORTRAN MANUAL
 
   <A NAME="zhetrf"></A>
   <H2>zhetrf</H2>
+  Computes the factorization of a complex Hermitian-indefinite matrix,
   <PRE>
 USAGE:
   ipiv, work, info, a = NumRu::Lapack.zhetrf( uplo, a, lwork)
@@ -397,6 +566,7 @@ FORTRAN MANUAL
 
   <A NAME="zhesvx"></A>
   <H2>zhesvx</H2>
+  Solves a complex Hermitian
   <PRE>
 USAGE:
   x, rcond, ferr, berr, work, info, af, ipiv = NumRu::Lapack.zhesvx( fact, uplo, a, af, ipiv, b, lwork)
@@ -585,6 +755,7 @@ FORTRAN MANUAL
 
   <A NAME="zhegs2"></A>
   <H2>zhegs2</H2>
+  
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.zhegs2( itype, uplo, a, b)
@@ -662,6 +833,7 @@ FORTRAN MANUAL
 
   <A NAME="zhetri"></A>
   <H2>zhetri</H2>
+  Computes the inverse of a complex Hermitian indefinite matrix,
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.zhetri( uplo, a, ipiv)
@@ -728,6 +900,7 @@ FORTRAN MANUAL
 
   <A NAME="zheev"></A>
   <H2>zheev</H2>
+  Computes all eigenvalues and, optionally, eigenvectors of a complex
   <PRE>
 USAGE:
   w, work, info, a = NumRu::Lapack.zheev( jobz, uplo, a, lwork)
@@ -809,6 +982,7 @@ FORTRAN MANUAL
 
   <A NAME="zhegst"></A>
   <H2>zhegst</H2>
+  Reduces a Hermitian-definite generalized eigenproblem
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.zhegst( itype, uplo, a, b)
@@ -886,6 +1060,7 @@ FORTRAN MANUAL
 
   <A NAME="zhetf2"></A>
   <H2>zhetf2</H2>
+  
   <PRE>
 USAGE:
   ipiv, info, a = NumRu::Lapack.zhetf2( uplo, a)
@@ -1015,6 +1190,7 @@ FORTRAN MANUAL
 
   <A NAME="zhetrd"></A>
   <H2>zhetrd</H2>
+  Reduces a Hermitian matrix to real symmetric tridiagonal
   <PRE>
 USAGE:
   d, e, tau, work, info, a = NumRu::Lapack.zhetrd( uplo, a, lwork)
@@ -1147,6 +1323,7 @@ FORTRAN MANUAL
 
   <A NAME="zhecon"></A>
   <H2>zhecon</H2>
+  Estimates the reciprocal of the condition number of a
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.zhecon( uplo, a, ipiv, anorm)
@@ -1215,6 +1392,7 @@ FORTRAN MANUAL
 
   <A NAME="zhetrs"></A>
   <H2>zhetrs</H2>
+  Solves a complex Hermitian indefinite system of linear equations AX=B,
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.zhetrs( uplo, a, ipiv, b)
@@ -1281,6 +1459,7 @@ FORTRAN MANUAL
 
   <A NAME="zheevr"></A>
   <H2>zheevr</H2>
+  Computes selected eigenvalues, and optionally, eigenvectors of a complex
   <PRE>
 USAGE:
   m, w, z, isuppz, work, rwork, iwork, info, a = NumRu::Lapack.zheevr( jobz, range, uplo, a, vl, vu, il, iu, abstol, lwork, lrwork, liwork)
@@ -1525,6 +1704,7 @@ FORTRAN MANUAL
 
   <A NAME="zheevd"></A>
   <H2>zheevd</H2>
+  Computes all eigenvalues and, optionally, eigenvectors of a complex
   <PRE>
 USAGE:
   w, work, rwork, iwork, info, a = NumRu::Lapack.zheevd( jobz, uplo, a, lwork, lrwork, liwork)
@@ -1658,6 +1838,7 @@ FORTRAN MANUAL
 
   <A NAME="zhegvx"></A>
   <H2>zhegvx</H2>
+  Computes selected eigenvalues, and optionally, the eigenvectors of
   <PRE>
 USAGE:
   m, w, z, work, ifail, info, a, b = NumRu::Lapack.zhegvx( itype, jobz, range, uplo, a, b, vl, vu, il, iu, abstol, ldz, lwork)
@@ -1845,6 +2026,7 @@ FORTRAN MANUAL
 
   <A NAME="zhetd2"></A>
   <H2>zhetd2</H2>
+  
   <PRE>
 USAGE:
   d, e, tau, info, a = NumRu::Lapack.zhetd2( uplo, a)
@@ -1966,6 +2148,7 @@ FORTRAN MANUAL
 
   <A NAME="zheevx"></A>
   <H2>zheevx</H2>
+  Computes selected eigenvalues and eigenvectors of a Hermitian matrix.
   <PRE>
 USAGE:
   m, w, z, work, ifail, info, a = NumRu::Lapack.zheevx( jobz, range, uplo, a, vl, vu, il, iu, abstol, lwork)
@@ -2120,6 +2303,7 @@ FORTRAN MANUAL
 
   <A NAME="zhegv"></A>
   <H2>zhegv</H2>
+  Computes all eigenvalues and the eigenvectors of  a generalized
   <PRE>
 USAGE:
   w, work, info, a, b = NumRu::Lapack.zhegv( itype, jobz, uplo, a, b, lwork)
@@ -2224,171 +2408,6 @@ FORTRAN MANUAL
 *                    no eigenvalues or eigenvectors were computed.
 *
 
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zhegvd"></A>
-  <H2>zhegvd</H2>
-  <PRE>
-USAGE:
-  w, work, rwork, iwork, info, a, b = NumRu::Lapack.zhegvd( itype, jobz, uplo, a, b, lwork, lrwork, liwork)
-    or
-  NumRu::Lapack.zhegvd  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZHEGVD( ITYPE, JOBZ, UPLO, N, A, LDA, B, LDB, W, WORK, LWORK, RWORK, LRWORK, IWORK, LIWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZHEGVD computes all the eigenvalues, and optionally, the eigenvectors
-*  of a complex generalized Hermitian-definite eigenproblem, of the form
-*  A*x=(lambda)*B*x,  A*Bx=(lambda)*x,  or B*A*x=(lambda)*x.  Here A and
-*  B are assumed to be Hermitian and B is also positive definite.
-*  If eigenvectors are desired, it uses a divide and conquer algorithm.
-*
-*  The divide and conquer algorithm makes very mild assumptions about
-*  floating point arithmetic. It will work on machines with a guard
-*  digit in add/subtract, or on those binary machines without guard
-*  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
-*  Cray-2. It could conceivably fail on hexadecimal or decimal machines
-*  without guard digits, but we know of none.
-*
-
-*  Arguments
-*  =========
-*
-*  ITYPE   (input) INTEGER
-*          Specifies the problem type to be solved:
-*          = 1:  A*x = (lambda)*B*x
-*          = 2:  A*B*x = (lambda)*x
-*          = 3:  B*A*x = (lambda)*x
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangles of A and B are stored;
-*          = 'L':  Lower triangles of A and B are stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrices A and B.  N >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA, N)
-*          On entry, the Hermitian matrix A.  If UPLO = 'U', the
-*          leading N-by-N upper triangular part of A contains the
-*          upper triangular part of the matrix A.  If UPLO = 'L',
-*          the leading N-by-N lower triangular part of A contains
-*          the lower triangular part of the matrix A.
-*
-*          On exit, if JOBZ = 'V', then if INFO = 0, A contains the
-*          matrix Z of eigenvectors.  The eigenvectors are normalized
-*          as follows:
-*          if ITYPE = 1 or 2, Z**H*B*Z = I;
-*          if ITYPE = 3, Z**H*inv(B)*Z = I.
-*          If JOBZ = 'N', then on exit the upper triangle (if UPLO='U')
-*          or the lower triangle (if UPLO='L') of A, including the
-*          diagonal, is destroyed.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  B       (input/output) COMPLEX*16 array, dimension (LDB, N)
-*          On entry, the Hermitian matrix B.  If UPLO = 'U', the
-*          leading N-by-N upper triangular part of B contains the
-*          upper triangular part of the matrix B.  If UPLO = 'L',
-*          the leading N-by-N lower triangular part of B contains
-*          the lower triangular part of the matrix B.
-*
-*          On exit, if INFO <= N, the part of B containing the matrix is
-*          overwritten by the triangular factor U or L from the Cholesky
-*          factorization B = U**H*U or B = L*L**H.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  W       (output) DOUBLE PRECISION array, dimension (N)
-*          If INFO = 0, the eigenvalues in ascending order.
-*
-*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The length of the array WORK.
-*          If N <= 1,                LWORK >= 1.
-*          If JOBZ  = 'N' and N > 1, LWORK >= N + 1.
-*          If JOBZ  = 'V' and N > 1, LWORK >= 2*N + N**2.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal sizes of the WORK, RWORK and
-*          IWORK arrays, returns these values as the first entries of
-*          the WORK, RWORK and IWORK arrays, and no error message
-*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
-*
-*  RWORK   (workspace/output) DOUBLE PRECISION array, dimension (MAX(1,LRWORK))
-*          On exit, if INFO = 0, RWORK(1) returns the optimal LRWORK.
-*
-*  LRWORK  (input) INTEGER
-*          The dimension of the array RWORK.
-*          If N <= 1,                LRWORK >= 1.
-*          If JOBZ  = 'N' and N > 1, LRWORK >= N.
-*          If JOBZ  = 'V' and N > 1, LRWORK >= 1 + 5*N + 2*N**2.
-*
-*          If LRWORK = -1, then a workspace query is assumed; the
-*          routine only calculates the optimal sizes of the WORK, RWORK
-*          and IWORK arrays, returns these values as the first entries
-*          of the WORK, RWORK and IWORK arrays, and no error message
-*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
-*
-*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
-*          On exit, if INFO = 0, IWORK(1) returns the optimal LIWORK.
-*
-*  LIWORK  (input) INTEGER
-*          The dimension of the array IWORK.
-*          If N <= 1,                LIWORK >= 1.
-*          If JOBZ  = 'N' and N > 1, LIWORK >= 1.
-*          If JOBZ  = 'V' and N > 1, LIWORK >= 3 + 5*N.
-*
-*          If LIWORK = -1, then a workspace query is assumed; the
-*          routine only calculates the optimal sizes of the WORK, RWORK
-*          and IWORK arrays, returns these values as the first entries
-*          of the WORK, RWORK and IWORK arrays, and no error message
-*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  ZPOTRF or ZHEEVD returned an error code:
-*             <= N:  if INFO = i and JOBZ = 'N', then the algorithm
-*                    failed to converge; i off-diagonal elements of an
-*                    intermediate tridiagonal form did not converge to
-*                    zero;
-*                    if INFO = i and JOBZ = 'V', then the algorithm
-*                    failed to compute an eigenvalue while working on
-*                    the submatrix lying in rows and columns INFO/(N+1)
-*                    through mod(INFO,N+1);
-*             > N:   if INFO = N + i, for 1 <= i <= N, then the leading
-*                    minor of order i of B is not positive definite.
-*                    The factorization of B could not be completed and
-*                    no eigenvalues or eigenvectors were computed.
-*
-
-*  Further Details
-*  ===============
-*
-*  Based on contributions by
-*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
-*
-*  Modified so that no backsubstitution is performed if ZHEEVD fails to
-*  converge (NEIG in old code could be greater than N causing out of
-*  bounds reference to A - reported by Ralf Meyer).  Also corrected the
-*  description of INFO and the test on ITYPE. Sven, 16 Feb 05.
 *  =====================================================================
 *
 

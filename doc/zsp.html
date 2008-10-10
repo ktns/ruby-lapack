@@ -6,19 +6,85 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for symmetric, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#zspr">zspr</A></LI>
-      <LI><A HREF="#zspsvx">zspsvx</A></LI>
-      <LI><A HREF="#zspsv">zspsv</A></LI>
-      <LI><A HREF="#zsptrs">zsptrs</A></LI>
-      <LI><A HREF="#zsprfs">zsprfs</A></LI>
-      <LI><A HREF="#zsptrf">zsptrf</A></LI>
-      <LI><A HREF="#zspmv">zspmv</A></LI>
-      <LI><A HREF="#zspcon">zspcon</A></LI>
-      <LI><A HREF="#zsptri">zsptri</A></LI>
+      <LI><A HREF="#zsptri">zsptri</A>: Computes the inverse of a complex symmetric</LI>
+      <LI><A HREF="#zspr">zspr</A>: </LI>
+      <LI><A HREF="#zspsvx">zspsvx</A>: Solves a complex symmetric</LI>
+      <LI><A HREF="#zspsv">zspsv</A>: Solves a complex symmetric indefinite system of linear equations AX=B,</LI>
+      <LI><A HREF="#zsptrs">zsptrs</A>: Solves a complex symmetric</LI>
+      <LI><A HREF="#zsprfs">zsprfs</A>: Improves the computed solution to a complex</LI>
+      <LI><A HREF="#zsptrf">zsptrf</A>: Computes the factorization of a complex</LI>
+      <LI><A HREF="#zspmv">zspmv</A>: </LI>
+      <LI><A HREF="#zspcon">zspcon</A>: Estimates the reciprocal of the condition number of a</LI>
     </UL>
+
+  <A NAME="zsptri"></A>
+  <H2>zsptri</H2>
+  Computes the inverse of a complex symmetric
+  <PRE>
+USAGE:
+  info, ap = NumRu::Lapack.zsptri( uplo, ap, ipiv)
+    or
+  NumRu::Lapack.zsptri  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZSPTRI( UPLO, N, AP, IPIV, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZSPTRI computes the inverse of a complex symmetric indefinite matrix
+*  A in packed storage using the factorization A = U*D*U**T or
+*  A = L*D*L**T computed by ZSPTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the details of the factorization are stored
+*          as an upper or lower triangular matrix.
+*          = 'U':  Upper triangular, form is A = U*D*U**T;
+*          = 'L':  Lower triangular, form is A = L*D*L**T.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input/output) COMPLEX*16 array, dimension (N*(N+1)/2)
+*          On entry, the block diagonal matrix D and the multipliers
+*          used to obtain the factor U or L as computed by ZSPTRF,
+*          stored as a packed triangular matrix.
+*
+*          On exit, if INFO = 0, the (symmetric) inverse of the original
+*          matrix, stored as a packed triangular matrix. The j-th column
+*          of inv(A) is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = inv(A)(i,j) for 1<=i<=j;
+*          if UPLO = 'L',
+*             AP(i + (j-1)*(2n-j)/2) = inv(A)(i,j) for j<=i<=n.
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D
+*          as determined by ZSPTRF.
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, D(i,i) = 0; the matrix is singular and its
+*               inverse could not be computed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="zspr"></A>
   <H2>zspr</H2>
+  
   <PRE>
 USAGE:
   ap = NumRu::Lapack.zspr( uplo, n, alpha, x, incx, ap)
@@ -106,6 +172,7 @@ FORTRAN MANUAL
 
   <A NAME="zspsvx"></A>
   <H2>zspsvx</H2>
+  Solves a complex symmetric
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, afp, ipiv = NumRu::Lapack.zspsvx( fact, uplo, ap, afp, ipiv, b)
@@ -294,6 +361,7 @@ FORTRAN MANUAL
 
   <A NAME="zspsv"></A>
   <H2>zspsv</H2>
+  Solves a complex symmetric indefinite system of linear equations AX=B,
   <PRE>
 USAGE:
   ipiv, info, ap, b = NumRu::Lapack.zspsv( uplo, ap, b)
@@ -412,6 +480,7 @@ FORTRAN MANUAL
 
   <A NAME="zsptrs"></A>
   <H2>zsptrs</H2>
+  Solves a complex symmetric
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.zsptrs( uplo, ap, ipiv, b)
@@ -476,6 +545,7 @@ FORTRAN MANUAL
 
   <A NAME="zsprfs"></A>
   <H2>zsprfs</H2>
+  Improves the computed solution to a complex
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.zsprfs( uplo, ap, afp, ipiv, b, x)
@@ -578,6 +648,7 @@ FORTRAN MANUAL
 
   <A NAME="zsptrf"></A>
   <H2>zsptrf</H2>
+  Computes the factorization of a complex
   <PRE>
 USAGE:
   ipiv, info, ap = NumRu::Lapack.zsptrf( uplo, ap)
@@ -691,6 +762,7 @@ FORTRAN MANUAL
 
   <A NAME="zspmv"></A>
   <H2>zspmv</H2>
+  
   <PRE>
 USAGE:
   y = NumRu::Lapack.zspmv( uplo, n, alpha, ap, x, incx, beta, y, incy)
@@ -788,6 +860,7 @@ FORTRAN MANUAL
 
   <A NAME="zspcon"></A>
   <H2>zspcon</H2>
+  Estimates the reciprocal of the condition number of a
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.zspcon( uplo, ap, ipiv, anorm)
@@ -843,70 +916,6 @@ FORTRAN MANUAL
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
 *          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zsptri"></A>
-  <H2>zsptri</H2>
-  <PRE>
-USAGE:
-  info, ap = NumRu::Lapack.zsptri( uplo, ap, ipiv)
-    or
-  NumRu::Lapack.zsptri  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZSPTRI( UPLO, N, AP, IPIV, WORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZSPTRI computes the inverse of a complex symmetric indefinite matrix
-*  A in packed storage using the factorization A = U*D*U**T or
-*  A = L*D*L**T computed by ZSPTRF.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          Specifies whether the details of the factorization are stored
-*          as an upper or lower triangular matrix.
-*          = 'U':  Upper triangular, form is A = U*D*U**T;
-*          = 'L':  Lower triangular, form is A = L*D*L**T.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  AP      (input/output) COMPLEX*16 array, dimension (N*(N+1)/2)
-*          On entry, the block diagonal matrix D and the multipliers
-*          used to obtain the factor U or L as computed by ZSPTRF,
-*          stored as a packed triangular matrix.
-*
-*          On exit, if INFO = 0, the (symmetric) inverse of the original
-*          matrix, stored as a packed triangular matrix. The j-th column
-*          of inv(A) is stored in the array AP as follows:
-*          if UPLO = 'U', AP(i + (j-1)*j/2) = inv(A)(i,j) for 1<=i<=j;
-*          if UPLO = 'L',
-*             AP(i + (j-1)*(2n-j)/2) = inv(A)(i,j) for j<=i<=n.
-*
-*  IPIV    (input) INTEGER array, dimension (N)
-*          Details of the interchanges and the block structure of D
-*          as determined by ZSPTRF.
-*
-*  WORK    (workspace) COMPLEX*16 array, dimension (N)
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*          > 0: if INFO = i, D(i,i) = 0; the matrix is singular and its
-*               inverse could not be computed.
 *
 
 *  =====================================================================

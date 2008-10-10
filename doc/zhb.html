@@ -6,18 +6,182 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for (complex) Hermitian band matrix</H1>
     <UL>
-      <LI><A HREF="#zhbgv">zhbgv</A></LI>
-      <LI><A HREF="#zhbtrd">zhbtrd</A></LI>
-      <LI><A HREF="#zhbgst">zhbgst</A></LI>
-      <LI><A HREF="#zhbev">zhbev</A></LI>
-      <LI><A HREF="#zhbgvx">zhbgvx</A></LI>
-      <LI><A HREF="#zhbevd">zhbevd</A></LI>
-      <LI><A HREF="#zhbevx">zhbevx</A></LI>
-      <LI><A HREF="#zhbgvd">zhbgvd</A></LI>
+      <LI><A HREF="#zhbgvd">zhbgvd</A>: Computes all the eigenvalues, and optionally, the eigenvectors</LI>
+      <LI><A HREF="#zhbgv">zhbgv</A>: Computes all the eigenvalues, and optionally, the eigenvectors</LI>
+      <LI><A HREF="#zhbtrd">zhbtrd</A>: Reduces a Hermitian band matrix to real symmetric</LI>
+      <LI><A HREF="#zhbgst">zhbgst</A>: Reduces a complex Hermitian-definite banded generalized eigenproblem</LI>
+      <LI><A HREF="#zhbev">zhbev</A>: Computes all eigenvalues and, optionally, eigenvectors of a complex</LI>
+      <LI><A HREF="#zhbgvx">zhbgvx</A>: Computes selected eigenvalues, and optionally, the eigenvectors</LI>
+      <LI><A HREF="#zhbevd">zhbevd</A>: Computes all eigenvalues and, optionally, eigenvectors of a complex</LI>
+      <LI><A HREF="#zhbevx">zhbevx</A>: Computes selected eigenvalues and eigenvectors of a</LI>
     </UL>
+
+  <A NAME="zhbgvd"></A>
+  <H2>zhbgvd</H2>
+  Computes all the eigenvalues, and optionally, the eigenvectors
+  <PRE>
+USAGE:
+  w, z, work, rwork, iwork, info, ab, bb = NumRu::Lapack.zhbgvd( jobz, uplo, ka, kb, ab, bb, lwork, lrwork, liwork)
+    or
+  NumRu::Lapack.zhbgvd  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZHBGVD( JOBZ, UPLO, N, KA, KB, AB, LDAB, BB, LDBB, W, Z, LDZ, WORK, LWORK, RWORK, LRWORK, IWORK, LIWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZHBGVD computes all the eigenvalues, and optionally, the eigenvectors
+*  of a complex generalized Hermitian-definite banded eigenproblem, of
+*  the form A*x=(lambda)*B*x. Here A and B are assumed to be Hermitian
+*  and banded, and B is also positive definite.  If eigenvectors are
+*  desired, it uses a divide and conquer algorithm.
+*
+*  The divide and conquer algorithm makes very mild assumptions about
+*  floating point arithmetic. It will work on machines with a guard
+*  digit in add/subtract, or on those binary machines without guard
+*  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
+*  Cray-2. It could conceivably fail on hexadecimal or decimal machines
+*  without guard digits, but we know of none.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangles of A and B are stored;
+*          = 'L':  Lower triangles of A and B are stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  KA      (input) INTEGER
+*          The number of superdiagonals of the matrix A if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'. KA >= 0.
+*
+*  KB      (input) INTEGER
+*          The number of superdiagonals of the matrix B if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'. KB >= 0.
+*
+*  AB      (input/output) COMPLEX*16 array, dimension (LDAB, N)
+*          On entry, the upper or lower triangle of the Hermitian band
+*          matrix A, stored in the first ka+1 rows of the array.  The
+*          j-th column of A is stored in the j-th column of the array AB
+*          as follows:
+*          if UPLO = 'U', AB(ka+1+i-j,j) = A(i,j) for max(1,j-ka)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+ka).
+*
+*          On exit, the contents of AB are destroyed.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KA+1.
+*
+*  BB      (input/output) COMPLEX*16 array, dimension (LDBB, N)
+*          On entry, the upper or lower triangle of the Hermitian band
+*          matrix B, stored in the first kb+1 rows of the array.  The
+*          j-th column of B is stored in the j-th column of the array BB
+*          as follows:
+*          if UPLO = 'U', BB(kb+1+i-j,j) = B(i,j) for max(1,j-kb)<=i<=j;
+*          if UPLO = 'L', BB(1+i-j,j)    = B(i,j) for j<=i<=min(n,j+kb).
+*
+*          On exit, the factor S from the split Cholesky factorization
+*          B = S**H*S, as returned by ZPBSTF.
+*
+*  LDBB    (input) INTEGER
+*          The leading dimension of the array BB.  LDBB >= KB+1.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) COMPLEX*16 array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
+*          eigenvectors, with the i-th column of Z holding the
+*          eigenvector associated with W(i). The eigenvectors are
+*          normalized so that Z**H*B*Z = I.
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= N.
+*
+*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
+*          On exit, if INFO=0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          If N <= 1,               LWORK >= 1.
+*          If JOBZ = 'N' and N > 1, LWORK >= N.
+*          If JOBZ = 'V' and N > 1, LWORK >= 2*N**2.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal sizes of the WORK, RWORK and
+*          IWORK arrays, returns these values as the first entries of
+*          the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  RWORK   (workspace/output) DOUBLE PRECISION array, dimension (MAX(1,LRWORK))
+*          On exit, if INFO=0, RWORK(1) returns the optimal LRWORK.
+*
+*  LRWORK  (input) INTEGER
+*          The dimension of array RWORK.
+*          If N <= 1,               LRWORK >= 1.
+*          If JOBZ = 'N' and N > 1, LRWORK >= N.
+*          If JOBZ = 'V' and N > 1, LRWORK >= 1 + 5*N + 2*N**2.
+*
+*          If LRWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal sizes of the WORK, RWORK
+*          and IWORK arrays, returns these values as the first entries
+*          of the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
+*          On exit, if INFO=0, IWORK(1) returns the optimal LIWORK.
+*
+*  LIWORK  (input) INTEGER
+*          The dimension of array IWORK.
+*          If JOBZ = 'N' or N <= 1, LIWORK >= 1.
+*          If JOBZ = 'V' and N > 1, LIWORK >= 3 + 5*N.
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal sizes of the WORK, RWORK
+*          and IWORK arrays, returns these values as the first entries
+*          of the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is:
+*             <= N:  the algorithm failed to converge:
+*                    i off-diagonal elements of an intermediate
+*                    tridiagonal form did not converge to zero;
+*             > N:   if INFO = N + i, for 1 <= i <= N, then ZPBSTF
+*                    returned INFO = i: B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="zhbgv"></A>
   <H2>zhbgv</H2>
+  Computes all the eigenvalues, and optionally, the eigenvectors
   <PRE>
 USAGE:
   w, z, info, ab, bb = NumRu::Lapack.zhbgv( jobz, uplo, ka, kb, ab, bb)
@@ -138,6 +302,7 @@ FORTRAN MANUAL
 
   <A NAME="zhbtrd"></A>
   <H2>zhbtrd</H2>
+  Reduces a Hermitian band matrix to real symmetric
   <PRE>
 USAGE:
   d, e, info, ab, q = NumRu::Lapack.zhbtrd( vect, uplo, kd, ab, q)
@@ -233,6 +398,7 @@ FORTRAN MANUAL
 
   <A NAME="zhbgst"></A>
   <H2>zhbgst</H2>
+  Reduces a complex Hermitian-definite banded generalized eigenproblem
   <PRE>
 USAGE:
   x, info, ab = NumRu::Lapack.zhbgst( vect, uplo, ka, kb, ab, bb)
@@ -326,6 +492,7 @@ FORTRAN MANUAL
 
   <A NAME="zhbev"></A>
   <H2>zhbev</H2>
+  Computes all eigenvalues and, optionally, eigenvectors of a complex
   <PRE>
 USAGE:
   w, z, info, ab = NumRu::Lapack.zhbev( jobz, uplo, kd, ab)
@@ -413,6 +580,7 @@ FORTRAN MANUAL
 
   <A NAME="zhbgvx"></A>
   <H2>zhbgvx</H2>
+  Computes selected eigenvalues, and optionally, the eigenvectors
   <PRE>
 USAGE:
   q, m, w, z, ifail, info, ab, bb = NumRu::Lapack.zhbgvx( jobz, range, uplo, ka, kb, ab, bb, vl, vu, il, iu, abstol)
@@ -588,6 +756,7 @@ FORTRAN MANUAL
 
   <A NAME="zhbevd"></A>
   <H2>zhbevd</H2>
+  Computes all eigenvalues and, optionally, eigenvectors of a complex
   <PRE>
 USAGE:
   w, z, work, rwork, iwork, info, ab = NumRu::Lapack.zhbevd( jobz, uplo, kd, ab, lwork, lrwork, liwork)
@@ -725,6 +894,7 @@ FORTRAN MANUAL
 
   <A NAME="zhbevx"></A>
   <H2>zhbevx</H2>
+  Computes selected eigenvalues and eigenvectors of a
   <PRE>
 USAGE:
   q, m, w, z, ifail, info, ab = NumRu::Lapack.zhbevx( jobz, range, uplo, kd, ab, vl, vu, il, iu, abstol)
@@ -871,168 +1041,6 @@ FORTRAN MANUAL
 *                Their indices are stored in array IFAIL.
 *
 
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zhbgvd"></A>
-  <H2>zhbgvd</H2>
-  <PRE>
-USAGE:
-  w, z, work, rwork, iwork, info, ab, bb = NumRu::Lapack.zhbgvd( jobz, uplo, ka, kb, ab, bb, lwork, lrwork, liwork)
-    or
-  NumRu::Lapack.zhbgvd  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZHBGVD( JOBZ, UPLO, N, KA, KB, AB, LDAB, BB, LDBB, W, Z, LDZ, WORK, LWORK, RWORK, LRWORK, IWORK, LIWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZHBGVD computes all the eigenvalues, and optionally, the eigenvectors
-*  of a complex generalized Hermitian-definite banded eigenproblem, of
-*  the form A*x=(lambda)*B*x. Here A and B are assumed to be Hermitian
-*  and banded, and B is also positive definite.  If eigenvectors are
-*  desired, it uses a divide and conquer algorithm.
-*
-*  The divide and conquer algorithm makes very mild assumptions about
-*  floating point arithmetic. It will work on machines with a guard
-*  digit in add/subtract, or on those binary machines without guard
-*  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
-*  Cray-2. It could conceivably fail on hexadecimal or decimal machines
-*  without guard digits, but we know of none.
-*
-
-*  Arguments
-*  =========
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangles of A and B are stored;
-*          = 'L':  Lower triangles of A and B are stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrices A and B.  N >= 0.
-*
-*  KA      (input) INTEGER
-*          The number of superdiagonals of the matrix A if UPLO = 'U',
-*          or the number of subdiagonals if UPLO = 'L'. KA >= 0.
-*
-*  KB      (input) INTEGER
-*          The number of superdiagonals of the matrix B if UPLO = 'U',
-*          or the number of subdiagonals if UPLO = 'L'. KB >= 0.
-*
-*  AB      (input/output) COMPLEX*16 array, dimension (LDAB, N)
-*          On entry, the upper or lower triangle of the Hermitian band
-*          matrix A, stored in the first ka+1 rows of the array.  The
-*          j-th column of A is stored in the j-th column of the array AB
-*          as follows:
-*          if UPLO = 'U', AB(ka+1+i-j,j) = A(i,j) for max(1,j-ka)<=i<=j;
-*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+ka).
-*
-*          On exit, the contents of AB are destroyed.
-*
-*  LDAB    (input) INTEGER
-*          The leading dimension of the array AB.  LDAB >= KA+1.
-*
-*  BB      (input/output) COMPLEX*16 array, dimension (LDBB, N)
-*          On entry, the upper or lower triangle of the Hermitian band
-*          matrix B, stored in the first kb+1 rows of the array.  The
-*          j-th column of B is stored in the j-th column of the array BB
-*          as follows:
-*          if UPLO = 'U', BB(kb+1+i-j,j) = B(i,j) for max(1,j-kb)<=i<=j;
-*          if UPLO = 'L', BB(1+i-j,j)    = B(i,j) for j<=i<=min(n,j+kb).
-*
-*          On exit, the factor S from the split Cholesky factorization
-*          B = S**H*S, as returned by ZPBSTF.
-*
-*  LDBB    (input) INTEGER
-*          The leading dimension of the array BB.  LDBB >= KB+1.
-*
-*  W       (output) DOUBLE PRECISION array, dimension (N)
-*          If INFO = 0, the eigenvalues in ascending order.
-*
-*  Z       (output) COMPLEX*16 array, dimension (LDZ, N)
-*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
-*          eigenvectors, with the i-th column of Z holding the
-*          eigenvector associated with W(i). The eigenvectors are
-*          normalized so that Z**H*B*Z = I.
-*          If JOBZ = 'N', then Z is not referenced.
-*
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z.  LDZ >= 1, and if
-*          JOBZ = 'V', LDZ >= N.
-*
-*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
-*          On exit, if INFO=0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.
-*          If N <= 1,               LWORK >= 1.
-*          If JOBZ = 'N' and N > 1, LWORK >= N.
-*          If JOBZ = 'V' and N > 1, LWORK >= 2*N**2.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal sizes of the WORK, RWORK and
-*          IWORK arrays, returns these values as the first entries of
-*          the WORK, RWORK and IWORK arrays, and no error message
-*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
-*
-*  RWORK   (workspace/output) DOUBLE PRECISION array, dimension (MAX(1,LRWORK))
-*          On exit, if INFO=0, RWORK(1) returns the optimal LRWORK.
-*
-*  LRWORK  (input) INTEGER
-*          The dimension of array RWORK.
-*          If N <= 1,               LRWORK >= 1.
-*          If JOBZ = 'N' and N > 1, LRWORK >= N.
-*          If JOBZ = 'V' and N > 1, LRWORK >= 1 + 5*N + 2*N**2.
-*
-*          If LRWORK = -1, then a workspace query is assumed; the
-*          routine only calculates the optimal sizes of the WORK, RWORK
-*          and IWORK arrays, returns these values as the first entries
-*          of the WORK, RWORK and IWORK arrays, and no error message
-*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
-*
-*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
-*          On exit, if INFO=0, IWORK(1) returns the optimal LIWORK.
-*
-*  LIWORK  (input) INTEGER
-*          The dimension of array IWORK.
-*          If JOBZ = 'N' or N <= 1, LIWORK >= 1.
-*          If JOBZ = 'V' and N > 1, LIWORK >= 3 + 5*N.
-*
-*          If LIWORK = -1, then a workspace query is assumed; the
-*          routine only calculates the optimal sizes of the WORK, RWORK
-*          and IWORK arrays, returns these values as the first entries
-*          of the WORK, RWORK and IWORK arrays, and no error message
-*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, and i is:
-*             <= N:  the algorithm failed to converge:
-*                    i off-diagonal elements of an intermediate
-*                    tridiagonal form did not converge to zero;
-*             > N:   if INFO = N + i, for 1 <= i <= N, then ZPBSTF
-*                    returned INFO = i: B is not positive definite.
-*                    The factorization of B could not be completed and
-*                    no eigenvalues or eigenvectors were computed.
-*
-
-*  Further Details
-*  ===============
-*
-*  Based on contributions by
-*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
-*
 *  =====================================================================
 *
 

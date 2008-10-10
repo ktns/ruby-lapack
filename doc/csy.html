@@ -6,20 +6,144 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for symmetric matrix</H1>
     <UL>
-      <LI><A HREF="#csysvx">csysvx</A></LI>
-      <LI><A HREF="#csytri">csytri</A></LI>
-      <LI><A HREF="#csycon">csycon</A></LI>
-      <LI><A HREF="#csytrf">csytrf</A></LI>
-      <LI><A HREF="#csyr">csyr</A></LI>
-      <LI><A HREF="#csytf2">csytf2</A></LI>
-      <LI><A HREF="#csymv">csymv</A></LI>
-      <LI><A HREF="#csyrfs">csyrfs</A></LI>
-      <LI><A HREF="#csytrs">csytrs</A></LI>
-      <LI><A HREF="#csysv">csysv</A></LI>
+      <LI><A HREF="#csysv">csysv</A>: </LI>
+      <LI><A HREF="#csysvx">csysvx</A>: Solves a complex symmetric</LI>
+      <LI><A HREF="#csytri">csytri</A>: Computes the inverse of a complex symmetric indefinite matrix,</LI>
+      <LI><A HREF="#csycon">csycon</A>: Estimates the reciprocal of the condition number of a</LI>
+      <LI><A HREF="#csytrf">csytrf</A>: Computes the factorization of a complex symmetric-indefinite matrix,</LI>
+      <LI><A HREF="#csyr">csyr</A>: </LI>
+      <LI><A HREF="#csytf2">csytf2</A>: </LI>
+      <LI><A HREF="#csymv">csymv</A>: </LI>
+      <LI><A HREF="#csyrfs">csyrfs</A>: Improves the computed solution to a complex</LI>
+      <LI><A HREF="#csytrs">csytrs</A>: Solves a complex symmetric indefinite system of linear equations AX=B,</LI>
     </UL>
+
+  <A NAME="csysv"></A>
+  <H2>csysv</H2>
+  
+  <PRE>
+USAGE:
+  ipiv, work, info, a, b = NumRu::Lapack.csysv( uplo, a, b, lwork)
+    or
+  NumRu::Lapack.csysv  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CSYSV( UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CSYSV computes the solution to a complex system of linear equations
+*     A * X = B,
+*  where A is an N-by-N symmetric matrix and X and B are N-by-NRHS
+*  matrices.
+*
+*  The diagonal pivoting method is used to factor A as
+*     A = U * D * U**T,  if UPLO = 'U', or
+*     A = L * D * L**T,  if UPLO = 'L',
+*  where U (or L) is a product of permutation and unit upper (lower)
+*  triangular matrices, and D is symmetric and block diagonal with 
+*  1-by-1 and 2-by-2 diagonal blocks.  The factored form of A is then
+*  used to solve the system of equations A * X = B.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The number of linear equations, i.e., the order of the
+*          matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the symmetric matrix A.  If UPLO = 'U', the leading
+*          N-by-N upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading N-by-N lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*
+*          On exit, if INFO = 0, the block diagonal matrix D and the
+*          multipliers used to obtain the factor U or L from the
+*          factorization A = U*D*U**T or A = L*D*L**T as computed by
+*          CSYTRF.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  IPIV    (output) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D, as
+*          determined by CSYTRF.  If IPIV(k) > 0, then rows and columns
+*          k and IPIV(k) were interchanged, and D(k,k) is a 1-by-1
+*          diagonal block.  If UPLO = 'U' and IPIV(k) = IPIV(k-1) < 0,
+*          then rows and columns k-1 and -IPIV(k) were interchanged and
+*          D(k-1:k,k-1:k) is a 2-by-2 diagonal block.  If UPLO = 'L' and
+*          IPIV(k) = IPIV(k+1) < 0, then rows and columns k+1 and
+*          -IPIV(k) were interchanged and D(k:k+1,k:k+1) is a 2-by-2
+*          diagonal block.
+*
+*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)
+*          On entry, the N-by-NRHS right hand side matrix B.
+*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The length of WORK.  LWORK >= 1, and for best performance
+*          LWORK >= max(1,N*NB), where NB is the optimal blocksize for
+*          CSYTRF.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, D(i,i) is exactly zero.  The factorization
+*               has been completed, but the block diagonal matrix D is
+*               exactly singular, so the solution could not be computed.
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            LQUERY
+      INTEGER            LWKOPT, NB
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      INTEGER            ILAENV
+      EXTERNAL           ILAENV, LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CSYTRF, CSYTRS, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="csysvx"></A>
   <H2>csysvx</H2>
+  Solves a complex symmetric
   <PRE>
 USAGE:
   x, rcond, ferr, berr, work, info, af, ipiv = NumRu::Lapack.csysvx( fact, uplo, a, af, ipiv, b, lwork)
@@ -208,6 +332,7 @@ FORTRAN MANUAL
 
   <A NAME="csytri"></A>
   <H2>csytri</H2>
+  Computes the inverse of a complex symmetric indefinite matrix,
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.csytri( uplo, a, ipiv)
@@ -274,6 +399,7 @@ FORTRAN MANUAL
 
   <A NAME="csycon"></A>
   <H2>csycon</H2>
+  Estimates the reciprocal of the condition number of a
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.csycon( uplo, a, ipiv, anorm)
@@ -342,6 +468,7 @@ FORTRAN MANUAL
 
   <A NAME="csytrf"></A>
   <H2>csytrf</H2>
+  Computes the factorization of a complex symmetric-indefinite matrix,
   <PRE>
 USAGE:
   ipiv, work, info, a = NumRu::Lapack.csytrf( uplo, a, lwork)
@@ -485,6 +612,7 @@ FORTRAN MANUAL
 
   <A NAME="csyr"></A>
   <H2>csyr</H2>
+  
   <PRE>
 USAGE:
   a = NumRu::Lapack.csyr( uplo, alpha, x, incx, a)
@@ -572,6 +700,7 @@ FORTRAN MANUAL
 
   <A NAME="csytf2"></A>
   <H2>csytf2</H2>
+  
   <PRE>
 USAGE:
   ipiv, info, a = NumRu::Lapack.csytf2( uplo, a)
@@ -700,6 +829,7 @@ FORTRAN MANUAL
 
   <A NAME="csymv"></A>
   <H2>csymv</H2>
+  
   <PRE>
 USAGE:
   y = NumRu::Lapack.csymv( uplo, alpha, a, x, incx, beta, y, incy)
@@ -800,6 +930,7 @@ FORTRAN MANUAL
 
   <A NAME="csyrfs"></A>
   <H2>csyrfs</H2>
+  Improves the computed solution to a complex
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.csyrfs( uplo, a, af, ipiv, b, x)
@@ -908,6 +1039,7 @@ FORTRAN MANUAL
 
   <A NAME="csytrs"></A>
   <H2>csytrs</H2>
+  Solves a complex symmetric indefinite system of linear equations AX=B,
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.csytrs( uplo, a, ipiv, b)
@@ -967,128 +1099,6 @@ FORTRAN MANUAL
 
 *  =====================================================================
 *
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="csysv"></A>
-  <H2>csysv</H2>
-  <PRE>
-USAGE:
-  ipiv, work, info, a, b = NumRu::Lapack.csysv( uplo, a, b, lwork)
-    or
-  NumRu::Lapack.csysv  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CSYSV( UPLO, N, NRHS, A, LDA, IPIV, B, LDB, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  CSYSV computes the solution to a complex system of linear equations
-*     A * X = B,
-*  where A is an N-by-N symmetric matrix and X and B are N-by-NRHS
-*  matrices.
-*
-*  The diagonal pivoting method is used to factor A as
-*     A = U * D * U**T,  if UPLO = 'U', or
-*     A = L * D * L**T,  if UPLO = 'L',
-*  where U (or L) is a product of permutation and unit upper (lower)
-*  triangular matrices, and D is symmetric and block diagonal with 
-*  1-by-1 and 2-by-2 diagonal blocks.  The factored form of A is then
-*  used to solve the system of equations A * X = B.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The number of linear equations, i.e., the order of the
-*          matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
-*  A       (input/output) COMPLEX array, dimension (LDA,N)
-*          On entry, the symmetric matrix A.  If UPLO = 'U', the leading
-*          N-by-N upper triangular part of A contains the upper
-*          triangular part of the matrix A, and the strictly lower
-*          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading N-by-N lower triangular part of A contains the lower
-*          triangular part of the matrix A, and the strictly upper
-*          triangular part of A is not referenced.
-*
-*          On exit, if INFO = 0, the block diagonal matrix D and the
-*          multipliers used to obtain the factor U or L from the
-*          factorization A = U*D*U**T or A = L*D*L**T as computed by
-*          CSYTRF.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  IPIV    (output) INTEGER array, dimension (N)
-*          Details of the interchanges and the block structure of D, as
-*          determined by CSYTRF.  If IPIV(k) > 0, then rows and columns
-*          k and IPIV(k) were interchanged, and D(k,k) is a 1-by-1
-*          diagonal block.  If UPLO = 'U' and IPIV(k) = IPIV(k-1) < 0,
-*          then rows and columns k-1 and -IPIV(k) were interchanged and
-*          D(k-1:k,k-1:k) is a 2-by-2 diagonal block.  If UPLO = 'L' and
-*          IPIV(k) = IPIV(k+1) < 0, then rows and columns k+1 and
-*          -IPIV(k) were interchanged and D(k:k+1,k:k+1) is a 2-by-2
-*          diagonal block.
-*
-*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)
-*          On entry, the N-by-NRHS right hand side matrix B.
-*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The length of WORK.  LWORK >= 1, and for best performance
-*          LWORK >= max(1,N*NB), where NB is the optimal blocksize for
-*          CSYTRF.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*          > 0: if INFO = i, D(i,i) is exactly zero.  The factorization
-*               has been completed, but the block diagonal matrix D is
-*               exactly singular, so the solution could not be computed.
-*
-
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      LOGICAL            LQUERY
-      INTEGER            LWKOPT, NB
-*     ..
-*     .. External Functions ..
-      LOGICAL            LSAME
-      INTEGER            ILAENV
-      EXTERNAL           ILAENV, LSAME
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           CSYTRF, CSYTRS, XERBLA
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX
-*     ..
 
 
     </PRE>

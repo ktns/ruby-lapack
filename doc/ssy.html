@@ -6,29 +6,153 @@
     <A NAME="top"></A>
     <H1>REAL routines for symmetric matrix</H1>
     <UL>
-      <LI><A HREF="#ssytrd">ssytrd</A></LI>
-      <LI><A HREF="#ssysvx">ssysvx</A></LI>
-      <LI><A HREF="#ssyrfs">ssyrfs</A></LI>
-      <LI><A HREF="#ssytf2">ssytf2</A></LI>
-      <LI><A HREF="#ssygvx">ssygvx</A></LI>
-      <LI><A HREF="#ssytrs">ssytrs</A></LI>
-      <LI><A HREF="#ssygvd">ssygvd</A></LI>
-      <LI><A HREF="#ssygv">ssygv</A></LI>
-      <LI><A HREF="#ssyevx">ssyevx</A></LI>
-      <LI><A HREF="#ssytri">ssytri</A></LI>
-      <LI><A HREF="#ssyev">ssyev</A></LI>
-      <LI><A HREF="#ssycon">ssycon</A></LI>
-      <LI><A HREF="#ssyevr">ssyevr</A></LI>
-      <LI><A HREF="#ssygst">ssygst</A></LI>
-      <LI><A HREF="#ssysv">ssysv</A></LI>
-      <LI><A HREF="#ssygs2">ssygs2</A></LI>
-      <LI><A HREF="#ssytd2">ssytd2</A></LI>
-      <LI><A HREF="#ssytrf">ssytrf</A></LI>
-      <LI><A HREF="#ssyevd">ssyevd</A></LI>
+      <LI><A HREF="#ssyevd">ssyevd</A>: Computes all eigenvalues, and optionally, eigenvectors of a real</LI>
+      <LI><A HREF="#ssytrd">ssytrd</A>: Reduces a symmetric matrix to real symmetric tridiagonal</LI>
+      <LI><A HREF="#ssysvx">ssysvx</A>: Solves a real symmetric</LI>
+      <LI><A HREF="#ssyrfs">ssyrfs</A>: Improves the computed solution to a real</LI>
+      <LI><A HREF="#ssytf2">ssytf2</A>: </LI>
+      <LI><A HREF="#ssygvx">ssygvx</A>: Computes selected eigenvalues, and optionally, the eigenvectors of</LI>
+      <LI><A HREF="#ssytrs">ssytrs</A>: Solves a real symmetric indefinite system of linear equations AX=B,</LI>
+      <LI><A HREF="#ssygvd">ssygvd</A>: Computes all eigenvalues and the eigenvectors of  a generalized</LI>
+      <LI><A HREF="#ssygv">ssygv</A>: Computes all eigenvalues and the eigenvectors of  a generalized</LI>
+      <LI><A HREF="#ssyevx">ssyevx</A>: Computes selected eigenvalues and eigenvectors of a symmetric matrix.</LI>
+      <LI><A HREF="#ssytri">ssytri</A>: Computes the inverse of a real symmetric indefinite matrix,</LI>
+      <LI><A HREF="#ssyev">ssyev</A>: Computes all eigenvalues, and optionally, eigenvectors of a real</LI>
+      <LI><A HREF="#ssycon">ssycon</A>: Estimates the reciprocal of the condition number of a</LI>
+      <LI><A HREF="#ssyevr">ssyevr</A>: Computes selected eigenvalues, and optionally, eigenvectors of a real</LI>
+      <LI><A HREF="#ssygst">ssygst</A>: Reduces a symmetric-definite generalized eigenproblem</LI>
+      <LI><A HREF="#ssysv">ssysv</A>: Solves a real symmetric indefinite system of linear equations AX=B.</LI>
+      <LI><A HREF="#ssygs2">ssygs2</A>: </LI>
+      <LI><A HREF="#ssytd2">ssytd2</A>: </LI>
+      <LI><A HREF="#ssytrf">ssytrf</A>: Computes the factorization of a real symmetric-indefinite matrix,</LI>
     </UL>
+
+  <A NAME="ssyevd"></A>
+  <H2>ssyevd</H2>
+  Computes all eigenvalues, and optionally, eigenvectors of a real
+  <PRE>
+USAGE:
+  w, work, iwork, info, a = NumRu::Lapack.ssyevd( jobz, uplo, a, lwork, liwork)
+    or
+  NumRu::Lapack.ssyevd  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SSYEVD( JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, IWORK, LIWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SSYEVD computes all eigenvalues and, optionally, eigenvectors of a
+*  real symmetric matrix A. If eigenvectors are desired, it uses a
+*  divide and conquer algorithm.
+*
+*  The divide and conquer algorithm makes very mild assumptions about
+*  floating point arithmetic. It will work on machines with a guard
+*  digit in add/subtract, or on those binary machines without guard
+*  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
+*  Cray-2. It could conceivably fail on hexadecimal or decimal machines
+*  without guard digits, but we know of none.
+*
+*  Because of large use of BLAS of level 3, SSYEVD needs N**2 more
+*  workspace than SSYEVX.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA, N)
+*          On entry, the symmetric matrix A.  If UPLO = 'U', the
+*          leading N-by-N upper triangular part of A contains the
+*          upper triangular part of the matrix A.  If UPLO = 'L',
+*          the leading N-by-N lower triangular part of A contains
+*          the lower triangular part of the matrix A.
+*          On exit, if JOBZ = 'V', then if INFO = 0, A contains the
+*          orthonormal eigenvectors of the matrix A.
+*          If JOBZ = 'N', then on exit the lower triangle (if UPLO='L')
+*          or the upper triangle (if UPLO='U') of A, including the
+*          diagonal, is destroyed.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  W       (output) REAL array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  WORK    (workspace/output) REAL array,
+*                                         dimension (LWORK)
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          If N <= 1,               LWORK must be at least 1.
+*          If JOBZ = 'N' and N > 1, LWORK must be at least 2*N+1.
+*          If JOBZ = 'V' and N > 1, LWORK must be at least 
+*                                                1 + 6*N + 2*N**2.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal sizes of the WORK and IWORK
+*          arrays, returns these values as the first entries of the WORK
+*          and IWORK arrays, and no error message related to LWORK or
+*          LIWORK is issued by XERBLA.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
+*          On exit, if INFO = 0, IWORK(1) returns the optimal LIWORK.
+*
+*  LIWORK  (input) INTEGER
+*          The dimension of the array IWORK.
+*          If N <= 1,                LIWORK must be at least 1.
+*          If JOBZ  = 'N' and N > 1, LIWORK must be at least 1.
+*          If JOBZ  = 'V' and N > 1, LIWORK must be at least 3 + 5*N.
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal sizes of the WORK and
+*          IWORK arrays, returns these values as the first entries of
+*          the WORK and IWORK arrays, and no error message related to
+*          LWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i and JOBZ = 'N', then the algorithm failed
+*                to converge; i off-diagonal elements of an intermediate
+*                tridiagonal form did not converge to zero;
+*                if INFO = i and JOBZ = 'V', then the algorithm failed
+*                to compute an eigenvalue while working on the submatrix
+*                lying in rows and columns INFO/(N+1) through
+*                mod(INFO,N+1).
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Jeff Rutter, Computer Science Division, University of California
+*     at Berkeley, USA
+*  Modified by Francoise Tisseur, University of Tennessee.
+*
+*  Modified description of INFO. Sven, 16 Feb 05.
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="ssytrd"></A>
   <H2>ssytrd</H2>
+  Reduces a symmetric matrix to real symmetric tridiagonal
   <PRE>
 USAGE:
   d, e, tau, work, info, a = NumRu::Lapack.ssytrd( uplo, a, lwork)
@@ -161,6 +285,7 @@ FORTRAN MANUAL
 
   <A NAME="ssysvx"></A>
   <H2>ssysvx</H2>
+  Solves a real symmetric
   <PRE>
 USAGE:
   x, rcond, ferr, berr, work, info, af, ipiv = NumRu::Lapack.ssysvx( fact, uplo, a, af, ipiv, b, lwork)
@@ -349,6 +474,7 @@ FORTRAN MANUAL
 
   <A NAME="ssyrfs"></A>
   <H2>ssyrfs</H2>
+  Improves the computed solution to a real
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.ssyrfs( uplo, a, af, ipiv, b, x)
@@ -457,6 +583,7 @@ FORTRAN MANUAL
 
   <A NAME="ssytf2"></A>
   <H2>ssytf2</H2>
+  
   <PRE>
 USAGE:
   ipiv, info, a = NumRu::Lapack.ssytf2( uplo, a)
@@ -588,6 +715,7 @@ FORTRAN MANUAL
 
   <A NAME="ssygvx"></A>
   <H2>ssygvx</H2>
+  Computes selected eigenvalues, and optionally, the eigenvectors of
   <PRE>
 USAGE:
   m, w, z, work, ifail, info, a, b = NumRu::Lapack.ssygvx( itype, jobz, range, uplo, a, b, ldb, vl, vu, il, iu, abstol, ldz, lwork)
@@ -773,6 +901,7 @@ FORTRAN MANUAL
 
   <A NAME="ssytrs"></A>
   <H2>ssytrs</H2>
+  Solves a real symmetric indefinite system of linear equations AX=B,
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.ssytrs( uplo, a, ipiv, b)
@@ -839,6 +968,7 @@ FORTRAN MANUAL
 
   <A NAME="ssygvd"></A>
   <H2>ssygvd</H2>
+  Computes all eigenvalues and the eigenvectors of  a generalized
   <PRE>
 USAGE:
   w, work, iwork, info, a, b = NumRu::Lapack.ssygvd( itype, jobz, uplo, a, b, lwork, liwork)
@@ -989,6 +1119,7 @@ FORTRAN MANUAL
 
   <A NAME="ssygv"></A>
   <H2>ssygv</H2>
+  Computes all eigenvalues and the eigenvectors of  a generalized
   <PRE>
 USAGE:
   w, work, info, a, b = NumRu::Lapack.ssygv( itype, jobz, uplo, a, b, lwork)
@@ -1100,6 +1231,7 @@ FORTRAN MANUAL
 
   <A NAME="ssyevx"></A>
   <H2>ssyevx</H2>
+  Computes selected eigenvalues and eigenvectors of a symmetric matrix.
   <PRE>
 USAGE:
   m, w, z, work, ifail, info, a = NumRu::Lapack.ssyevx( jobz, range, uplo, a, vl, vu, il, iu, abstol, lwork)
@@ -1252,6 +1384,7 @@ FORTRAN MANUAL
 
   <A NAME="ssytri"></A>
   <H2>ssytri</H2>
+  Computes the inverse of a real symmetric indefinite matrix,
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.ssytri( uplo, a, ipiv)
@@ -1318,6 +1451,7 @@ FORTRAN MANUAL
 
   <A NAME="ssyev"></A>
   <H2>ssyev</H2>
+  Computes all eigenvalues, and optionally, eigenvectors of a real
   <PRE>
 USAGE:
   w, work, info, a = NumRu::Lapack.ssyev( jobz, uplo, a, lwork)
@@ -1397,6 +1531,7 @@ FORTRAN MANUAL
 
   <A NAME="ssycon"></A>
   <H2>ssycon</H2>
+  Estimates the reciprocal of the condition number of a
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.ssycon( uplo, a, ipiv, anorm)
@@ -1467,6 +1602,7 @@ FORTRAN MANUAL
 
   <A NAME="ssyevr"></A>
   <H2>ssyevr</H2>
+  Computes selected eigenvalues, and optionally, eigenvectors of a real
   <PRE>
 USAGE:
   m, w, z, isuppz, work, iwork, info, a = NumRu::Lapack.ssyevr( jobz, range, uplo, a, vl, vu, il, iu, abstol, lwork, liwork)
@@ -1698,6 +1834,7 @@ FORTRAN MANUAL
 
   <A NAME="ssygst"></A>
   <H2>ssygst</H2>
+  Reduces a symmetric-definite generalized eigenproblem
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.ssygst( itype, uplo, a, b)
@@ -1775,6 +1912,7 @@ FORTRAN MANUAL
 
   <A NAME="ssysv"></A>
   <H2>ssysv</H2>
+  Solves a real symmetric indefinite system of linear equations AX=B.
   <PRE>
 USAGE:
   ipiv, work, info, a, b = NumRu::Lapack.ssysv( uplo, a, b, lwork)
@@ -1897,6 +2035,7 @@ FORTRAN MANUAL
 
   <A NAME="ssygs2"></A>
   <H2>ssygs2</H2>
+  
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.ssygs2( itype, uplo, a, b)
@@ -1974,6 +2113,7 @@ FORTRAN MANUAL
 
   <A NAME="ssytd2"></A>
   <H2>ssytd2</H2>
+  
   <PRE>
 USAGE:
   d, e, tau, info, a = NumRu::Lapack.ssytd2( uplo, a)
@@ -2094,6 +2234,7 @@ FORTRAN MANUAL
 
   <A NAME="ssytrf"></A>
   <H2>ssytrf</H2>
+  Computes the factorization of a real symmetric-indefinite matrix,
   <PRE>
 USAGE:
   ipiv, work, info, a = NumRu::Lapack.ssytrf( uplo, a, lwork)
@@ -2230,128 +2371,6 @@ FORTRAN MANUAL
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX
 *     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="ssyevd"></A>
-  <H2>ssyevd</H2>
-  <PRE>
-USAGE:
-  w, work, iwork, info, a = NumRu::Lapack.ssyevd( jobz, uplo, a, lwork, liwork)
-    or
-  NumRu::Lapack.ssyevd  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SSYEVD( JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, IWORK, LIWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SSYEVD computes all eigenvalues and, optionally, eigenvectors of a
-*  real symmetric matrix A. If eigenvectors are desired, it uses a
-*  divide and conquer algorithm.
-*
-*  The divide and conquer algorithm makes very mild assumptions about
-*  floating point arithmetic. It will work on machines with a guard
-*  digit in add/subtract, or on those binary machines without guard
-*  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
-*  Cray-2. It could conceivably fail on hexadecimal or decimal machines
-*  without guard digits, but we know of none.
-*
-*  Because of large use of BLAS of level 3, SSYEVD needs N**2 more
-*  workspace than SSYEVX.
-*
-
-*  Arguments
-*  =========
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input/output) REAL array, dimension (LDA, N)
-*          On entry, the symmetric matrix A.  If UPLO = 'U', the
-*          leading N-by-N upper triangular part of A contains the
-*          upper triangular part of the matrix A.  If UPLO = 'L',
-*          the leading N-by-N lower triangular part of A contains
-*          the lower triangular part of the matrix A.
-*          On exit, if JOBZ = 'V', then if INFO = 0, A contains the
-*          orthonormal eigenvectors of the matrix A.
-*          If JOBZ = 'N', then on exit the lower triangle (if UPLO='L')
-*          or the upper triangle (if UPLO='U') of A, including the
-*          diagonal, is destroyed.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  W       (output) REAL array, dimension (N)
-*          If INFO = 0, the eigenvalues in ascending order.
-*
-*  WORK    (workspace/output) REAL array,
-*                                         dimension (LWORK)
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.
-*          If N <= 1,               LWORK must be at least 1.
-*          If JOBZ = 'N' and N > 1, LWORK must be at least 2*N+1.
-*          If JOBZ = 'V' and N > 1, LWORK must be at least 
-*                                                1 + 6*N + 2*N**2.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal sizes of the WORK and IWORK
-*          arrays, returns these values as the first entries of the WORK
-*          and IWORK arrays, and no error message related to LWORK or
-*          LIWORK is issued by XERBLA.
-*
-*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
-*          On exit, if INFO = 0, IWORK(1) returns the optimal LIWORK.
-*
-*  LIWORK  (input) INTEGER
-*          The dimension of the array IWORK.
-*          If N <= 1,                LIWORK must be at least 1.
-*          If JOBZ  = 'N' and N > 1, LIWORK must be at least 1.
-*          If JOBZ  = 'V' and N > 1, LIWORK must be at least 3 + 5*N.
-*
-*          If LIWORK = -1, then a workspace query is assumed; the
-*          routine only calculates the optimal sizes of the WORK and
-*          IWORK arrays, returns these values as the first entries of
-*          the WORK and IWORK arrays, and no error message related to
-*          LWORK or LIWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i and JOBZ = 'N', then the algorithm failed
-*                to converge; i off-diagonal elements of an intermediate
-*                tridiagonal form did not converge to zero;
-*                if INFO = i and JOBZ = 'V', then the algorithm failed
-*                to compute an eigenvalue while working on the submatrix
-*                lying in rows and columns INFO/(N+1) through
-*                mod(INFO,N+1).
-*
-
-*  Further Details
-*  ===============
-*
-*  Based on contributions by
-*     Jeff Rutter, Computer Science Division, University of California
-*     at Berkeley, USA
-*  Modified by Francoise Tisseur, University of Tennessee.
-*
-*  Modified description of INFO. Sven, 16 Feb 05.
-*  =====================================================================
-*
 
 
     </PRE>

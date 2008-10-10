@@ -6,17 +6,172 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for general tridiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#zgtsvx">zgtsvx</A></LI>
-      <LI><A HREF="#zgtrfs">zgtrfs</A></LI>
-      <LI><A HREF="#zgtts2">zgtts2</A></LI>
-      <LI><A HREF="#zgtcon">zgtcon</A></LI>
-      <LI><A HREF="#zgttrs">zgttrs</A></LI>
-      <LI><A HREF="#zgttrf">zgttrf</A></LI>
-      <LI><A HREF="#zgtsv">zgtsv</A></LI>
+      <LI><A HREF="#zgttrf">zgttrf</A>: Computes an LU factorization of a general tridiagonal matrix,</LI>
+      <LI><A HREF="#zgtsv">zgtsv</A>: Solves a general tridiagonal system of linear equations AX=B.</LI>
+      <LI><A HREF="#zgtsvx">zgtsvx</A>: Solves a general tridiagonal system of linear equations AX=B,</LI>
+      <LI><A HREF="#zgtrfs">zgtrfs</A>: Improves the computed solution to a general tridiagonal system</LI>
+      <LI><A HREF="#zgtts2">zgtts2</A>: </LI>
+      <LI><A HREF="#zgtcon">zgtcon</A>: Estimates the reciprocal of the condition number of a general</LI>
+      <LI><A HREF="#zgttrs">zgttrs</A>: Solves a general tridiagonal system of linear equations AX=B,</LI>
     </UL>
+
+  <A NAME="zgttrf"></A>
+  <H2>zgttrf</H2>
+  Computes an LU factorization of a general tridiagonal matrix,
+  <PRE>
+USAGE:
+  du2, ipiv, info, dl, d, du = NumRu::Lapack.zgttrf( dl, d, du)
+    or
+  NumRu::Lapack.zgttrf  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZGTTRF( N, DL, D, DU, DU2, IPIV, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZGTTRF computes an LU factorization of a complex tridiagonal matrix A
+*  using elimination with partial pivoting and row interchanges.
+*
+*  The factorization has the form
+*     A = L * U
+*  where L is a product of permutation and unit lower bidiagonal
+*  matrices and U is upper triangular with nonzeros in only the main
+*  diagonal and first two superdiagonals.
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.
+*
+*  DL      (input/output) COMPLEX*16 array, dimension (N-1)
+*          On entry, DL must contain the (n-1) sub-diagonal elements of
+*          A.
+*
+*          On exit, DL is overwritten by the (n-1) multipliers that
+*          define the matrix L from the LU factorization of A.
+*
+*  D       (input/output) COMPLEX*16 array, dimension (N)
+*          On entry, D must contain the diagonal elements of A.
+*
+*          On exit, D is overwritten by the n diagonal elements of the
+*          upper triangular matrix U from the LU factorization of A.
+*
+*  DU      (input/output) COMPLEX*16 array, dimension (N-1)
+*          On entry, DU must contain the (n-1) super-diagonal elements
+*          of A.
+*
+*          On exit, DU is overwritten by the (n-1) elements of the first
+*          super-diagonal of U.
+*
+*  DU2     (output) COMPLEX*16 array, dimension (N-2)
+*          On exit, DU2 is overwritten by the (n-2) elements of the
+*          second super-diagonal of U.
+*
+*  IPIV    (output) INTEGER array, dimension (N)
+*          The pivot indices; for 1 <= i <= n, row i of the matrix was
+*          interchanged with row IPIV(i).  IPIV(i) will always be either
+*          i or i+1; IPIV(i) = i indicates a row interchange was not
+*          required.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -k, the k-th argument had an illegal value
+*          > 0:  if INFO = k, U(k,k) is exactly zero. The factorization
+*                has been completed, but the factor U is exactly
+*                singular, and division by zero will occur if it is used
+*                to solve a system of equations.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zgtsv"></A>
+  <H2>zgtsv</H2>
+  Solves a general tridiagonal system of linear equations AX=B.
+  <PRE>
+USAGE:
+  info, dl, d, du, b = NumRu::Lapack.zgtsv( dl, d, du, b)
+    or
+  NumRu::Lapack.zgtsv  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZGTSV( N, NRHS, DL, D, DU, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZGTSV  solves the equation
+*
+*     A*X = B,
+*
+*  where A is an N-by-N tridiagonal matrix, by Gaussian elimination with
+*  partial pivoting.
+*
+*  Note that the equation  A'*X = B  may be solved by interchanging the
+*  order of the arguments DU and DL.
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  DL      (input/output) COMPLEX*16 array, dimension (N-1)
+*          On entry, DL must contain the (n-1) subdiagonal elements of
+*          A.
+*          On exit, DL is overwritten by the (n-2) elements of the
+*          second superdiagonal of the upper triangular matrix U from
+*          the LU factorization of A, in DL(1), ..., DL(n-2).
+*
+*  D       (input/output) COMPLEX*16 array, dimension (N)
+*          On entry, D must contain the diagonal elements of A.
+*          On exit, D is overwritten by the n diagonal elements of U.
+*
+*  DU      (input/output) COMPLEX*16 array, dimension (N-1)
+*          On entry, DU must contain the (n-1) superdiagonal elements
+*          of A.
+*          On exit, DU is overwritten by the (n-1) elements of the first
+*          superdiagonal of U.
+*
+*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
+*          On entry, the N-by-NRHS right hand side matrix B.
+*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, U(i,i) is exactly zero, and the solution
+*                has not been computed.  The factorization has not been
+*                completed unless i = N.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="zgtsvx"></A>
   <H2>zgtsvx</H2>
+  Solves a general tridiagonal system of linear equations AX=B,
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, dlf, df, duf, du2, ipiv = NumRu::Lapack.zgtsvx( fact, trans, dl, d, du, dlf, df, duf, du2, ipiv, b)
@@ -207,6 +362,7 @@ FORTRAN MANUAL
 
   <A NAME="zgtrfs"></A>
   <H2>zgtrfs</H2>
+  Improves the computed solution to a general tridiagonal system
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.zgtrfs( trans, dl, d, du, dlf, df, duf, du2, ipiv, b, x)
@@ -321,6 +477,7 @@ FORTRAN MANUAL
 
   <A NAME="zgtts2"></A>
   <H2>zgtts2</H2>
+  
   <PRE>
 USAGE:
   b = NumRu::Lapack.zgtts2( itrans, dl, d, du, du2, ipiv, b)
@@ -400,6 +557,7 @@ FORTRAN MANUAL
 
   <A NAME="zgtcon"></A>
   <H2>zgtcon</H2>
+  Estimates the reciprocal of the condition number of a general
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.zgtcon( norm, dl, d, du, du2, ipiv, anorm)
@@ -478,6 +636,7 @@ FORTRAN MANUAL
 
   <A NAME="zgttrs"></A>
   <H2>zgttrs</H2>
+  Solves a general tridiagonal system of linear equations AX=B,
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.zgttrs( trans, dl, d, du, du2, ipiv, b)
@@ -561,158 +720,6 @@ FORTRAN MANUAL
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX, MIN
 *     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zgttrf"></A>
-  <H2>zgttrf</H2>
-  <PRE>
-USAGE:
-  du2, ipiv, info, dl, d, du = NumRu::Lapack.zgttrf( dl, d, du)
-    or
-  NumRu::Lapack.zgttrf  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZGTTRF( N, DL, D, DU, DU2, IPIV, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZGTTRF computes an LU factorization of a complex tridiagonal matrix A
-*  using elimination with partial pivoting and row interchanges.
-*
-*  The factorization has the form
-*     A = L * U
-*  where L is a product of permutation and unit lower bidiagonal
-*  matrices and U is upper triangular with nonzeros in only the main
-*  diagonal and first two superdiagonals.
-*
-
-*  Arguments
-*  =========
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.
-*
-*  DL      (input/output) COMPLEX*16 array, dimension (N-1)
-*          On entry, DL must contain the (n-1) sub-diagonal elements of
-*          A.
-*
-*          On exit, DL is overwritten by the (n-1) multipliers that
-*          define the matrix L from the LU factorization of A.
-*
-*  D       (input/output) COMPLEX*16 array, dimension (N)
-*          On entry, D must contain the diagonal elements of A.
-*
-*          On exit, D is overwritten by the n diagonal elements of the
-*          upper triangular matrix U from the LU factorization of A.
-*
-*  DU      (input/output) COMPLEX*16 array, dimension (N-1)
-*          On entry, DU must contain the (n-1) super-diagonal elements
-*          of A.
-*
-*          On exit, DU is overwritten by the (n-1) elements of the first
-*          super-diagonal of U.
-*
-*  DU2     (output) COMPLEX*16 array, dimension (N-2)
-*          On exit, DU2 is overwritten by the (n-2) elements of the
-*          second super-diagonal of U.
-*
-*  IPIV    (output) INTEGER array, dimension (N)
-*          The pivot indices; for 1 <= i <= n, row i of the matrix was
-*          interchanged with row IPIV(i).  IPIV(i) will always be either
-*          i or i+1; IPIV(i) = i indicates a row interchange was not
-*          required.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -k, the k-th argument had an illegal value
-*          > 0:  if INFO = k, U(k,k) is exactly zero. The factorization
-*                has been completed, but the factor U is exactly
-*                singular, and division by zero will occur if it is used
-*                to solve a system of equations.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zgtsv"></A>
-  <H2>zgtsv</H2>
-  <PRE>
-USAGE:
-  info, dl, d, du, b = NumRu::Lapack.zgtsv( dl, d, du, b)
-    or
-  NumRu::Lapack.zgtsv  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZGTSV( N, NRHS, DL, D, DU, B, LDB, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZGTSV  solves the equation
-*
-*     A*X = B,
-*
-*  where A is an N-by-N tridiagonal matrix, by Gaussian elimination with
-*  partial pivoting.
-*
-*  Note that the equation  A'*X = B  may be solved by interchanging the
-*  order of the arguments DU and DL.
-*
-
-*  Arguments
-*  =========
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
-*  DL      (input/output) COMPLEX*16 array, dimension (N-1)
-*          On entry, DL must contain the (n-1) subdiagonal elements of
-*          A.
-*          On exit, DL is overwritten by the (n-2) elements of the
-*          second superdiagonal of the upper triangular matrix U from
-*          the LU factorization of A, in DL(1), ..., DL(n-2).
-*
-*  D       (input/output) COMPLEX*16 array, dimension (N)
-*          On entry, D must contain the diagonal elements of A.
-*          On exit, D is overwritten by the n diagonal elements of U.
-*
-*  DU      (input/output) COMPLEX*16 array, dimension (N-1)
-*          On entry, DU must contain the (n-1) superdiagonal elements
-*          of A.
-*          On exit, DU is overwritten by the (n-1) elements of the first
-*          superdiagonal of U.
-*
-*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
-*          On entry, the N-by-NRHS right hand side matrix B.
-*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, U(i,i) is exactly zero, and the solution
-*                has not been computed.  The factorization has not been
-*                completed unless i = N.
-*
-
-*  =====================================================================
-*
 
 
     </PRE>

@@ -6,18 +6,19 @@
     <A NAME="top"></A>
     <H1>REAL routines for symmetric or Hermitian positive definite, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#sppsv">sppsv</A></LI>
-      <LI><A HREF="#spprfs">spprfs</A></LI>
-      <LI><A HREF="#spptrs">spptrs</A></LI>
-      <LI><A HREF="#spptrf">spptrf</A></LI>
-      <LI><A HREF="#sppequ">sppequ</A></LI>
-      <LI><A HREF="#sppcon">sppcon</A></LI>
-      <LI><A HREF="#spptri">spptri</A></LI>
-      <LI><A HREF="#sppsvx">sppsvx</A></LI>
+      <LI><A HREF="#sppsv">sppsv</A>: Solves a symmetric positive definite system of linear</LI>
+      <LI><A HREF="#spprfs">spprfs</A>: Improves the computed solution to a symmetric positive</LI>
+      <LI><A HREF="#spptrs">spptrs</A>: Solves a symmetric positive definite system of linear</LI>
+      <LI><A HREF="#spptrf">spptrf</A>: Computes the Cholesky factorization of a symmetric</LI>
+      <LI><A HREF="#sppequ">sppequ</A>: Computes row and column scalings to equilibrate a symmetric</LI>
+      <LI><A HREF="#sppcon">sppcon</A>: Estimates the reciprocal of the condition number of a</LI>
+      <LI><A HREF="#spptri">spptri</A>: Computes the inverse of a symmetric positive definite</LI>
+      <LI><A HREF="#sppsvx">sppsvx</A>: Solves a symmetric positive definite system of linear</LI>
     </UL>
 
   <A NAME="sppsv"></A>
   <H2>sppsv</H2>
+  Solves a symmetric positive definite system of linear
   <PRE>
 USAGE:
   info, ap, b = NumRu::Lapack.sppsv( uplo, n, ap, b)
@@ -122,6 +123,7 @@ FORTRAN MANUAL
 
   <A NAME="spprfs"></A>
   <H2>spprfs</H2>
+  Improves the computed solution to a symmetric positive
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.spprfs( uplo, ap, afp, b, x)
@@ -219,6 +221,7 @@ FORTRAN MANUAL
 
   <A NAME="spptrs"></A>
   <H2>spptrs</H2>
+  Solves a symmetric positive definite system of linear
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.spptrs( uplo, n, ap, b)
@@ -294,6 +297,7 @@ FORTRAN MANUAL
 
   <A NAME="spptrf"></A>
   <H2>spptrf</H2>
+  Computes the Cholesky factorization of a symmetric
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.spptrf( uplo, n, ap)
@@ -372,6 +376,7 @@ FORTRAN MANUAL
 
   <A NAME="sppequ"></A>
   <H2>sppequ</H2>
+  Computes row and column scalings to equilibrate a symmetric
   <PRE>
 USAGE:
   s, scond, amax, info = NumRu::Lapack.sppequ( uplo, ap)
@@ -440,6 +445,7 @@ FORTRAN MANUAL
 
   <A NAME="sppcon"></A>
   <H2>sppcon</H2>
+  Estimates the reciprocal of the condition number of a
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.sppcon( uplo, ap, anorm)
@@ -506,6 +512,7 @@ FORTRAN MANUAL
 
   <A NAME="spptri"></A>
   <H2>spptri</H2>
+  Computes the inverse of a symmetric positive definite
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.spptri( uplo, n, ap)
@@ -561,6 +568,7 @@ FORTRAN MANUAL
 
   <A NAME="sppsvx"></A>
   <H2>sppsvx</H2>
+  Solves a symmetric positive definite system of linear
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, ap, afp, equed, s, b = NumRu::Lapack.sppsvx( fact, uplo, ap, afp, equed, s, b)

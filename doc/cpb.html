@@ -6,19 +6,20 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for symmetric or Hermitian positive definite band matrix</H1>
     <UL>
-      <LI><A HREF="#cpbequ">cpbequ</A></LI>
-      <LI><A HREF="#cpbcon">cpbcon</A></LI>
-      <LI><A HREF="#cpbtrs">cpbtrs</A></LI>
-      <LI><A HREF="#cpbstf">cpbstf</A></LI>
-      <LI><A HREF="#cpbtrf">cpbtrf</A></LI>
-      <LI><A HREF="#cpbtf2">cpbtf2</A></LI>
-      <LI><A HREF="#cpbrfs">cpbrfs</A></LI>
-      <LI><A HREF="#cpbsv">cpbsv</A></LI>
-      <LI><A HREF="#cpbsvx">cpbsvx</A></LI>
+      <LI><A HREF="#cpbequ">cpbequ</A>: Computes row and column scalings to equilibrate a Hermitian</LI>
+      <LI><A HREF="#cpbcon">cpbcon</A>: Estimates the reciprocal of the condition number of a</LI>
+      <LI><A HREF="#cpbtrs">cpbtrs</A>: Solves a Hermitian positive definite banded system</LI>
+      <LI><A HREF="#cpbstf">cpbstf</A>: Computes a split Cholesky factorization of a complex Hermitian</LI>
+      <LI><A HREF="#cpbtrf">cpbtrf</A>: Computes the Cholesky factorization of a Hermitian</LI>
+      <LI><A HREF="#cpbrfs">cpbrfs</A>: Improves the computed solution to a Hermitian positive</LI>
+      <LI><A HREF="#cpbtf2">cpbtf2</A>: </LI>
+      <LI><A HREF="#cpbsv">cpbsv</A>: Solves a Hermitian positive definite banded system</LI>
+      <LI><A HREF="#cpbsvx">cpbsvx</A>: Solves a Hermitian positive definite banded system</LI>
     </UL>
 
   <A NAME="cpbequ"></A>
   <H2>cpbequ</H2>
+  Computes row and column scalings to equilibrate a Hermitian
   <PRE>
 USAGE:
   s, scond, amax, info = NumRu::Lapack.cpbequ( uplo, kd, ab)
@@ -94,6 +95,7 @@ FORTRAN MANUAL
 
   <A NAME="cpbcon"></A>
   <H2>cpbcon</H2>
+  Estimates the reciprocal of the condition number of a
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.cpbcon( uplo, kd, ab, anorm)
@@ -167,6 +169,7 @@ FORTRAN MANUAL
 
   <A NAME="cpbtrs"></A>
   <H2>cpbtrs</H2>
+  Solves a Hermitian positive definite banded system
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.cpbtrs( uplo, kd, ab, b)
@@ -249,6 +252,7 @@ FORTRAN MANUAL
 
   <A NAME="cpbstf"></A>
   <H2>cpbstf</H2>
+  Computes a split Cholesky factorization of a complex Hermitian
   <PRE>
 USAGE:
   info, ab = NumRu::Lapack.cpbstf( uplo, kd, ab)
@@ -355,6 +359,7 @@ FORTRAN MANUAL
 
   <A NAME="cpbtrf"></A>
   <H2>cpbtrf</H2>
+  Computes the Cholesky factorization of a Hermitian
   <PRE>
 USAGE:
   info, ab = NumRu::Lapack.cpbtrf( uplo, kd, ab)
@@ -446,103 +451,9 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="cpbtf2"></A>
-  <H2>cpbtf2</H2>
-  <PRE>
-USAGE:
-  info, ab = NumRu::Lapack.cpbtf2( uplo, kd, ab)
-    or
-  NumRu::Lapack.cpbtf2  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CPBTF2( UPLO, N, KD, AB, LDAB, INFO )
-
-*  Purpose
-*  =======
-*
-*  CPBTF2 computes the Cholesky factorization of a complex Hermitian
-*  positive definite band matrix A.
-*
-*  The factorization has the form
-*     A = U' * U ,  if UPLO = 'U', or
-*     A = L  * L',  if UPLO = 'L',
-*  where U is an upper triangular matrix, U' is the conjugate transpose
-*  of U, and L is lower triangular.
-*
-*  This is the unblocked version of the algorithm, calling Level 2 BLAS.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          Specifies whether the upper or lower triangular part of the
-*          Hermitian matrix A is stored:
-*          = 'U':  Upper triangular
-*          = 'L':  Lower triangular
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  KD      (input) INTEGER
-*          The number of super-diagonals of the matrix A if UPLO = 'U',
-*          or the number of sub-diagonals if UPLO = 'L'.  KD >= 0.
-*
-*  AB      (input/output) COMPLEX array, dimension (LDAB,N)
-*          On entry, the upper or lower triangle of the Hermitian band
-*          matrix A, stored in the first KD+1 rows of the array.  The
-*          j-th column of A is stored in the j-th column of the array AB
-*          as follows:
-*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
-*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
-*
-*          On exit, if INFO = 0, the triangular factor U or L from the
-*          Cholesky factorization A = U'*U or A = L*L' of the band
-*          matrix A, in the same storage format as A.
-*
-*  LDAB    (input) INTEGER
-*          The leading dimension of the array AB.  LDAB >= KD+1.
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -k, the k-th argument had an illegal value
-*          > 0: if INFO = k, the leading minor of order k is not
-*               positive definite, and the factorization could not be
-*               completed.
-*
-
-*  Further Details
-*  ===============
-*
-*  The band storage scheme is illustrated by the following example, when
-*  N = 6, KD = 2, and UPLO = 'U':
-*
-*  On entry:                       On exit:
-*
-*      *    *   a13  a24  a35  a46      *    *   u13  u24  u35  u46
-*      *   a12  a23  a34  a45  a56      *   u12  u23  u34  u45  u56
-*     a11  a22  a33  a44  a55  a66     u11  u22  u33  u44  u55  u66
-*
-*  Similarly, if UPLO = 'L' the format of A is as follows:
-*
-*  On entry:                       On exit:
-*
-*     a11  a22  a33  a44  a55  a66     l11  l22  l33  l44  l55  l66
-*     a21  a32  a43  a54  a65   *      l21  l32  l43  l54  l65   *
-*     a31  a42  a53  a64   *    *      l31  l42  l53  l64   *    *
-*
-*  Array elements marked * are not used by the routine.
-*
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
   <A NAME="cpbrfs"></A>
   <H2>cpbrfs</H2>
+  Improves the computed solution to a Hermitian positive
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.cpbrfs( uplo, kd, ab, afb, b, x)
@@ -647,8 +558,105 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
+  <A NAME="cpbtf2"></A>
+  <H2>cpbtf2</H2>
+  
+  <PRE>
+USAGE:
+  info, ab = NumRu::Lapack.cpbtf2( uplo, kd, ab)
+    or
+  NumRu::Lapack.cpbtf2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPBTF2( UPLO, N, KD, AB, LDAB, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPBTF2 computes the Cholesky factorization of a complex Hermitian
+*  positive definite band matrix A.
+*
+*  The factorization has the form
+*     A = U' * U ,  if UPLO = 'U', or
+*     A = L  * L',  if UPLO = 'L',
+*  where U is an upper triangular matrix, U' is the conjugate transpose
+*  of U, and L is lower triangular.
+*
+*  This is the unblocked version of the algorithm, calling Level 2 BLAS.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the upper or lower triangular part of the
+*          Hermitian matrix A is stored:
+*          = 'U':  Upper triangular
+*          = 'L':  Lower triangular
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  KD      (input) INTEGER
+*          The number of super-diagonals of the matrix A if UPLO = 'U',
+*          or the number of sub-diagonals if UPLO = 'L'.  KD >= 0.
+*
+*  AB      (input/output) COMPLEX array, dimension (LDAB,N)
+*          On entry, the upper or lower triangle of the Hermitian band
+*          matrix A, stored in the first KD+1 rows of the array.  The
+*          j-th column of A is stored in the j-th column of the array AB
+*          as follows:
+*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
+*
+*          On exit, if INFO = 0, the triangular factor U or L from the
+*          Cholesky factorization A = U'*U or A = L*L' of the band
+*          matrix A, in the same storage format as A.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KD+1.
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*          > 0: if INFO = k, the leading minor of order k is not
+*               positive definite, and the factorization could not be
+*               completed.
+*
+
+*  Further Details
+*  ===============
+*
+*  The band storage scheme is illustrated by the following example, when
+*  N = 6, KD = 2, and UPLO = 'U':
+*
+*  On entry:                       On exit:
+*
+*      *    *   a13  a24  a35  a46      *    *   u13  u24  u35  u46
+*      *   a12  a23  a34  a45  a56      *   u12  u23  u34  u45  u56
+*     a11  a22  a33  a44  a55  a66     u11  u22  u33  u44  u55  u66
+*
+*  Similarly, if UPLO = 'L' the format of A is as follows:
+*
+*  On entry:                       On exit:
+*
+*     a11  a22  a33  a44  a55  a66     l11  l22  l33  l44  l55  l66
+*     a21  a32  a43  a54  a65   *      l21  l32  l43  l54  l65   *
+*     a31  a42  a53  a64   *    *      l31  l42  l53  l64   *    *
+*
+*  Array elements marked * are not used by the routine.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
   <A NAME="cpbsv"></A>
   <H2>cpbsv</H2>
+  Solves a Hermitian positive definite banded system
   <PRE>
 USAGE:
   info, ab, b = NumRu::Lapack.cpbsv( uplo, kd, ab, b)
@@ -767,6 +775,7 @@ FORTRAN MANUAL
 
   <A NAME="cpbsvx"></A>
   <H2>cpbsvx</H2>
+  Solves a Hermitian positive definite banded system
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, ab, afb, equed, s, b = NumRu::Lapack.cpbsvx( fact, uplo, kd, ab, afb, equed, s, b)

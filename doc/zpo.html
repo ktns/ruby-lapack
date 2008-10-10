@@ -6,19 +6,242 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for symmetric or Hermitian positive definite matrix</H1>
     <UL>
-      <LI><A HREF="#zpotrs">zpotrs</A></LI>
-      <LI><A HREF="#zpocon">zpocon</A></LI>
-      <LI><A HREF="#zpotrf">zpotrf</A></LI>
-      <LI><A HREF="#zporfs">zporfs</A></LI>
-      <LI><A HREF="#zpotf2">zpotf2</A></LI>
-      <LI><A HREF="#zposvx">zposvx</A></LI>
-      <LI><A HREF="#zposv">zposv</A></LI>
-      <LI><A HREF="#zpotri">zpotri</A></LI>
-      <LI><A HREF="#zpoequ">zpoequ</A></LI>
+      <LI><A HREF="#zposv">zposv</A>: Solves a Hermitian positive definite system of linear</LI>
+      <LI><A HREF="#zpotri">zpotri</A>: Computes the inverse of a Hermitian positive definite</LI>
+      <LI><A HREF="#zpoequ">zpoequ</A>: Computes row and column scalings to equilibrate a Hermitian</LI>
+      <LI><A HREF="#zpotrs">zpotrs</A>: Solves a Hermitian positive definite system of linear</LI>
+      <LI><A HREF="#zpocon">zpocon</A>: Estimates the reciprocal of the condition number of a</LI>
+      <LI><A HREF="#zpotrf">zpotrf</A>: Computes the Cholesky factorization of a Hermitian</LI>
+      <LI><A HREF="#zporfs">zporfs</A>: Improves the computed solution to a Hermitian positive</LI>
+      <LI><A HREF="#zpotf2">zpotf2</A>: </LI>
+      <LI><A HREF="#zposvx">zposvx</A>: Solves a Hermitian positive definite system of linear</LI>
     </UL>
+
+  <A NAME="zposv"></A>
+  <H2>zposv</H2>
+  Solves a Hermitian positive definite system of linear
+  <PRE>
+USAGE:
+  info, a, b = NumRu::Lapack.zposv( uplo, a, b)
+    or
+  NumRu::Lapack.zposv  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZPOSV( UPLO, N, NRHS, A, LDA, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZPOSV computes the solution to a complex system of linear equations
+*     A * X = B,
+*  where A is an N-by-N Hermitian positive definite matrix and X and B
+*  are N-by-NRHS matrices.
+*
+*  The Cholesky decomposition is used to factor A as
+*     A = U**H* U,  if UPLO = 'U', or
+*     A = L * L**H,  if UPLO = 'L',
+*  where U is an upper triangular matrix and  L is a lower triangular
+*  matrix.  The factored form of A is then used to solve the system of
+*  equations A * X = B.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The number of linear equations, i.e., the order of the
+*          matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
+*          N-by-N upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading N-by-N lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*
+*          On exit, if INFO = 0, the factor U or L from the Cholesky
+*          factorization A = U**H*U or A = L*L**H.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
+*          On entry, the N-by-NRHS right hand side matrix B.
+*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the leading minor of order i of A is not
+*                positive definite, so the factorization could not be
+*                completed, and the solution has not been computed.
+*
+
+*  =====================================================================
+*
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           XERBLA, ZPOTRF, ZPOTRS
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zpotri"></A>
+  <H2>zpotri</H2>
+  Computes the inverse of a Hermitian positive definite
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.zpotri( uplo, a)
+    or
+  NumRu::Lapack.zpotri  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZPOTRI( UPLO, N, A, LDA, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZPOTRI computes the inverse of a complex Hermitian positive definite
+*  matrix A using the Cholesky factorization A = U**H*U or A = L*L**H
+*  computed by ZPOTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+*          On entry, the triangular factor U or L from the Cholesky
+*          factorization A = U**H*U or A = L*L**H, as computed by
+*          ZPOTRF.
+*          On exit, the upper or lower triangle of the (Hermitian)
+*          inverse of A, overwriting the input factor U or L.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the (i,i) element of the factor U or L is
+*                zero, and the inverse could not be computed.
+*
+
+*  =====================================================================
+*
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           XERBLA, ZLAUUM, ZTRTRI
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zpoequ"></A>
+  <H2>zpoequ</H2>
+  Computes row and column scalings to equilibrate a Hermitian
+  <PRE>
+USAGE:
+  s, scond, amax, info = NumRu::Lapack.zpoequ( a)
+    or
+  NumRu::Lapack.zpoequ  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZPOEQU( N, A, LDA, S, SCOND, AMAX, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZPOEQU computes row and column scalings intended to equilibrate a
+*  Hermitian positive definite matrix A and reduce its condition number
+*  (with respect to the two-norm).  S contains the scale factors,
+*  S(i) = 1/sqrt(A(i,i)), chosen so that the scaled matrix B with
+*  elements B(i,j) = S(i)*A(i,j)*S(j) has ones on the diagonal.  This
+*  choice of S puts the condition number of B within a factor N of the
+*  smallest possible condition number over all possible diagonal
+*  scalings.
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input) COMPLEX*16 array, dimension (LDA,N)
+*          The N-by-N Hermitian positive definite matrix whose scaling
+*          factors are to be computed.  Only the diagonal elements of A
+*          are referenced.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  S       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, S contains the scale factors for A.
+*
+*  SCOND   (output) DOUBLE PRECISION
+*          If INFO = 0, S contains the ratio of the smallest S(i) to
+*          the largest S(i).  If SCOND >= 0.1 and AMAX is neither too
+*          large nor too small, it is not worth scaling by S.
+*
+*  AMAX    (output) DOUBLE PRECISION
+*          Absolute value of largest matrix element.  If AMAX is very
+*          close to overflow or very close to underflow, the matrix
+*          should be scaled.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the i-th diagonal element is nonpositive.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="zpotrs"></A>
   <H2>zpotrs</H2>
+  Solves a Hermitian positive definite system of linear
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.zpotrs( uplo, a, b)
@@ -79,6 +302,7 @@ FORTRAN MANUAL
 
   <A NAME="zpocon"></A>
   <H2>zpocon</H2>
+  Estimates the reciprocal of the condition number of a
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.zpocon( uplo, a, anorm)
@@ -143,6 +367,7 @@ FORTRAN MANUAL
 
   <A NAME="zpotrf"></A>
   <H2>zpotrf</H2>
+  Computes the Cholesky factorization of a Hermitian
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.zpotrf( uplo, a)
@@ -209,6 +434,7 @@ FORTRAN MANUAL
 
   <A NAME="zporfs"></A>
   <H2>zporfs</H2>
+  Improves the computed solution to a Hermitian positive
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.zporfs( uplo, a, af, b, x)
@@ -312,6 +538,7 @@ FORTRAN MANUAL
 
   <A NAME="zpotf2"></A>
   <H2>zpotf2</H2>
+  
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.zpotf2( uplo, a)
@@ -380,6 +607,7 @@ FORTRAN MANUAL
 
   <A NAME="zposvx"></A>
   <H2>zposvx</H2>
+  Solves a Hermitian positive definite system of linear
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, a, af, equed, s, b = NumRu::Lapack.zposvx( fact, uplo, a, af, equed, s, b)
@@ -579,225 +807,6 @@ FORTRAN MANUAL
 *                       there are a number of situations where the
 *                       computed solution can be more accurate than the
 *                       value of RCOND would suggest.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zposv"></A>
-  <H2>zposv</H2>
-  <PRE>
-USAGE:
-  info, a, b = NumRu::Lapack.zposv( uplo, a, b)
-    or
-  NumRu::Lapack.zposv  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZPOSV( UPLO, N, NRHS, A, LDA, B, LDB, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZPOSV computes the solution to a complex system of linear equations
-*     A * X = B,
-*  where A is an N-by-N Hermitian positive definite matrix and X and B
-*  are N-by-NRHS matrices.
-*
-*  The Cholesky decomposition is used to factor A as
-*     A = U**H* U,  if UPLO = 'U', or
-*     A = L * L**H,  if UPLO = 'L',
-*  where U is an upper triangular matrix and  L is a lower triangular
-*  matrix.  The factored form of A is then used to solve the system of
-*  equations A * X = B.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The number of linear equations, i.e., the order of the
-*          matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
-*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
-*          N-by-N upper triangular part of A contains the upper
-*          triangular part of the matrix A, and the strictly lower
-*          triangular part of A is not referenced.  If UPLO = 'L', the
-*          leading N-by-N lower triangular part of A contains the lower
-*          triangular part of the matrix A, and the strictly upper
-*          triangular part of A is not referenced.
-*
-*          On exit, if INFO = 0, the factor U or L from the Cholesky
-*          factorization A = U**H*U or A = L*L**H.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
-*          On entry, the N-by-NRHS right hand side matrix B.
-*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, the leading minor of order i of A is not
-*                positive definite, so the factorization could not be
-*                completed, and the solution has not been computed.
-*
-
-*  =====================================================================
-*
-*     .. External Functions ..
-      LOGICAL            LSAME
-      EXTERNAL           LSAME
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           XERBLA, ZPOTRF, ZPOTRS
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zpotri"></A>
-  <H2>zpotri</H2>
-  <PRE>
-USAGE:
-  info, a = NumRu::Lapack.zpotri( uplo, a)
-    or
-  NumRu::Lapack.zpotri  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZPOTRI( UPLO, N, A, LDA, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZPOTRI computes the inverse of a complex Hermitian positive definite
-*  matrix A using the Cholesky factorization A = U**H*U or A = L*L**H
-*  computed by ZPOTRF.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
-*          On entry, the triangular factor U or L from the Cholesky
-*          factorization A = U**H*U or A = L*L**H, as computed by
-*          ZPOTRF.
-*          On exit, the upper or lower triangle of the (Hermitian)
-*          inverse of A, overwriting the input factor U or L.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, the (i,i) element of the factor U or L is
-*                zero, and the inverse could not be computed.
-*
-
-*  =====================================================================
-*
-*     .. External Functions ..
-      LOGICAL            LSAME
-      EXTERNAL           LSAME
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           XERBLA, ZLAUUM, ZTRTRI
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zpoequ"></A>
-  <H2>zpoequ</H2>
-  <PRE>
-USAGE:
-  s, scond, amax, info = NumRu::Lapack.zpoequ( a)
-    or
-  NumRu::Lapack.zpoequ  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZPOEQU( N, A, LDA, S, SCOND, AMAX, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZPOEQU computes row and column scalings intended to equilibrate a
-*  Hermitian positive definite matrix A and reduce its condition number
-*  (with respect to the two-norm).  S contains the scale factors,
-*  S(i) = 1/sqrt(A(i,i)), chosen so that the scaled matrix B with
-*  elements B(i,j) = S(i)*A(i,j)*S(j) has ones on the diagonal.  This
-*  choice of S puts the condition number of B within a factor N of the
-*  smallest possible condition number over all possible diagonal
-*  scalings.
-*
-
-*  Arguments
-*  =========
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input) COMPLEX*16 array, dimension (LDA,N)
-*          The N-by-N Hermitian positive definite matrix whose scaling
-*          factors are to be computed.  Only the diagonal elements of A
-*          are referenced.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  S       (output) DOUBLE PRECISION array, dimension (N)
-*          If INFO = 0, S contains the scale factors for A.
-*
-*  SCOND   (output) DOUBLE PRECISION
-*          If INFO = 0, S contains the ratio of the smallest S(i) to
-*          the largest S(i).  If SCOND >= 0.1 and AMAX is neither too
-*          large nor too small, it is not worth scaling by S.
-*
-*  AMAX    (output) DOUBLE PRECISION
-*          Absolute value of largest matrix element.  If AMAX is very
-*          close to overflow or very close to underflow, the matrix
-*          should be scaled.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, the i-th diagonal element is nonpositive.
 *
 
 *  =====================================================================

@@ -6,14 +6,15 @@
     <A NAME="top"></A>
     <H1>REAL routines for triangular, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#stptrs">stptrs</A></LI>
-      <LI><A HREF="#stpcon">stpcon</A></LI>
-      <LI><A HREF="#stptri">stptri</A></LI>
-      <LI><A HREF="#stprfs">stprfs</A></LI>
+      <LI><A HREF="#stptrs">stptrs</A>: Solves a triangular system of linear equations AX=B,</LI>
+      <LI><A HREF="#stpcon">stpcon</A>: Estimates the reciprocal of the condition number of a triangular</LI>
+      <LI><A HREF="#stptri">stptri</A>: Computes the inverse of a triangular matrix in packed storage.</LI>
+      <LI><A HREF="#stprfs">stprfs</A>: Provides forward and backward error bounds for the solution</LI>
     </UL>
 
   <A NAME="stptrs"></A>
   <H2>stptrs</H2>
+  Solves a triangular system of linear equations AX=B,
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.stptrs( uplo, trans, diag, n, ap, b)
@@ -91,6 +92,7 @@ FORTRAN MANUAL
 
   <A NAME="stpcon"></A>
   <H2>stpcon</H2>
+  Estimates the reciprocal of the condition number of a triangular
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.stpcon( norm, uplo, diag, ap)
@@ -164,6 +166,7 @@ FORTRAN MANUAL
 
   <A NAME="stptri"></A>
   <H2>stptri</H2>
+  Computes the inverse of a triangular matrix in packed storage.
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.stptri( uplo, diag, n, ap)
@@ -237,6 +240,7 @@ FORTRAN MANUAL
 
   <A NAME="stprfs"></A>
   <H2>stprfs</H2>
+  Provides forward and backward error bounds for the solution
   <PRE>
 USAGE:
   ferr, berr, info = NumRu::Lapack.stprfs( uplo, trans, diag, ap, b, x)

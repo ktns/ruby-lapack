@@ -6,18 +6,228 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for (complex) Hermitian band matrix</H1>
     <UL>
-      <LI><A HREF="#chbtrd">chbtrd</A></LI>
-      <LI><A HREF="#chbgst">chbgst</A></LI>
-      <LI><A HREF="#chbgvx">chbgvx</A></LI>
-      <LI><A HREF="#chbgvd">chbgvd</A></LI>
-      <LI><A HREF="#chbevd">chbevd</A></LI>
-      <LI><A HREF="#chbevx">chbevx</A></LI>
-      <LI><A HREF="#chbgv">chbgv</A></LI>
-      <LI><A HREF="#chbev">chbev</A></LI>
+      <LI><A HREF="#chbgv">chbgv</A>: Computes all the eigenvalues, and optionally, the eigenvectors</LI>
+      <LI><A HREF="#chbev">chbev</A>: Computes all eigenvalues and, optionally, eigenvectors of a complex</LI>
+      <LI><A HREF="#chbtrd">chbtrd</A>: Reduces a Hermitian band matrix to real symmetric</LI>
+      <LI><A HREF="#chbgst">chbgst</A>: Reduces a complex Hermitian-definite banded generalized eigenproblem</LI>
+      <LI><A HREF="#chbgvx">chbgvx</A>: Computes selected eigenvalues, and optionally, the eigenvectors</LI>
+      <LI><A HREF="#chbgvd">chbgvd</A>: Computes all the eigenvalues, and optionally, the eigenvectors</LI>
+      <LI><A HREF="#chbevd">chbevd</A>: Computes all eigenvalues and, optionally, eigenvectors of a complex</LI>
+      <LI><A HREF="#chbevx">chbevx</A>: Computes selected eigenvalues and eigenvectors of a</LI>
     </UL>
+
+  <A NAME="chbgv"></A>
+  <H2>chbgv</H2>
+  Computes all the eigenvalues, and optionally, the eigenvectors
+  <PRE>
+USAGE:
+  w, z, info, ab, bb = NumRu::Lapack.chbgv( jobz, uplo, ka, kb, ab, bb)
+    or
+  NumRu::Lapack.chbgv  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CHBGV( JOBZ, UPLO, N, KA, KB, AB, LDAB, BB, LDBB, W, Z, LDZ, WORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CHBGV computes all the eigenvalues, and optionally, the eigenvectors
+*  of a complex generalized Hermitian-definite banded eigenproblem, of
+*  the form A*x=(lambda)*B*x. Here A and B are assumed to be Hermitian
+*  and banded, and B is also positive definite.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangles of A and B are stored;
+*          = 'L':  Lower triangles of A and B are stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  KA      (input) INTEGER
+*          The number of superdiagonals of the matrix A if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'. KA >= 0.
+*
+*  KB      (input) INTEGER
+*          The number of superdiagonals of the matrix B if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'. KB >= 0.
+*
+*  AB      (input/output) COMPLEX array, dimension (LDAB, N)
+*          On entry, the upper or lower triangle of the Hermitian band
+*          matrix A, stored in the first ka+1 rows of the array.  The
+*          j-th column of A is stored in the j-th column of the array AB
+*          as follows:
+*          if UPLO = 'U', AB(ka+1+i-j,j) = A(i,j) for max(1,j-ka)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+ka).
+*
+*          On exit, the contents of AB are destroyed.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KA+1.
+*
+*  BB      (input/output) COMPLEX array, dimension (LDBB, N)
+*          On entry, the upper or lower triangle of the Hermitian band
+*          matrix B, stored in the first kb+1 rows of the array.  The
+*          j-th column of B is stored in the j-th column of the array BB
+*          as follows:
+*          if UPLO = 'U', BB(kb+1+i-j,j) = B(i,j) for max(1,j-kb)<=i<=j;
+*          if UPLO = 'L', BB(1+i-j,j)    = B(i,j) for j<=i<=min(n,j+kb).
+*
+*          On exit, the factor S from the split Cholesky factorization
+*          B = S**H*S, as returned by CPBSTF.
+*
+*  LDBB    (input) INTEGER
+*          The leading dimension of the array BB.  LDBB >= KB+1.
+*
+*  W       (output) REAL array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) COMPLEX array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
+*          eigenvectors, with the i-th column of Z holding the
+*          eigenvector associated with W(i). The eigenvectors are
+*          normalized so that Z**H*B*Z = I.
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= N.
+*
+*  WORK    (workspace) COMPLEX array, dimension (N)
+*
+*  RWORK   (workspace) REAL array, dimension (3*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is:
+*             <= N:  the algorithm failed to converge:
+*                    i off-diagonal elements of an intermediate
+*                    tridiagonal form did not converge to zero;
+*             > N:   if INFO = N + i, for 1 <= i <= N, then CPBSTF
+*                    returned INFO = i: B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            UPPER, WANTZ
+      CHARACTER          VECT
+      INTEGER            IINFO, INDE, INDWRK
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CHBGST, CHBTRD, CPBSTF, CSTEQR, SSTERF, XERBLA
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chbev"></A>
+  <H2>chbev</H2>
+  Computes all eigenvalues and, optionally, eigenvectors of a complex
+  <PRE>
+USAGE:
+  w, z, info, ab = NumRu::Lapack.chbev( jobz, uplo, kd, ab)
+    or
+  NumRu::Lapack.chbev  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CHBEV( JOBZ, UPLO, N, KD, AB, LDAB, W, Z, LDZ, WORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CHBEV computes all the eigenvalues and, optionally, eigenvectors of
+*  a complex Hermitian band matrix A.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  KD      (input) INTEGER
+*          The number of superdiagonals of the matrix A if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.
+*
+*  AB      (input/output) COMPLEX array, dimension (LDAB, N)
+*          On entry, the upper or lower triangle of the Hermitian band
+*          matrix A, stored in the first KD+1 rows of the array.  The
+*          j-th column of A is stored in the j-th column of the array AB
+*          as follows:
+*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
+*
+*          On exit, AB is overwritten by values generated during the
+*          reduction to tridiagonal form.  If UPLO = 'U', the first
+*          superdiagonal and the diagonal of the tridiagonal matrix T
+*          are returned in rows KD and KD+1 of AB, and if UPLO = 'L',
+*          the diagonal and first subdiagonal of T are returned in the
+*          first two rows of AB.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KD + 1.
+*
+*  W       (output) REAL array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) COMPLEX array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
+*          eigenvectors of the matrix A, with the i-th column of Z
+*          holding the eigenvector associated with W(i).
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) COMPLEX array, dimension (N)
+*
+*  RWORK   (workspace) REAL array, dimension (max(1,3*N-2))
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, the algorithm failed to converge; i
+*                off-diagonal elements of an intermediate tridiagonal
+*                form did not converge to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="chbtrd"></A>
   <H2>chbtrd</H2>
+  Reduces a Hermitian band matrix to real symmetric
   <PRE>
 USAGE:
   d, e, info, ab, q = NumRu::Lapack.chbtrd( vect, uplo, kd, ab, q)
@@ -113,6 +323,7 @@ FORTRAN MANUAL
 
   <A NAME="chbgst"></A>
   <H2>chbgst</H2>
+  Reduces a complex Hermitian-definite banded generalized eigenproblem
   <PRE>
 USAGE:
   x, info, ab = NumRu::Lapack.chbgst( vect, uplo, ka, kb, ab, bb)
@@ -206,6 +417,7 @@ FORTRAN MANUAL
 
   <A NAME="chbgvx"></A>
   <H2>chbgvx</H2>
+  Computes selected eigenvalues, and optionally, the eigenvectors
   <PRE>
 USAGE:
   q, m, w, z, ifail, info, ab, bb = NumRu::Lapack.chbgvx( jobz, range, uplo, ka, kb, ab, bb, vl, vu, il, iu, abstol)
@@ -381,6 +593,7 @@ FORTRAN MANUAL
 
   <A NAME="chbgvd"></A>
   <H2>chbgvd</H2>
+  Computes all the eigenvalues, and optionally, the eigenvectors
   <PRE>
 USAGE:
   w, z, work, rwork, iwork, info, ab, bb = NumRu::Lapack.chbgvd( jobz, uplo, ka, kb, ab, bb, lwork, lrwork, liwork)
@@ -543,6 +756,7 @@ FORTRAN MANUAL
 
   <A NAME="chbevd"></A>
   <H2>chbevd</H2>
+  Computes all eigenvalues and, optionally, eigenvectors of a complex
   <PRE>
 USAGE:
   w, z, work, rwork, iwork, info, ab = NumRu::Lapack.chbevd( jobz, uplo, kd, ab, lwork, lrwork, liwork)
@@ -680,6 +894,7 @@ FORTRAN MANUAL
 
   <A NAME="chbevx"></A>
   <H2>chbevx</H2>
+  Computes selected eigenvalues and eigenvectors of a
   <PRE>
 USAGE:
   q, m, w, z, ifail, info, ab = NumRu::Lapack.chbevx( jobz, range, uplo, kd, ab, vl, vu, il, iu, abstol)
@@ -824,213 +1039,6 @@ FORTRAN MANUAL
 *          < 0:  if INFO = -i, the i-th argument had an illegal value
 *          > 0:  if INFO = i, then i eigenvectors failed to converge.
 *                Their indices are stored in array IFAIL.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="chbgv"></A>
-  <H2>chbgv</H2>
-  <PRE>
-USAGE:
-  w, z, info, ab, bb = NumRu::Lapack.chbgv( jobz, uplo, ka, kb, ab, bb)
-    or
-  NumRu::Lapack.chbgv  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CHBGV( JOBZ, UPLO, N, KA, KB, AB, LDAB, BB, LDBB, W, Z, LDZ, WORK, RWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  CHBGV computes all the eigenvalues, and optionally, the eigenvectors
-*  of a complex generalized Hermitian-definite banded eigenproblem, of
-*  the form A*x=(lambda)*B*x. Here A and B are assumed to be Hermitian
-*  and banded, and B is also positive definite.
-*
-
-*  Arguments
-*  =========
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangles of A and B are stored;
-*          = 'L':  Lower triangles of A and B are stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrices A and B.  N >= 0.
-*
-*  KA      (input) INTEGER
-*          The number of superdiagonals of the matrix A if UPLO = 'U',
-*          or the number of subdiagonals if UPLO = 'L'. KA >= 0.
-*
-*  KB      (input) INTEGER
-*          The number of superdiagonals of the matrix B if UPLO = 'U',
-*          or the number of subdiagonals if UPLO = 'L'. KB >= 0.
-*
-*  AB      (input/output) COMPLEX array, dimension (LDAB, N)
-*          On entry, the upper or lower triangle of the Hermitian band
-*          matrix A, stored in the first ka+1 rows of the array.  The
-*          j-th column of A is stored in the j-th column of the array AB
-*          as follows:
-*          if UPLO = 'U', AB(ka+1+i-j,j) = A(i,j) for max(1,j-ka)<=i<=j;
-*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+ka).
-*
-*          On exit, the contents of AB are destroyed.
-*
-*  LDAB    (input) INTEGER
-*          The leading dimension of the array AB.  LDAB >= KA+1.
-*
-*  BB      (input/output) COMPLEX array, dimension (LDBB, N)
-*          On entry, the upper or lower triangle of the Hermitian band
-*          matrix B, stored in the first kb+1 rows of the array.  The
-*          j-th column of B is stored in the j-th column of the array BB
-*          as follows:
-*          if UPLO = 'U', BB(kb+1+i-j,j) = B(i,j) for max(1,j-kb)<=i<=j;
-*          if UPLO = 'L', BB(1+i-j,j)    = B(i,j) for j<=i<=min(n,j+kb).
-*
-*          On exit, the factor S from the split Cholesky factorization
-*          B = S**H*S, as returned by CPBSTF.
-*
-*  LDBB    (input) INTEGER
-*          The leading dimension of the array BB.  LDBB >= KB+1.
-*
-*  W       (output) REAL array, dimension (N)
-*          If INFO = 0, the eigenvalues in ascending order.
-*
-*  Z       (output) COMPLEX array, dimension (LDZ, N)
-*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
-*          eigenvectors, with the i-th column of Z holding the
-*          eigenvector associated with W(i). The eigenvectors are
-*          normalized so that Z**H*B*Z = I.
-*          If JOBZ = 'N', then Z is not referenced.
-*
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z.  LDZ >= 1, and if
-*          JOBZ = 'V', LDZ >= N.
-*
-*  WORK    (workspace) COMPLEX array, dimension (N)
-*
-*  RWORK   (workspace) REAL array, dimension (3*N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, and i is:
-*             <= N:  the algorithm failed to converge:
-*                    i off-diagonal elements of an intermediate
-*                    tridiagonal form did not converge to zero;
-*             > N:   if INFO = N + i, for 1 <= i <= N, then CPBSTF
-*                    returned INFO = i: B is not positive definite.
-*                    The factorization of B could not be completed and
-*                    no eigenvalues or eigenvectors were computed.
-*
-
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      LOGICAL            UPPER, WANTZ
-      CHARACTER          VECT
-      INTEGER            IINFO, INDE, INDWRK
-*     ..
-*     .. External Functions ..
-      LOGICAL            LSAME
-      EXTERNAL           LSAME
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           CHBGST, CHBTRD, CPBSTF, CSTEQR, SSTERF, XERBLA
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="chbev"></A>
-  <H2>chbev</H2>
-  <PRE>
-USAGE:
-  w, z, info, ab = NumRu::Lapack.chbev( jobz, uplo, kd, ab)
-    or
-  NumRu::Lapack.chbev  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CHBEV( JOBZ, UPLO, N, KD, AB, LDAB, W, Z, LDZ, WORK, RWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  CHBEV computes all the eigenvalues and, optionally, eigenvectors of
-*  a complex Hermitian band matrix A.
-*
-
-*  Arguments
-*  =========
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  KD      (input) INTEGER
-*          The number of superdiagonals of the matrix A if UPLO = 'U',
-*          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.
-*
-*  AB      (input/output) COMPLEX array, dimension (LDAB, N)
-*          On entry, the upper or lower triangle of the Hermitian band
-*          matrix A, stored in the first KD+1 rows of the array.  The
-*          j-th column of A is stored in the j-th column of the array AB
-*          as follows:
-*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
-*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
-*
-*          On exit, AB is overwritten by values generated during the
-*          reduction to tridiagonal form.  If UPLO = 'U', the first
-*          superdiagonal and the diagonal of the tridiagonal matrix T
-*          are returned in rows KD and KD+1 of AB, and if UPLO = 'L',
-*          the diagonal and first subdiagonal of T are returned in the
-*          first two rows of AB.
-*
-*  LDAB    (input) INTEGER
-*          The leading dimension of the array AB.  LDAB >= KD + 1.
-*
-*  W       (output) REAL array, dimension (N)
-*          If INFO = 0, the eigenvalues in ascending order.
-*
-*  Z       (output) COMPLEX array, dimension (LDZ, N)
-*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
-*          eigenvectors of the matrix A, with the i-th column of Z
-*          holding the eigenvector associated with W(i).
-*          If JOBZ = 'N', then Z is not referenced.
-*
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z.  LDZ >= 1, and if
-*          JOBZ = 'V', LDZ >= max(1,N).
-*
-*  WORK    (workspace) COMPLEX array, dimension (N)
-*
-*  RWORK   (workspace) REAL array, dimension (max(1,3*N-2))
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit.
-*          < 0:  if INFO = -i, the i-th argument had an illegal value.
-*          > 0:  if INFO = i, the algorithm failed to converge; i
-*                off-diagonal elements of an intermediate tridiagonal
-*                form did not converge to zero.
 *
 
 *  =====================================================================

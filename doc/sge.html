@@ -6,50 +6,475 @@
     <A NAME="top"></A>
     <H1>REAL routines for general (i.e., unsymmetric, in some cases rectangular) matrix</H1>
     <UL>
-      <LI><A HREF="#sgelsy">sgelsy</A></LI>
-      <LI><A HREF="#sgeqpf">sgeqpf</A></LI>
-      <LI><A HREF="#sgeesx">sgeesx</A></LI>
-      <LI><A HREF="#sgels">sgels</A></LI>
-      <LI><A HREF="#sgees">sgees</A></LI>
-      <LI><A HREF="#sgesvd">sgesvd</A></LI>
-      <LI><A HREF="#sgeevx">sgeevx</A></LI>
-      <LI><A HREF="#sgeequ">sgeequ</A></LI>
-      <LI><A HREF="#sgecon">sgecon</A></LI>
-      <LI><A HREF="#sgelsx">sgelsx</A></LI>
-      <LI><A HREF="#sgesdd">sgesdd</A></LI>
-      <LI><A HREF="#sgesv">sgesv</A></LI>
-      <LI><A HREF="#sgehrd">sgehrd</A></LI>
-      <LI><A HREF="#sgegv">sgegv</A></LI>
-      <LI><A HREF="#sgesvx">sgesvx</A></LI>
-      <LI><A HREF="#sgebal">sgebal</A></LI>
-      <LI><A HREF="#sgebrd">sgebrd</A></LI>
-      <LI><A HREF="#sgelq2">sgelq2</A></LI>
-      <LI><A HREF="#sgelqf">sgelqf</A></LI>
-      <LI><A HREF="#sgerqf">sgerqf</A></LI>
-      <LI><A HREF="#sgetri">sgetri</A></LI>
-      <LI><A HREF="#sgerq2">sgerq2</A></LI>
-      <LI><A HREF="#sgeqr2">sgeqr2</A></LI>
-      <LI><A HREF="#sgegs">sgegs</A></LI>
-      <LI><A HREF="#sgeql2">sgeql2</A></LI>
-      <LI><A HREF="#sgeqlf">sgeqlf</A></LI>
-      <LI><A HREF="#sgesc2">sgesc2</A></LI>
-      <LI><A HREF="#sgerfs">sgerfs</A></LI>
-      <LI><A HREF="#sgeqp3">sgeqp3</A></LI>
-      <LI><A HREF="#sgehd2">sgehd2</A></LI>
-      <LI><A HREF="#sgetf2">sgetf2</A></LI>
-      <LI><A HREF="#sgelss">sgelss</A></LI>
-      <LI><A HREF="#sgebak">sgebak</A></LI>
-      <LI><A HREF="#sgebd2">sgebd2</A></LI>
-      <LI><A HREF="#sgetc2">sgetc2</A></LI>
-      <LI><A HREF="#sgetrs">sgetrs</A></LI>
-      <LI><A HREF="#sgelsd">sgelsd</A></LI>
-      <LI><A HREF="#sgeev">sgeev</A></LI>
-      <LI><A HREF="#sgeqrf">sgeqrf</A></LI>
-      <LI><A HREF="#sgetrf">sgetrf</A></LI>
+      <LI><A HREF="#sgelsd">sgelsd</A>: Computes the least squares solution to an over-determined system</LI>
+      <LI><A HREF="#sgeev">sgeev</A>: Computes the eigenvalues and left and right eigenvectors of</LI>
+      <LI><A HREF="#sgeqrf">sgeqrf</A>: Computes a QR factorization of a general rectangular matrix.</LI>
+      <LI><A HREF="#sgetrf">sgetrf</A>: Computes an LU factorization of a general matrix, using partial</LI>
+      <LI><A HREF="#sgelsy">sgelsy</A>: Computes the minimum norm least squares solution to an over-</LI>
+      <LI><A HREF="#sgeqpf">sgeqpf</A>: Computes a QR factorization with column pivoting of a general</LI>
+      <LI><A HREF="#sgeesx">sgeesx</A>: Computes the eigenvalues and Schur factorization of a general</LI>
+      <LI><A HREF="#sgels">sgels</A>: Computes the least squares solution to an over-determined system</LI>
+      <LI><A HREF="#sgees">sgees</A>: Computes the eigenvalues and Schur factorization of a general</LI>
+      <LI><A HREF="#sgesvd">sgesvd</A>: Computes the singular value decomposition (SVD) of a general</LI>
+      <LI><A HREF="#sgeevx">sgeevx</A>: Computes the eigenvalues and left and right eigenvectors of</LI>
+      <LI><A HREF="#sgeequ">sgeequ</A>: Computes row and column scalings to equilibrate a general</LI>
+      <LI><A HREF="#sgecon">sgecon</A>: Estimates the reciprocal of the condition number of a general</LI>
+      <LI><A HREF="#sgelsx">sgelsx</A>: Computes the minimum norm least squares solution to an over-</LI>
+      <LI><A HREF="#sgesdd">sgesdd</A>: Computes the singular value decomposition (SVD) of a general</LI>
+      <LI><A HREF="#sgesv">sgesv</A>: Solves a general system of linear equations AX=B.</LI>
+      <LI><A HREF="#sgehrd">sgehrd</A>: Reduces a general matrix to upper Hessenberg form by an</LI>
+      <LI><A HREF="#sgegv">sgegv</A>: Computes the generalized eigenvalues, and left and/or right</LI>
+      <LI><A HREF="#sgesvx">sgesvx</A>: Solves a general system of linear equations AX=B, A**T X=B</LI>
+      <LI><A HREF="#sgebal">sgebal</A>: Balances a general matrix in order to improve the accuracy</LI>
+      <LI><A HREF="#sgebrd">sgebrd</A>: Reduces a general rectangular matrix to real bidiagonal form</LI>
+      <LI><A HREF="#sgelq2">sgelq2</A>: </LI>
+      <LI><A HREF="#sgerqf">sgerqf</A>: Computes an RQ factorization of a general rectangular matrix.</LI>
+      <LI><A HREF="#sgelqf">sgelqf</A>: Computes an LQ factorization of a general rectangular matrix.</LI>
+      <LI><A HREF="#sgetri">sgetri</A>: Computes the inverse of a general matrix, using the LU factorization</LI>
+      <LI><A HREF="#sgerq2">sgerq2</A>: </LI>
+      <LI><A HREF="#sgeqr2">sgeqr2</A>: </LI>
+      <LI><A HREF="#sgegs">sgegs</A>: Computes the generalized eigenvalues, Schur form, and left and/or</LI>
+      <LI><A HREF="#sgeql2">sgeql2</A>: </LI>
+      <LI><A HREF="#sgesc2">sgesc2</A>: </LI>
+      <LI><A HREF="#sgeqlf">sgeqlf</A>: Computes a QL factorization of a general rectangular matrix.</LI>
+      <LI><A HREF="#sgerfs">sgerfs</A>: Improves the computed solution to a general system of linear</LI>
+      <LI><A HREF="#sgeqp3">sgeqp3</A>: Computes a QR factorization with column pivoting of a general</LI>
+      <LI><A HREF="#sgehd2">sgehd2</A>: </LI>
+      <LI><A HREF="#sgetf2">sgetf2</A>: </LI>
+      <LI><A HREF="#sgelss">sgelss</A>: Computes the minimum norm least squares solution to an over-</LI>
+      <LI><A HREF="#sgebak">sgebak</A>: Transforms eigenvectors of a balanced matrix to those of the</LI>
+      <LI><A HREF="#sgebd2">sgebd2</A>: </LI>
+      <LI><A HREF="#sgetc2">sgetc2</A>: </LI>
+      <LI><A HREF="#sgetrs">sgetrs</A>: Solves a general system of linear equations AX=B, A**T X=B</LI>
     </UL>
+
+  <A NAME="sgelsd"></A>
+  <H2>sgelsd</H2>
+  Computes the least squares solution to an over-determined system
+  <PRE>
+USAGE:
+  s, rank, work, info, b = NumRu::Lapack.sgelsd( m, a, b, rcond, lwork)
+    or
+  NumRu::Lapack.sgelsd  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SGELSD( M, N, NRHS, A, LDA, B, LDB, S, RCOND, RANK, WORK, LWORK, IWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SGELSD computes the minimum-norm solution to a real linear least
+*  squares problem:
+*      minimize 2-norm(| b - A*x |)
+*  using the singular value decomposition (SVD) of A. A is an M-by-N
+*  matrix which may be rank-deficient.
+*
+*  Several right hand side vectors b and solution vectors x can be
+*  handled in a single call; they are stored as the columns of the
+*  M-by-NRHS right hand side matrix B and the N-by-NRHS solution
+*  matrix X.
+*
+*  The problem is solved in three steps:
+*  (1) Reduce the coefficient matrix A to bidiagonal form with
+*      Householder transformations, reducing the original problem
+*      into a "bidiagonal least squares problem" (BLS)
+*  (2) Solve the BLS using a divide and conquer approach.
+*  (3) Apply back all the Householder tranformations to solve
+*      the original least squares problem.
+*
+*  The effective rank of A is determined by treating as zero those
+*  singular values which are less than RCOND times the largest singular
+*  value.
+*
+*  The divide and conquer algorithm makes very mild assumptions about
+*  floating point arithmetic. It will work on machines with a guard
+*  digit in add/subtract, or on those binary machines without guard
+*  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
+*  Cray-2. It could conceivably fail on hexadecimal or decimal machines
+*  without guard digits, but we know of none.
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of A. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of A. N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrices B and X. NRHS >= 0.
+*
+*  A       (input) REAL array, dimension (LDA,N)
+*          On entry, the M-by-N matrix A.
+*          On exit, A has been destroyed.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,M).
+*
+*  B       (input/output) REAL array, dimension (LDB,NRHS)
+*          On entry, the M-by-NRHS right hand side matrix B.
+*          On exit, B is overwritten by the N-by-NRHS solution
+*          matrix X.  If m >= n and RANK = n, the residual
+*          sum-of-squares for the solution in the i-th column is given
+*          by the sum of squares of elements n+1:m in that column.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B. LDB >= max(1,max(M,N)).
+*
+*  S       (output) REAL array, dimension (min(M,N))
+*          The singular values of A in decreasing order.
+*          The condition number of A in the 2-norm = S(1)/S(min(m,n)).
+*
+*  RCOND   (input) REAL
+*          RCOND is used to determine the effective rank of A.
+*          Singular values S(i) <= RCOND*S(1) are treated as zero.
+*          If RCOND < 0, machine precision is used instead.
+*
+*  RANK    (output) INTEGER
+*          The effective rank of A, i.e., the number of singular values
+*          which are greater than RCOND*S(1).
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK. LWORK must be at least 1.
+*          The exact minimum amount of workspace needed depends on M,
+*          N and NRHS. As long as LWORK is at least
+*              12*N + 2*N*SMLSIZ + 8*N*NLVL + N*NRHS + (SMLSIZ+1)**2,
+*          if M is greater than or equal to N or
+*              12*M + 2*M*SMLSIZ + 8*M*NLVL + M*NRHS + (SMLSIZ+1)**2,
+*          if M is less than N, the code will execute correctly.
+*          SMLSIZ is returned by ILAENV and is equal to the maximum
+*          size of the subproblems at the bottom of the computation
+*          tree (usually about 25), and
+*             NLVL = MAX( 0, INT( LOG_2( MIN( M,N )/(SMLSIZ+1) ) ) + 1 )
+*          For good performance, LWORK should generally be larger.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the array WORK and the
+*          minimum size of the array IWORK, and returns these values as
+*          the first entries of the WORK and IWORK arrays, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  IWORK   (workspace) INTEGER array, dimension (MAX(1,LIWORK))
+*          LIWORK >= max(1, 3*MINMN*NLVL + 11*MINMN),
+*          where MINMN = MIN( M,N ).
+*          On exit, if INFO = 0, IWORK(1) returns the minimum LIWORK.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  the algorithm for computing the SVD failed to converge;
+*                if INFO = i, i off-diagonal elements of an intermediate
+*                bidiagonal form did not converge to zero.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Ming Gu and Ren-Cang Li, Computer Science Division, University of
+*       California at Berkeley, USA
+*     Osni Marques, LBNL/NERSC, USA
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sgeev"></A>
+  <H2>sgeev</H2>
+  Computes the eigenvalues and left and right eigenvectors of
+  <PRE>
+USAGE:
+  wr, wi, vl, vr, work, info, a = NumRu::Lapack.sgeev( jobvl, jobvr, a, lwork)
+    or
+  NumRu::Lapack.sgeev  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SGEEV( JOBVL, JOBVR, N, A, LDA, WR, WI, VL, LDVL, VR, LDVR, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SGEEV computes for an N-by-N real nonsymmetric matrix A, the
+*  eigenvalues and, optionally, the left and/or right eigenvectors.
+*
+*  The right eigenvector v(j) of A satisfies
+*                   A * v(j) = lambda(j) * v(j)
+*  where lambda(j) is its eigenvalue.
+*  The left eigenvector u(j) of A satisfies
+*                u(j)**H * A = lambda(j) * u(j)**H
+*  where u(j)**H denotes the conjugate transpose of u(j).
+*
+*  The computed eigenvectors are normalized to have Euclidean norm
+*  equal to 1 and largest component real.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBVL   (input) CHARACTER*1
+*          = 'N': left eigenvectors of A are not computed;
+*          = 'V': left eigenvectors of A are computed.
+*
+*  JOBVR   (input) CHARACTER*1
+*          = 'N': right eigenvectors of A are not computed;
+*          = 'V': right eigenvectors of A are computed.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A. N >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the N-by-N matrix A.
+*          On exit, A has been overwritten.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  WR      (output) REAL array, dimension (N)
+*  WI      (output) REAL array, dimension (N)
+*          WR and WI contain the real and imaginary parts,
+*          respectively, of the computed eigenvalues.  Complex
+*          conjugate pairs of eigenvalues appear consecutively
+*          with the eigenvalue having the positive imaginary part
+*          first.
+*
+*  VL      (output) REAL array, dimension (LDVL,N)
+*          If JOBVL = 'V', the left eigenvectors u(j) are stored one
+*          after another in the columns of VL, in the same order
+*          as their eigenvalues.
+*          If JOBVL = 'N', VL is not referenced.
+*          If the j-th eigenvalue is real, then u(j) = VL(:,j),
+*          the j-th column of VL.
+*          If the j-th and (j+1)-st eigenvalues form a complex
+*          conjugate pair, then u(j) = VL(:,j) + i*VL(:,j+1) and
+*          u(j+1) = VL(:,j) - i*VL(:,j+1).
+*
+*  LDVL    (input) INTEGER
+*          The leading dimension of the array VL.  LDVL >= 1; if
+*          JOBVL = 'V', LDVL >= N.
+*
+*  VR      (output) REAL array, dimension (LDVR,N)
+*          If JOBVR = 'V', the right eigenvectors v(j) are stored one
+*          after another in the columns of VR, in the same order
+*          as their eigenvalues.
+*          If JOBVR = 'N', VR is not referenced.
+*          If the j-th eigenvalue is real, then v(j) = VR(:,j),
+*          the j-th column of VR.
+*          If the j-th and (j+1)-st eigenvalues form a complex
+*          conjugate pair, then v(j) = VR(:,j) + i*VR(:,j+1) and
+*          v(j+1) = VR(:,j) - i*VR(:,j+1).
+*
+*  LDVR    (input) INTEGER
+*          The leading dimension of the array VR.  LDVR >= 1; if
+*          JOBVR = 'V', LDVR >= N.
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.  LWORK >= max(1,3*N), and
+*          if JOBVL = 'V' or JOBVR = 'V', LWORK >= 4*N.  For good
+*          performance, LWORK must generally be larger.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, the QR algorithm failed to compute all the
+*                eigenvalues, and no eigenvectors have been computed;
+*                elements i+1:N of WR and WI contain eigenvalues which
+*                have converged.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sgeqrf"></A>
+  <H2>sgeqrf</H2>
+  Computes a QR factorization of a general rectangular matrix.
+  <PRE>
+USAGE:
+  tau, work, info, a = NumRu::Lapack.sgeqrf( m, a, lwork)
+    or
+  NumRu::Lapack.sgeqrf  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SGEQRF( M, N, A, LDA, TAU, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SGEQRF computes a QR factorization of a real M-by-N matrix A:
+*  A = Q * R.
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix A.  M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix A.  N >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the M-by-N matrix A.
+*          On exit, the elements on and above the diagonal of the array
+*          contain the min(M,N)-by-N upper trapezoidal matrix R (R is
+*          upper triangular if m >= n); the elements below the diagonal,
+*          with the array TAU, represent the orthogonal matrix Q as a
+*          product of min(m,n) elementary reflectors (see Further
+*          Details).
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,M).
+*
+*  TAU     (output) REAL array, dimension (min(M,N))
+*          The scalar factors of the elementary reflectors (see Further
+*          Details).
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.  LWORK >= max(1,N).
+*          For optimum performance LWORK >= N*NB, where NB is 
+*          the optimal blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  Further Details
+*  ===============
+*
+*  The matrix Q is represented as a product of elementary reflectors
+*
+*     Q = H(1) H(2) . . . H(k), where k = min(m,n).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a real scalar, and v is a real vector with
+*  v(1:i-1) = 0 and v(i) = 1; v(i+1:m) is stored on exit in A(i+1:m,i),
+*  and tau in TAU(i).
+*
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            LQUERY
+      INTEGER            I, IB, IINFO, IWS, K, LDWORK, LWKOPT, NB,
+     $                   NBMIN, NX
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           SGEQR2, SLARFB, SLARFT, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX, MIN
+*     ..
+*     .. External Functions ..
+      INTEGER            ILAENV
+      EXTERNAL           ILAENV
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sgetrf"></A>
+  <H2>sgetrf</H2>
+  Computes an LU factorization of a general matrix, using partial
+  <PRE>
+USAGE:
+  ipiv, info, a = NumRu::Lapack.sgetrf( m, a)
+    or
+  NumRu::Lapack.sgetrf  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SGETRF( M, N, A, LDA, IPIV, INFO )
+
+*  Purpose
+*  =======
+*
+*  SGETRF computes an LU factorization of a general M-by-N matrix A
+*  using partial pivoting with row interchanges.
+*
+*  The factorization has the form
+*     A = P * L * U
+*  where P is a permutation matrix, L is lower triangular with unit
+*  diagonal elements (lower trapezoidal if m > n), and U is upper
+*  triangular (upper trapezoidal if m < n).
+*
+*  This is the right-looking Level 3 BLAS version of the algorithm.
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix A.  M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix A.  N >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the M-by-N matrix to be factored.
+*          On exit, the factors L and U from the factorization
+*          A = P*L*U; the unit diagonal elements of L are not stored.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,M).
+*
+*  IPIV    (output) INTEGER array, dimension (min(M,N))
+*          The pivot indices; for 1 <= i <= min(M,N), row i of the
+*          matrix was interchanged with row IPIV(i).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, U(i,i) is exactly zero. The factorization
+*                has been completed, but the factor U is exactly
+*                singular, and division by zero will occur if it is used
+*                to solve a system of equations.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="sgelsy"></A>
   <H2>sgelsy</H2>
+  Computes the minimum norm least squares solution to an over-
   <PRE>
 USAGE:
   rank, work, info, a, b, jpvt = NumRu::Lapack.sgelsy( m, a, b, jpvt, rcond, lwork)
@@ -187,6 +612,7 @@ FORTRAN MANUAL
 
   <A NAME="sgeqpf"></A>
   <H2>sgeqpf</H2>
+  Computes a QR factorization with column pivoting of a general
   <PRE>
 USAGE:
   tau, info, a, jpvt = NumRu::Lapack.sgeqpf( m, a, jpvt)
@@ -276,6 +702,7 @@ FORTRAN MANUAL
 
   <A NAME="sgeesx"></A>
   <H2>sgeesx</H2>
+  Computes the eigenvalues and Schur factorization of a general
   <PRE>
 USAGE:
   sdim, wr, wi, vs, rconde, rcondv, work, iwork, info, a = NumRu::Lapack.sgeesx( jobvs, sort, sense, a, lwork, liwork){|a,b| ... }
@@ -458,6 +885,7 @@ FORTRAN MANUAL
 
   <A NAME="sgels"></A>
   <H2>sgels</H2>
+  Computes the least squares solution to an over-determined system
   <PRE>
 USAGE:
   work, info, a, b = NumRu::Lapack.sgels( trans, m, a, b, lwork)
@@ -580,6 +1008,7 @@ FORTRAN MANUAL
 
   <A NAME="sgees"></A>
   <H2>sgees</H2>
+  Computes the eigenvalues and Schur factorization of a general
   <PRE>
 USAGE:
   sdim, wr, wi, vs, work, info, a = NumRu::Lapack.sgees( jobvs, sort, a, lwork){|a,b| ... }
@@ -716,6 +1145,7 @@ FORTRAN MANUAL
 
   <A NAME="sgesvd"></A>
   <H2>sgesvd</H2>
+  Computes the singular value decomposition (SVD) of a general
   <PRE>
 USAGE:
   s, u, vt, work, info, a = NumRu::Lapack.sgesvd( jobu, jobvt, m, a, lwork)
@@ -853,6 +1283,7 @@ FORTRAN MANUAL
 
   <A NAME="sgeevx"></A>
   <H2>sgeevx</H2>
+  Computes the eigenvalues and left and right eigenvectors of
   <PRE>
 USAGE:
   wr, wi, vl, vr, ilo, ihi, scale, abnrm, rconde, rcondv, work, info, a = NumRu::Lapack.sgeevx( balanc, jobvl, jobvr, sense, a, lwork)
@@ -1051,6 +1482,7 @@ FORTRAN MANUAL
 
   <A NAME="sgeequ"></A>
   <H2>sgeequ</H2>
+  Computes row and column scalings to equilibrate a general
   <PRE>
 USAGE:
   r, c, rowcnd, colcnd, amax, info = NumRu::Lapack.sgeequ( a)
@@ -1132,6 +1564,7 @@ FORTRAN MANUAL
 
   <A NAME="sgecon"></A>
   <H2>sgecon</H2>
+  Estimates the reciprocal of the condition number of a general
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.sgecon( norm, a, anorm)
@@ -1199,6 +1632,7 @@ FORTRAN MANUAL
 
   <A NAME="sgelsx"></A>
   <H2>sgelsx</H2>
+  Computes the minimum norm least squares solution to an over-
   <PRE>
 USAGE:
   rank, info, a, b, jpvt = NumRu::Lapack.sgelsx( m, a, b, jpvt, rcond)
@@ -1312,6 +1746,7 @@ FORTRAN MANUAL
 
   <A NAME="sgesdd"></A>
   <H2>sgesdd</H2>
+  Computes the singular value decomposition (SVD) of a general
   <PRE>
 USAGE:
   s, u, vt, work, info, a = NumRu::Lapack.sgesdd( jobz, m, a, lwork)
@@ -1458,6 +1893,7 @@ FORTRAN MANUAL
 
   <A NAME="sgesv"></A>
   <H2>sgesv</H2>
+  Solves a general system of linear equations AX=B.
   <PRE>
 USAGE:
   ipiv, info, a, b = NumRu::Lapack.sgesv( a, b)
@@ -1536,6 +1972,7 @@ FORTRAN MANUAL
 
   <A NAME="sgehrd"></A>
   <H2>sgehrd</H2>
+  Reduces a general matrix to upper Hessenberg form by an
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.sgehrd( ilo, ihi, a, lwork)
@@ -1647,6 +2084,7 @@ FORTRAN MANUAL
 
   <A NAME="sgegv"></A>
   <H2>sgegv</H2>
+  Computes the generalized eigenvalues, and left and/or right
   <PRE>
 USAGE:
   alphar, alphai, beta, vl, vr, work, info, a, b = NumRu::Lapack.sgegv( jobvl, jobvr, a, b, lwork)
@@ -1870,6 +2308,7 @@ FORTRAN MANUAL
 
   <A NAME="sgesvx"></A>
   <H2>sgesvx</H2>
+  Solves a general system of linear equations AX=B, A**T X=B
   <PRE>
 USAGE:
   x, rcond, ferr, berr, work, info, a, af, ipiv, equed, r, c, b = NumRu::Lapack.sgesvx( fact, trans, a, af, ipiv, equed, r, c, b)
@@ -2116,6 +2555,7 @@ FORTRAN MANUAL
 
   <A NAME="sgebal"></A>
   <H2>sgebal</H2>
+  Balances a general matrix in order to improve the accuracy
   <PRE>
 USAGE:
   ilo, ihi, scale, info, a = NumRu::Lapack.sgebal( job, a)
@@ -2223,6 +2663,7 @@ FORTRAN MANUAL
 
   <A NAME="sgebrd"></A>
   <H2>sgebrd</H2>
+  Reduces a general rectangular matrix to real bidiagonal form
   <PRE>
 USAGE:
   d, e, tauq, taup, work, info, a = NumRu::Lapack.sgebrd( m, a, lwork)
@@ -2364,6 +2805,7 @@ FORTRAN MANUAL
 
   <A NAME="sgelq2"></A>
   <H2>sgelq2</H2>
+  
   <PRE>
 USAGE:
   tau, info, a = NumRu::Lapack.sgelq2( a)
@@ -2434,106 +2876,9 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="sgelqf"></A>
-  <H2>sgelqf</H2>
-  <PRE>
-USAGE:
-  tau, work, info, a = NumRu::Lapack.sgelqf( m, a, lwork)
-    or
-  NumRu::Lapack.sgelqf  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SGELQF( M, N, A, LDA, TAU, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SGELQF computes an LQ factorization of a real M-by-N matrix A:
-*  A = L * Q.
-*
-
-*  Arguments
-*  =========
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix A.  M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix A.  N >= 0.
-*
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the M-by-N matrix A.
-*          On exit, the elements on and below the diagonal of the array
-*          contain the m-by-min(m,n) lower trapezoidal matrix L (L is
-*          lower triangular if m <= n); the elements above the diagonal,
-*          with the array TAU, represent the orthogonal matrix Q as a
-*          product of elementary reflectors (see Further Details).
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,M).
-*
-*  TAU     (output) REAL array, dimension (min(M,N))
-*          The scalar factors of the elementary reflectors (see Further
-*          Details).
-*
-*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.  LWORK >= max(1,M).
-*          For optimum performance LWORK >= M*NB, where NB is the
-*          optimal blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  Further Details
-*  ===============
-*
-*  The matrix Q is represented as a product of elementary reflectors
-*
-*     Q = H(k) . . . H(2) H(1), where k = min(m,n).
-*
-*  Each H(i) has the form
-*
-*     H(i) = I - tau * v * v'
-*
-*  where tau is a real scalar, and v is a real vector with
-*  v(1:i-1) = 0 and v(i) = 1; v(i+1:n) is stored on exit in A(i,i+1:n),
-*  and tau in TAU(i).
-*
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      LOGICAL            LQUERY
-      INTEGER            I, IB, IINFO, IWS, K, LDWORK, LWKOPT, NB,
-     $                   NBMIN, NX
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           SGELQ2, SLARFB, SLARFT, XERBLA
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX, MIN
-*     ..
-*     .. External Functions ..
-      INTEGER            ILAENV
-      EXTERNAL           ILAENV
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
   <A NAME="sgerqf"></A>
   <H2>sgerqf</H2>
+  Computes an RQ factorization of a general rectangular matrix.
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.sgerqf( m, a, lwork)
@@ -2633,8 +2978,108 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
+  <A NAME="sgelqf"></A>
+  <H2>sgelqf</H2>
+  Computes an LQ factorization of a general rectangular matrix.
+  <PRE>
+USAGE:
+  tau, work, info, a = NumRu::Lapack.sgelqf( m, a, lwork)
+    or
+  NumRu::Lapack.sgelqf  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SGELQF( M, N, A, LDA, TAU, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SGELQF computes an LQ factorization of a real M-by-N matrix A:
+*  A = L * Q.
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix A.  M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix A.  N >= 0.
+*
+*  A       (input/output) REAL array, dimension (LDA,N)
+*          On entry, the M-by-N matrix A.
+*          On exit, the elements on and below the diagonal of the array
+*          contain the m-by-min(m,n) lower trapezoidal matrix L (L is
+*          lower triangular if m <= n); the elements above the diagonal,
+*          with the array TAU, represent the orthogonal matrix Q as a
+*          product of elementary reflectors (see Further Details).
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,M).
+*
+*  TAU     (output) REAL array, dimension (min(M,N))
+*          The scalar factors of the elementary reflectors (see Further
+*          Details).
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.  LWORK >= max(1,M).
+*          For optimum performance LWORK >= M*NB, where NB is the
+*          optimal blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  Further Details
+*  ===============
+*
+*  The matrix Q is represented as a product of elementary reflectors
+*
+*     Q = H(k) . . . H(2) H(1), where k = min(m,n).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a real scalar, and v is a real vector with
+*  v(1:i-1) = 0 and v(i) = 1; v(i+1:n) is stored on exit in A(i,i+1:n),
+*  and tau in TAU(i).
+*
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            LQUERY
+      INTEGER            I, IB, IINFO, IWS, K, LDWORK, LWKOPT, NB,
+     $                   NBMIN, NX
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           SGELQ2, SLARFB, SLARFT, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX, MIN
+*     ..
+*     .. External Functions ..
+      INTEGER            ILAENV
+      EXTERNAL           ILAENV
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
   <A NAME="sgetri"></A>
   <H2>sgetri</H2>
+  Computes the inverse of a general matrix, using the LU factorization
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.sgetri( a, ipiv, lwork)
@@ -2702,6 +3147,7 @@ FORTRAN MANUAL
 
   <A NAME="sgerq2"></A>
   <H2>sgerq2</H2>
+  
   <PRE>
 USAGE:
   tau, info, a = NumRu::Lapack.sgerq2( a)
@@ -2776,6 +3222,7 @@ FORTRAN MANUAL
 
   <A NAME="sgeqr2"></A>
   <H2>sgeqr2</H2>
+  
   <PRE>
 USAGE:
   tau, info, a = NumRu::Lapack.sgeqr2( m, a)
@@ -2848,6 +3295,7 @@ FORTRAN MANUAL
 
   <A NAME="sgegs"></A>
   <H2>sgegs</H2>
+  Computes the generalized eigenvalues, Schur form, and left and/or
   <PRE>
 USAGE:
   alphar, alphai, beta, vsl, vsr, work, info, a, b = NumRu::Lapack.sgegs( jobvsl, jobvsr, a, b, lwork)
@@ -2992,6 +3440,7 @@ FORTRAN MANUAL
 
   <A NAME="sgeql2"></A>
   <H2>sgeql2</H2>
+  
   <PRE>
 USAGE:
   tau, info, a = NumRu::Lapack.sgeql2( m, a)
@@ -3064,8 +3513,77 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
+  <A NAME="sgesc2"></A>
+  <H2>sgesc2</H2>
+  
+  <PRE>
+USAGE:
+  scale, rhs = NumRu::Lapack.sgesc2( a, rhs, ipiv, jpiv)
+    or
+  NumRu::Lapack.sgesc2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SGESC2( N, A, LDA, RHS, IPIV, JPIV, SCALE )
+
+*  Purpose
+*  =======
+*
+*  SGESC2 solves a system of linear equations
+*
+*            A * X = scale* RHS
+*
+*  with a general N-by-N matrix A using the LU factorization with
+*  complete pivoting computed by SGETC2.
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.
+*
+*  A       (input) REAL array, dimension (LDA,N)
+*          On entry, the  LU part of the factorization of the n-by-n
+*          matrix A computed by SGETC2:  A = P * L * U * Q
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1, N).
+*
+*  RHS     (input/output) REAL array, dimension (N).
+*          On entry, the right hand side vector b.
+*          On exit, the solution vector X.
+*
+*  IPIV    (input) INTEGER array, dimension (N).
+*          The pivot indices; for 1 <= i <= N, row i of the
+*          matrix has been interchanged with row IPIV(i).
+*
+*  JPIV    (input) INTEGER array, dimension (N).
+*          The pivot indices; for 1 <= j <= N, column j of the
+*          matrix has been interchanged with column JPIV(j).
+*
+*  SCALE    (output) REAL
+*           On exit, SCALE contains the scale factor. SCALE is chosen
+*           0 <= SCALE <= 1 to prevent owerflow in the solution.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
+*     Umea University, S-901 87 Umea, Sweden.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
   <A NAME="sgeqlf"></A>
   <H2>sgeqlf</H2>
+  Computes a QL factorization of a general rectangular matrix.
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.sgeqlf( m, a, lwork)
@@ -3165,75 +3683,9 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="sgesc2"></A>
-  <H2>sgesc2</H2>
-  <PRE>
-USAGE:
-  scale, rhs = NumRu::Lapack.sgesc2( a, rhs, ipiv, jpiv)
-    or
-  NumRu::Lapack.sgesc2  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SGESC2( N, A, LDA, RHS, IPIV, JPIV, SCALE )
-
-*  Purpose
-*  =======
-*
-*  SGESC2 solves a system of linear equations
-*
-*            A * X = scale* RHS
-*
-*  with a general N-by-N matrix A using the LU factorization with
-*  complete pivoting computed by SGETC2.
-*
-
-*  Arguments
-*  =========
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.
-*
-*  A       (input) REAL array, dimension (LDA,N)
-*          On entry, the  LU part of the factorization of the n-by-n
-*          matrix A computed by SGETC2:  A = P * L * U * Q
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1, N).
-*
-*  RHS     (input/output) REAL array, dimension (N).
-*          On entry, the right hand side vector b.
-*          On exit, the solution vector X.
-*
-*  IPIV    (input) INTEGER array, dimension (N).
-*          The pivot indices; for 1 <= i <= N, row i of the
-*          matrix has been interchanged with row IPIV(i).
-*
-*  JPIV    (input) INTEGER array, dimension (N).
-*          The pivot indices; for 1 <= j <= N, column j of the
-*          matrix has been interchanged with column JPIV(j).
-*
-*  SCALE    (output) REAL
-*           On exit, SCALE contains the scale factor. SCALE is chosen
-*           0 <= SCALE <= 1 to prevent owerflow in the solution.
-*
-
-*  Further Details
-*  ===============
-*
-*  Based on contributions by
-*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
-*     Umea University, S-901 87 Umea, Sweden.
-*
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
   <A NAME="sgerfs"></A>
   <H2>sgerfs</H2>
+  Improves the computed solution to a general system of linear
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.sgerfs( trans, a, af, ipiv, b, x)
@@ -3336,6 +3788,7 @@ FORTRAN MANUAL
 
   <A NAME="sgeqp3"></A>
   <H2>sgeqp3</H2>
+  Computes a QR factorization with column pivoting of a general
   <PRE>
 USAGE:
   tau, work, info, a, jpvt = NumRu::Lapack.sgeqp3( m, a, jpvt, lwork)
@@ -3429,6 +3882,7 @@ FORTRAN MANUAL
 
   <A NAME="sgehd2"></A>
   <H2>sgehd2</H2>
+  
   <PRE>
 USAGE:
   tau, info, a = NumRu::Lapack.sgehd2( ilo, ihi, a)
@@ -3524,6 +3978,7 @@ FORTRAN MANUAL
 
   <A NAME="sgetf2"></A>
   <H2>sgetf2</H2>
+  
   <PRE>
 USAGE:
   ipiv, info, a = NumRu::Lapack.sgetf2( m, a)
@@ -3588,6 +4043,7 @@ FORTRAN MANUAL
 
   <A NAME="sgelss"></A>
   <H2>sgelss</H2>
+  Computes the minimum norm least squares solution to an over-
   <PRE>
 USAGE:
   s, rank, work, info, a, b = NumRu::Lapack.sgelss( m, a, b, rcond, lwork)
@@ -3693,6 +4149,7 @@ FORTRAN MANUAL
 
   <A NAME="sgebak"></A>
   <H2>sgebak</H2>
+  Transforms eigenvectors of a balanced matrix to those of the
   <PRE>
 USAGE:
   info, v = NumRu::Lapack.sgebak( job, side, ilo, ihi, scale, v)
@@ -3764,6 +4221,7 @@ FORTRAN MANUAL
 
   <A NAME="sgebd2"></A>
   <H2>sgebd2</H2>
+  
   <PRE>
 USAGE:
   d, e, tauq, taup, info, a = NumRu::Lapack.sgebd2( m, a)
@@ -3894,6 +4352,7 @@ FORTRAN MANUAL
 
   <A NAME="sgetc2"></A>
   <H2>sgetc2</H2>
+  
   <PRE>
 USAGE:
   ipiv, jpiv, info, a = NumRu::Lapack.sgetc2( a)
@@ -3962,6 +4421,7 @@ FORTRAN MANUAL
 
   <A NAME="sgetrs"></A>
   <H2>sgetrs</H2>
+  Solves a general system of linear equations AX=B, A**T X=B
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.sgetrs( trans, a, ipiv, b)
@@ -4018,426 +4478,6 @@ FORTRAN MANUAL
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
 *          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sgelsd"></A>
-  <H2>sgelsd</H2>
-  <PRE>
-USAGE:
-  s, rank, work, info, b = NumRu::Lapack.sgelsd( m, a, b, rcond, lwork)
-    or
-  NumRu::Lapack.sgelsd  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SGELSD( M, N, NRHS, A, LDA, B, LDB, S, RCOND, RANK, WORK, LWORK, IWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SGELSD computes the minimum-norm solution to a real linear least
-*  squares problem:
-*      minimize 2-norm(| b - A*x |)
-*  using the singular value decomposition (SVD) of A. A is an M-by-N
-*  matrix which may be rank-deficient.
-*
-*  Several right hand side vectors b and solution vectors x can be
-*  handled in a single call; they are stored as the columns of the
-*  M-by-NRHS right hand side matrix B and the N-by-NRHS solution
-*  matrix X.
-*
-*  The problem is solved in three steps:
-*  (1) Reduce the coefficient matrix A to bidiagonal form with
-*      Householder transformations, reducing the original problem
-*      into a "bidiagonal least squares problem" (BLS)
-*  (2) Solve the BLS using a divide and conquer approach.
-*  (3) Apply back all the Householder tranformations to solve
-*      the original least squares problem.
-*
-*  The effective rank of A is determined by treating as zero those
-*  singular values which are less than RCOND times the largest singular
-*  value.
-*
-*  The divide and conquer algorithm makes very mild assumptions about
-*  floating point arithmetic. It will work on machines with a guard
-*  digit in add/subtract, or on those binary machines without guard
-*  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or
-*  Cray-2. It could conceivably fail on hexadecimal or decimal machines
-*  without guard digits, but we know of none.
-*
-
-*  Arguments
-*  =========
-*
-*  M       (input) INTEGER
-*          The number of rows of A. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of A. N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrices B and X. NRHS >= 0.
-*
-*  A       (input) REAL array, dimension (LDA,N)
-*          On entry, the M-by-N matrix A.
-*          On exit, A has been destroyed.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,M).
-*
-*  B       (input/output) REAL array, dimension (LDB,NRHS)
-*          On entry, the M-by-NRHS right hand side matrix B.
-*          On exit, B is overwritten by the N-by-NRHS solution
-*          matrix X.  If m >= n and RANK = n, the residual
-*          sum-of-squares for the solution in the i-th column is given
-*          by the sum of squares of elements n+1:m in that column.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B. LDB >= max(1,max(M,N)).
-*
-*  S       (output) REAL array, dimension (min(M,N))
-*          The singular values of A in decreasing order.
-*          The condition number of A in the 2-norm = S(1)/S(min(m,n)).
-*
-*  RCOND   (input) REAL
-*          RCOND is used to determine the effective rank of A.
-*          Singular values S(i) <= RCOND*S(1) are treated as zero.
-*          If RCOND < 0, machine precision is used instead.
-*
-*  RANK    (output) INTEGER
-*          The effective rank of A, i.e., the number of singular values
-*          which are greater than RCOND*S(1).
-*
-*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK. LWORK must be at least 1.
-*          The exact minimum amount of workspace needed depends on M,
-*          N and NRHS. As long as LWORK is at least
-*              12*N + 2*N*SMLSIZ + 8*N*NLVL + N*NRHS + (SMLSIZ+1)**2,
-*          if M is greater than or equal to N or
-*              12*M + 2*M*SMLSIZ + 8*M*NLVL + M*NRHS + (SMLSIZ+1)**2,
-*          if M is less than N, the code will execute correctly.
-*          SMLSIZ is returned by ILAENV and is equal to the maximum
-*          size of the subproblems at the bottom of the computation
-*          tree (usually about 25), and
-*             NLVL = MAX( 0, INT( LOG_2( MIN( M,N )/(SMLSIZ+1) ) ) + 1 )
-*          For good performance, LWORK should generally be larger.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the array WORK and the
-*          minimum size of the array IWORK, and returns these values as
-*          the first entries of the WORK and IWORK arrays, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  IWORK   (workspace) INTEGER array, dimension (MAX(1,LIWORK))
-*          LIWORK >= max(1, 3*MINMN*NLVL + 11*MINMN),
-*          where MINMN = MIN( M,N ).
-*          On exit, if INFO = 0, IWORK(1) returns the minimum LIWORK.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value.
-*          > 0:  the algorithm for computing the SVD failed to converge;
-*                if INFO = i, i off-diagonal elements of an intermediate
-*                bidiagonal form did not converge to zero.
-*
-
-*  Further Details
-*  ===============
-*
-*  Based on contributions by
-*     Ming Gu and Ren-Cang Li, Computer Science Division, University of
-*       California at Berkeley, USA
-*     Osni Marques, LBNL/NERSC, USA
-*
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sgeev"></A>
-  <H2>sgeev</H2>
-  <PRE>
-USAGE:
-  wr, wi, vl, vr, work, info, a = NumRu::Lapack.sgeev( jobvl, jobvr, a, lwork)
-    or
-  NumRu::Lapack.sgeev  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SGEEV( JOBVL, JOBVR, N, A, LDA, WR, WI, VL, LDVL, VR, LDVR, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SGEEV computes for an N-by-N real nonsymmetric matrix A, the
-*  eigenvalues and, optionally, the left and/or right eigenvectors.
-*
-*  The right eigenvector v(j) of A satisfies
-*                   A * v(j) = lambda(j) * v(j)
-*  where lambda(j) is its eigenvalue.
-*  The left eigenvector u(j) of A satisfies
-*                u(j)**H * A = lambda(j) * u(j)**H
-*  where u(j)**H denotes the conjugate transpose of u(j).
-*
-*  The computed eigenvectors are normalized to have Euclidean norm
-*  equal to 1 and largest component real.
-*
-
-*  Arguments
-*  =========
-*
-*  JOBVL   (input) CHARACTER*1
-*          = 'N': left eigenvectors of A are not computed;
-*          = 'V': left eigenvectors of A are computed.
-*
-*  JOBVR   (input) CHARACTER*1
-*          = 'N': right eigenvectors of A are not computed;
-*          = 'V': right eigenvectors of A are computed.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A. N >= 0.
-*
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the N-by-N matrix A.
-*          On exit, A has been overwritten.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  WR      (output) REAL array, dimension (N)
-*  WI      (output) REAL array, dimension (N)
-*          WR and WI contain the real and imaginary parts,
-*          respectively, of the computed eigenvalues.  Complex
-*          conjugate pairs of eigenvalues appear consecutively
-*          with the eigenvalue having the positive imaginary part
-*          first.
-*
-*  VL      (output) REAL array, dimension (LDVL,N)
-*          If JOBVL = 'V', the left eigenvectors u(j) are stored one
-*          after another in the columns of VL, in the same order
-*          as their eigenvalues.
-*          If JOBVL = 'N', VL is not referenced.
-*          If the j-th eigenvalue is real, then u(j) = VL(:,j),
-*          the j-th column of VL.
-*          If the j-th and (j+1)-st eigenvalues form a complex
-*          conjugate pair, then u(j) = VL(:,j) + i*VL(:,j+1) and
-*          u(j+1) = VL(:,j) - i*VL(:,j+1).
-*
-*  LDVL    (input) INTEGER
-*          The leading dimension of the array VL.  LDVL >= 1; if
-*          JOBVL = 'V', LDVL >= N.
-*
-*  VR      (output) REAL array, dimension (LDVR,N)
-*          If JOBVR = 'V', the right eigenvectors v(j) are stored one
-*          after another in the columns of VR, in the same order
-*          as their eigenvalues.
-*          If JOBVR = 'N', VR is not referenced.
-*          If the j-th eigenvalue is real, then v(j) = VR(:,j),
-*          the j-th column of VR.
-*          If the j-th and (j+1)-st eigenvalues form a complex
-*          conjugate pair, then v(j) = VR(:,j) + i*VR(:,j+1) and
-*          v(j+1) = VR(:,j) - i*VR(:,j+1).
-*
-*  LDVR    (input) INTEGER
-*          The leading dimension of the array VR.  LDVR >= 1; if
-*          JOBVR = 'V', LDVR >= N.
-*
-*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.  LWORK >= max(1,3*N), and
-*          if JOBVL = 'V' or JOBVR = 'V', LWORK >= 4*N.  For good
-*          performance, LWORK must generally be larger.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value.
-*          > 0:  if INFO = i, the QR algorithm failed to compute all the
-*                eigenvalues, and no eigenvectors have been computed;
-*                elements i+1:N of WR and WI contain eigenvalues which
-*                have converged.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sgeqrf"></A>
-  <H2>sgeqrf</H2>
-  <PRE>
-USAGE:
-  tau, work, info, a = NumRu::Lapack.sgeqrf( m, a, lwork)
-    or
-  NumRu::Lapack.sgeqrf  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SGEQRF( M, N, A, LDA, TAU, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  SGEQRF computes a QR factorization of a real M-by-N matrix A:
-*  A = Q * R.
-*
-
-*  Arguments
-*  =========
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix A.  M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix A.  N >= 0.
-*
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the M-by-N matrix A.
-*          On exit, the elements on and above the diagonal of the array
-*          contain the min(M,N)-by-N upper trapezoidal matrix R (R is
-*          upper triangular if m >= n); the elements below the diagonal,
-*          with the array TAU, represent the orthogonal matrix Q as a
-*          product of min(m,n) elementary reflectors (see Further
-*          Details).
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,M).
-*
-*  TAU     (output) REAL array, dimension (min(M,N))
-*          The scalar factors of the elementary reflectors (see Further
-*          Details).
-*
-*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.  LWORK >= max(1,N).
-*          For optimum performance LWORK >= N*NB, where NB is 
-*          the optimal blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  Further Details
-*  ===============
-*
-*  The matrix Q is represented as a product of elementary reflectors
-*
-*     Q = H(1) H(2) . . . H(k), where k = min(m,n).
-*
-*  Each H(i) has the form
-*
-*     H(i) = I - tau * v * v'
-*
-*  where tau is a real scalar, and v is a real vector with
-*  v(1:i-1) = 0 and v(i) = 1; v(i+1:m) is stored on exit in A(i+1:m,i),
-*  and tau in TAU(i).
-*
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      LOGICAL            LQUERY
-      INTEGER            I, IB, IINFO, IWS, K, LDWORK, LWKOPT, NB,
-     $                   NBMIN, NX
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           SGEQR2, SLARFB, SLARFT, XERBLA
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX, MIN
-*     ..
-*     .. External Functions ..
-      INTEGER            ILAENV
-      EXTERNAL           ILAENV
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sgetrf"></A>
-  <H2>sgetrf</H2>
-  <PRE>
-USAGE:
-  ipiv, info, a = NumRu::Lapack.sgetrf( m, a)
-    or
-  NumRu::Lapack.sgetrf  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SGETRF( M, N, A, LDA, IPIV, INFO )
-
-*  Purpose
-*  =======
-*
-*  SGETRF computes an LU factorization of a general M-by-N matrix A
-*  using partial pivoting with row interchanges.
-*
-*  The factorization has the form
-*     A = P * L * U
-*  where P is a permutation matrix, L is lower triangular with unit
-*  diagonal elements (lower trapezoidal if m > n), and U is upper
-*  triangular (upper trapezoidal if m < n).
-*
-*  This is the right-looking Level 3 BLAS version of the algorithm.
-*
-
-*  Arguments
-*  =========
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix A.  M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix A.  N >= 0.
-*
-*  A       (input/output) REAL array, dimension (LDA,N)
-*          On entry, the M-by-N matrix to be factored.
-*          On exit, the factors L and U from the factorization
-*          A = P*L*U; the unit diagonal elements of L are not stored.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,M).
-*
-*  IPIV    (output) INTEGER array, dimension (min(M,N))
-*          The pivot indices; for 1 <= i <= min(M,N), row i of the
-*          matrix was interchanged with row IPIV(i).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, U(i,i) is exactly zero. The factorization
-*                has been completed, but the factor U is exactly
-*                singular, and division by zero will occur if it is used
-*                to solve a system of equations.
 *
 
 *  =====================================================================

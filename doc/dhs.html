@@ -6,12 +6,13 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for upper Hessenberg matrix</H1>
     <UL>
-      <LI><A HREF="#dhseqr">dhseqr</A></LI>
-      <LI><A HREF="#dhsein">dhsein</A></LI>
+      <LI><A HREF="#dhseqr">dhseqr</A>: Computes the eigenvalues and Schur factorization of an upper</LI>
+      <LI><A HREF="#dhsein">dhsein</A>: Computes specified right and/or left eigenvectors of an upper</LI>
     </UL>
 
   <A NAME="dhseqr"></A>
   <H2>dhseqr</H2>
+  Computes the eigenvalues and Schur factorization of an upper
   <PRE>
 USAGE:
   wr, wi, work, info, h, z = NumRu::Lapack.dhseqr( job, compz, ilo, ihi, h, z, ldz, lwork)
@@ -240,6 +241,7 @@ FORTRAN MANUAL
 
   <A NAME="dhsein"></A>
   <H2>dhsein</H2>
+  Computes specified right and/or left eigenvectors of an upper
   <PRE>
 USAGE:
   m, ifaill, ifailr, info, select, wr, vl, vr = NumRu::Lapack.dhsein( side, eigsrc, initv, select, h, wr, wi, vl, vr)

@@ -6,20 +6,88 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for symmetric matrix</H1>
     <UL>
-      <LI><A HREF="#zsymv">zsymv</A></LI>
-      <LI><A HREF="#zsycon">zsycon</A></LI>
-      <LI><A HREF="#zsyr">zsyr</A></LI>
-      <LI><A HREF="#zsysvx">zsysvx</A></LI>
-      <LI><A HREF="#zsytri">zsytri</A></LI>
-      <LI><A HREF="#zsytrf">zsytrf</A></LI>
-      <LI><A HREF="#zsytf2">zsytf2</A></LI>
-      <LI><A HREF="#zsysv">zsysv</A></LI>
-      <LI><A HREF="#zsyrfs">zsyrfs</A></LI>
-      <LI><A HREF="#zsytrs">zsytrs</A></LI>
+      <LI><A HREF="#zsytrs">zsytrs</A>: Solves a complex symmetric indefinite system of linear equations AX=B,</LI>
+      <LI><A HREF="#zsymv">zsymv</A>: </LI>
+      <LI><A HREF="#zsycon">zsycon</A>: Estimates the reciprocal of the condition number of a</LI>
+      <LI><A HREF="#zsyr">zsyr</A>: </LI>
+      <LI><A HREF="#zsysvx">zsysvx</A>: Solves a complex symmetric</LI>
+      <LI><A HREF="#zsytri">zsytri</A>: Computes the inverse of a complex symmetric indefinite matrix,</LI>
+      <LI><A HREF="#zsytrf">zsytrf</A>: Computes the factorization of a complex symmetric-indefinite matrix,</LI>
+      <LI><A HREF="#zsytf2">zsytf2</A>: </LI>
+      <LI><A HREF="#zsysv">zsysv</A>: </LI>
+      <LI><A HREF="#zsyrfs">zsyrfs</A>: Improves the computed solution to a complex</LI>
     </UL>
+
+  <A NAME="zsytrs"></A>
+  <H2>zsytrs</H2>
+  Solves a complex symmetric indefinite system of linear equations AX=B,
+  <PRE>
+USAGE:
+  info, b = NumRu::Lapack.zsytrs( uplo, a, ipiv, b)
+    or
+  NumRu::Lapack.zsytrs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZSYTRS( UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZSYTRS solves a system of linear equations A*X = B with a complex
+*  symmetric matrix A using the factorization A = U*D*U**T or
+*  A = L*D*L**T computed by ZSYTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the details of the factorization are stored
+*          as an upper or lower triangular matrix.
+*          = 'U':  Upper triangular, form is A = U*D*U**T;
+*          = 'L':  Lower triangular, form is A = L*D*L**T.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  A       (input) COMPLEX*16 array, dimension (LDA,N)
+*          The block diagonal matrix D and the multipliers used to
+*          obtain the factor U or L as computed by ZSYTRF.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D
+*          as determined by ZSYTRF.
+*
+*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
+*          On entry, the right hand side matrix B.
+*          On exit, the solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="zsymv"></A>
   <H2>zsymv</H2>
+  
   <PRE>
 USAGE:
   y = NumRu::Lapack.zsymv( uplo, alpha, a, x, incx, beta, y, incy)
@@ -120,6 +188,7 @@ FORTRAN MANUAL
 
   <A NAME="zsycon"></A>
   <H2>zsycon</H2>
+  Estimates the reciprocal of the condition number of a
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.zsycon( uplo, a, ipiv, anorm)
@@ -188,6 +257,7 @@ FORTRAN MANUAL
 
   <A NAME="zsyr"></A>
   <H2>zsyr</H2>
+  
   <PRE>
 USAGE:
   a = NumRu::Lapack.zsyr( uplo, alpha, x, incx, a)
@@ -275,6 +345,7 @@ FORTRAN MANUAL
 
   <A NAME="zsysvx"></A>
   <H2>zsysvx</H2>
+  Solves a complex symmetric
   <PRE>
 USAGE:
   x, rcond, ferr, berr, work, info, af, ipiv = NumRu::Lapack.zsysvx( fact, uplo, a, af, ipiv, b, lwork)
@@ -463,6 +534,7 @@ FORTRAN MANUAL
 
   <A NAME="zsytri"></A>
   <H2>zsytri</H2>
+  Computes the inverse of a complex symmetric indefinite matrix,
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.zsytri( uplo, a, ipiv)
@@ -529,6 +601,7 @@ FORTRAN MANUAL
 
   <A NAME="zsytrf"></A>
   <H2>zsytrf</H2>
+  Computes the factorization of a complex symmetric-indefinite matrix,
   <PRE>
 USAGE:
   ipiv, work, info, a = NumRu::Lapack.zsytrf( uplo, a, lwork)
@@ -672,6 +745,7 @@ FORTRAN MANUAL
 
   <A NAME="zsytf2"></A>
   <H2>zsytf2</H2>
+  
   <PRE>
 USAGE:
   ipiv, info, a = NumRu::Lapack.zsytf2( uplo, a)
@@ -800,6 +874,7 @@ FORTRAN MANUAL
 
   <A NAME="zsysv"></A>
   <H2>zsysv</H2>
+  
   <PRE>
 USAGE:
   ipiv, work, info, a, b = NumRu::Lapack.zsysv( uplo, a, b, lwork)
@@ -922,6 +997,7 @@ FORTRAN MANUAL
 
   <A NAME="zsyrfs"></A>
   <H2>zsyrfs</H2>
+  Improves the computed solution to a complex
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.zsyrfs( uplo, a, af, ipiv, b, x)
@@ -1019,72 +1095,6 @@ FORTRAN MANUAL
 *  ===================
 *
 *  ITMAX is the maximum number of steps of iterative refinement.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zsytrs"></A>
-  <H2>zsytrs</H2>
-  <PRE>
-USAGE:
-  info, b = NumRu::Lapack.zsytrs( uplo, a, ipiv, b)
-    or
-  NumRu::Lapack.zsytrs  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZSYTRS( UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZSYTRS solves a system of linear equations A*X = B with a complex
-*  symmetric matrix A using the factorization A = U*D*U**T or
-*  A = L*D*L**T computed by ZSYTRF.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          Specifies whether the details of the factorization are stored
-*          as an upper or lower triangular matrix.
-*          = 'U':  Upper triangular, form is A = U*D*U**T;
-*          = 'L':  Lower triangular, form is A = L*D*L**T.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
-*  A       (input) COMPLEX*16 array, dimension (LDA,N)
-*          The block diagonal matrix D and the multipliers used to
-*          obtain the factor U or L as computed by ZSYTRF.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  IPIV    (input) INTEGER array, dimension (N)
-*          Details of the interchanges and the block structure of D
-*          as determined by ZSYTRF.
-*
-*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
-*          On entry, the right hand side matrix B.
-*          On exit, the solution matrix X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
 *
 
 *  =====================================================================

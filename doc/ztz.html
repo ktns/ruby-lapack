@@ -6,12 +6,13 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for trapezoidal matrix</H1>
     <UL>
-      <LI><A HREF="#ztzrzf">ztzrzf</A></LI>
-      <LI><A HREF="#ztzrqf">ztzrqf</A></LI>
+      <LI><A HREF="#ztzrzf">ztzrzf</A>: Computes an RZ factorization of an upper trapezoidal matrix</LI>
+      <LI><A HREF="#ztzrqf">ztzrqf</A>: Computes an RQ factorization of an upper trapezoidal matrix.</LI>
     </UL>
 
   <A NAME="ztzrzf"></A>
   <H2>ztzrzf</H2>
+  Computes an RZ factorization of an upper trapezoidal matrix
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.ztzrzf( a, lwork)
@@ -118,6 +119,7 @@ FORTRAN MANUAL
 
   <A NAME="ztzrqf"></A>
   <H2>ztzrqf</H2>
+  Computes an RQ factorization of an upper trapezoidal matrix.
   <PRE>
 USAGE:
   tau, info, a = NumRu::Lapack.ztzrqf( a)

@@ -6,19 +6,125 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for general band matrix</H1>
     <UL>
-      <LI><A HREF="#dgbtf2">dgbtf2</A></LI>
-      <LI><A HREF="#dgbsvx">dgbsvx</A></LI>
-      <LI><A HREF="#dgbtrf">dgbtrf</A></LI>
-      <LI><A HREF="#dgbcon">dgbcon</A></LI>
-      <LI><A HREF="#dgbequ">dgbequ</A></LI>
-      <LI><A HREF="#dgbsv">dgbsv</A></LI>
-      <LI><A HREF="#dgbrfs">dgbrfs</A></LI>
-      <LI><A HREF="#dgbtrs">dgbtrs</A></LI>
-      <LI><A HREF="#dgbbrd">dgbbrd</A></LI>
+      <LI><A HREF="#dgbbrd">dgbbrd</A>: </LI>
+      <LI><A HREF="#dgbtf2">dgbtf2</A>: </LI>
+      <LI><A HREF="#dgbsvx">dgbsvx</A>: Solves a general banded system of linear equations AX=B,</LI>
+      <LI><A HREF="#dgbtrf">dgbtrf</A>: Computes an LU factorization of a general band matrix, using</LI>
+      <LI><A HREF="#dgbcon">dgbcon</A>: Estimates the reciprocal of the condition number of a general</LI>
+      <LI><A HREF="#dgbequ">dgbequ</A>: Computes row and column scalings to equilibrate a general band</LI>
+      <LI><A HREF="#dgbsv">dgbsv</A>: Solves a general banded system of linear equations AX=B.</LI>
+      <LI><A HREF="#dgbrfs">dgbrfs</A>: Improves the computed solution to a general banded system of</LI>
+      <LI><A HREF="#dgbtrs">dgbtrs</A>: Solves a general banded system of linear equations AX=B,</LI>
     </UL>
+
+  <A NAME="dgbbrd"></A>
+  <H2>dgbbrd</H2>
+  
+  <PRE>
+USAGE:
+  d, e, q, pt, info, ab, c = NumRu::Lapack.dgbbrd( vect, kl, ku, ab, c)
+    or
+  NumRu::Lapack.dgbbrd  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DGBBRD( VECT, M, N, NCC, KL, KU, AB, LDAB, D, E, Q, LDQ, PT, LDPT, C, LDC, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  DGBBRD reduces a real general m-by-n band matrix A to upper
+*  bidiagonal form B by an orthogonal transformation: Q' * A * P = B.
+*
+*  The routine computes B, and optionally forms Q or P', or computes
+*  Q'*C for a given matrix C.
+*
+
+*  Arguments
+*  =========
+*
+*  VECT    (input) CHARACTER*1
+*          Specifies whether or not the matrices Q and P' are to be
+*          formed.
+*          = 'N': do not form Q or P';
+*          = 'Q': form Q only;
+*          = 'P': form P' only;
+*          = 'B': form both.
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix A.  M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix A.  N >= 0.
+*
+*  NCC     (input) INTEGER
+*          The number of columns of the matrix C.  NCC >= 0.
+*
+*  KL      (input) INTEGER
+*          The number of subdiagonals of the matrix A. KL >= 0.
+*
+*  KU      (input) INTEGER
+*          The number of superdiagonals of the matrix A. KU >= 0.
+*
+*  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB,N)
+*          On entry, the m-by-n band matrix A, stored in rows 1 to
+*          KL+KU+1. The j-th column of A is stored in the j-th column of
+*          the array AB as follows:
+*          AB(ku+1+i-j,j) = A(i,j) for max(1,j-ku)<=i<=min(m,j+kl).
+*          On exit, A is overwritten by values generated during the
+*          reduction.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array A. LDAB >= KL+KU+1.
+*
+*  D       (output) DOUBLE PRECISION array, dimension (min(M,N))
+*          The diagonal elements of the bidiagonal matrix B.
+*
+*  E       (output) DOUBLE PRECISION array, dimension (min(M,N)-1)
+*          The superdiagonal elements of the bidiagonal matrix B.
+*
+*  Q       (output) DOUBLE PRECISION array, dimension (LDQ,M)
+*          If VECT = 'Q' or 'B', the m-by-m orthogonal matrix Q.
+*          If VECT = 'N' or 'P', the array Q is not referenced.
+*
+*  LDQ     (input) INTEGER
+*          The leading dimension of the array Q.
+*          LDQ >= max(1,M) if VECT = 'Q' or 'B'; LDQ >= 1 otherwise.
+*
+*  PT      (output) DOUBLE PRECISION array, dimension (LDPT,N)
+*          If VECT = 'P' or 'B', the n-by-n orthogonal matrix P'.
+*          If VECT = 'N' or 'Q', the array PT is not referenced.
+*
+*  LDPT    (input) INTEGER
+*          The leading dimension of the array PT.
+*          LDPT >= max(1,N) if VECT = 'P' or 'B'; LDPT >= 1 otherwise.
+*
+*  C       (input/output) DOUBLE PRECISION array, dimension (LDC,NCC)
+*          On entry, an m-by-ncc matrix C.
+*          On exit, C is overwritten by Q'*C.
+*          C is not referenced if NCC = 0.
+*
+*  LDC     (input) INTEGER
+*          The leading dimension of the array C.
+*          LDC >= max(1,M) if NCC > 0; LDC >= 1 if NCC = 0.
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (2*max(M,N))
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="dgbtf2"></A>
   <H2>dgbtf2</H2>
+  
   <PRE>
 USAGE:
   ipiv, info, ab = NumRu::Lapack.dgbtf2( m, kl, ku, ab)
@@ -111,6 +217,7 @@ FORTRAN MANUAL
 
   <A NAME="dgbsvx"></A>
   <H2>dgbsvx</H2>
+  Solves a general banded system of linear equations AX=B,
   <PRE>
 USAGE:
   x, rcond, ferr, berr, work, info, ab, afb, ipiv, equed, r, c, b = NumRu::Lapack.dgbsvx( fact, trans, kl, ku, ab, afb, ipiv, equed, r, c, b)
@@ -371,6 +478,7 @@ FORTRAN MANUAL
 
   <A NAME="dgbtrf"></A>
   <H2>dgbtrf</H2>
+  Computes an LU factorization of a general band matrix, using
   <PRE>
 USAGE:
   ipiv, info, ab = NumRu::Lapack.dgbtrf( m, kl, ku, ab)
@@ -462,6 +570,7 @@ FORTRAN MANUAL
 
   <A NAME="dgbcon"></A>
   <H2>dgbcon</H2>
+  Estimates the reciprocal of the condition number of a general
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.dgbcon( norm, kl, ku, ab, ipiv, anorm)
@@ -542,6 +651,7 @@ FORTRAN MANUAL
 
   <A NAME="dgbequ"></A>
   <H2>dgbequ</H2>
+  Computes row and column scalings to equilibrate a general band
   <PRE>
 USAGE:
   r, c, rowcnd, colcnd, amax, info = NumRu::Lapack.dgbequ( m, kl, ku, ab)
@@ -631,6 +741,7 @@ FORTRAN MANUAL
 
   <A NAME="dgbsv"></A>
   <H2>dgbsv</H2>
+  Solves a general banded system of linear equations AX=B.
   <PRE>
 USAGE:
   ipiv, info, ab, b = NumRu::Lapack.dgbsv( kl, ku, ab, b)
@@ -740,6 +851,7 @@ FORTRAN MANUAL
 
   <A NAME="dgbrfs"></A>
   <H2>dgbrfs</H2>
+  Improves the computed solution to a general banded system of
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.dgbrfs( trans, kl, ku, ab, afb, ipiv, b, x)
@@ -854,6 +966,7 @@ FORTRAN MANUAL
 
   <A NAME="dgbtrs"></A>
   <H2>dgbtrs</H2>
+  Solves a general banded system of linear equations AX=B,
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.dgbtrs( trans, kl, ku, ab, ipiv, b)
@@ -919,110 +1032,6 @@ FORTRAN MANUAL
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
 *          < 0: if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="dgbbrd"></A>
-  <H2>dgbbrd</H2>
-  <PRE>
-USAGE:
-  d, e, q, pt, info, ab, c = NumRu::Lapack.dgbbrd( vect, kl, ku, ab, c)
-    or
-  NumRu::Lapack.dgbbrd  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE DGBBRD( VECT, M, N, NCC, KL, KU, AB, LDAB, D, E, Q, LDQ, PT, LDPT, C, LDC, WORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  DGBBRD reduces a real general m-by-n band matrix A to upper
-*  bidiagonal form B by an orthogonal transformation: Q' * A * P = B.
-*
-*  The routine computes B, and optionally forms Q or P', or computes
-*  Q'*C for a given matrix C.
-*
-
-*  Arguments
-*  =========
-*
-*  VECT    (input) CHARACTER*1
-*          Specifies whether or not the matrices Q and P' are to be
-*          formed.
-*          = 'N': do not form Q or P';
-*          = 'Q': form Q only;
-*          = 'P': form P' only;
-*          = 'B': form both.
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix A.  M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix A.  N >= 0.
-*
-*  NCC     (input) INTEGER
-*          The number of columns of the matrix C.  NCC >= 0.
-*
-*  KL      (input) INTEGER
-*          The number of subdiagonals of the matrix A. KL >= 0.
-*
-*  KU      (input) INTEGER
-*          The number of superdiagonals of the matrix A. KU >= 0.
-*
-*  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB,N)
-*          On entry, the m-by-n band matrix A, stored in rows 1 to
-*          KL+KU+1. The j-th column of A is stored in the j-th column of
-*          the array AB as follows:
-*          AB(ku+1+i-j,j) = A(i,j) for max(1,j-ku)<=i<=min(m,j+kl).
-*          On exit, A is overwritten by values generated during the
-*          reduction.
-*
-*  LDAB    (input) INTEGER
-*          The leading dimension of the array A. LDAB >= KL+KU+1.
-*
-*  D       (output) DOUBLE PRECISION array, dimension (min(M,N))
-*          The diagonal elements of the bidiagonal matrix B.
-*
-*  E       (output) DOUBLE PRECISION array, dimension (min(M,N)-1)
-*          The superdiagonal elements of the bidiagonal matrix B.
-*
-*  Q       (output) DOUBLE PRECISION array, dimension (LDQ,M)
-*          If VECT = 'Q' or 'B', the m-by-m orthogonal matrix Q.
-*          If VECT = 'N' or 'P', the array Q is not referenced.
-*
-*  LDQ     (input) INTEGER
-*          The leading dimension of the array Q.
-*          LDQ >= max(1,M) if VECT = 'Q' or 'B'; LDQ >= 1 otherwise.
-*
-*  PT      (output) DOUBLE PRECISION array, dimension (LDPT,N)
-*          If VECT = 'P' or 'B', the n-by-n orthogonal matrix P'.
-*          If VECT = 'N' or 'Q', the array PT is not referenced.
-*
-*  LDPT    (input) INTEGER
-*          The leading dimension of the array PT.
-*          LDPT >= max(1,N) if VECT = 'P' or 'B'; LDPT >= 1 otherwise.
-*
-*  C       (input/output) DOUBLE PRECISION array, dimension (LDC,NCC)
-*          On entry, an m-by-ncc matrix C.
-*          On exit, C is overwritten by Q'*C.
-*          C is not referenced if NCC = 0.
-*
-*  LDC     (input) INTEGER
-*          The leading dimension of the array C.
-*          LDC >= max(1,M) if NCC > 0; LDC >= 1 if NCC = 0.
-*
-*  WORK    (workspace) DOUBLE PRECISION array, dimension (2*max(M,N))
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit.
-*          < 0:  if INFO = -i, the i-th argument had an illegal value.
 *
 
 *  =====================================================================

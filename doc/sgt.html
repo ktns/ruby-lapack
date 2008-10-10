@@ -6,17 +6,18 @@
     <A NAME="top"></A>
     <H1>REAL routines for general tridiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#sgtrfs">sgtrfs</A></LI>
-      <LI><A HREF="#sgtcon">sgtcon</A></LI>
-      <LI><A HREF="#sgttrf">sgttrf</A></LI>
-      <LI><A HREF="#sgttrs">sgttrs</A></LI>
-      <LI><A HREF="#sgtsv">sgtsv</A></LI>
-      <LI><A HREF="#sgtts2">sgtts2</A></LI>
-      <LI><A HREF="#sgtsvx">sgtsvx</A></LI>
+      <LI><A HREF="#sgtrfs">sgtrfs</A>: Improves the computed solution to a general tridiagonal system</LI>
+      <LI><A HREF="#sgtcon">sgtcon</A>: Estimates the reciprocal of the condition number of a general</LI>
+      <LI><A HREF="#sgttrf">sgttrf</A>: Computes an LU factorization of a general tridiagonal matrix,</LI>
+      <LI><A HREF="#sgttrs">sgttrs</A>: Solves a general tridiagonal system of linear equations AX=B,</LI>
+      <LI><A HREF="#sgtsv">sgtsv</A>: Solves a general tridiagonal system of linear equations AX=B.</LI>
+      <LI><A HREF="#sgtts2">sgtts2</A>: </LI>
+      <LI><A HREF="#sgtsvx">sgtsvx</A>: Solves a general tridiagonal system of linear equations AX=B,</LI>
     </UL>
 
   <A NAME="sgtrfs"></A>
   <H2>sgtrfs</H2>
+  Improves the computed solution to a general tridiagonal system
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.sgtrfs( trans, dl, d, du, dlf, df, duf, du2, ipiv, b, x)
@@ -131,6 +132,7 @@ FORTRAN MANUAL
 
   <A NAME="sgtcon"></A>
   <H2>sgtcon</H2>
+  Estimates the reciprocal of the condition number of a general
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.sgtcon( norm, dl, d, du, du2, ipiv, anorm)
@@ -211,6 +213,7 @@ FORTRAN MANUAL
 
   <A NAME="sgttrf"></A>
   <H2>sgttrf</H2>
+  Computes an LU factorization of a general tridiagonal matrix,
   <PRE>
 USAGE:
   du2, ipiv, info, dl, d, du = NumRu::Lapack.sgttrf( dl, d, du)
@@ -288,6 +291,7 @@ FORTRAN MANUAL
 
   <A NAME="sgttrs"></A>
   <H2>sgttrs</H2>
+  Solves a general tridiagonal system of linear equations AX=B,
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.sgttrs( trans, dl, d, du, du2, ipiv, b)
@@ -378,6 +382,7 @@ FORTRAN MANUAL
 
   <A NAME="sgtsv"></A>
   <H2>sgtsv</H2>
+  Solves a general tridiagonal system of linear equations AX=B.
   <PRE>
 USAGE:
   info, dl, d, du, b = NumRu::Lapack.sgtsv( dl, d, du, b)
@@ -456,6 +461,7 @@ FORTRAN MANUAL
 
   <A NAME="sgtts2"></A>
   <H2>sgtts2</H2>
+  
   <PRE>
 USAGE:
   b = NumRu::Lapack.sgtts2( itrans, dl, d, du, du2, ipiv, b)
@@ -532,6 +538,7 @@ FORTRAN MANUAL
 
   <A NAME="sgtsvx"></A>
   <H2>sgtsvx</H2>
+  Solves a general tridiagonal system of linear equations AX=B,
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, dlf, df, duf, du2, ipiv = NumRu::Lapack.sgtsvx( fact, trans, dl, d, du, dlf, df, duf, du2, ipiv, b)

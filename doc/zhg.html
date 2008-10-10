@@ -6,11 +6,12 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for upper Hessenberg matrix, generalized problem (i.e a Hessenberg and a triangular matrix) matrix</H1>
     <UL>
-      <LI><A HREF="#zhgeqz">zhgeqz</A></LI>
+      <LI><A HREF="#zhgeqz">zhgeqz</A>: Implements a single-/double-shift version of the QZ method for</LI>
     </UL>
 
   <A NAME="zhgeqz"></A>
   <H2>zhgeqz</H2>
+  Implements a single-/double-shift version of the QZ method for
   <PRE>
 USAGE:
   alpha, beta, work, info, h, t, q, z = NumRu::Lapack.zhgeqz( job, compq, compz, ilo, ihi, h, t, q, z, lwork)

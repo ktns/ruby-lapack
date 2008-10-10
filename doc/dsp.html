@@ -6,25 +6,267 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for symmetric, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#dspevd">dspevd</A></LI>
-      <LI><A HREF="#dspgvx">dspgvx</A></LI>
-      <LI><A HREF="#dsprfs">dsprfs</A></LI>
-      <LI><A HREF="#dspsv">dspsv</A></LI>
-      <LI><A HREF="#dspgvd">dspgvd</A></LI>
-      <LI><A HREF="#dspev">dspev</A></LI>
-      <LI><A HREF="#dspsvx">dspsvx</A></LI>
-      <LI><A HREF="#dsptrf">dsptrf</A></LI>
-      <LI><A HREF="#dspgst">dspgst</A></LI>
-      <LI><A HREF="#dspcon">dspcon</A></LI>
-      <LI><A HREF="#dsptri">dsptri</A></LI>
-      <LI><A HREF="#dsptrs">dsptrs</A></LI>
-      <LI><A HREF="#dspgv">dspgv</A></LI>
-      <LI><A HREF="#dspevx">dspevx</A></LI>
-      <LI><A HREF="#dsptrd">dsptrd</A></LI>
+      <LI><A HREF="#dspevx">dspevx</A>: Computes selected eigenvalues and eigenvectors of a</LI>
+      <LI><A HREF="#dsptrd">dsptrd</A>: Reduces a symmetric matrix in packed storage to real</LI>
+      <LI><A HREF="#dspevd">dspevd</A>: Computes all eigenvalues, and optionally, eigenvectors of a real</LI>
+      <LI><A HREF="#dspgvx">dspgvx</A>: Computes selected eigenvalues, and optionally, eigenvectors of</LI>
+      <LI><A HREF="#dsprfs">dsprfs</A>: Improves the computed solution to a real</LI>
+      <LI><A HREF="#dspsv">dspsv</A>: Solves a real symmetric indefinite system of linear equations AX=B,</LI>
+      <LI><A HREF="#dspgvd">dspgvd</A>: Computes all eigenvalues and eigenvectors of  a generalized</LI>
+      <LI><A HREF="#dspev">dspev</A>: Computes all eigenvalues, and optionally, eigenvectors of a real</LI>
+      <LI><A HREF="#dspsvx">dspsvx</A>: Solves a real symmetric</LI>
+      <LI><A HREF="#dsptrf">dsptrf</A>: Computes the factorization of a real</LI>
+      <LI><A HREF="#dspgst">dspgst</A>: Reduces a symmetric-definite generalized eigenproblem</LI>
+      <LI><A HREF="#dspcon">dspcon</A>: Estimates the reciprocal of the condition number of a</LI>
+      <LI><A HREF="#dsptri">dsptri</A>: Computes the inverse of a real symmetric</LI>
+      <LI><A HREF="#dsptrs">dsptrs</A>: Solves a real symmetric</LI>
+      <LI><A HREF="#dspgv">dspgv</A>: Computes all eigenvalues and eigenvectors of  a generalized</LI>
     </UL>
+
+  <A NAME="dspevx"></A>
+  <H2>dspevx</H2>
+  Computes selected eigenvalues and eigenvectors of a
+  <PRE>
+USAGE:
+  m, w, z, ifail, info, ap = NumRu::Lapack.dspevx( jobz, range, uplo, ap, vl, vu, il, iu, abstol)
+    or
+  NumRu::Lapack.dspevx  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSPEVX( JOBZ, RANGE, UPLO, N, AP, VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, IWORK, IFAIL, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSPEVX computes selected eigenvalues and, optionally, eigenvectors
+*  of a real symmetric matrix A in packed storage.  Eigenvalues/vectors
+*  can be selected by specifying either a range of values or a range of
+*  indices for the desired eigenvalues.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  RANGE   (input) CHARACTER*1
+*          = 'A': all eigenvalues will be found;
+*          = 'V': all eigenvalues in the half-open interval (VL,VU]
+*                 will be found;
+*          = 'I': the IL-th through IU-th eigenvalues will be found.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*
+*          On exit, AP is overwritten by values generated during the
+*          reduction to tridiagonal form.  If UPLO = 'U', the diagonal
+*          and first superdiagonal of the tridiagonal matrix T overwrite
+*          the corresponding elements of A, and if UPLO = 'L', the
+*          diagonal and first subdiagonal of T overwrite the
+*          corresponding elements of A.
+*
+*  VL      (input) DOUBLE PRECISION
+*  VU      (input) DOUBLE PRECISION
+*          If RANGE='V', the lower and upper bounds of the interval to
+*          be searched for eigenvalues. VL < VU.
+*          Not referenced if RANGE = 'A' or 'I'.
+*
+*  IL      (input) INTEGER
+*  IU      (input) INTEGER
+*          If RANGE='I', the indices (in ascending order) of the
+*          smallest and largest eigenvalues to be returned.
+*          1 <= IL <= IU <= N, if N > 0; IL = 1 and IU = 0 if N = 0.
+*          Not referenced if RANGE = 'A' or 'V'.
+*
+*  ABSTOL  (input) DOUBLE PRECISION
+*          The absolute error tolerance for the eigenvalues.
+*          An approximate eigenvalue is accepted as converged
+*          when it is determined to lie in an interval [a,b]
+*          of width less than or equal to
+*
+*                  ABSTOL + EPS *   max( |a|,|b| ) ,
+*
+*          where EPS is the machine precision.  If ABSTOL is less than
+*          or equal to zero, then  EPS*|T|  will be used in its place,
+*          where |T| is the 1-norm of the tridiagonal matrix obtained
+*          by reducing AP to tridiagonal form.
+*
+*          Eigenvalues will be computed most accurately when ABSTOL is
+*          set to twice the underflow threshold 2*DLAMCH('S'), not zero.
+*          If this routine returns with INFO>0, indicating that some
+*          eigenvectors did not converge, try setting ABSTOL to
+*          2*DLAMCH('S').
+*
+*          See "Computing Small Singular Values of Bidiagonal Matrices
+*          with Guaranteed High Relative Accuracy," by Demmel and
+*          Kahan, LAPACK Working Note #3.
+*
+*  M       (output) INTEGER
+*          The total number of eigenvalues found.  0 <= M <= N.
+*          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, the selected eigenvalues in ascending order.
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, max(1,M))
+*          If JOBZ = 'V', then if INFO = 0, the first M columns of Z
+*          contain the orthonormal eigenvectors of the matrix A
+*          corresponding to the selected eigenvalues, with the i-th
+*          column of Z holding the eigenvector associated with W(i).
+*          If an eigenvector fails to converge, then that column of Z
+*          contains the latest approximation to the eigenvector, and the
+*          index of the eigenvector is returned in IFAIL.
+*          If JOBZ = 'N', then Z is not referenced.
+*          Note: the user must ensure that at least max(1,M) columns are
+*          supplied in the array Z; if RANGE = 'V', the exact value of M
+*          is not known in advance and an upper bound must be used.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (8*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (5*N)
+*
+*  IFAIL   (output) INTEGER array, dimension (N)
+*          If JOBZ = 'V', then if INFO = 0, the first M elements of
+*          IFAIL are zero.  If INFO > 0, then IFAIL contains the
+*          indices of the eigenvectors that failed to converge.
+*          If JOBZ = 'N', then IFAIL is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, then i eigenvectors failed to converge.
+*                Their indices are stored in array IFAIL.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dsptrd"></A>
+  <H2>dsptrd</H2>
+  Reduces a symmetric matrix in packed storage to real
+  <PRE>
+USAGE:
+  d, e, tau, info, ap = NumRu::Lapack.dsptrd( uplo, ap)
+    or
+  NumRu::Lapack.dsptrd  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSPTRD( UPLO, N, AP, D, E, TAU, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSPTRD reduces a real symmetric matrix A stored in packed form to
+*  symmetric tridiagonal form T by an orthogonal similarity
+*  transformation: Q**T * A * Q = T.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*          On exit, if UPLO = 'U', the diagonal and first superdiagonal
+*          of A are overwritten by the corresponding elements of the
+*          tridiagonal matrix T, and the elements above the first
+*          superdiagonal, with the array TAU, represent the orthogonal
+*          matrix Q as a product of elementary reflectors; if UPLO
+*          = 'L', the diagonal and first subdiagonal of A are over-
+*          written by the corresponding elements of the tridiagonal
+*          matrix T, and the elements below the first subdiagonal, with
+*          the array TAU, represent the orthogonal matrix Q as a product
+*          of elementary reflectors. See Further Details.
+*
+*  D       (output) DOUBLE PRECISION array, dimension (N)
+*          The diagonal elements of the tridiagonal matrix T:
+*          D(i) = A(i,i).
+*
+*  E       (output) DOUBLE PRECISION array, dimension (N-1)
+*          The off-diagonal elements of the tridiagonal matrix T:
+*          E(i) = A(i,i+1) if UPLO = 'U', E(i) = A(i+1,i) if UPLO = 'L'.
+*
+*  TAU     (output) DOUBLE PRECISION array, dimension (N-1)
+*          The scalar factors of the elementary reflectors (see Further
+*          Details).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  Further Details
+*  ===============
+*
+*  If UPLO = 'U', the matrix Q is represented as a product of elementary
+*  reflectors
+*
+*     Q = H(n-1) . . . H(2) H(1).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a real scalar, and v is a real vector with
+*  v(i+1:n) = 0 and v(i) = 1; v(1:i-1) is stored on exit in AP,
+*  overwriting A(1:i-1,i+1), and tau is stored in TAU(i).
+*
+*  If UPLO = 'L', the matrix Q is represented as a product of elementary
+*  reflectors
+*
+*     Q = H(1) H(2) . . . H(n-1).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a real scalar, and v is a real vector with
+*  v(1:i) = 0 and v(i+1) = 1; v(i+2:n) is stored on exit in AP,
+*  overwriting A(i+2:n,i), and tau is stored in TAU(i).
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="dspevd"></A>
   <H2>dspevd</H2>
+  Computes all eigenvalues, and optionally, eigenvectors of a real
   <PRE>
 USAGE:
   w, z, work, iwork, info, ap = NumRu::Lapack.dspevd( jobz, uplo, ap, lwork, liwork)
@@ -139,6 +381,7 @@ FORTRAN MANUAL
 
   <A NAME="dspgvx"></A>
   <H2>dspgvx</H2>
+  Computes selected eigenvalues, and optionally, eigenvectors of
   <PRE>
 USAGE:
   m, w, z, ifail, info, ap, bp = NumRu::Lapack.dspgvx( itype, jobz, range, uplo, ap, bp, vl, vu, il, iu, abstol, ldz)
@@ -321,6 +564,7 @@ FORTRAN MANUAL
 
   <A NAME="dsprfs"></A>
   <H2>dsprfs</H2>
+  Improves the computed solution to a real
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.dsprfs( uplo, ap, afp, ipiv, b, x)
@@ -423,6 +667,7 @@ FORTRAN MANUAL
 
   <A NAME="dspsv"></A>
   <H2>dspsv</H2>
+  Solves a real symmetric indefinite system of linear equations AX=B,
   <PRE>
 USAGE:
   ipiv, info, ap, b = NumRu::Lapack.dspsv( uplo, ap, b)
@@ -541,6 +786,7 @@ FORTRAN MANUAL
 
   <A NAME="dspgvd"></A>
   <H2>dspgvd</H2>
+  Computes all eigenvalues and eigenvectors of  a generalized
   <PRE>
 USAGE:
   w, z, work, iwork, info, ap, bp = NumRu::Lapack.dspgvd( itype, jobz, uplo, ap, bp, lwork, liwork)
@@ -680,6 +926,7 @@ FORTRAN MANUAL
 
   <A NAME="dspev"></A>
   <H2>dspev</H2>
+  Computes all eigenvalues, and optionally, eigenvectors of a real
   <PRE>
 USAGE:
   w, z, info, ap = NumRu::Lapack.dspev( jobz, uplo, ap)
@@ -757,6 +1004,7 @@ FORTRAN MANUAL
 
   <A NAME="dspsvx"></A>
   <H2>dspsvx</H2>
+  Solves a real symmetric
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, afp, ipiv = NumRu::Lapack.dspsvx( fact, uplo, ap, afp, ipiv, b)
@@ -946,6 +1194,7 @@ FORTRAN MANUAL
 
   <A NAME="dsptrf"></A>
   <H2>dsptrf</H2>
+  Computes the factorization of a real
   <PRE>
 USAGE:
   ipiv, info, ap = NumRu::Lapack.dsptrf( uplo, ap)
@@ -1058,6 +1307,7 @@ FORTRAN MANUAL
 
   <A NAME="dspgst"></A>
   <H2>dspgst</H2>
+  Reduces a symmetric-definite generalized eigenproblem
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.dspgst( itype, uplo, n, ap, bp)
@@ -1127,6 +1377,7 @@ FORTRAN MANUAL
 
   <A NAME="dspcon"></A>
   <H2>dspcon</H2>
+  Estimates the reciprocal of the condition number of a
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.dspcon( uplo, ap, ipiv, anorm)
@@ -1195,6 +1446,7 @@ FORTRAN MANUAL
 
   <A NAME="dsptri"></A>
   <H2>dsptri</H2>
+  Computes the inverse of a real symmetric
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.dsptri( uplo, ap, ipiv)
@@ -1259,6 +1511,7 @@ FORTRAN MANUAL
 
   <A NAME="dsptrs"></A>
   <H2>dsptrs</H2>
+  Solves a real symmetric
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.dsptrs( uplo, ap, ipiv, b)
@@ -1323,6 +1576,7 @@ FORTRAN MANUAL
 
   <A NAME="dspgv"></A>
   <H2>dspgv</H2>
+  Computes all eigenvalues and eigenvectors of  a generalized
   <PRE>
 USAGE:
   w, z, info, ap, bp = NumRu::Lapack.dspgv( itype, jobz, uplo, ap, bp)
@@ -1427,245 +1681,6 @@ FORTRAN MANUAL
 *     .. External Subroutines ..
       EXTERNAL           DPPTRF, DSPEV, DSPGST, DTPMV, DTPSV, XERBLA
 *     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="dspevx"></A>
-  <H2>dspevx</H2>
-  <PRE>
-USAGE:
-  m, w, z, ifail, info, ap = NumRu::Lapack.dspevx( jobz, range, uplo, ap, vl, vu, il, iu, abstol)
-    or
-  NumRu::Lapack.dspevx  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE DSPEVX( JOBZ, RANGE, UPLO, N, AP, VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, IWORK, IFAIL, INFO )
-
-*  Purpose
-*  =======
-*
-*  DSPEVX computes selected eigenvalues and, optionally, eigenvectors
-*  of a real symmetric matrix A in packed storage.  Eigenvalues/vectors
-*  can be selected by specifying either a range of values or a range of
-*  indices for the desired eigenvalues.
-*
-
-*  Arguments
-*  =========
-*
-*  JOBZ    (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  RANGE   (input) CHARACTER*1
-*          = 'A': all eigenvalues will be found;
-*          = 'V': all eigenvalues in the half-open interval (VL,VU]
-*                 will be found;
-*          = 'I': the IL-th through IU-th eigenvalues will be found.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
-*          On entry, the upper or lower triangle of the symmetric matrix
-*          A, packed columnwise in a linear array.  The j-th column of A
-*          is stored in the array AP as follows:
-*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
-*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
-*
-*          On exit, AP is overwritten by values generated during the
-*          reduction to tridiagonal form.  If UPLO = 'U', the diagonal
-*          and first superdiagonal of the tridiagonal matrix T overwrite
-*          the corresponding elements of A, and if UPLO = 'L', the
-*          diagonal and first subdiagonal of T overwrite the
-*          corresponding elements of A.
-*
-*  VL      (input) DOUBLE PRECISION
-*  VU      (input) DOUBLE PRECISION
-*          If RANGE='V', the lower and upper bounds of the interval to
-*          be searched for eigenvalues. VL < VU.
-*          Not referenced if RANGE = 'A' or 'I'.
-*
-*  IL      (input) INTEGER
-*  IU      (input) INTEGER
-*          If RANGE='I', the indices (in ascending order) of the
-*          smallest and largest eigenvalues to be returned.
-*          1 <= IL <= IU <= N, if N > 0; IL = 1 and IU = 0 if N = 0.
-*          Not referenced if RANGE = 'A' or 'V'.
-*
-*  ABSTOL  (input) DOUBLE PRECISION
-*          The absolute error tolerance for the eigenvalues.
-*          An approximate eigenvalue is accepted as converged
-*          when it is determined to lie in an interval [a,b]
-*          of width less than or equal to
-*
-*                  ABSTOL + EPS *   max( |a|,|b| ) ,
-*
-*          where EPS is the machine precision.  If ABSTOL is less than
-*          or equal to zero, then  EPS*|T|  will be used in its place,
-*          where |T| is the 1-norm of the tridiagonal matrix obtained
-*          by reducing AP to tridiagonal form.
-*
-*          Eigenvalues will be computed most accurately when ABSTOL is
-*          set to twice the underflow threshold 2*DLAMCH('S'), not zero.
-*          If this routine returns with INFO>0, indicating that some
-*          eigenvectors did not converge, try setting ABSTOL to
-*          2*DLAMCH('S').
-*
-*          See "Computing Small Singular Values of Bidiagonal Matrices
-*          with Guaranteed High Relative Accuracy," by Demmel and
-*          Kahan, LAPACK Working Note #3.
-*
-*  M       (output) INTEGER
-*          The total number of eigenvalues found.  0 <= M <= N.
-*          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
-*
-*  W       (output) DOUBLE PRECISION array, dimension (N)
-*          If INFO = 0, the selected eigenvalues in ascending order.
-*
-*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, max(1,M))
-*          If JOBZ = 'V', then if INFO = 0, the first M columns of Z
-*          contain the orthonormal eigenvectors of the matrix A
-*          corresponding to the selected eigenvalues, with the i-th
-*          column of Z holding the eigenvector associated with W(i).
-*          If an eigenvector fails to converge, then that column of Z
-*          contains the latest approximation to the eigenvector, and the
-*          index of the eigenvector is returned in IFAIL.
-*          If JOBZ = 'N', then Z is not referenced.
-*          Note: the user must ensure that at least max(1,M) columns are
-*          supplied in the array Z; if RANGE = 'V', the exact value of M
-*          is not known in advance and an upper bound must be used.
-*
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z.  LDZ >= 1, and if
-*          JOBZ = 'V', LDZ >= max(1,N).
-*
-*  WORK    (workspace) DOUBLE PRECISION array, dimension (8*N)
-*
-*  IWORK   (workspace) INTEGER array, dimension (5*N)
-*
-*  IFAIL   (output) INTEGER array, dimension (N)
-*          If JOBZ = 'V', then if INFO = 0, the first M elements of
-*          IFAIL are zero.  If INFO > 0, then IFAIL contains the
-*          indices of the eigenvectors that failed to converge.
-*          If JOBZ = 'N', then IFAIL is not referenced.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, then i eigenvectors failed to converge.
-*                Their indices are stored in array IFAIL.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="dsptrd"></A>
-  <H2>dsptrd</H2>
-  <PRE>
-USAGE:
-  d, e, tau, info, ap = NumRu::Lapack.dsptrd( uplo, ap)
-    or
-  NumRu::Lapack.dsptrd  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE DSPTRD( UPLO, N, AP, D, E, TAU, INFO )
-
-*  Purpose
-*  =======
-*
-*  DSPTRD reduces a real symmetric matrix A stored in packed form to
-*  symmetric tridiagonal form T by an orthogonal similarity
-*  transformation: Q**T * A * Q = T.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
-*          On entry, the upper or lower triangle of the symmetric matrix
-*          A, packed columnwise in a linear array.  The j-th column of A
-*          is stored in the array AP as follows:
-*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
-*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
-*          On exit, if UPLO = 'U', the diagonal and first superdiagonal
-*          of A are overwritten by the corresponding elements of the
-*          tridiagonal matrix T, and the elements above the first
-*          superdiagonal, with the array TAU, represent the orthogonal
-*          matrix Q as a product of elementary reflectors; if UPLO
-*          = 'L', the diagonal and first subdiagonal of A are over-
-*          written by the corresponding elements of the tridiagonal
-*          matrix T, and the elements below the first subdiagonal, with
-*          the array TAU, represent the orthogonal matrix Q as a product
-*          of elementary reflectors. See Further Details.
-*
-*  D       (output) DOUBLE PRECISION array, dimension (N)
-*          The diagonal elements of the tridiagonal matrix T:
-*          D(i) = A(i,i).
-*
-*  E       (output) DOUBLE PRECISION array, dimension (N-1)
-*          The off-diagonal elements of the tridiagonal matrix T:
-*          E(i) = A(i,i+1) if UPLO = 'U', E(i) = A(i+1,i) if UPLO = 'L'.
-*
-*  TAU     (output) DOUBLE PRECISION array, dimension (N-1)
-*          The scalar factors of the elementary reflectors (see Further
-*          Details).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  Further Details
-*  ===============
-*
-*  If UPLO = 'U', the matrix Q is represented as a product of elementary
-*  reflectors
-*
-*     Q = H(n-1) . . . H(2) H(1).
-*
-*  Each H(i) has the form
-*
-*     H(i) = I - tau * v * v'
-*
-*  where tau is a real scalar, and v is a real vector with
-*  v(i+1:n) = 0 and v(i) = 1; v(1:i-1) is stored on exit in AP,
-*  overwriting A(1:i-1,i+1), and tau is stored in TAU(i).
-*
-*  If UPLO = 'L', the matrix Q is represented as a product of elementary
-*  reflectors
-*
-*     Q = H(1) H(2) . . . H(n-1).
-*
-*  Each H(i) has the form
-*
-*     H(i) = I - tau * v * v'
-*
-*  where tau is a real scalar, and v is a real vector with
-*  v(1:i) = 0 and v(i+1) = 1; v(i+2:n) is stored on exit in AP,
-*  overwriting A(i+2:n,i), and tau is stored in TAU(i).
-*
-*  =====================================================================
-*
 
 
     </PRE>

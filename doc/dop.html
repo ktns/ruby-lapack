@@ -6,12 +6,13 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for (real) orthogonal, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#dopmtr">dopmtr</A></LI>
-      <LI><A HREF="#dopgtr">dopgtr</A></LI>
+      <LI><A HREF="#dopmtr">dopmtr</A>: Multiplies a general matrix by the orthogonal</LI>
+      <LI><A HREF="#dopgtr">dopgtr</A>: Generates the orthogonal transformation matrix from</LI>
     </UL>
 
   <A NAME="dopmtr"></A>
   <H2>dopmtr</H2>
+  Multiplies a general matrix by the orthogonal
   <PRE>
 USAGE:
   info, c = NumRu::Lapack.dopmtr( side, uplo, trans, m, ap, tau, c)
@@ -101,6 +102,7 @@ FORTRAN MANUAL
 
   <A NAME="dopgtr"></A>
   <H2>dopgtr</H2>
+  Generates the orthogonal transformation matrix from
   <PRE>
 USAGE:
   q, info = NumRu::Lapack.dopgtr( uplo, ap, tau)

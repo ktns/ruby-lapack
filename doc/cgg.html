@@ -6,23 +6,24 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for general matrices, generalized problem (i.e., a pair of general matrices) matrix</H1>
     <UL>
-      <LI><A HREF="#cgghrd">cgghrd</A></LI>
-      <LI><A HREF="#cggbal">cggbal</A></LI>
-      <LI><A HREF="#cggqrf">cggqrf</A></LI>
-      <LI><A HREF="#cggrqf">cggrqf</A></LI>
-      <LI><A HREF="#cggsvp">cggsvp</A></LI>
-      <LI><A HREF="#cggevx">cggevx</A></LI>
-      <LI><A HREF="#cggbak">cggbak</A></LI>
-      <LI><A HREF="#cggsvd">cggsvd</A></LI>
-      <LI><A HREF="#cggglm">cggglm</A></LI>
-      <LI><A HREF="#cgges">cgges</A></LI>
-      <LI><A HREF="#cggev">cggev</A></LI>
-      <LI><A HREF="#cggesx">cggesx</A></LI>
-      <LI><A HREF="#cgglse">cgglse</A></LI>
+      <LI><A HREF="#cgghrd">cgghrd</A>: Reduces a pair of complex matrices to generalized upper</LI>
+      <LI><A HREF="#cggbal">cggbal</A>: </LI>
+      <LI><A HREF="#cggqrf">cggqrf</A>: Computes a generalized QR factorization of a pair of matrices.</LI>
+      <LI><A HREF="#cggrqf">cggrqf</A>: Computes a generalized RQ factorization of a pair of matrices.</LI>
+      <LI><A HREF="#cggsvp">cggsvp</A>: Computes unitary matrices as a preprocessing step</LI>
+      <LI><A HREF="#cggevx">cggevx</A>: Computes the generalized eigenvalues, and optionally, the left</LI>
+      <LI><A HREF="#cggbak">cggbak</A>: Forms the right or left eigenvectors of the generalized eigenvalue</LI>
+      <LI><A HREF="#cggsvd">cggsvd</A>: Computes the Generalized Singular Value Decomposition</LI>
+      <LI><A HREF="#cggglm">cggglm</A>: Solves the GLM (Generalized Linear Regression Model) using</LI>
+      <LI><A HREF="#cgges">cgges</A>: Computes the generalized eigenvalues, Schur form, and left and/or</LI>
+      <LI><A HREF="#cggev">cggev</A>: Computes the generalized eigenvalues, and left and/or right</LI>
+      <LI><A HREF="#cggesx">cggesx</A>: Computes the generalized eigenvalues, the real Schur form, and,</LI>
+      <LI><A HREF="#cgglse">cgglse</A>: Solves the LSE (Constrained Linear Least Squares Problem) using</LI>
     </UL>
 
   <A NAME="cgghrd"></A>
   <H2>cgghrd</H2>
+  Reduces a pair of complex matrices to generalized upper
   <PRE>
 USAGE:
   info, a, b, q, z = NumRu::Lapack.cgghrd( compq, compz, ilo, ihi, a, b, q, z)
@@ -151,6 +152,7 @@ FORTRAN MANUAL
 
   <A NAME="cggbal"></A>
   <H2>cggbal</H2>
+  
   <PRE>
 USAGE:
   ilo, ihi, lscale, rscale, info, a, b = NumRu::Lapack.cggbal( job, a, b)
@@ -259,6 +261,7 @@ FORTRAN MANUAL
 
   <A NAME="cggqrf"></A>
   <H2>cggqrf</H2>
+  Computes a generalized QR factorization of a pair of matrices.
   <PRE>
 USAGE:
   taua, taub, work, info, a, b = NumRu::Lapack.cggqrf( n, a, b, lwork)
@@ -421,6 +424,7 @@ FORTRAN MANUAL
 
   <A NAME="cggrqf"></A>
   <H2>cggrqf</H2>
+  Computes a generalized RQ factorization of a pair of matrices.
   <PRE>
 USAGE:
   taua, taub, work, info, a, b = NumRu::Lapack.cggrqf( m, p, a, b, lwork)
@@ -582,6 +586,7 @@ FORTRAN MANUAL
 
   <A NAME="cggsvp"></A>
   <H2>cggsvp</H2>
+  Computes unitary matrices as a preprocessing step
   <PRE>
 USAGE:
   k, l, u, v, q, info, a, b = NumRu::Lapack.cggsvp( jobu, jobv, jobq, p, a, b, tola, tolb)
@@ -730,6 +735,7 @@ FORTRAN MANUAL
 
   <A NAME="cggevx"></A>
   <H2>cggevx</H2>
+  Computes the generalized eigenvalues, and optionally, the left
   <PRE>
 USAGE:
   alpha, beta, vl, vr, ilo, ihi, lscale, rscale, abnrm, bbnrm, rconde, rcondv, work, info, a, b = NumRu::Lapack.cggevx( balanc, jobvl, jobvr, sense, a, b, lwork)
@@ -971,6 +977,7 @@ FORTRAN MANUAL
 
   <A NAME="cggbak"></A>
   <H2>cggbak</H2>
+  Forms the right or left eigenvectors of the generalized eigenvalue
   <PRE>
 USAGE:
   info, v = NumRu::Lapack.cggbak( job, side, ilo, ihi, lscale, rscale, v)
@@ -1067,6 +1074,7 @@ FORTRAN MANUAL
 
   <A NAME="cggsvd"></A>
   <H2>cggsvd</H2>
+  Computes the Generalized Singular Value Decomposition
   <PRE>
 USAGE:
   k, l, alpha, beta, u, v, q, iwork, info, a, b = NumRu::Lapack.cggsvd( jobu, jobv, jobq, a, b)
@@ -1308,6 +1316,7 @@ FORTRAN MANUAL
 
   <A NAME="cggglm"></A>
   <H2>cggglm</H2>
+  Solves the GLM (Generalized Linear Regression Model) using
   <PRE>
 USAGE:
   x, y, work, info, a, b, d = NumRu::Lapack.cggglm( a, b, d, lwork)
@@ -1424,6 +1433,7 @@ FORTRAN MANUAL
 
   <A NAME="cgges"></A>
   <H2>cgges</H2>
+  Computes the generalized eigenvalues, Schur form, and left and/or
   <PRE>
 USAGE:
   sdim, alpha, beta, vsl, vsr, work, info, a, b = NumRu::Lapack.cgges( jobvsl, jobvsr, sort, a, b, lwork){|a,b| ... }
@@ -1592,6 +1602,7 @@ FORTRAN MANUAL
 
   <A NAME="cggev"></A>
   <H2>cggev</H2>
+  Computes the generalized eigenvalues, and left and/or right
   <PRE>
 USAGE:
   alpha, beta, vl, vr, work, rwork, info, a, b = NumRu::Lapack.cggev( jobvl, jobvr, a, b, lwork)
@@ -1726,6 +1737,7 @@ FORTRAN MANUAL
 
   <A NAME="cggesx"></A>
   <H2>cggesx</H2>
+  Computes the generalized eigenvalues, the real Schur form, and,
   <PRE>
 USAGE:
   sdim, alpha, beta, vsl, vsr, rconde, rcondv, work, iwork, info, a, b = NumRu::Lapack.cggesx( jobvsl, jobvsr, sort, sense, a, b, lwork, liwork){|a,b| ... }
@@ -1935,6 +1947,7 @@ FORTRAN MANUAL
 
   <A NAME="cgglse"></A>
   <H2>cgglse</H2>
+  Solves the LSE (Constrained Linear Least Squares Problem) using
   <PRE>
 USAGE:
   x, work, info, a, b, c, d = NumRu::Lapack.cgglse( a, b, c, d, lwork)

@@ -6,34 +6,487 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for (complex) unitary matrix</H1>
     <UL>
-      <LI><A HREF="#cunmbr">cunmbr</A></LI>
-      <LI><A HREF="#cungqr">cungqr</A></LI>
-      <LI><A HREF="#cunm2r">cunm2r</A></LI>
-      <LI><A HREF="#cunml2">cunml2</A></LI>
-      <LI><A HREF="#cunmr2">cunmr2</A></LI>
-      <LI><A HREF="#cung2l">cung2l</A></LI>
-      <LI><A HREF="#cungl2">cungl2</A></LI>
-      <LI><A HREF="#cunm2l">cunm2l</A></LI>
-      <LI><A HREF="#cung2r">cung2r</A></LI>
-      <LI><A HREF="#cungr2">cungr2</A></LI>
-      <LI><A HREF="#cungql">cungql</A></LI>
-      <LI><A HREF="#cungtr">cungtr</A></LI>
-      <LI><A HREF="#cunglq">cunglq</A></LI>
-      <LI><A HREF="#cungbr">cungbr</A></LI>
-      <LI><A HREF="#cungrq">cungrq</A></LI>
-      <LI><A HREF="#cunmrz">cunmrz</A></LI>
-      <LI><A HREF="#cunmrq">cunmrq</A></LI>
-      <LI><A HREF="#cunmtr">cunmtr</A></LI>
-      <LI><A HREF="#cunghr">cunghr</A></LI>
-      <LI><A HREF="#cunmqr">cunmqr</A></LI>
-      <LI><A HREF="#cunmql">cunmql</A></LI>
-      <LI><A HREF="#cunmlq">cunmlq</A></LI>
-      <LI><A HREF="#cunmr3">cunmr3</A></LI>
-      <LI><A HREF="#cunmhr">cunmhr</A></LI>
+      <LI><A HREF="#cunmql">cunmql</A>: Multiplies a general matrix by the unitary matrix</LI>
+      <LI><A HREF="#cunmlq">cunmlq</A>: Multiplies a general matrix by the unitary matrix</LI>
+      <LI><A HREF="#cunmr3">cunmr3</A>: Multiples a general matrix by the unitary matrix</LI>
+      <LI><A HREF="#cunmhr">cunmhr</A>: Multiplies a general matrix by the unitary transformation</LI>
+      <LI><A HREF="#cunmbr">cunmbr</A>: Multiplies a general matrix by one of the unitary</LI>
+      <LI><A HREF="#cungqr">cungqr</A>: Generates all or part of the unitary matrix Q from</LI>
+      <LI><A HREF="#cunm2r">cunm2r</A>: </LI>
+      <LI><A HREF="#cunml2">cunml2</A>: </LI>
+      <LI><A HREF="#cunmr2">cunmr2</A>: </LI>
+      <LI><A HREF="#cung2l">cung2l</A>: </LI>
+      <LI><A HREF="#cungl2">cungl2</A>: </LI>
+      <LI><A HREF="#cunm2l">cunm2l</A>: </LI>
+      <LI><A HREF="#cung2r">cung2r</A>: </LI>
+      <LI><A HREF="#cungr2">cungr2</A>: </LI>
+      <LI><A HREF="#cungql">cungql</A>: Generates all or part of the unitary matrix Q from</LI>
+      <LI><A HREF="#cungtr">cungtr</A>: Generates the unitary transformation matrix from</LI>
+      <LI><A HREF="#cunglq">cunglq</A>: Generates all or part of the unitary matrix Q from</LI>
+      <LI><A HREF="#cungbr">cungbr</A>: Generates the unitary transformation matrices from</LI>
+      <LI><A HREF="#cungrq">cungrq</A>: Generates all or part of the unitary matrix Q from</LI>
+      <LI><A HREF="#cunmrz">cunmrz</A>: Multiples a general matrix by the unitary matrix</LI>
+      <LI><A HREF="#cunmrq">cunmrq</A>: Multiplies a general matrix by the unitary matrix</LI>
+      <LI><A HREF="#cunmtr">cunmtr</A>: Multiplies a general matrix by the unitary</LI>
+      <LI><A HREF="#cunghr">cunghr</A>: Generates the unitary transformation matrix from</LI>
+      <LI><A HREF="#cunmqr">cunmqr</A>: Multiplies a general matrix by the unitary matrix</LI>
     </UL>
+
+  <A NAME="cunmql"></A>
+  <H2>cunmql</H2>
+  Multiplies a general matrix by the unitary matrix
+  <PRE>
+USAGE:
+  work, info, c = NumRu::Lapack.cunmql( side, trans, m, a, tau, c, lwork)
+    or
+  NumRu::Lapack.cunmql  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CUNMQL( SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CUNMQL overwrites the general complex M-by-N matrix C with
+*
+*                  SIDE = 'L'     SIDE = 'R'
+*  TRANS = 'N':      Q * C          C * Q
+*  TRANS = 'C':      Q**H * C       C * Q**H
+*
+*  where Q is a complex unitary matrix defined as the product of k
+*  elementary reflectors
+*
+*        Q = H(k) . . . H(2) H(1)
+*
+*  as returned by CGEQLF. Q is of order M if SIDE = 'L' and of order N
+*  if SIDE = 'R'.
+*
+
+*  Arguments
+*  =========
+*
+*  SIDE    (input) CHARACTER*1
+*          = 'L': apply Q or Q**H from the Left;
+*          = 'R': apply Q or Q**H from the Right.
+*
+*  TRANS   (input) CHARACTER*1
+*          = 'N':  No transpose, apply Q;
+*          = 'C':  Transpose, apply Q**H.
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix C. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix C. N >= 0.
+*
+*  K       (input) INTEGER
+*          The number of elementary reflectors whose product defines
+*          the matrix Q.
+*          If SIDE = 'L', M >= K >= 0;
+*          if SIDE = 'R', N >= K >= 0.
+*
+*  A       (input) COMPLEX array, dimension (LDA,K)
+*          The i-th column must contain the vector which defines the
+*          elementary reflector H(i), for i = 1,2,...,k, as returned by
+*          CGEQLF in the last k columns of its array argument A.
+*          A is modified by the routine but restored on exit.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.
+*          If SIDE = 'L', LDA >= max(1,M);
+*          if SIDE = 'R', LDA >= max(1,N).
+*
+*  TAU     (input) COMPLEX array, dimension (K)
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by CGEQLF.
+*
+*  C       (input/output) COMPLEX array, dimension (LDC,N)
+*          On entry, the M-by-N matrix C.
+*          On exit, C is overwritten by Q*C or Q**H*C or C*Q**H or C*Q.
+*
+*  LDC     (input) INTEGER
+*          The leading dimension of the array C. LDC >= max(1,M).
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          If SIDE = 'L', LWORK >= max(1,N);
+*          if SIDE = 'R', LWORK >= max(1,M).
+*          For optimum performance LWORK >= N*NB if SIDE = 'L', and
+*          LWORK >= M*NB if SIDE = 'R', where NB is the optimal
+*          blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cunmlq"></A>
+  <H2>cunmlq</H2>
+  Multiplies a general matrix by the unitary matrix
+  <PRE>
+USAGE:
+  work, info, c = NumRu::Lapack.cunmlq( side, trans, a, tau, c, lwork)
+    or
+  NumRu::Lapack.cunmlq  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CUNMLQ( SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CUNMLQ overwrites the general complex M-by-N matrix C with
+*
+*                  SIDE = 'L'     SIDE = 'R'
+*  TRANS = 'N':      Q * C          C * Q
+*  TRANS = 'C':      Q**H * C       C * Q**H
+*
+*  where Q is a complex unitary matrix defined as the product of k
+*  elementary reflectors
+*
+*        Q = H(k)' . . . H(2)' H(1)'
+*
+*  as returned by CGELQF. Q is of order M if SIDE = 'L' and of order N
+*  if SIDE = 'R'.
+*
+
+*  Arguments
+*  =========
+*
+*  SIDE    (input) CHARACTER*1
+*          = 'L': apply Q or Q**H from the Left;
+*          = 'R': apply Q or Q**H from the Right.
+*
+*  TRANS   (input) CHARACTER*1
+*          = 'N':  No transpose, apply Q;
+*          = 'C':  Conjugate transpose, apply Q**H.
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix C. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix C. N >= 0.
+*
+*  K       (input) INTEGER
+*          The number of elementary reflectors whose product defines
+*          the matrix Q.
+*          If SIDE = 'L', M >= K >= 0;
+*          if SIDE = 'R', N >= K >= 0.
+*
+*  A       (input) COMPLEX array, dimension
+*                               (LDA,M) if SIDE = 'L',
+*                               (LDA,N) if SIDE = 'R'
+*          The i-th row must contain the vector which defines the
+*          elementary reflector H(i), for i = 1,2,...,k, as returned by
+*          CGELQF in the first k rows of its array argument A.
+*          A is modified by the routine but restored on exit.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A. LDA >= max(1,K).
+*
+*  TAU     (input) COMPLEX array, dimension (K)
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by CGELQF.
+*
+*  C       (input/output) COMPLEX array, dimension (LDC,N)
+*          On entry, the M-by-N matrix C.
+*          On exit, C is overwritten by Q*C or Q**H*C or C*Q**H or C*Q.
+*
+*  LDC     (input) INTEGER
+*          The leading dimension of the array C. LDC >= max(1,M).
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          If SIDE = 'L', LWORK >= max(1,N);
+*          if SIDE = 'R', LWORK >= max(1,M).
+*          For optimum performance LWORK >= N*NB if SIDE 'L', and
+*          LWORK >= M*NB if SIDE = 'R', where NB is the optimal
+*          blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cunmr3"></A>
+  <H2>cunmr3</H2>
+  Multiples a general matrix by the unitary matrix
+  <PRE>
+USAGE:
+  info, c = NumRu::Lapack.cunmr3( side, trans, l, a, tau, c)
+    or
+  NumRu::Lapack.cunmr3  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CUNMR3( SIDE, TRANS, M, N, K, L, A, LDA, TAU, C, LDC, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CUNMR3 overwrites the general complex m by n matrix C with
+*
+*        Q * C  if SIDE = 'L' and TRANS = 'N', or
+*
+*        Q'* C  if SIDE = 'L' and TRANS = 'C', or
+*
+*        C * Q  if SIDE = 'R' and TRANS = 'N', or
+*
+*        C * Q' if SIDE = 'R' and TRANS = 'C',
+*
+*  where Q is a complex unitary matrix defined as the product of k
+*  elementary reflectors
+*
+*        Q = H(1) H(2) . . . H(k)
+*
+*  as returned by CTZRZF. Q is of order m if SIDE = 'L' and of order n
+*  if SIDE = 'R'.
+*
+
+*  Arguments
+*  =========
+*
+*  SIDE    (input) CHARACTER*1
+*          = 'L': apply Q or Q' from the Left
+*          = 'R': apply Q or Q' from the Right
+*
+*  TRANS   (input) CHARACTER*1
+*          = 'N': apply Q  (No transpose)
+*          = 'C': apply Q' (Conjugate transpose)
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix C. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix C. N >= 0.
+*
+*  K       (input) INTEGER
+*          The number of elementary reflectors whose product defines
+*          the matrix Q.
+*          If SIDE = 'L', M >= K >= 0;
+*          if SIDE = 'R', N >= K >= 0.
+*
+*  L       (input) INTEGER
+*          The number of columns of the matrix A containing
+*          the meaningful part of the Householder reflectors.
+*          If SIDE = 'L', M >= L >= 0, if SIDE = 'R', N >= L >= 0.
+*
+*  A       (input) COMPLEX array, dimension
+*                               (LDA,M) if SIDE = 'L',
+*                               (LDA,N) if SIDE = 'R'
+*          The i-th row must contain the vector which defines the
+*          elementary reflector H(i), for i = 1,2,...,k, as returned by
+*          CTZRZF in the last k rows of its array argument A.
+*          A is modified by the routine but restored on exit.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A. LDA >= max(1,K).
+*
+*  TAU     (input) COMPLEX array, dimension (K)
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by CTZRZF.
+*
+*  C       (input/output) COMPLEX array, dimension (LDC,N)
+*          On entry, the m-by-n matrix C.
+*          On exit, C is overwritten by Q*C or Q'*C or C*Q' or C*Q.
+*
+*  LDC     (input) INTEGER
+*          The leading dimension of the array C. LDC >= max(1,M).
+*
+*  WORK    (workspace) COMPLEX array, dimension
+*                                   (N) if SIDE = 'L',
+*                                   (M) if SIDE = 'R'
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*    A. Petitet, Computer Science Dept., Univ. of Tenn., Knoxville, USA
+*
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            LEFT, NOTRAN
+      INTEGER            I, I1, I2, I3, IC, JA, JC, MI, NI, NQ
+      COMPLEX            TAUI
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CLARZ, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          CONJG, MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cunmhr"></A>
+  <H2>cunmhr</H2>
+  Multiplies a general matrix by the unitary transformation
+  <PRE>
+USAGE:
+  work, info, c = NumRu::Lapack.cunmhr( side, trans, ilo, ihi, a, tau, c, lwork)
+    or
+  NumRu::Lapack.cunmhr  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CUNMHR( SIDE, TRANS, M, N, ILO, IHI, A, LDA, TAU, C, LDC, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CUNMHR overwrites the general complex M-by-N matrix C with
+*
+*                  SIDE = 'L'     SIDE = 'R'
+*  TRANS = 'N':      Q * C          C * Q
+*  TRANS = 'C':      Q**H * C       C * Q**H
+*
+*  where Q is a complex unitary matrix of order nq, with nq = m if
+*  SIDE = 'L' and nq = n if SIDE = 'R'. Q is defined as the product of
+*  IHI-ILO elementary reflectors, as returned by CGEHRD:
+*
+*  Q = H(ilo) H(ilo+1) . . . H(ihi-1).
+*
+
+*  Arguments
+*  =========
+*
+*  SIDE    (input) CHARACTER*1
+*          = 'L': apply Q or Q**H from the Left;
+*          = 'R': apply Q or Q**H from the Right.
+*
+*  TRANS   (input) CHARACTER*1
+*          = 'N': apply Q  (No transpose)
+*          = 'C': apply Q**H (Conjugate transpose)
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix C. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix C. N >= 0.
+*
+*  ILO     (input) INTEGER
+*  IHI     (input) INTEGER
+*          ILO and IHI must have the same values as in the previous call
+*          of CGEHRD. Q is equal to the unit matrix except in the
+*          submatrix Q(ilo+1:ihi,ilo+1:ihi).
+*          If SIDE = 'L', then 1 <= ILO <= IHI <= M, if M > 0, and
+*          ILO = 1 and IHI = 0, if M = 0;
+*          if SIDE = 'R', then 1 <= ILO <= IHI <= N, if N > 0, and
+*          ILO = 1 and IHI = 0, if N = 0.
+*
+*  A       (input) COMPLEX array, dimension
+*                               (LDA,M) if SIDE = 'L'
+*                               (LDA,N) if SIDE = 'R'
+*          The vectors which define the elementary reflectors, as
+*          returned by CGEHRD.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.
+*          LDA >= max(1,M) if SIDE = 'L'; LDA >= max(1,N) if SIDE = 'R'.
+*
+*  TAU     (input) COMPLEX array, dimension
+*                               (M-1) if SIDE = 'L'
+*                               (N-1) if SIDE = 'R'
+*          TAU(i) must contain the scalar factor of the elementary
+*          reflector H(i), as returned by CGEHRD.
+*
+*  C       (input/output) COMPLEX array, dimension (LDC,N)
+*          On entry, the M-by-N matrix C.
+*          On exit, C is overwritten by Q*C or Q**H*C or C*Q**H or C*Q.
+*
+*  LDC     (input) INTEGER
+*          The leading dimension of the array C. LDC >= max(1,M).
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          If SIDE = 'L', LWORK >= max(1,N);
+*          if SIDE = 'R', LWORK >= max(1,M).
+*          For optimum performance LWORK >= N*NB if SIDE = 'L', and
+*          LWORK >= M*NB if SIDE = 'R', where NB is the optimal
+*          blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            LEFT, LQUERY
+      INTEGER            I1, I2, IINFO, LWKOPT, MI, NB, NH, NI, NQ, NW
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      INTEGER            ILAENV
+      EXTERNAL           ILAENV, LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CUNMQR, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX, MIN
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="cunmbr"></A>
   <H2>cunmbr</H2>
+  Multiplies a general matrix by one of the unitary
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.cunmbr( vect, side, trans, m, k, a, tau, c, lwork)
@@ -176,6 +629,7 @@ FORTRAN MANUAL
 
   <A NAME="cungqr"></A>
   <H2>cungqr</H2>
+  Generates all or part of the unitary matrix Q from
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.cungqr( m, a, tau, lwork)
@@ -252,6 +706,7 @@ FORTRAN MANUAL
 
   <A NAME="cunm2r"></A>
   <H2>cunm2r</H2>
+  
   <PRE>
 USAGE:
   info, c = NumRu::Lapack.cunm2r( side, trans, m, a, tau, c)
@@ -347,6 +802,7 @@ FORTRAN MANUAL
 
   <A NAME="cunml2"></A>
   <H2>cunml2</H2>
+  
   <PRE>
 USAGE:
   info, c = NumRu::Lapack.cunml2( side, trans, a, tau, c)
@@ -442,6 +898,7 @@ FORTRAN MANUAL
 
   <A NAME="cunmr2"></A>
   <H2>cunmr2</H2>
+  
   <PRE>
 USAGE:
   info, c = NumRu::Lapack.cunmr2( side, trans, a, tau, c)
@@ -537,6 +994,7 @@ FORTRAN MANUAL
 
   <A NAME="cung2l"></A>
   <H2>cung2l</H2>
+  
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.cung2l( m, a, tau)
@@ -602,6 +1060,7 @@ FORTRAN MANUAL
 
   <A NAME="cungl2"></A>
   <H2>cungl2</H2>
+  
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.cungl2( a, tau)
@@ -666,6 +1125,7 @@ FORTRAN MANUAL
 
   <A NAME="cunm2l"></A>
   <H2>cunm2l</H2>
+  
   <PRE>
 USAGE:
   info, c = NumRu::Lapack.cunm2l( side, trans, m, a, tau, c)
@@ -761,6 +1221,7 @@ FORTRAN MANUAL
 
   <A NAME="cung2r"></A>
   <H2>cung2r</H2>
+  
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.cung2r( m, a, tau)
@@ -826,6 +1287,7 @@ FORTRAN MANUAL
 
   <A NAME="cungr2"></A>
   <H2>cungr2</H2>
+  
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.cungr2( a, tau)
@@ -891,6 +1353,7 @@ FORTRAN MANUAL
 
   <A NAME="cungql"></A>
   <H2>cungql</H2>
+  Generates all or part of the unitary matrix Q from
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.cungql( m, a, tau, lwork)
@@ -967,6 +1430,7 @@ FORTRAN MANUAL
 
   <A NAME="cungtr"></A>
   <H2>cungtr</H2>
+  Generates the unitary transformation matrix from
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.cungtr( uplo, a, tau, lwork)
@@ -1040,6 +1504,7 @@ FORTRAN MANUAL
 
   <A NAME="cunglq"></A>
   <H2>cunglq</H2>
+  Generates all or part of the unitary matrix Q from
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.cunglq( m, a, tau, lwork)
@@ -1115,6 +1580,7 @@ FORTRAN MANUAL
 
   <A NAME="cungbr"></A>
   <H2>cungbr</H2>
+  Generates the unitary transformation matrices from
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.cungbr( vect, m, k, a, tau, lwork)
@@ -1216,6 +1682,7 @@ FORTRAN MANUAL
 
   <A NAME="cungrq"></A>
   <H2>cungrq</H2>
+  Generates all or part of the unitary matrix Q from
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.cungrq( m, a, tau, lwork)
@@ -1292,6 +1759,7 @@ FORTRAN MANUAL
 
   <A NAME="cunmrz"></A>
   <H2>cunmrz</H2>
+  Multiples a general matrix by the unitary matrix
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.cunmrz( side, trans, l, a, tau, c, lwork)
@@ -1406,6 +1874,7 @@ FORTRAN MANUAL
 
   <A NAME="cunmrq"></A>
   <H2>cunmrq</H2>
+  Multiplies a general matrix by the unitary matrix
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.cunmrq( side, trans, a, tau, c, lwork)
@@ -1509,6 +1978,7 @@ FORTRAN MANUAL
 
   <A NAME="cunmtr"></A>
   <H2>cunmtr</H2>
+  Multiplies a general matrix by the unitary
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.cunmtr( side, uplo, trans, a, tau, c, lwork)
@@ -1628,6 +2098,7 @@ FORTRAN MANUAL
 
   <A NAME="cunghr"></A>
   <H2>cunghr</H2>
+  Generates the unitary transformation matrix from
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.cunghr( ilo, ihi, a, tau, lwork)
@@ -1700,6 +2171,7 @@ FORTRAN MANUAL
 
   <A NAME="cunmqr"></A>
   <H2>cunmqr</H2>
+  Multiplies a general matrix by the unitary matrix
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.cunmqr( side, trans, m, a, tau, c, lwork)
@@ -1796,454 +2268,6 @@ FORTRAN MANUAL
 
 *  =====================================================================
 *
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="cunmql"></A>
-  <H2>cunmql</H2>
-  <PRE>
-USAGE:
-  work, info, c = NumRu::Lapack.cunmql( side, trans, m, a, tau, c, lwork)
-    or
-  NumRu::Lapack.cunmql  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CUNMQL( SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  CUNMQL overwrites the general complex M-by-N matrix C with
-*
-*                  SIDE = 'L'     SIDE = 'R'
-*  TRANS = 'N':      Q * C          C * Q
-*  TRANS = 'C':      Q**H * C       C * Q**H
-*
-*  where Q is a complex unitary matrix defined as the product of k
-*  elementary reflectors
-*
-*        Q = H(k) . . . H(2) H(1)
-*
-*  as returned by CGEQLF. Q is of order M if SIDE = 'L' and of order N
-*  if SIDE = 'R'.
-*
-
-*  Arguments
-*  =========
-*
-*  SIDE    (input) CHARACTER*1
-*          = 'L': apply Q or Q**H from the Left;
-*          = 'R': apply Q or Q**H from the Right.
-*
-*  TRANS   (input) CHARACTER*1
-*          = 'N':  No transpose, apply Q;
-*          = 'C':  Transpose, apply Q**H.
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix C. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix C. N >= 0.
-*
-*  K       (input) INTEGER
-*          The number of elementary reflectors whose product defines
-*          the matrix Q.
-*          If SIDE = 'L', M >= K >= 0;
-*          if SIDE = 'R', N >= K >= 0.
-*
-*  A       (input) COMPLEX array, dimension (LDA,K)
-*          The i-th column must contain the vector which defines the
-*          elementary reflector H(i), for i = 1,2,...,k, as returned by
-*          CGEQLF in the last k columns of its array argument A.
-*          A is modified by the routine but restored on exit.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.
-*          If SIDE = 'L', LDA >= max(1,M);
-*          if SIDE = 'R', LDA >= max(1,N).
-*
-*  TAU     (input) COMPLEX array, dimension (K)
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by CGEQLF.
-*
-*  C       (input/output) COMPLEX array, dimension (LDC,N)
-*          On entry, the M-by-N matrix C.
-*          On exit, C is overwritten by Q*C or Q**H*C or C*Q**H or C*Q.
-*
-*  LDC     (input) INTEGER
-*          The leading dimension of the array C. LDC >= max(1,M).
-*
-*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.
-*          If SIDE = 'L', LWORK >= max(1,N);
-*          if SIDE = 'R', LWORK >= max(1,M).
-*          For optimum performance LWORK >= N*NB if SIDE = 'L', and
-*          LWORK >= M*NB if SIDE = 'R', where NB is the optimal
-*          blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="cunmlq"></A>
-  <H2>cunmlq</H2>
-  <PRE>
-USAGE:
-  work, info, c = NumRu::Lapack.cunmlq( side, trans, a, tau, c, lwork)
-    or
-  NumRu::Lapack.cunmlq  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CUNMLQ( SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  CUNMLQ overwrites the general complex M-by-N matrix C with
-*
-*                  SIDE = 'L'     SIDE = 'R'
-*  TRANS = 'N':      Q * C          C * Q
-*  TRANS = 'C':      Q**H * C       C * Q**H
-*
-*  where Q is a complex unitary matrix defined as the product of k
-*  elementary reflectors
-*
-*        Q = H(k)' . . . H(2)' H(1)'
-*
-*  as returned by CGELQF. Q is of order M if SIDE = 'L' and of order N
-*  if SIDE = 'R'.
-*
-
-*  Arguments
-*  =========
-*
-*  SIDE    (input) CHARACTER*1
-*          = 'L': apply Q or Q**H from the Left;
-*          = 'R': apply Q or Q**H from the Right.
-*
-*  TRANS   (input) CHARACTER*1
-*          = 'N':  No transpose, apply Q;
-*          = 'C':  Conjugate transpose, apply Q**H.
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix C. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix C. N >= 0.
-*
-*  K       (input) INTEGER
-*          The number of elementary reflectors whose product defines
-*          the matrix Q.
-*          If SIDE = 'L', M >= K >= 0;
-*          if SIDE = 'R', N >= K >= 0.
-*
-*  A       (input) COMPLEX array, dimension
-*                               (LDA,M) if SIDE = 'L',
-*                               (LDA,N) if SIDE = 'R'
-*          The i-th row must contain the vector which defines the
-*          elementary reflector H(i), for i = 1,2,...,k, as returned by
-*          CGELQF in the first k rows of its array argument A.
-*          A is modified by the routine but restored on exit.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A. LDA >= max(1,K).
-*
-*  TAU     (input) COMPLEX array, dimension (K)
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by CGELQF.
-*
-*  C       (input/output) COMPLEX array, dimension (LDC,N)
-*          On entry, the M-by-N matrix C.
-*          On exit, C is overwritten by Q*C or Q**H*C or C*Q**H or C*Q.
-*
-*  LDC     (input) INTEGER
-*          The leading dimension of the array C. LDC >= max(1,M).
-*
-*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.
-*          If SIDE = 'L', LWORK >= max(1,N);
-*          if SIDE = 'R', LWORK >= max(1,M).
-*          For optimum performance LWORK >= N*NB if SIDE 'L', and
-*          LWORK >= M*NB if SIDE = 'R', where NB is the optimal
-*          blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="cunmr3"></A>
-  <H2>cunmr3</H2>
-  <PRE>
-USAGE:
-  info, c = NumRu::Lapack.cunmr3( side, trans, l, a, tau, c)
-    or
-  NumRu::Lapack.cunmr3  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CUNMR3( SIDE, TRANS, M, N, K, L, A, LDA, TAU, C, LDC, WORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  CUNMR3 overwrites the general complex m by n matrix C with
-*
-*        Q * C  if SIDE = 'L' and TRANS = 'N', or
-*
-*        Q'* C  if SIDE = 'L' and TRANS = 'C', or
-*
-*        C * Q  if SIDE = 'R' and TRANS = 'N', or
-*
-*        C * Q' if SIDE = 'R' and TRANS = 'C',
-*
-*  where Q is a complex unitary matrix defined as the product of k
-*  elementary reflectors
-*
-*        Q = H(1) H(2) . . . H(k)
-*
-*  as returned by CTZRZF. Q is of order m if SIDE = 'L' and of order n
-*  if SIDE = 'R'.
-*
-
-*  Arguments
-*  =========
-*
-*  SIDE    (input) CHARACTER*1
-*          = 'L': apply Q or Q' from the Left
-*          = 'R': apply Q or Q' from the Right
-*
-*  TRANS   (input) CHARACTER*1
-*          = 'N': apply Q  (No transpose)
-*          = 'C': apply Q' (Conjugate transpose)
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix C. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix C. N >= 0.
-*
-*  K       (input) INTEGER
-*          The number of elementary reflectors whose product defines
-*          the matrix Q.
-*          If SIDE = 'L', M >= K >= 0;
-*          if SIDE = 'R', N >= K >= 0.
-*
-*  L       (input) INTEGER
-*          The number of columns of the matrix A containing
-*          the meaningful part of the Householder reflectors.
-*          If SIDE = 'L', M >= L >= 0, if SIDE = 'R', N >= L >= 0.
-*
-*  A       (input) COMPLEX array, dimension
-*                               (LDA,M) if SIDE = 'L',
-*                               (LDA,N) if SIDE = 'R'
-*          The i-th row must contain the vector which defines the
-*          elementary reflector H(i), for i = 1,2,...,k, as returned by
-*          CTZRZF in the last k rows of its array argument A.
-*          A is modified by the routine but restored on exit.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A. LDA >= max(1,K).
-*
-*  TAU     (input) COMPLEX array, dimension (K)
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by CTZRZF.
-*
-*  C       (input/output) COMPLEX array, dimension (LDC,N)
-*          On entry, the m-by-n matrix C.
-*          On exit, C is overwritten by Q*C or Q'*C or C*Q' or C*Q.
-*
-*  LDC     (input) INTEGER
-*          The leading dimension of the array C. LDC >= max(1,M).
-*
-*  WORK    (workspace) COMPLEX array, dimension
-*                                   (N) if SIDE = 'L',
-*                                   (M) if SIDE = 'R'
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*
-
-*  Further Details
-*  ===============
-*
-*  Based on contributions by
-*    A. Petitet, Computer Science Dept., Univ. of Tenn., Knoxville, USA
-*
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      LOGICAL            LEFT, NOTRAN
-      INTEGER            I, I1, I2, I3, IC, JA, JC, MI, NI, NQ
-      COMPLEX            TAUI
-*     ..
-*     .. External Functions ..
-      LOGICAL            LSAME
-      EXTERNAL           LSAME
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           CLARZ, XERBLA
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          CONJG, MAX
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="cunmhr"></A>
-  <H2>cunmhr</H2>
-  <PRE>
-USAGE:
-  work, info, c = NumRu::Lapack.cunmhr( side, trans, ilo, ihi, a, tau, c, lwork)
-    or
-  NumRu::Lapack.cunmhr  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CUNMHR( SIDE, TRANS, M, N, ILO, IHI, A, LDA, TAU, C, LDC, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  CUNMHR overwrites the general complex M-by-N matrix C with
-*
-*                  SIDE = 'L'     SIDE = 'R'
-*  TRANS = 'N':      Q * C          C * Q
-*  TRANS = 'C':      Q**H * C       C * Q**H
-*
-*  where Q is a complex unitary matrix of order nq, with nq = m if
-*  SIDE = 'L' and nq = n if SIDE = 'R'. Q is defined as the product of
-*  IHI-ILO elementary reflectors, as returned by CGEHRD:
-*
-*  Q = H(ilo) H(ilo+1) . . . H(ihi-1).
-*
-
-*  Arguments
-*  =========
-*
-*  SIDE    (input) CHARACTER*1
-*          = 'L': apply Q or Q**H from the Left;
-*          = 'R': apply Q or Q**H from the Right.
-*
-*  TRANS   (input) CHARACTER*1
-*          = 'N': apply Q  (No transpose)
-*          = 'C': apply Q**H (Conjugate transpose)
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix C. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix C. N >= 0.
-*
-*  ILO     (input) INTEGER
-*  IHI     (input) INTEGER
-*          ILO and IHI must have the same values as in the previous call
-*          of CGEHRD. Q is equal to the unit matrix except in the
-*          submatrix Q(ilo+1:ihi,ilo+1:ihi).
-*          If SIDE = 'L', then 1 <= ILO <= IHI <= M, if M > 0, and
-*          ILO = 1 and IHI = 0, if M = 0;
-*          if SIDE = 'R', then 1 <= ILO <= IHI <= N, if N > 0, and
-*          ILO = 1 and IHI = 0, if N = 0.
-*
-*  A       (input) COMPLEX array, dimension
-*                               (LDA,M) if SIDE = 'L'
-*                               (LDA,N) if SIDE = 'R'
-*          The vectors which define the elementary reflectors, as
-*          returned by CGEHRD.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.
-*          LDA >= max(1,M) if SIDE = 'L'; LDA >= max(1,N) if SIDE = 'R'.
-*
-*  TAU     (input) COMPLEX array, dimension
-*                               (M-1) if SIDE = 'L'
-*                               (N-1) if SIDE = 'R'
-*          TAU(i) must contain the scalar factor of the elementary
-*          reflector H(i), as returned by CGEHRD.
-*
-*  C       (input/output) COMPLEX array, dimension (LDC,N)
-*          On entry, the M-by-N matrix C.
-*          On exit, C is overwritten by Q*C or Q**H*C or C*Q**H or C*Q.
-*
-*  LDC     (input) INTEGER
-*          The leading dimension of the array C. LDC >= max(1,M).
-*
-*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.
-*          If SIDE = 'L', LWORK >= max(1,N);
-*          if SIDE = 'R', LWORK >= max(1,M).
-*          For optimum performance LWORK >= N*NB if SIDE = 'L', and
-*          LWORK >= M*NB if SIDE = 'R', where NB is the optimal
-*          blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      LOGICAL            LEFT, LQUERY
-      INTEGER            I1, I2, IINFO, LWKOPT, MI, NB, NH, NI, NQ, NW
-*     ..
-*     .. External Functions ..
-      LOGICAL            LSAME
-      INTEGER            ILAENV
-      EXTERNAL           ILAENV, LSAME
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           CUNMQR, XERBLA
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX, MIN
-*     ..
 
 
     </PRE>

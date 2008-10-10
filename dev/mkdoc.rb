@@ -38,13 +38,34 @@ MatrixTypes = [
               ["UP", "(complex) unitary, packed storageBDbidiagonal"]
 ]
 
+
+def parse_html(fname)
+  hash = Hash.new
+  name = nil
+  File.foreach(fname){|line|
+    if /^file <a href=".+">([a-z_\d]+)\.f<\/a>/ =~ line
+      name = $1
+    elsif name && /^for\s+(.*)$/ =~ line
+      hash[name] = $1
+      name = nil
+    end
+  }
+  return hash
+end
+
 require "numru/lapack"
 include NumRu
 
 prefix = "../doc"
 
-methods = Lapack.methods
+path = ARGV[0] || raise("Usage: ruby #$0 path_to_document_html")
+desc = Hash.new
+%w(single double complex complex16).each{|tn|
+  fname =  File.join(path, tn+".html")
+  desc.update parse_html(fname)
+}
 
+methods = Lapack.methods
 DataTypes.each{|cdt, dt|
   cdt = cdt.downcase
   dmethods = Array.new
@@ -74,7 +95,9 @@ DataTypes.each{|cdt, dt|
     <UL>
 EOF
         ms.each{|m|
-          file.print "      <LI><A HREF=\"##{m}\">#{m}</A></LI>\n"
+          file.print <<"EOF"
+      <LI><A HREF=\"##{m}\">#{m}</A>: #{desc[m]}</LI>
+EOF
         }
         file.print <<"EOF"
     </UL>
@@ -84,6 +107,7 @@ EOF
           file.print <<"EOF"
   <A NAME="#{m}"></A>
   <H2>#{m}</H2>
+  #{desc[m]}
   <PRE>
 EOF
           stdout_org = STDOUT.dup

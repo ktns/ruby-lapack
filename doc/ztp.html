@@ -6,14 +6,15 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for triangular, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#ztptri">ztptri</A></LI>
-      <LI><A HREF="#ztpcon">ztpcon</A></LI>
-      <LI><A HREF="#ztptrs">ztptrs</A></LI>
-      <LI><A HREF="#ztprfs">ztprfs</A></LI>
+      <LI><A HREF="#ztptri">ztptri</A>: Computes the inverse of a triangular matrix in packed storage.</LI>
+      <LI><A HREF="#ztpcon">ztpcon</A>: Estimates the reciprocal of the condition number of a triangular</LI>
+      <LI><A HREF="#ztptrs">ztptrs</A>: Solves a triangular system of linear equations AX=B,</LI>
+      <LI><A HREF="#ztprfs">ztprfs</A>: Provides forward and backward error bounds for the solution</LI>
     </UL>
 
   <A NAME="ztptri"></A>
   <H2>ztptri</H2>
+  Computes the inverse of a triangular matrix in packed storage.
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.ztptri( uplo, diag, n, ap)
@@ -87,6 +88,7 @@ FORTRAN MANUAL
 
   <A NAME="ztpcon"></A>
   <H2>ztpcon</H2>
+  Estimates the reciprocal of the condition number of a triangular
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.ztpcon( norm, uplo, diag, ap)
@@ -160,6 +162,7 @@ FORTRAN MANUAL
 
   <A NAME="ztptrs"></A>
   <H2>ztptrs</H2>
+  Solves a triangular system of linear equations AX=B,
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.ztptrs( uplo, trans, diag, n, ap, b)
@@ -237,6 +240,7 @@ FORTRAN MANUAL
 
   <A NAME="ztprfs"></A>
   <H2>ztprfs</H2>
+  Provides forward and backward error bounds for the solution
   <PRE>
 USAGE:
   ferr, berr, info = NumRu::Lapack.ztprfs( uplo, trans, diag, ap, b, x)

@@ -6,18 +6,199 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for symmetric or Hermitian positive definite tridiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#zptcon">zptcon</A></LI>
-      <LI><A HREF="#zpttrf">zpttrf</A></LI>
-      <LI><A HREF="#zptts2">zptts2</A></LI>
-      <LI><A HREF="#zptrfs">zptrfs</A></LI>
-      <LI><A HREF="#zptsv">zptsv</A></LI>
-      <LI><A HREF="#zptsvx">zptsvx</A></LI>
-      <LI><A HREF="#zpttrs">zpttrs</A></LI>
-      <LI><A HREF="#zpteqr">zpteqr</A></LI>
+      <LI><A HREF="#zpttrs">zpttrs</A>: Solves a Hermitian positive definite tridiagonal</LI>
+      <LI><A HREF="#zpteqr">zpteqr</A>: Computes all eigenvalues and eigenvectors of a complex symmetric</LI>
+      <LI><A HREF="#zptcon">zptcon</A>: Computes the reciprocal of the condition number of a</LI>
+      <LI><A HREF="#zpttrf">zpttrf</A>: Computes the LDL**H factorization of a Hermitian</LI>
+      <LI><A HREF="#zptts2">zptts2</A>: </LI>
+      <LI><A HREF="#zptrfs">zptrfs</A>: Improves the computed solution to a Hermitian positive</LI>
+      <LI><A HREF="#zptsv">zptsv</A>: Solves a Hermitian positive definite tridiagonal system</LI>
+      <LI><A HREF="#zptsvx">zptsvx</A>: Solves a Hermitian positive definite tridiagonal</LI>
     </UL>
+
+  <A NAME="zpttrs"></A>
+  <H2>zpttrs</H2>
+  Solves a Hermitian positive definite tridiagonal
+  <PRE>
+USAGE:
+  info, b = NumRu::Lapack.zpttrs( uplo, d, e, b)
+    or
+  NumRu::Lapack.zpttrs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZPTTRS( UPLO, N, NRHS, D, E, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZPTTRS solves a tridiagonal system of the form
+*     A * X = B
+*  using the factorization A = U'*D*U or A = L*D*L' computed by ZPTTRF.
+*  D is a diagonal matrix specified in the vector D, U (or L) is a unit
+*  bidiagonal matrix whose superdiagonal (subdiagonal) is specified in
+*  the vector E, and X and B are N by NRHS matrices.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies the form of the factorization and whether the
+*          vector E is the superdiagonal of the upper bidiagonal factor
+*          U or the subdiagonal of the lower bidiagonal factor L.
+*          = 'U':  A = U'*D*U, E is the superdiagonal of U
+*          = 'L':  A = L*D*L', E is the subdiagonal of L
+*
+*  N       (input) INTEGER
+*          The order of the tridiagonal matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  D       (input) DOUBLE PRECISION array, dimension (N)
+*          The n diagonal elements of the diagonal matrix D from the
+*          factorization A = U'*D*U or A = L*D*L'.
+*
+*  E       (input) COMPLEX*16 array, dimension (N-1)
+*          If UPLO = 'U', the (n-1) superdiagonal elements of the unit
+*          bidiagonal factor U from the factorization A = U'*D*U.
+*          If UPLO = 'L', the (n-1) subdiagonal elements of the unit
+*          bidiagonal factor L from the factorization A = L*D*L'.
+*
+*  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+*          On entry, the right hand side vectors B for the system of
+*          linear equations.
+*          On exit, the solution vectors, X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            UPPER
+      INTEGER            IUPLO, J, JB, NB
+*     ..
+*     .. External Functions ..
+      INTEGER            ILAENV
+      EXTERNAL           ILAENV
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           XERBLA, ZPTTS2
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX, MIN
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zpteqr"></A>
+  <H2>zpteqr</H2>
+  Computes all eigenvalues and eigenvectors of a complex symmetric
+  <PRE>
+USAGE:
+  info, d, e, z = NumRu::Lapack.zpteqr( compz, d, e, z)
+    or
+  NumRu::Lapack.zpteqr  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZPTEQR( COMPZ, N, D, E, Z, LDZ, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZPTEQR computes all eigenvalues and, optionally, eigenvectors of a
+*  symmetric positive definite tridiagonal matrix by first factoring the
+*  matrix using DPTTRF and then calling ZBDSQR to compute the singular
+*  values of the bidiagonal factor.
+*
+*  This routine computes the eigenvalues of the positive definite
+*  tridiagonal matrix to high relative accuracy.  This means that if the
+*  eigenvalues range over many orders of magnitude in size, then the
+*  small eigenvalues and corresponding eigenvectors will be computed
+*  more accurately than, for example, with the standard QR method.
+*
+*  The eigenvectors of a full or band positive definite Hermitian matrix
+*  can also be found if ZHETRD, ZHPTRD, or ZHBTRD has been used to
+*  reduce this matrix to tridiagonal form.  (The reduction to
+*  tridiagonal form, however, may preclude the possibility of obtaining
+*  high relative accuracy in the small eigenvalues of the original
+*  matrix, if these eigenvalues range over many orders of magnitude.)
+*
+
+*  Arguments
+*  =========
+*
+*  COMPZ   (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only.
+*          = 'V':  Compute eigenvectors of original Hermitian
+*                  matrix also.  Array Z contains the unitary matrix
+*                  used to reduce the original matrix to tridiagonal
+*                  form.
+*          = 'I':  Compute eigenvectors of tridiagonal matrix also.
+*
+*  N       (input) INTEGER
+*          The order of the matrix.  N >= 0.
+*
+*  D       (input/output) DOUBLE PRECISION array, dimension (N)
+*          On entry, the n diagonal elements of the tridiagonal matrix.
+*          On normal exit, D contains the eigenvalues, in descending
+*          order.
+*
+*  E       (input/output) DOUBLE PRECISION array, dimension (N-1)
+*          On entry, the (n-1) subdiagonal elements of the tridiagonal
+*          matrix.
+*          On exit, E has been destroyed.
+*
+*  Z       (input/output) COMPLEX*16 array, dimension (LDZ, N)
+*          On entry, if COMPZ = 'V', the unitary matrix used in the
+*          reduction to tridiagonal form.
+*          On exit, if COMPZ = 'V', the orthonormal eigenvectors of the
+*          original Hermitian matrix;
+*          if COMPZ = 'I', the orthonormal eigenvectors of the
+*          tridiagonal matrix.
+*          If INFO > 0 on exit, Z contains the eigenvectors associated
+*          with only the stored eigenvalues.
+*          If  COMPZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          COMPZ = 'V' or 'I', LDZ >= max(1,N).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (4*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, and i is:
+*                <= N  the Cholesky factorization of the matrix could
+*                      not be performed because the i-th principal minor
+*                      was not positive definite.
+*                > N   the SVD algorithm failed to converge;
+*                      if INFO = N+i, i off-diagonal elements of the
+*                      bidiagonal factor did not converge to zero.
+*
+
+*  ====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="zptcon"></A>
   <H2>zptcon</H2>
+  Computes the reciprocal of the condition number of a
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.zptcon( d, e, anorm)
@@ -86,6 +267,7 @@ FORTRAN MANUAL
 
   <A NAME="zpttrf"></A>
   <H2>zpttrf</H2>
+  Computes the LDL**H factorization of a Hermitian
   <PRE>
 USAGE:
   info, d, e = NumRu::Lapack.zpttrf( d, e)
@@ -140,6 +322,7 @@ FORTRAN MANUAL
 
   <A NAME="zptts2"></A>
   <H2>zptts2</H2>
+  
   <PRE>
 USAGE:
   b = NumRu::Lapack.zptts2( iuplo, d, e, b)
@@ -215,6 +398,7 @@ FORTRAN MANUAL
 
   <A NAME="zptrfs"></A>
   <H2>zptrfs</H2>
+  Improves the computed solution to a Hermitian positive
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.zptrfs( uplo, d, e, df, ef, b, x)
@@ -317,6 +501,7 @@ FORTRAN MANUAL
 
   <A NAME="zptsv"></A>
   <H2>zptsv</H2>
+  Solves a Hermitian positive definite tridiagonal system
   <PRE>
 USAGE:
   info, d, e, b = NumRu::Lapack.zptsv( nrhs, d, e, b)
@@ -391,6 +576,7 @@ FORTRAN MANUAL
 
   <A NAME="zptsvx"></A>
   <H2>zptsvx</H2>
+  Solves a Hermitian positive definite tridiagonal
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, df, ef = NumRu::Lapack.zptsvx( fact, d, e, df, ef, b)
@@ -531,184 +717,6 @@ FORTRAN MANUAL
 *
 
 *  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zpttrs"></A>
-  <H2>zpttrs</H2>
-  <PRE>
-USAGE:
-  info, b = NumRu::Lapack.zpttrs( uplo, d, e, b)
-    or
-  NumRu::Lapack.zpttrs  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZPTTRS( UPLO, N, NRHS, D, E, B, LDB, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZPTTRS solves a tridiagonal system of the form
-*     A * X = B
-*  using the factorization A = U'*D*U or A = L*D*L' computed by ZPTTRF.
-*  D is a diagonal matrix specified in the vector D, U (or L) is a unit
-*  bidiagonal matrix whose superdiagonal (subdiagonal) is specified in
-*  the vector E, and X and B are N by NRHS matrices.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          Specifies the form of the factorization and whether the
-*          vector E is the superdiagonal of the upper bidiagonal factor
-*          U or the subdiagonal of the lower bidiagonal factor L.
-*          = 'U':  A = U'*D*U, E is the superdiagonal of U
-*          = 'L':  A = L*D*L', E is the subdiagonal of L
-*
-*  N       (input) INTEGER
-*          The order of the tridiagonal matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
-*  D       (input) DOUBLE PRECISION array, dimension (N)
-*          The n diagonal elements of the diagonal matrix D from the
-*          factorization A = U'*D*U or A = L*D*L'.
-*
-*  E       (input) COMPLEX*16 array, dimension (N-1)
-*          If UPLO = 'U', the (n-1) superdiagonal elements of the unit
-*          bidiagonal factor U from the factorization A = U'*D*U.
-*          If UPLO = 'L', the (n-1) subdiagonal elements of the unit
-*          bidiagonal factor L from the factorization A = L*D*L'.
-*
-*  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
-*          On entry, the right hand side vectors B for the system of
-*          linear equations.
-*          On exit, the solution vectors, X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -k, the k-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      LOGICAL            UPPER
-      INTEGER            IUPLO, J, JB, NB
-*     ..
-*     .. External Functions ..
-      INTEGER            ILAENV
-      EXTERNAL           ILAENV
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           XERBLA, ZPTTS2
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX, MIN
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zpteqr"></A>
-  <H2>zpteqr</H2>
-  <PRE>
-USAGE:
-  info, d, e, z = NumRu::Lapack.zpteqr( compz, d, e, z)
-    or
-  NumRu::Lapack.zpteqr  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZPTEQR( COMPZ, N, D, E, Z, LDZ, WORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZPTEQR computes all eigenvalues and, optionally, eigenvectors of a
-*  symmetric positive definite tridiagonal matrix by first factoring the
-*  matrix using DPTTRF and then calling ZBDSQR to compute the singular
-*  values of the bidiagonal factor.
-*
-*  This routine computes the eigenvalues of the positive definite
-*  tridiagonal matrix to high relative accuracy.  This means that if the
-*  eigenvalues range over many orders of magnitude in size, then the
-*  small eigenvalues and corresponding eigenvectors will be computed
-*  more accurately than, for example, with the standard QR method.
-*
-*  The eigenvectors of a full or band positive definite Hermitian matrix
-*  can also be found if ZHETRD, ZHPTRD, or ZHBTRD has been used to
-*  reduce this matrix to tridiagonal form.  (The reduction to
-*  tridiagonal form, however, may preclude the possibility of obtaining
-*  high relative accuracy in the small eigenvalues of the original
-*  matrix, if these eigenvalues range over many orders of magnitude.)
-*
-
-*  Arguments
-*  =========
-*
-*  COMPZ   (input) CHARACTER*1
-*          = 'N':  Compute eigenvalues only.
-*          = 'V':  Compute eigenvectors of original Hermitian
-*                  matrix also.  Array Z contains the unitary matrix
-*                  used to reduce the original matrix to tridiagonal
-*                  form.
-*          = 'I':  Compute eigenvectors of tridiagonal matrix also.
-*
-*  N       (input) INTEGER
-*          The order of the matrix.  N >= 0.
-*
-*  D       (input/output) DOUBLE PRECISION array, dimension (N)
-*          On entry, the n diagonal elements of the tridiagonal matrix.
-*          On normal exit, D contains the eigenvalues, in descending
-*          order.
-*
-*  E       (input/output) DOUBLE PRECISION array, dimension (N-1)
-*          On entry, the (n-1) subdiagonal elements of the tridiagonal
-*          matrix.
-*          On exit, E has been destroyed.
-*
-*  Z       (input/output) COMPLEX*16 array, dimension (LDZ, N)
-*          On entry, if COMPZ = 'V', the unitary matrix used in the
-*          reduction to tridiagonal form.
-*          On exit, if COMPZ = 'V', the orthonormal eigenvectors of the
-*          original Hermitian matrix;
-*          if COMPZ = 'I', the orthonormal eigenvectors of the
-*          tridiagonal matrix.
-*          If INFO > 0 on exit, Z contains the eigenvectors associated
-*          with only the stored eigenvalues.
-*          If  COMPZ = 'N', then Z is not referenced.
-*
-*  LDZ     (input) INTEGER
-*          The leading dimension of the array Z.  LDZ >= 1, and if
-*          COMPZ = 'V' or 'I', LDZ >= max(1,N).
-*
-*  WORK    (workspace) DOUBLE PRECISION array, dimension (4*N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit.
-*          < 0:  if INFO = -i, the i-th argument had an illegal value.
-*          > 0:  if INFO = i, and i is:
-*                <= N  the Cholesky factorization of the matrix could
-*                      not be performed because the i-th principal minor
-*                      was not positive definite.
-*                > N   the SVD algorithm failed to converge;
-*                      if INFO = N+i, i off-diagonal elements of the
-*                      bidiagonal factor did not converge to zero.
-*
-
-*  ====================================================================
 *
 
 

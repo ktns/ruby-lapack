@@ -6,17 +6,18 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for general tridiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#dgttrf">dgttrf</A></LI>
-      <LI><A HREF="#dgttrs">dgttrs</A></LI>
-      <LI><A HREF="#dgtsv">dgtsv</A></LI>
-      <LI><A HREF="#dgtts2">dgtts2</A></LI>
-      <LI><A HREF="#dgtcon">dgtcon</A></LI>
-      <LI><A HREF="#dgtsvx">dgtsvx</A></LI>
-      <LI><A HREF="#dgtrfs">dgtrfs</A></LI>
+      <LI><A HREF="#dgttrf">dgttrf</A>: Computes an LU factorization of a general tridiagonal matrix,</LI>
+      <LI><A HREF="#dgttrs">dgttrs</A>: Solves a general tridiagonal system of linear equations AX=B,</LI>
+      <LI><A HREF="#dgtsv">dgtsv</A>: Solves a general tridiagonal system of linear equations AX=B.</LI>
+      <LI><A HREF="#dgtts2">dgtts2</A>: </LI>
+      <LI><A HREF="#dgtcon">dgtcon</A>: Estimates the reciprocal of the condition number of a general</LI>
+      <LI><A HREF="#dgtsvx">dgtsvx</A>: Solves a general tridiagonal system of linear equations AX=B,</LI>
+      <LI><A HREF="#dgtrfs">dgtrfs</A>: Improves the computed solution to a general tridiagonal system</LI>
     </UL>
 
   <A NAME="dgttrf"></A>
   <H2>dgttrf</H2>
+  Computes an LU factorization of a general tridiagonal matrix,
   <PRE>
 USAGE:
   du2, ipiv, info, dl, d, du = NumRu::Lapack.dgttrf( dl, d, du)
@@ -94,6 +95,7 @@ FORTRAN MANUAL
 
   <A NAME="dgttrs"></A>
   <H2>dgttrs</H2>
+  Solves a general tridiagonal system of linear equations AX=B,
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.dgttrs( trans, dl, d, du, du2, ipiv, b)
@@ -184,6 +186,7 @@ FORTRAN MANUAL
 
   <A NAME="dgtsv"></A>
   <H2>dgtsv</H2>
+  Solves a general tridiagonal system of linear equations AX=B.
   <PRE>
 USAGE:
   info, dl, d, du, b = NumRu::Lapack.dgtsv( dl, d, du, b)
@@ -262,6 +265,7 @@ FORTRAN MANUAL
 
   <A NAME="dgtts2"></A>
   <H2>dgtts2</H2>
+  
   <PRE>
 USAGE:
   b = NumRu::Lapack.dgtts2( itrans, dl, d, du, du2, ipiv, b)
@@ -338,6 +342,7 @@ FORTRAN MANUAL
 
   <A NAME="dgtcon"></A>
   <H2>dgtcon</H2>
+  Estimates the reciprocal of the condition number of a general
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.dgtcon( norm, dl, d, du, du2, ipiv, anorm)
@@ -418,6 +423,7 @@ FORTRAN MANUAL
 
   <A NAME="dgtsvx"></A>
   <H2>dgtsvx</H2>
+  Solves a general tridiagonal system of linear equations AX=B,
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, dlf, df, duf, du2, ipiv = NumRu::Lapack.dgtsvx( fact, trans, dl, d, du, dlf, df, duf, du2, ipiv, b)
@@ -608,6 +614,7 @@ FORTRAN MANUAL
 
   <A NAME="dgtrfs"></A>
   <H2>dgtrfs</H2>
+  Improves the computed solution to a general tridiagonal system
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.dgtrfs( trans, dl, d, du, dlf, df, duf, du2, ipiv, b, x)

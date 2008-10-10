@@ -6,13 +6,14 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for triangular band matrix</H1>
     <UL>
-      <LI><A HREF="#ctbtrs">ctbtrs</A></LI>
-      <LI><A HREF="#ctbrfs">ctbrfs</A></LI>
-      <LI><A HREF="#ctbcon">ctbcon</A></LI>
+      <LI><A HREF="#ctbtrs">ctbtrs</A>: Solves a triangular banded system of linear equations AX=B,</LI>
+      <LI><A HREF="#ctbrfs">ctbrfs</A>: Provides forward and backward error bounds for the solution</LI>
+      <LI><A HREF="#ctbcon">ctbcon</A>: Estimates the reciprocal of the condition number of a triangular</LI>
     </UL>
 
   <A NAME="ctbtrs"></A>
   <H2>ctbtrs</H2>
+  Solves a triangular banded system of linear equations AX=B,
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.ctbtrs( uplo, trans, diag, kd, ab, b)
@@ -98,6 +99,7 @@ FORTRAN MANUAL
 
   <A NAME="ctbrfs"></A>
   <H2>ctbrfs</H2>
+  Provides forward and backward error bounds for the solution
   <PRE>
 USAGE:
   ferr, berr, info = NumRu::Lapack.ctbrfs( uplo, trans, diag, kd, ab, b, x)
@@ -205,6 +207,7 @@ FORTRAN MANUAL
 
   <A NAME="ctbcon"></A>
   <H2>ctbcon</H2>
+  Estimates the reciprocal of the condition number of a triangular
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.ctbcon( norm, uplo, diag, kd, ab)

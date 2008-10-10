@@ -6,25 +6,96 @@
     <A NAME="top"></A>
     <H1>REAL routines for symmetric, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#sspevx">sspevx</A></LI>
-      <LI><A HREF="#sspgvx">sspgvx</A></LI>
-      <LI><A HREF="#sspevd">sspevd</A></LI>
-      <LI><A HREF="#sspcon">sspcon</A></LI>
-      <LI><A HREF="#sspev">sspev</A></LI>
-      <LI><A HREF="#sspsvx">sspsvx</A></LI>
-      <LI><A HREF="#ssptri">ssptri</A></LI>
-      <LI><A HREF="#ssprfs">ssprfs</A></LI>
-      <LI><A HREF="#sspsv">sspsv</A></LI>
-      <LI><A HREF="#sspgvd">sspgvd</A></LI>
-      <LI><A HREF="#ssptrs">ssptrs</A></LI>
-      <LI><A HREF="#ssptrf">ssptrf</A></LI>
-      <LI><A HREF="#ssptrd">ssptrd</A></LI>
-      <LI><A HREF="#sspgv">sspgv</A></LI>
-      <LI><A HREF="#sspgst">sspgst</A></LI>
+      <LI><A HREF="#sspgst">sspgst</A>: Reduces a symmetric-definite generalized eigenproblem</LI>
+      <LI><A HREF="#sspevx">sspevx</A>: Computes selected eigenvalues and eigenvectors of a</LI>
+      <LI><A HREF="#sspgvx">sspgvx</A>: Computes selected eigenvalues, and optionally, eigenvectors of</LI>
+      <LI><A HREF="#sspevd">sspevd</A>: Computes all eigenvalues, and optionally, eigenvectors of a real</LI>
+      <LI><A HREF="#sspcon">sspcon</A>: Estimates the reciprocal of the condition number of a</LI>
+      <LI><A HREF="#sspev">sspev</A>: Computes all eigenvalues, and optionally, eigenvectors of a real</LI>
+      <LI><A HREF="#sspsvx">sspsvx</A>: Solves a real symmetric</LI>
+      <LI><A HREF="#ssptri">ssptri</A>: Computes the inverse of a real symmetric</LI>
+      <LI><A HREF="#ssprfs">ssprfs</A>: Improves the computed solution to a real</LI>
+      <LI><A HREF="#sspsv">sspsv</A>: Solves a real symmetric indefinite system of linear equations AX=B,</LI>
+      <LI><A HREF="#sspgvd">sspgvd</A>: Computes all eigenvalues and eigenvectors of  a generalized</LI>
+      <LI><A HREF="#ssptrs">ssptrs</A>: Solves a real symmetric</LI>
+      <LI><A HREF="#ssptrf">ssptrf</A>: Computes the factorization of a real</LI>
+      <LI><A HREF="#ssptrd">ssptrd</A>: Reduces a symmetric matrix in packed storage to real</LI>
+      <LI><A HREF="#sspgv">sspgv</A>: Computes all eigenvalues and eigenvectors of  a generalized</LI>
     </UL>
+
+  <A NAME="sspgst"></A>
+  <H2>sspgst</H2>
+  Reduces a symmetric-definite generalized eigenproblem
+  <PRE>
+USAGE:
+  info, ap = NumRu::Lapack.sspgst( itype, uplo, n, ap, bp)
+    or
+  NumRu::Lapack.sspgst  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE SSPGST( ITYPE, UPLO, N, AP, BP, INFO )
+
+*  Purpose
+*  =======
+*
+*  SSPGST reduces a real symmetric-definite generalized eigenproblem
+*  to standard form, using packed storage.
+*
+*  If ITYPE = 1, the problem is A*x = lambda*B*x,
+*  and A is overwritten by inv(U**T)*A*inv(U) or inv(L)*A*inv(L**T)
+*
+*  If ITYPE = 2 or 3, the problem is A*B*x = lambda*x or
+*  B*A*x = lambda*x, and A is overwritten by U*A*U**T or L**T*A*L.
+*
+*  B must have been previously factorized as U**T*U or L*L**T by SPPTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  ITYPE   (input) INTEGER
+*          = 1: compute inv(U**T)*A*inv(U) or inv(L)*A*inv(L**T);
+*          = 2 or 3: compute U*A*U**T or L**T*A*L.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored and B is factored as
+*                  U**T*U;
+*          = 'L':  Lower triangle of A is stored and B is factored as
+*                  L*L**T.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  AP      (input/output) REAL array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.
+*
+*          On exit, if INFO = 0, the transformed matrix, stored in the
+*          same format as A.
+*
+*  BP      (input) REAL array, dimension (N*(N+1)/2)
+*          The triangular factor from the Cholesky factorization of B,
+*          stored in the same format as A, as returned by SPPTRF.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="sspevx"></A>
   <H2>sspevx</H2>
+  Computes selected eigenvalues and eigenvectors of a
   <PRE>
 USAGE:
   m, w, z, ifail, info, ap = NumRu::Lapack.sspevx( jobz, range, uplo, ap, vl, vu, il, iu, abstol)
@@ -164,6 +235,7 @@ FORTRAN MANUAL
 
   <A NAME="sspgvx"></A>
   <H2>sspgvx</H2>
+  Computes selected eigenvalues, and optionally, eigenvectors of
   <PRE>
 USAGE:
   m, w, z, ifail, info, ap, bp = NumRu::Lapack.sspgvx( itype, jobz, range, uplo, ap, bp, vl, vu, il, iu, abstol, ldz)
@@ -346,6 +418,7 @@ FORTRAN MANUAL
 
   <A NAME="sspevd"></A>
   <H2>sspevd</H2>
+  Computes all eigenvalues, and optionally, eigenvectors of a real
   <PRE>
 USAGE:
   w, z, work, iwork, info, ap = NumRu::Lapack.sspevd( jobz, uplo, ap, lwork, liwork)
@@ -459,6 +532,7 @@ FORTRAN MANUAL
 
   <A NAME="sspcon"></A>
   <H2>sspcon</H2>
+  Estimates the reciprocal of the condition number of a
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.sspcon( uplo, ap, ipiv, anorm)
@@ -527,6 +601,7 @@ FORTRAN MANUAL
 
   <A NAME="sspev"></A>
   <H2>sspev</H2>
+  Computes all eigenvalues, and optionally, eigenvectors of a real
   <PRE>
 USAGE:
   w, z, info, ap = NumRu::Lapack.sspev( jobz, uplo, ap)
@@ -604,6 +679,7 @@ FORTRAN MANUAL
 
   <A NAME="sspsvx"></A>
   <H2>sspsvx</H2>
+  Solves a real symmetric
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, afp, ipiv = NumRu::Lapack.sspsvx( fact, uplo, ap, afp, ipiv, b)
@@ -793,6 +869,7 @@ FORTRAN MANUAL
 
   <A NAME="ssptri"></A>
   <H2>ssptri</H2>
+  Computes the inverse of a real symmetric
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.ssptri( uplo, ap, ipiv)
@@ -857,6 +934,7 @@ FORTRAN MANUAL
 
   <A NAME="ssprfs"></A>
   <H2>ssprfs</H2>
+  Improves the computed solution to a real
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.ssprfs( uplo, ap, afp, ipiv, b, x)
@@ -959,6 +1037,7 @@ FORTRAN MANUAL
 
   <A NAME="sspsv"></A>
   <H2>sspsv</H2>
+  Solves a real symmetric indefinite system of linear equations AX=B,
   <PRE>
 USAGE:
   ipiv, info, ap, b = NumRu::Lapack.sspsv( uplo, ap, b)
@@ -1077,6 +1156,7 @@ FORTRAN MANUAL
 
   <A NAME="sspgvd"></A>
   <H2>sspgvd</H2>
+  Computes all eigenvalues and eigenvectors of  a generalized
   <PRE>
 USAGE:
   w, z, work, iwork, info, ap, bp = NumRu::Lapack.sspgvd( itype, jobz, uplo, ap, bp, lwork, liwork)
@@ -1216,6 +1296,7 @@ FORTRAN MANUAL
 
   <A NAME="ssptrs"></A>
   <H2>ssptrs</H2>
+  Solves a real symmetric
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.ssptrs( uplo, ap, ipiv, b)
@@ -1280,6 +1361,7 @@ FORTRAN MANUAL
 
   <A NAME="ssptrf"></A>
   <H2>ssptrf</H2>
+  Computes the factorization of a real
   <PRE>
 USAGE:
   ipiv, info, ap = NumRu::Lapack.ssptrf( uplo, ap)
@@ -1392,6 +1474,7 @@ FORTRAN MANUAL
 
   <A NAME="ssptrd"></A>
   <H2>ssptrd</H2>
+  Reduces a symmetric matrix in packed storage to real
   <PRE>
 USAGE:
   d, e, tau, info, ap = NumRu::Lapack.ssptrd( uplo, ap)
@@ -1492,6 +1575,7 @@ FORTRAN MANUAL
 
   <A NAME="sspgv"></A>
   <H2>sspgv</H2>
+  Computes all eigenvalues and eigenvectors of  a generalized
   <PRE>
 USAGE:
   w, z, info, ap, bp = NumRu::Lapack.sspgv( itype, jobz, uplo, ap, bp)
@@ -1596,75 +1680,6 @@ FORTRAN MANUAL
 *     .. External Subroutines ..
       EXTERNAL           SPPTRF, SSPEV, SSPGST, STPMV, STPSV, XERBLA
 *     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="sspgst"></A>
-  <H2>sspgst</H2>
-  <PRE>
-USAGE:
-  info, ap = NumRu::Lapack.sspgst( itype, uplo, n, ap, bp)
-    or
-  NumRu::Lapack.sspgst  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE SSPGST( ITYPE, UPLO, N, AP, BP, INFO )
-
-*  Purpose
-*  =======
-*
-*  SSPGST reduces a real symmetric-definite generalized eigenproblem
-*  to standard form, using packed storage.
-*
-*  If ITYPE = 1, the problem is A*x = lambda*B*x,
-*  and A is overwritten by inv(U**T)*A*inv(U) or inv(L)*A*inv(L**T)
-*
-*  If ITYPE = 2 or 3, the problem is A*B*x = lambda*x or
-*  B*A*x = lambda*x, and A is overwritten by U*A*U**T or L**T*A*L.
-*
-*  B must have been previously factorized as U**T*U or L*L**T by SPPTRF.
-*
-
-*  Arguments
-*  =========
-*
-*  ITYPE   (input) INTEGER
-*          = 1: compute inv(U**T)*A*inv(U) or inv(L)*A*inv(L**T);
-*          = 2 or 3: compute U*A*U**T or L**T*A*L.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  Upper triangle of A is stored and B is factored as
-*                  U**T*U;
-*          = 'L':  Lower triangle of A is stored and B is factored as
-*                  L*L**T.
-*
-*  N       (input) INTEGER
-*          The order of the matrices A and B.  N >= 0.
-*
-*  AP      (input/output) REAL array, dimension (N*(N+1)/2)
-*          On entry, the upper or lower triangle of the symmetric matrix
-*          A, packed columnwise in a linear array.  The j-th column of A
-*          is stored in the array AP as follows:
-*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
-*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.
-*
-*          On exit, if INFO = 0, the transformed matrix, stored in the
-*          same format as A.
-*
-*  BP      (input) REAL array, dimension (N*(N+1)/2)
-*          The triangular factor from the Cholesky factorization of B,
-*          stored in the same format as A, as returned by SPPTRF.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
 
 
     </PRE>

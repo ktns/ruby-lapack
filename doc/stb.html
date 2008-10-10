@@ -6,178 +6,14 @@
     <A NAME="top"></A>
     <H1>REAL routines for triangular band matrix</H1>
     <UL>
-      <LI><A HREF="#stbcon">stbcon</A></LI>
-      <LI><A HREF="#stbtrs">stbtrs</A></LI>
-      <LI><A HREF="#stbrfs">stbrfs</A></LI>
+      <LI><A HREF="#stbrfs">stbrfs</A>: Provides forward and backward error bounds for the solution</LI>
+      <LI><A HREF="#stbcon">stbcon</A>: Estimates the reciprocal of the condition number of a triangular</LI>
+      <LI><A HREF="#stbtrs">stbtrs</A>: Solves a triangular banded system of linear equations AX=B,</LI>
     </UL>
-
-  <A NAME="stbcon"></A>
-  <H2>stbcon</H2>
-  <PRE>
-USAGE:
-  rcond, info = NumRu::Lapack.stbcon( norm, uplo, diag, kd, ab)
-    or
-  NumRu::Lapack.stbcon  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE STBCON( NORM, UPLO, DIAG, N, KD, AB, LDAB, RCOND, WORK, IWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  STBCON estimates the reciprocal of the condition number of a
-*  triangular band matrix A, in either the 1-norm or the infinity-norm.
-*
-*  The norm of A is computed and an estimate is obtained for
-*  norm(inv(A)), then the reciprocal of the condition number is
-*  computed as
-*     RCOND = 1 / ( norm(A) * norm(inv(A)) ).
-*
-
-*  Arguments
-*  =========
-*
-*  NORM    (input) CHARACTER*1
-*          Specifies whether the 1-norm condition number or the
-*          infinity-norm condition number is required:
-*          = '1' or 'O':  1-norm;
-*          = 'I':         Infinity-norm.
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  A is upper triangular;
-*          = 'L':  A is lower triangular.
-*
-*  DIAG    (input) CHARACTER*1
-*          = 'N':  A is non-unit triangular;
-*          = 'U':  A is unit triangular.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  KD      (input) INTEGER
-*          The number of superdiagonals or subdiagonals of the
-*          triangular band matrix A.  KD >= 0.
-*
-*  AB      (input) REAL array, dimension (LDAB,N)
-*          The upper or lower triangular band matrix A, stored in the
-*          first kd+1 rows of the array. The j-th column of A is stored
-*          in the j-th column of the array AB as follows:
-*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
-*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
-*          If DIAG = 'U', the diagonal elements of A are not referenced
-*          and are assumed to be 1.
-*
-*  LDAB    (input) INTEGER
-*          The leading dimension of the array AB.  LDAB >= KD+1.
-*
-*  RCOND   (output) REAL
-*          The reciprocal of the condition number of the matrix A,
-*          computed as RCOND = 1/(norm(A) * norm(inv(A))).
-*
-*  WORK    (workspace) REAL array, dimension (3*N)
-*
-*  IWORK   (workspace) INTEGER array, dimension (N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="stbtrs"></A>
-  <H2>stbtrs</H2>
-  <PRE>
-USAGE:
-  info, b = NumRu::Lapack.stbtrs( uplo, trans, diag, kd, ab, b)
-    or
-  NumRu::Lapack.stbtrs  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE STBTRS( UPLO, TRANS, DIAG, N, KD, NRHS, AB, LDAB, B, LDB, INFO )
-
-*  Purpose
-*  =======
-*
-*  STBTRS solves a triangular system of the form
-*
-*     A * X = B  or  A**T * X = B,
-*
-*  where A is a triangular band matrix of order N, and B is an
-*  N-by NRHS matrix.  A check is made to verify that A is nonsingular.
-*
-
-*  Arguments
-*  =========
-*
-*  UPLO    (input) CHARACTER*1
-*          = 'U':  A is upper triangular;
-*          = 'L':  A is lower triangular.
-*
-*  TRANS   (input) CHARACTER*1
-*          Specifies the form the system of equations:
-*          = 'N':  A * X = B  (No transpose)
-*          = 'T':  A**T * X = B  (Transpose)
-*          = 'C':  A**H * X = B  (Conjugate transpose = Transpose)
-*
-*  DIAG    (input) CHARACTER*1
-*          = 'N':  A is non-unit triangular;
-*          = 'U':  A is unit triangular.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  KD      (input) INTEGER
-*          The number of superdiagonals or subdiagonals of the
-*          triangular band matrix A.  KD >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrix B.  NRHS >= 0.
-*
-*  AB      (input) REAL array, dimension (LDAB,N)
-*          The upper or lower triangular band matrix A, stored in the
-*          first kd+1 rows of AB.  The j-th column of A is stored
-*          in the j-th column of the array AB as follows:
-*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
-*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
-*          If DIAG = 'U', the diagonal elements of A are not referenced
-*          and are assumed to be 1.
-*
-*  LDAB    (input) INTEGER
-*          The leading dimension of the array AB.  LDAB >= KD+1.
-*
-*  B       (input/output) REAL array, dimension (LDB,NRHS)
-*          On entry, the right hand side matrix B.
-*          On exit, if INFO = 0, the solution matrix X.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, the i-th diagonal element of A is zero,
-*                indicating that the matrix is singular and the
-*                solutions X have not been computed.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
 
   <A NAME="stbrfs"></A>
   <H2>stbrfs</H2>
+  Provides forward and backward error bounds for the solution
   <PRE>
 USAGE:
   ferr, berr, info = NumRu::Lapack.stbrfs( uplo, trans, diag, kd, ab, b, x)
@@ -274,6 +110,173 @@ FORTRAN MANUAL
 *  INFO    (output) INTEGER
 *          = 0:  successful exit
 *          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="stbcon"></A>
+  <H2>stbcon</H2>
+  Estimates the reciprocal of the condition number of a triangular
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.stbcon( norm, uplo, diag, kd, ab)
+    or
+  NumRu::Lapack.stbcon  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE STBCON( NORM, UPLO, DIAG, N, KD, AB, LDAB, RCOND, WORK, IWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  STBCON estimates the reciprocal of the condition number of a
+*  triangular band matrix A, in either the 1-norm or the infinity-norm.
+*
+*  The norm of A is computed and an estimate is obtained for
+*  norm(inv(A)), then the reciprocal of the condition number is
+*  computed as
+*     RCOND = 1 / ( norm(A) * norm(inv(A)) ).
+*
+
+*  Arguments
+*  =========
+*
+*  NORM    (input) CHARACTER*1
+*          Specifies whether the 1-norm condition number or the
+*          infinity-norm condition number is required:
+*          = '1' or 'O':  1-norm;
+*          = 'I':         Infinity-norm.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  A is upper triangular;
+*          = 'L':  A is lower triangular.
+*
+*  DIAG    (input) CHARACTER*1
+*          = 'N':  A is non-unit triangular;
+*          = 'U':  A is unit triangular.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  KD      (input) INTEGER
+*          The number of superdiagonals or subdiagonals of the
+*          triangular band matrix A.  KD >= 0.
+*
+*  AB      (input) REAL array, dimension (LDAB,N)
+*          The upper or lower triangular band matrix A, stored in the
+*          first kd+1 rows of the array. The j-th column of A is stored
+*          in the j-th column of the array AB as follows:
+*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
+*          If DIAG = 'U', the diagonal elements of A are not referenced
+*          and are assumed to be 1.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KD+1.
+*
+*  RCOND   (output) REAL
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(norm(A) * norm(inv(A))).
+*
+*  WORK    (workspace) REAL array, dimension (3*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="stbtrs"></A>
+  <H2>stbtrs</H2>
+  Solves a triangular banded system of linear equations AX=B,
+  <PRE>
+USAGE:
+  info, b = NumRu::Lapack.stbtrs( uplo, trans, diag, kd, ab, b)
+    or
+  NumRu::Lapack.stbtrs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE STBTRS( UPLO, TRANS, DIAG, N, KD, NRHS, AB, LDAB, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  STBTRS solves a triangular system of the form
+*
+*     A * X = B  or  A**T * X = B,
+*
+*  where A is a triangular band matrix of order N, and B is an
+*  N-by NRHS matrix.  A check is made to verify that A is nonsingular.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  A is upper triangular;
+*          = 'L':  A is lower triangular.
+*
+*  TRANS   (input) CHARACTER*1
+*          Specifies the form the system of equations:
+*          = 'N':  A * X = B  (No transpose)
+*          = 'T':  A**T * X = B  (Transpose)
+*          = 'C':  A**H * X = B  (Conjugate transpose = Transpose)
+*
+*  DIAG    (input) CHARACTER*1
+*          = 'N':  A is non-unit triangular;
+*          = 'U':  A is unit triangular.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  KD      (input) INTEGER
+*          The number of superdiagonals or subdiagonals of the
+*          triangular band matrix A.  KD >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  AB      (input) REAL array, dimension (LDAB,N)
+*          The upper or lower triangular band matrix A, stored in the
+*          first kd+1 rows of AB.  The j-th column of A is stored
+*          in the j-th column of the array AB as follows:
+*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
+*          If DIAG = 'U', the diagonal elements of A are not referenced
+*          and are assumed to be 1.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KD+1.
+*
+*  B       (input/output) REAL array, dimension (LDB,NRHS)
+*          On entry, the right hand side matrix B.
+*          On exit, if INFO = 0, the solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the i-th diagonal element of A is zero,
+*                indicating that the matrix is singular and the
+*                solutions X have not been computed.
 *
 
 *  =====================================================================

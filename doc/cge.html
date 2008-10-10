@@ -6,50 +6,415 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for general (i.e., unsymmetric, in some cases rectangular) matrix</H1>
     <UL>
-      <LI><A HREF="#cgelss">cgelss</A></LI>
-      <LI><A HREF="#cgeevx">cgeevx</A></LI>
-      <LI><A HREF="#cgehd2">cgehd2</A></LI>
-      <LI><A HREF="#cgerq2">cgerq2</A></LI>
-      <LI><A HREF="#cgesdd">cgesdd</A></LI>
-      <LI><A HREF="#cgetri">cgetri</A></LI>
-      <LI><A HREF="#cgesvx">cgesvx</A></LI>
-      <LI><A HREF="#cgeqlf">cgeqlf</A></LI>
-      <LI><A HREF="#cgeql2">cgeql2</A></LI>
-      <LI><A HREF="#cgebd2">cgebd2</A></LI>
-      <LI><A HREF="#cgelq2">cgelq2</A></LI>
-      <LI><A HREF="#cgesc2">cgesc2</A></LI>
-      <LI><A HREF="#cgeqp3">cgeqp3</A></LI>
-      <LI><A HREF="#cgetrs">cgetrs</A></LI>
-      <LI><A HREF="#cgeqr2">cgeqr2</A></LI>
-      <LI><A HREF="#cgeev">cgeev</A></LI>
-      <LI><A HREF="#cgerfs">cgerfs</A></LI>
-      <LI><A HREF="#cgetc2">cgetc2</A></LI>
-      <LI><A HREF="#cgetrf">cgetrf</A></LI>
-      <LI><A HREF="#cgerqf">cgerqf</A></LI>
-      <LI><A HREF="#cgegs">cgegs</A></LI>
-      <LI><A HREF="#cgebak">cgebak</A></LI>
-      <LI><A HREF="#cgeequ">cgeequ</A></LI>
-      <LI><A HREF="#cgebrd">cgebrd</A></LI>
-      <LI><A HREF="#cgebal">cgebal</A></LI>
-      <LI><A HREF="#cgels">cgels</A></LI>
-      <LI><A HREF="#cgegv">cgegv</A></LI>
-      <LI><A HREF="#cgesv">cgesv</A></LI>
-      <LI><A HREF="#cgelsy">cgelsy</A></LI>
-      <LI><A HREF="#cgesvd">cgesvd</A></LI>
-      <LI><A HREF="#cgeesx">cgeesx</A></LI>
-      <LI><A HREF="#cgeqpf">cgeqpf</A></LI>
-      <LI><A HREF="#cgelsx">cgelsx</A></LI>
-      <LI><A HREF="#cgelqf">cgelqf</A></LI>
-      <LI><A HREF="#cgelsd">cgelsd</A></LI>
-      <LI><A HREF="#cgeqrf">cgeqrf</A></LI>
-      <LI><A HREF="#cgetf2">cgetf2</A></LI>
-      <LI><A HREF="#cgees">cgees</A></LI>
-      <LI><A HREF="#cgecon">cgecon</A></LI>
-      <LI><A HREF="#cgehrd">cgehrd</A></LI>
+      <LI><A HREF="#cgetf2">cgetf2</A>: </LI>
+      <LI><A HREF="#cgees">cgees</A>: Computes the eigenvalues and Schur factorization of a general</LI>
+      <LI><A HREF="#cgecon">cgecon</A>: Estimates the reciprocal of the condition number of a general</LI>
+      <LI><A HREF="#cgehrd">cgehrd</A>: Reduces a general matrix to upper Hessenberg form by an</LI>
+      <LI><A HREF="#cgelss">cgelss</A>: Computes the minimum norm least squares solution to an over-</LI>
+      <LI><A HREF="#cgeevx">cgeevx</A>: Computes the eigenvalues and left and right eigenvectors of</LI>
+      <LI><A HREF="#cgehd2">cgehd2</A>: </LI>
+      <LI><A HREF="#cgerq2">cgerq2</A>: </LI>
+      <LI><A HREF="#cgesdd">cgesdd</A>: Computes the singular value decomposition (SVD) of a general</LI>
+      <LI><A HREF="#cgetri">cgetri</A>: Computes the inverse of a general matrix, using the LU factorization</LI>
+      <LI><A HREF="#cgesvx">cgesvx</A>: Solves a general system of linear equations AX=B, A**T X=B</LI>
+      <LI><A HREF="#cgeql2">cgeql2</A>: </LI>
+      <LI><A HREF="#cgeqlf">cgeqlf</A>: Computes a QL factorization of a general rectangular matrix.</LI>
+      <LI><A HREF="#cgebd2">cgebd2</A>: </LI>
+      <LI><A HREF="#cgelq2">cgelq2</A>: </LI>
+      <LI><A HREF="#cgesc2">cgesc2</A>: </LI>
+      <LI><A HREF="#cgeqp3">cgeqp3</A>: Computes a QR factorization with column pivoting of a general</LI>
+      <LI><A HREF="#cgetrs">cgetrs</A>: Solves a general system of linear equations AX=B, A**T X=B</LI>
+      <LI><A HREF="#cgeqr2">cgeqr2</A>: </LI>
+      <LI><A HREF="#cgeev">cgeev</A>: Computes the eigenvalues and left and right eigenvectors of</LI>
+      <LI><A HREF="#cgerfs">cgerfs</A>: Improves the computed solution to a general system of linear</LI>
+      <LI><A HREF="#cgetc2">cgetc2</A>: </LI>
+      <LI><A HREF="#cgetrf">cgetrf</A>: Computes an LU factorization of a general matrix, using partial</LI>
+      <LI><A HREF="#cgerqf">cgerqf</A>: Computes an RQ factorization of a general rectangular matrix.</LI>
+      <LI><A HREF="#cgegs">cgegs</A>: Computes the generalized eigenvalues, Schur form, and left and/or</LI>
+      <LI><A HREF="#cgebak">cgebak</A>: Transforms eigenvectors of a balanced matrix to those of the</LI>
+      <LI><A HREF="#cgeequ">cgeequ</A>: Computes row and column scalings to equilibrate a general</LI>
+      <LI><A HREF="#cgebrd">cgebrd</A>: Reduces a general rectangular matrix to real bidiagonal form</LI>
+      <LI><A HREF="#cgebal">cgebal</A>: Balances a general matrix in order to improve the accuracy</LI>
+      <LI><A HREF="#cgels">cgels</A>: Computes the least squares solution to an over-determined system</LI>
+      <LI><A HREF="#cgegv">cgegv</A>: Computes the generalized eigenvalues, and left and/or right</LI>
+      <LI><A HREF="#cgesv">cgesv</A>: Solves a general system of linear equations AX=B.</LI>
+      <LI><A HREF="#cgelsy">cgelsy</A>: Computes the minimum norm least squares solution to an over-</LI>
+      <LI><A HREF="#cgesvd">cgesvd</A>: Computes the singular value decomposition (SVD) of a general</LI>
+      <LI><A HREF="#cgeesx">cgeesx</A>: Computes the eigenvalues and Schur factorization of a general</LI>
+      <LI><A HREF="#cgeqpf">cgeqpf</A>: Computes a QR factorization with column pivoting of a general</LI>
+      <LI><A HREF="#cgelsx">cgelsx</A>: Computes the minimum norm least squares solution to an over-</LI>
+      <LI><A HREF="#cgelqf">cgelqf</A>: Computes an LQ factorization of a general rectangular matrix.</LI>
+      <LI><A HREF="#cgelsd">cgelsd</A>: Computes the least squares solution to an over-determined system</LI>
+      <LI><A HREF="#cgeqrf">cgeqrf</A>: Computes a QR factorization of a general rectangular matrix.</LI>
     </UL>
+
+  <A NAME="cgetf2"></A>
+  <H2>cgetf2</H2>
+  
+  <PRE>
+USAGE:
+  ipiv, info, a = NumRu::Lapack.cgetf2( m, a)
+    or
+  NumRu::Lapack.cgetf2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CGETF2( M, N, A, LDA, IPIV, INFO )
+
+*  Purpose
+*  =======
+*
+*  CGETF2 computes an LU factorization of a general m-by-n matrix A
+*  using partial pivoting with row interchanges.
+*
+*  The factorization has the form
+*     A = P * L * U
+*  where P is a permutation matrix, L is lower triangular with unit
+*  diagonal elements (lower trapezoidal if m > n), and U is upper
+*  triangular (upper trapezoidal if m < n).
+*
+*  This is the right-looking Level 2 BLAS version of the algorithm.
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix A.  M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the m by n matrix to be factored.
+*          On exit, the factors L and U from the factorization
+*          A = P*L*U; the unit diagonal elements of L are not stored.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,M).
+*
+*  IPIV    (output) INTEGER array, dimension (min(M,N))
+*          The pivot indices; for 1 <= i <= min(M,N), row i of the
+*          matrix was interchanged with row IPIV(i).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*          > 0: if INFO = k, U(k,k) is exactly zero. The factorization
+*               has been completed, but the factor U is exactly
+*               singular, and division by zero will occur if it is used
+*               to solve a system of equations.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cgees"></A>
+  <H2>cgees</H2>
+  Computes the eigenvalues and Schur factorization of a general
+  <PRE>
+USAGE:
+  sdim, w, vs, work, info, a = NumRu::Lapack.cgees( jobvs, sort, a, lwork){|a| ... }
+    or
+  NumRu::Lapack.cgees  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CGEES( JOBVS, SORT, SELECT, N, A, LDA, SDIM, W, VS, LDVS, WORK, LWORK, RWORK, BWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CGEES computes for an N-by-N complex nonsymmetric matrix A, the
+*  eigenvalues, the Schur form T, and, optionally, the matrix of Schur
+*  vectors Z.  This gives the Schur factorization A = Z*T*(Z**H).
+*
+*  Optionally, it also orders the eigenvalues on the diagonal of the
+*  Schur form so that selected eigenvalues are at the top left.
+*  The leading columns of Z then form an orthonormal basis for the
+*  invariant subspace corresponding to the selected eigenvalues.
+
+*  A complex matrix is in Schur form if it is upper triangular.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBVS   (input) CHARACTER*1
+*          = 'N': Schur vectors are not computed;
+*          = 'V': Schur vectors are computed.
+*
+*  SORT    (input) CHARACTER*1
+*          Specifies whether or not to order the eigenvalues on the
+*          diagonal of the Schur form.
+*          = 'N': Eigenvalues are not ordered:
+*          = 'S': Eigenvalues are ordered (see SELECT).
+*
+*  SELECT  (external procedure) LOGICAL FUNCTION of one COMPLEX argument
+*          SELECT must be declared EXTERNAL in the calling subroutine.
+*          If SORT = 'S', SELECT is used to select eigenvalues to order
+*          to the top left of the Schur form.
+*          IF SORT = 'N', SELECT is not referenced.
+*          The eigenvalue W(j) is selected if SELECT(W(j)) is true.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A. N >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the N-by-N matrix A.
+*          On exit, A has been overwritten by its Schur form T.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  SDIM    (output) INTEGER
+*          If SORT = 'N', SDIM = 0.
+*          If SORT = 'S', SDIM = number of eigenvalues for which
+*                         SELECT is true.
+*
+*  W       (output) COMPLEX array, dimension (N)
+*          W contains the computed eigenvalues, in the same order that
+*          they appear on the diagonal of the output Schur form T.
+*
+*  VS      (output) COMPLEX array, dimension (LDVS,N)
+*          If JOBVS = 'V', VS contains the unitary matrix Z of Schur
+*          vectors.
+*          If JOBVS = 'N', VS is not referenced.
+*
+*  LDVS    (input) INTEGER
+*          The leading dimension of the array VS.  LDVS >= 1; if
+*          JOBVS = 'V', LDVS >= N.
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.  LWORK >= max(1,2*N).
+*          For good performance, LWORK must generally be larger.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  RWORK   (workspace) REAL array, dimension (N)
+*
+*  BWORK   (workspace) LOGICAL array, dimension (N)
+*          Not referenced if SORT = 'N'.
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value.
+*          > 0: if INFO = i, and i is
+*               <= N:  the QR algorithm failed to compute all the
+*                      eigenvalues; elements 1:ILO-1 and i+1:N of W
+*                      contain those eigenvalues which have converged;
+*                      if JOBVS = 'V', VS contains the matrix which
+*                      reduces A to its partially converged Schur form.
+*               = N+1: the eigenvalues could not be reordered because
+*                      some eigenvalues were too close to separate (the
+*                      problem is very ill-conditioned);
+*               = N+2: after reordering, roundoff changed values of
+*                      some complex eigenvalues so that leading
+*                      eigenvalues in the Schur form no longer satisfy
+*                      SELECT = .TRUE..  This could also be caused by
+*                      underflow due to scaling.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cgecon"></A>
+  <H2>cgecon</H2>
+  Estimates the reciprocal of the condition number of a general
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.cgecon( norm, a, anorm)
+    or
+  NumRu::Lapack.cgecon  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CGECON( NORM, N, A, LDA, ANORM, RCOND, WORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CGECON estimates the reciprocal of the condition number of a general
+*  complex matrix A, in either the 1-norm or the infinity-norm, using
+*  the LU factorization computed by CGETRF.
+*
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as
+*     RCOND = 1 / ( norm(A) * norm(inv(A)) ).
+*
+
+*  Arguments
+*  =========
+*
+*  NORM    (input) CHARACTER*1
+*          Specifies whether the 1-norm condition number or the
+*          infinity-norm condition number is required:
+*          = '1' or 'O':  1-norm;
+*          = 'I':         Infinity-norm.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input) COMPLEX array, dimension (LDA,N)
+*          The factors L and U from the factorization A = P*L*U
+*          as computed by CGETRF.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  ANORM   (input) REAL
+*          If NORM = '1' or 'O', the 1-norm of the original matrix A.
+*          If NORM = 'I', the infinity-norm of the original matrix A.
+*
+*  RCOND   (output) REAL
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(norm(A) * norm(inv(A))).
+*
+*  WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*  RWORK   (workspace) REAL array, dimension (2*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cgehrd"></A>
+  <H2>cgehrd</H2>
+  Reduces a general matrix to upper Hessenberg form by an
+  <PRE>
+USAGE:
+  tau, work, info, a = NumRu::Lapack.cgehrd( ilo, ihi, a, lwork)
+    or
+  NumRu::Lapack.cgehrd  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CGEHRD( N, ILO, IHI, A, LDA, TAU, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CGEHRD reduces a complex general matrix A to upper Hessenberg form H by
+*  an unitary similarity transformation:  Q' * A * Q = H .
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  ILO     (input) INTEGER
+*  IHI     (input) INTEGER
+*          It is assumed that A is already upper triangular in rows
+*          and columns 1:ILO-1 and IHI+1:N. ILO and IHI are normally
+*          set by a previous call to CGEBAL; otherwise they should be
+*          set to 1 and N respectively. See Further Details.
+*          1 <= ILO <= IHI <= N, if N > 0; ILO=1 and IHI=0, if N=0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the N-by-N general matrix to be reduced.
+*          On exit, the upper triangle and the first subdiagonal of A
+*          are overwritten with the upper Hessenberg matrix H, and the
+*          elements below the first subdiagonal, with the array TAU,
+*          represent the unitary matrix Q as a product of elementary
+*          reflectors. See Further Details.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  TAU     (output) COMPLEX array, dimension (N-1)
+*          The scalar factors of the elementary reflectors (see Further
+*          Details). Elements 1:ILO-1 and IHI:N-1 of TAU are set to
+*          zero.
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (LWORK)
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The length of the array WORK.  LWORK >= max(1,N).
+*          For optimum performance LWORK >= N*NB, where NB is the
+*          optimal blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*
+
+*  Further Details
+*  ===============
+*
+*  The matrix Q is represented as a product of (ihi-ilo) elementary
+*  reflectors
+*
+*     Q = H(ilo) H(ilo+1) . . . H(ihi-1).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a complex scalar, and v is a complex vector with
+*  v(1:i) = 0, v(i+1) = 1 and v(ihi+1:n) = 0; v(i+2:ihi) is stored on
+*  exit in A(i+2:ihi,i), and tau in TAU(i).
+*
+*  The contents of A are illustrated by the following example, with
+*  n = 7, ilo = 2 and ihi = 6:
+*
+*  on entry,                        on exit,
+*
+*  ( a   a   a   a   a   a   a )    (  a   a   h   h   h   h   a )
+*  (     a   a   a   a   a   a )    (      a   h   h   h   h   a )
+*  (     a   a   a   a   a   a )    (      h   h   h   h   h   h )
+*  (     a   a   a   a   a   a )    (      v2  h   h   h   h   h )
+*  (     a   a   a   a   a   a )    (      v2  v3  h   h   h   h )
+*  (     a   a   a   a   a   a )    (      v2  v3  v4  h   h   h )
+*  (                         a )    (                          a )
+*
+*  where a denotes an element of the original matrix A, h denotes a
+*  modified element of the upper Hessenberg matrix H, and vi denotes an
+*  element of the vector defining H(i).
+*
+*  This file is a slight modification of LAPACK-3.0's CGEHRD
+*  subroutine incorporating improvements proposed by Quintana-Orti and
+*  Van de Geijn (2005). 
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="cgelss"></A>
   <H2>cgelss</H2>
+  Computes the minimum norm least squares solution to an over-
   <PRE>
 USAGE:
   s, rank, work, info, a, b = NumRu::Lapack.cgelss( m, a, b, rcond, lwork)
@@ -157,6 +522,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeevx"></A>
   <H2>cgeevx</H2>
+  Computes the eigenvalues and left and right eigenvectors of
   <PRE>
 USAGE:
   w, vl, vr, ilo, ihi, scale, abnrm, rconde, rcondv, work, info, a = NumRu::Lapack.cgeevx( balanc, jobvl, jobvr, sense, a, lwork)
@@ -341,6 +707,7 @@ FORTRAN MANUAL
 
   <A NAME="cgehd2"></A>
   <H2>cgehd2</H2>
+  
   <PRE>
 USAGE:
   tau, info, a = NumRu::Lapack.cgehd2( ilo, ihi, a)
@@ -436,6 +803,7 @@ FORTRAN MANUAL
 
   <A NAME="cgerq2"></A>
   <H2>cgerq2</H2>
+  
   <PRE>
 USAGE:
   tau, info, a = NumRu::Lapack.cgerq2( a)
@@ -510,6 +878,7 @@ FORTRAN MANUAL
 
   <A NAME="cgesdd"></A>
   <H2>cgesdd</H2>
+  Computes the singular value decomposition (SVD) of a general
   <PRE>
 USAGE:
   s, u, vt, work, info, a = NumRu::Lapack.cgesdd( jobz, m, a, lwork)
@@ -656,6 +1025,7 @@ FORTRAN MANUAL
 
   <A NAME="cgetri"></A>
   <H2>cgetri</H2>
+  Computes the inverse of a general matrix, using the LU factorization
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.cgetri( a, ipiv, lwork)
@@ -723,6 +1093,7 @@ FORTRAN MANUAL
 
   <A NAME="cgesvx"></A>
   <H2>cgesvx</H2>
+  Solves a general system of linear equations AX=B, A**T X=B
   <PRE>
 USAGE:
   x, rcond, ferr, berr, rwork, info, a, af, ipiv, equed, r, c, b = NumRu::Lapack.cgesvx( fact, trans, a, af, ipiv, equed, r, c, b)
@@ -967,8 +1338,84 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
+  <A NAME="cgeql2"></A>
+  <H2>cgeql2</H2>
+  
+  <PRE>
+USAGE:
+  tau, info, a = NumRu::Lapack.cgeql2( m, a)
+    or
+  NumRu::Lapack.cgeql2  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CGEQL2( M, N, A, LDA, TAU, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CGEQL2 computes a QL factorization of a complex m by n matrix A:
+*  A = Q * L.
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix A.  M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the m by n matrix A.
+*          On exit, if m >= n, the lower triangle of the subarray
+*          A(m-n+1:m,1:n) contains the n by n lower triangular matrix L;
+*          if m <= n, the elements on and below the (n-m)-th
+*          superdiagonal contain the m by n lower trapezoidal matrix L;
+*          the remaining elements, with the array TAU, represent the
+*          unitary matrix Q as a product of elementary reflectors
+*          (see Further Details).
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,M).
+*
+*  TAU     (output) COMPLEX array, dimension (min(M,N))
+*          The scalar factors of the elementary reflectors (see Further
+*          Details).
+*
+*  WORK    (workspace) COMPLEX array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*
+
+*  Further Details
+*  ===============
+*
+*  The matrix Q is represented as a product of elementary reflectors
+*
+*     Q = H(k) . . . H(2) H(1), where k = min(m,n).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a complex scalar, and v is a complex vector with
+*  v(m-k+i+1:m) = 0 and v(m-k+i) = 1; v(1:m-k+i-1) is stored on exit in
+*  A(1:m-k+i-1,n-k+i), and tau in TAU(i).
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
   <A NAME="cgeqlf"></A>
   <H2>cgeqlf</H2>
+  Computes a QL factorization of a general rectangular matrix.
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.cgeqlf( m, a, lwork)
@@ -1068,82 +1515,9 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
-  <A NAME="cgeql2"></A>
-  <H2>cgeql2</H2>
-  <PRE>
-USAGE:
-  tau, info, a = NumRu::Lapack.cgeql2( m, a)
-    or
-  NumRu::Lapack.cgeql2  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CGEQL2( M, N, A, LDA, TAU, WORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  CGEQL2 computes a QL factorization of a complex m by n matrix A:
-*  A = Q * L.
-*
-
-*  Arguments
-*  =========
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix A.  M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix A.  N >= 0.
-*
-*  A       (input/output) COMPLEX array, dimension (LDA,N)
-*          On entry, the m by n matrix A.
-*          On exit, if m >= n, the lower triangle of the subarray
-*          A(m-n+1:m,1:n) contains the n by n lower triangular matrix L;
-*          if m <= n, the elements on and below the (n-m)-th
-*          superdiagonal contain the m by n lower trapezoidal matrix L;
-*          the remaining elements, with the array TAU, represent the
-*          unitary matrix Q as a product of elementary reflectors
-*          (see Further Details).
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,M).
-*
-*  TAU     (output) COMPLEX array, dimension (min(M,N))
-*          The scalar factors of the elementary reflectors (see Further
-*          Details).
-*
-*  WORK    (workspace) COMPLEX array, dimension (N)
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value
-*
-
-*  Further Details
-*  ===============
-*
-*  The matrix Q is represented as a product of elementary reflectors
-*
-*     Q = H(k) . . . H(2) H(1), where k = min(m,n).
-*
-*  Each H(i) has the form
-*
-*     H(i) = I - tau * v * v'
-*
-*  where tau is a complex scalar, and v is a complex vector with
-*  v(m-k+i+1:m) = 0 and v(m-k+i) = 1; v(1:m-k+i-1) is stored on exit in
-*  A(1:m-k+i-1,n-k+i), and tau in TAU(i).
-*
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
   <A NAME="cgebd2"></A>
   <H2>cgebd2</H2>
+  
   <PRE>
 USAGE:
   d, e, tauq, taup, info, a = NumRu::Lapack.cgebd2( m, a)
@@ -1274,6 +1648,7 @@ FORTRAN MANUAL
 
   <A NAME="cgelq2"></A>
   <H2>cgelq2</H2>
+  
   <PRE>
 USAGE:
   tau, info, a = NumRu::Lapack.cgelq2( a)
@@ -1346,6 +1721,7 @@ FORTRAN MANUAL
 
   <A NAME="cgesc2"></A>
   <H2>cgesc2</H2>
+  
   <PRE>
 USAGE:
   scale, rhs = NumRu::Lapack.cgesc2( a, rhs, ipiv, jpiv)
@@ -1414,6 +1790,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeqp3"></A>
   <H2>cgeqp3</H2>
+  Computes a QR factorization with column pivoting of a general
   <PRE>
 USAGE:
   tau, work, info, a, jpvt = NumRu::Lapack.cgeqp3( m, a, jpvt, lwork)
@@ -1509,6 +1886,7 @@ FORTRAN MANUAL
 
   <A NAME="cgetrs"></A>
   <H2>cgetrs</H2>
+  Solves a general system of linear equations AX=B, A**T X=B
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.cgetrs( trans, a, ipiv, b)
@@ -1576,6 +1954,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeqr2"></A>
   <H2>cgeqr2</H2>
+  
   <PRE>
 USAGE:
   tau, info, a = NumRu::Lapack.cgeqr2( m, a)
@@ -1648,6 +2027,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeev"></A>
   <H2>cgeev</H2>
+  Computes the eigenvalues and left and right eigenvectors of
   <PRE>
 USAGE:
   w, vl, vr, work, info, a = NumRu::Lapack.cgeev( jobvl, jobvr, a, lwork)
@@ -1753,6 +2133,7 @@ FORTRAN MANUAL
 
   <A NAME="cgerfs"></A>
   <H2>cgerfs</H2>
+  Improves the computed solution to a general system of linear
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.cgerfs( trans, a, af, ipiv, b, x)
@@ -1855,6 +2236,7 @@ FORTRAN MANUAL
 
   <A NAME="cgetc2"></A>
   <H2>cgetc2</H2>
+  
   <PRE>
 USAGE:
   ipiv, jpiv, info, a = NumRu::Lapack.cgetc2( a)
@@ -1923,6 +2305,7 @@ FORTRAN MANUAL
 
   <A NAME="cgetrf"></A>
   <H2>cgetrf</H2>
+  Computes an LU factorization of a general matrix, using partial
   <PRE>
 USAGE:
   ipiv, info, a = NumRu::Lapack.cgetrf( m, a)
@@ -1987,6 +2370,7 @@ FORTRAN MANUAL
 
   <A NAME="cgerqf"></A>
   <H2>cgerqf</H2>
+  Computes an RQ factorization of a general rectangular matrix.
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.cgerqf( m, a, lwork)
@@ -2088,6 +2472,7 @@ FORTRAN MANUAL
 
   <A NAME="cgegs"></A>
   <H2>cgegs</H2>
+  Computes the generalized eigenvalues, Schur form, and left and/or
   <PRE>
 USAGE:
   alpha, beta, vsl, vsr, work, info, a, b = NumRu::Lapack.cgegs( jobvsl, jobvsr, a, b, lwork)
@@ -2229,6 +2614,7 @@ FORTRAN MANUAL
 
   <A NAME="cgebak"></A>
   <H2>cgebak</H2>
+  Transforms eigenvectors of a balanced matrix to those of the
   <PRE>
 USAGE:
   info, v = NumRu::Lapack.cgebak( job, side, ilo, ihi, scale, v)
@@ -2300,6 +2686,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeequ"></A>
   <H2>cgeequ</H2>
+  Computes row and column scalings to equilibrate a general
   <PRE>
 USAGE:
   r, c, rowcnd, colcnd, amax, info = NumRu::Lapack.cgeequ( a)
@@ -2381,6 +2768,7 @@ FORTRAN MANUAL
 
   <A NAME="cgebrd"></A>
   <H2>cgebrd</H2>
+  Reduces a general rectangular matrix to real bidiagonal form
   <PRE>
 USAGE:
   d, e, tauq, taup, work, info, a = NumRu::Lapack.cgebrd( m, a, lwork)
@@ -2522,6 +2910,7 @@ FORTRAN MANUAL
 
   <A NAME="cgebal"></A>
   <H2>cgebal</H2>
+  Balances a general matrix in order to improve the accuracy
   <PRE>
 USAGE:
   ilo, ihi, scale, info, a = NumRu::Lapack.cgebal( job, a)
@@ -2629,6 +3018,7 @@ FORTRAN MANUAL
 
   <A NAME="cgels"></A>
   <H2>cgels</H2>
+  Computes the least squares solution to an over-determined system
   <PRE>
 USAGE:
   work, info, a, b = NumRu::Lapack.cgels( trans, m, a, b, lwork)
@@ -2750,6 +3140,7 @@ FORTRAN MANUAL
 
   <A NAME="cgegv"></A>
   <H2>cgegv</H2>
+  Computes the generalized eigenvalues, and left and/or right
   <PRE>
 USAGE:
   alpha, beta, vl, vr, work, rwork, info, a, b = NumRu::Lapack.cgegv( jobvl, jobvr, a, b, lwork)
@@ -2949,6 +3340,7 @@ FORTRAN MANUAL
 
   <A NAME="cgesv"></A>
   <H2>cgesv</H2>
+  Solves a general system of linear equations AX=B.
   <PRE>
 USAGE:
   ipiv, info, a, b = NumRu::Lapack.cgesv( a, b)
@@ -3027,6 +3419,7 @@ FORTRAN MANUAL
 
   <A NAME="cgelsy"></A>
   <H2>cgelsy</H2>
+  Computes the minimum norm least squares solution to an over-
   <PRE>
 USAGE:
   rank, work, info, a, b, jpvt = NumRu::Lapack.cgelsy( m, a, b, jpvt, rcond, lwork)
@@ -3166,6 +3559,7 @@ FORTRAN MANUAL
 
   <A NAME="cgesvd"></A>
   <H2>cgesvd</H2>
+  Computes the singular value decomposition (SVD) of a general
   <PRE>
 USAGE:
   s, u, vt, work, info, a = NumRu::Lapack.cgesvd( jobu, jobvt, m, a, lwork)
@@ -3305,6 +3699,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeesx"></A>
   <H2>cgeesx</H2>
+  Computes the eigenvalues and Schur factorization of a general
   <PRE>
 USAGE:
   sdim, w, vs, rconde, rcondv, work, info, a = NumRu::Lapack.cgeesx( jobvs, sort, sense, a, lwork){|a| ... }
@@ -3453,6 +3848,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeqpf"></A>
   <H2>cgeqpf</H2>
+  Computes a QR factorization with column pivoting of a general
   <PRE>
 USAGE:
   tau, info, a, jpvt = NumRu::Lapack.cgeqpf( m, a, jpvt)
@@ -3544,6 +3940,7 @@ FORTRAN MANUAL
 
   <A NAME="cgelsx"></A>
   <H2>cgelsx</H2>
+  Computes the minimum norm least squares solution to an over-
   <PRE>
 USAGE:
   rank, info, a, b, jpvt = NumRu::Lapack.cgelsx( m, a, b, jpvt, rcond)
@@ -3659,6 +4056,7 @@ FORTRAN MANUAL
 
   <A NAME="cgelqf"></A>
   <H2>cgelqf</H2>
+  Computes an LQ factorization of a general rectangular matrix.
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.cgelqf( m, a, lwork)
@@ -3757,6 +4155,7 @@ FORTRAN MANUAL
 
   <A NAME="cgelsd"></A>
   <H2>cgelsd</H2>
+  Computes the least squares solution to an over-determined system
   <PRE>
 USAGE:
   s, rank, work, info, a, b = NumRu::Lapack.cgelsd( m, a, b, rcond, lwork)
@@ -3908,6 +4307,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeqrf"></A>
   <H2>cgeqrf</H2>
+  Computes a QR factorization of a general rectangular matrix.
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.cgeqrf( m, a, lwork)
@@ -4000,366 +4400,6 @@ FORTRAN MANUAL
       INTEGER            ILAENV
       EXTERNAL           ILAENV
 *     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="cgetf2"></A>
-  <H2>cgetf2</H2>
-  <PRE>
-USAGE:
-  ipiv, info, a = NumRu::Lapack.cgetf2( m, a)
-    or
-  NumRu::Lapack.cgetf2  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CGETF2( M, N, A, LDA, IPIV, INFO )
-
-*  Purpose
-*  =======
-*
-*  CGETF2 computes an LU factorization of a general m-by-n matrix A
-*  using partial pivoting with row interchanges.
-*
-*  The factorization has the form
-*     A = P * L * U
-*  where P is a permutation matrix, L is lower triangular with unit
-*  diagonal elements (lower trapezoidal if m > n), and U is upper
-*  triangular (upper trapezoidal if m < n).
-*
-*  This is the right-looking Level 2 BLAS version of the algorithm.
-*
-
-*  Arguments
-*  =========
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix A.  M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix A.  N >= 0.
-*
-*  A       (input/output) COMPLEX array, dimension (LDA,N)
-*          On entry, the m by n matrix to be factored.
-*          On exit, the factors L and U from the factorization
-*          A = P*L*U; the unit diagonal elements of L are not stored.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,M).
-*
-*  IPIV    (output) INTEGER array, dimension (min(M,N))
-*          The pivot indices; for 1 <= i <= min(M,N), row i of the
-*          matrix was interchanged with row IPIV(i).
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -k, the k-th argument had an illegal value
-*          > 0: if INFO = k, U(k,k) is exactly zero. The factorization
-*               has been completed, but the factor U is exactly
-*               singular, and division by zero will occur if it is used
-*               to solve a system of equations.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="cgees"></A>
-  <H2>cgees</H2>
-  <PRE>
-USAGE:
-  sdim, w, vs, work, info, a = NumRu::Lapack.cgees( jobvs, sort, a, lwork){|a| ... }
-    or
-  NumRu::Lapack.cgees  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CGEES( JOBVS, SORT, SELECT, N, A, LDA, SDIM, W, VS, LDVS, WORK, LWORK, RWORK, BWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  CGEES computes for an N-by-N complex nonsymmetric matrix A, the
-*  eigenvalues, the Schur form T, and, optionally, the matrix of Schur
-*  vectors Z.  This gives the Schur factorization A = Z*T*(Z**H).
-*
-*  Optionally, it also orders the eigenvalues on the diagonal of the
-*  Schur form so that selected eigenvalues are at the top left.
-*  The leading columns of Z then form an orthonormal basis for the
-*  invariant subspace corresponding to the selected eigenvalues.
-
-*  A complex matrix is in Schur form if it is upper triangular.
-*
-
-*  Arguments
-*  =========
-*
-*  JOBVS   (input) CHARACTER*1
-*          = 'N': Schur vectors are not computed;
-*          = 'V': Schur vectors are computed.
-*
-*  SORT    (input) CHARACTER*1
-*          Specifies whether or not to order the eigenvalues on the
-*          diagonal of the Schur form.
-*          = 'N': Eigenvalues are not ordered:
-*          = 'S': Eigenvalues are ordered (see SELECT).
-*
-*  SELECT  (external procedure) LOGICAL FUNCTION of one COMPLEX argument
-*          SELECT must be declared EXTERNAL in the calling subroutine.
-*          If SORT = 'S', SELECT is used to select eigenvalues to order
-*          to the top left of the Schur form.
-*          IF SORT = 'N', SELECT is not referenced.
-*          The eigenvalue W(j) is selected if SELECT(W(j)) is true.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A. N >= 0.
-*
-*  A       (input/output) COMPLEX array, dimension (LDA,N)
-*          On entry, the N-by-N matrix A.
-*          On exit, A has been overwritten by its Schur form T.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  SDIM    (output) INTEGER
-*          If SORT = 'N', SDIM = 0.
-*          If SORT = 'S', SDIM = number of eigenvalues for which
-*                         SELECT is true.
-*
-*  W       (output) COMPLEX array, dimension (N)
-*          W contains the computed eigenvalues, in the same order that
-*          they appear on the diagonal of the output Schur form T.
-*
-*  VS      (output) COMPLEX array, dimension (LDVS,N)
-*          If JOBVS = 'V', VS contains the unitary matrix Z of Schur
-*          vectors.
-*          If JOBVS = 'N', VS is not referenced.
-*
-*  LDVS    (input) INTEGER
-*          The leading dimension of the array VS.  LDVS >= 1; if
-*          JOBVS = 'V', LDVS >= N.
-*
-*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.  LWORK >= max(1,2*N).
-*          For good performance, LWORK must generally be larger.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  RWORK   (workspace) REAL array, dimension (N)
-*
-*  BWORK   (workspace) LOGICAL array, dimension (N)
-*          Not referenced if SORT = 'N'.
-*
-*  INFO    (output) INTEGER
-*          = 0: successful exit
-*          < 0: if INFO = -i, the i-th argument had an illegal value.
-*          > 0: if INFO = i, and i is
-*               <= N:  the QR algorithm failed to compute all the
-*                      eigenvalues; elements 1:ILO-1 and i+1:N of W
-*                      contain those eigenvalues which have converged;
-*                      if JOBVS = 'V', VS contains the matrix which
-*                      reduces A to its partially converged Schur form.
-*               = N+1: the eigenvalues could not be reordered because
-*                      some eigenvalues were too close to separate (the
-*                      problem is very ill-conditioned);
-*               = N+2: after reordering, roundoff changed values of
-*                      some complex eigenvalues so that leading
-*                      eigenvalues in the Schur form no longer satisfy
-*                      SELECT = .TRUE..  This could also be caused by
-*                      underflow due to scaling.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="cgecon"></A>
-  <H2>cgecon</H2>
-  <PRE>
-USAGE:
-  rcond, info = NumRu::Lapack.cgecon( norm, a, anorm)
-    or
-  NumRu::Lapack.cgecon  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CGECON( NORM, N, A, LDA, ANORM, RCOND, WORK, RWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  CGECON estimates the reciprocal of the condition number of a general
-*  complex matrix A, in either the 1-norm or the infinity-norm, using
-*  the LU factorization computed by CGETRF.
-*
-*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
-*  condition number is computed as
-*     RCOND = 1 / ( norm(A) * norm(inv(A)) ).
-*
-
-*  Arguments
-*  =========
-*
-*  NORM    (input) CHARACTER*1
-*          Specifies whether the 1-norm condition number or the
-*          infinity-norm condition number is required:
-*          = '1' or 'O':  1-norm;
-*          = 'I':         Infinity-norm.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input) COMPLEX array, dimension (LDA,N)
-*          The factors L and U from the factorization A = P*L*U
-*          as computed by CGETRF.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  ANORM   (input) REAL
-*          If NORM = '1' or 'O', the 1-norm of the original matrix A.
-*          If NORM = 'I', the infinity-norm of the original matrix A.
-*
-*  RCOND   (output) REAL
-*          The reciprocal of the condition number of the matrix A,
-*          computed as RCOND = 1/(norm(A) * norm(inv(A))).
-*
-*  WORK    (workspace) COMPLEX array, dimension (2*N)
-*
-*  RWORK   (workspace) REAL array, dimension (2*N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="cgehrd"></A>
-  <H2>cgehrd</H2>
-  <PRE>
-USAGE:
-  tau, work, info, a = NumRu::Lapack.cgehrd( ilo, ihi, a, lwork)
-    or
-  NumRu::Lapack.cgehrd  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CGEHRD( N, ILO, IHI, A, LDA, TAU, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  CGEHRD reduces a complex general matrix A to upper Hessenberg form H by
-*  an unitary similarity transformation:  Q' * A * Q = H .
-*
-
-*  Arguments
-*  =========
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  ILO     (input) INTEGER
-*  IHI     (input) INTEGER
-*          It is assumed that A is already upper triangular in rows
-*          and columns 1:ILO-1 and IHI+1:N. ILO and IHI are normally
-*          set by a previous call to CGEBAL; otherwise they should be
-*          set to 1 and N respectively. See Further Details.
-*          1 <= ILO <= IHI <= N, if N > 0; ILO=1 and IHI=0, if N=0.
-*
-*  A       (input/output) COMPLEX array, dimension (LDA,N)
-*          On entry, the N-by-N general matrix to be reduced.
-*          On exit, the upper triangle and the first subdiagonal of A
-*          are overwritten with the upper Hessenberg matrix H, and the
-*          elements below the first subdiagonal, with the array TAU,
-*          represent the unitary matrix Q as a product of elementary
-*          reflectors. See Further Details.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  TAU     (output) COMPLEX array, dimension (N-1)
-*          The scalar factors of the elementary reflectors (see Further
-*          Details). Elements 1:ILO-1 and IHI:N-1 of TAU are set to
-*          zero.
-*
-*  WORK    (workspace/output) COMPLEX array, dimension (LWORK)
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The length of the array WORK.  LWORK >= max(1,N).
-*          For optimum performance LWORK >= N*NB, where NB is the
-*          optimal blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value.
-*
-
-*  Further Details
-*  ===============
-*
-*  The matrix Q is represented as a product of (ihi-ilo) elementary
-*  reflectors
-*
-*     Q = H(ilo) H(ilo+1) . . . H(ihi-1).
-*
-*  Each H(i) has the form
-*
-*     H(i) = I - tau * v * v'
-*
-*  where tau is a complex scalar, and v is a complex vector with
-*  v(1:i) = 0, v(i+1) = 1 and v(ihi+1:n) = 0; v(i+2:ihi) is stored on
-*  exit in A(i+2:ihi,i), and tau in TAU(i).
-*
-*  The contents of A are illustrated by the following example, with
-*  n = 7, ilo = 2 and ihi = 6:
-*
-*  on entry,                        on exit,
-*
-*  ( a   a   a   a   a   a   a )    (  a   a   h   h   h   h   a )
-*  (     a   a   a   a   a   a )    (      a   h   h   h   h   a )
-*  (     a   a   a   a   a   a )    (      h   h   h   h   h   h )
-*  (     a   a   a   a   a   a )    (      v2  h   h   h   h   h )
-*  (     a   a   a   a   a   a )    (      v2  v3  h   h   h   h )
-*  (     a   a   a   a   a   a )    (      v2  v3  v4  h   h   h )
-*  (                         a )    (                          a )
-*
-*  where a denotes an element of the original matrix A, h denotes a
-*  modified element of the upper Hessenberg matrix H, and vi denotes an
-*  element of the vector defining H(i).
-*
-*  This file is a slight modification of LAPACK-3.0's CGEHRD
-*  subroutine incorporating improvements proposed by Quintana-Orti and
-*  Van de Geijn (2005). 
-*
-*  =====================================================================
-*
 
 
     </PRE>

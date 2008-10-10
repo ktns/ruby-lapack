@@ -6,20 +6,21 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for triangular (or in some cases quasi-triangular) matrix</H1>
     <UL>
-      <LI><A HREF="#ztrcon">ztrcon</A></LI>
-      <LI><A HREF="#ztrevc">ztrevc</A></LI>
-      <LI><A HREF="#ztrrfs">ztrrfs</A></LI>
-      <LI><A HREF="#ztrtri">ztrtri</A></LI>
-      <LI><A HREF="#ztrsen">ztrsen</A></LI>
-      <LI><A HREF="#ztrti2">ztrti2</A></LI>
-      <LI><A HREF="#ztrtrs">ztrtrs</A></LI>
-      <LI><A HREF="#ztrsyl">ztrsyl</A></LI>
-      <LI><A HREF="#ztrsna">ztrsna</A></LI>
-      <LI><A HREF="#ztrexc">ztrexc</A></LI>
+      <LI><A HREF="#ztrcon">ztrcon</A>: Estimates the reciprocal of the condition number of a triangular</LI>
+      <LI><A HREF="#ztrevc">ztrevc</A>: Computes left and right eigenvectors of an complex upper triangular</LI>
+      <LI><A HREF="#ztrrfs">ztrrfs</A>: Provides forward and backward error bounds for the solution</LI>
+      <LI><A HREF="#ztrtri">ztrtri</A>: Computes the inverse of a triangular matrix.</LI>
+      <LI><A HREF="#ztrsen">ztrsen</A>: Reorders the Schur factorization of a matrix in order to find</LI>
+      <LI><A HREF="#ztrti2">ztrti2</A>: </LI>
+      <LI><A HREF="#ztrtrs">ztrtrs</A>: Solves a triangular system of linear equations AX=B,</LI>
+      <LI><A HREF="#ztrsyl">ztrsyl</A>: Solves the Sylvester matrix equation A X +/- X B=C where A</LI>
+      <LI><A HREF="#ztrsna">ztrsna</A>: Estimates the reciprocal condition numbers (sensitivities)</LI>
+      <LI><A HREF="#ztrexc">ztrexc</A>: Reorders the Schur factorization of a matrix by a unitary</LI>
     </UL>
 
   <A NAME="ztrcon"></A>
   <H2>ztrcon</H2>
+  Estimates the reciprocal of the condition number of a triangular
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.ztrcon( norm, uplo, diag, a)
@@ -97,6 +98,7 @@ FORTRAN MANUAL
 
   <A NAME="ztrevc"></A>
   <H2>ztrevc</H2>
+  Computes left and right eigenvectors of an complex upper triangular
   <PRE>
 USAGE:
   m, info, t, vl, vr = NumRu::Lapack.ztrevc( side, howmny, select, t, vl, vr)
@@ -236,6 +238,7 @@ FORTRAN MANUAL
 
   <A NAME="ztrrfs"></A>
   <H2>ztrrfs</H2>
+  Provides forward and backward error bounds for the solution
   <PRE>
 USAGE:
   ferr, berr, info = NumRu::Lapack.ztrrfs( uplo, trans, diag, a, b, x)
@@ -340,6 +343,7 @@ FORTRAN MANUAL
 
   <A NAME="ztrtri"></A>
   <H2>ztrtri</H2>
+  Computes the inverse of a triangular matrix.
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.ztrtri( uplo, diag, a)
@@ -405,6 +409,7 @@ FORTRAN MANUAL
 
   <A NAME="ztrsen"></A>
   <H2>ztrsen</H2>
+  Reorders the Schur factorization of a matrix in order to find
   <PRE>
 USAGE:
   w, m, s, sep, work, info, t, q = NumRu::Lapack.ztrsen( job, compq, select, t, q, lwork)
@@ -591,6 +596,7 @@ FORTRAN MANUAL
 
   <A NAME="ztrti2"></A>
   <H2>ztrti2</H2>
+  
   <PRE>
 USAGE:
   info, a = NumRu::Lapack.ztrti2( uplo, diag, a)
@@ -657,6 +663,7 @@ FORTRAN MANUAL
 
   <A NAME="ztrtrs"></A>
   <H2>ztrtrs</H2>
+  Solves a triangular system of linear equations AX=B,
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.ztrtrs( uplo, trans, diag, a, b)
@@ -739,6 +746,7 @@ FORTRAN MANUAL
 
   <A NAME="ztrsyl"></A>
   <H2>ztrsyl</H2>
+  Solves the Sylvester matrix equation A X +/- X B=C where A
   <PRE>
 USAGE:
   scale, info, c = NumRu::Lapack.ztrsyl( trana, tranb, isgn, a, b, c)
@@ -828,6 +836,7 @@ FORTRAN MANUAL
 
   <A NAME="ztrsna"></A>
   <H2>ztrsna</H2>
+  Estimates the reciprocal condition numbers (sensitivities)
   <PRE>
 USAGE:
   s, sep, m, info = NumRu::Lapack.ztrsna( job, howmny, select, t, vl, vr, ldwork)
@@ -987,6 +996,7 @@ FORTRAN MANUAL
 
   <A NAME="ztrexc"></A>
   <H2>ztrexc</H2>
+  Reorders the Schur factorization of a matrix by a unitary
   <PRE>
 USAGE:
   info, t, q = NumRu::Lapack.ztrexc( compq, t, q, ifst, ilst)

@@ -6,18 +6,88 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for symmetric or Hermitian positive definite tridiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#cptts2">cptts2</A></LI>
-      <LI><A HREF="#cpttrf">cpttrf</A></LI>
-      <LI><A HREF="#cptrfs">cptrfs</A></LI>
-      <LI><A HREF="#cptsv">cptsv</A></LI>
-      <LI><A HREF="#cptsvx">cptsvx</A></LI>
-      <LI><A HREF="#cpteqr">cpteqr</A></LI>
-      <LI><A HREF="#cpttrs">cpttrs</A></LI>
-      <LI><A HREF="#cptcon">cptcon</A></LI>
+      <LI><A HREF="#cptcon">cptcon</A>: Computes the reciprocal of the condition number of a</LI>
+      <LI><A HREF="#cptts2">cptts2</A>: </LI>
+      <LI><A HREF="#cpttrf">cpttrf</A>: Computes the LDL**H factorization of a Hermitian</LI>
+      <LI><A HREF="#cptrfs">cptrfs</A>: Improves the computed solution to a Hermitian positive</LI>
+      <LI><A HREF="#cptsv">cptsv</A>: Solves a Hermitian positive definite tridiagonal system</LI>
+      <LI><A HREF="#cptsvx">cptsvx</A>: Solves a Hermitian positive definite tridiagonal</LI>
+      <LI><A HREF="#cpteqr">cpteqr</A>: Computes all eigenvalues and eigenvectors of a complex symmetric</LI>
+      <LI><A HREF="#cpttrs">cpttrs</A>: Solves a Hermitian positive definite tridiagonal</LI>
     </UL>
+
+  <A NAME="cptcon"></A>
+  <H2>cptcon</H2>
+  Computes the reciprocal of the condition number of a
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.cptcon( d, e, anorm)
+    or
+  NumRu::Lapack.cptcon  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPTCON( N, D, E, ANORM, RCOND, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPTCON computes the reciprocal of the condition number (in the
+*  1-norm) of a complex Hermitian positive definite tridiagonal matrix
+*  using the factorization A = L*D*L**H or A = U**H*D*U computed by
+*  CPTTRF.
+*
+*  Norm(inv(A)) is computed by a direct method, and the reciprocal of
+*  the condition number is computed as
+*                   RCOND = 1 / (ANORM * norm(inv(A))).
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  D       (input) REAL array, dimension (N)
+*          The n diagonal elements of the diagonal matrix D from the
+*          factorization of A, as computed by CPTTRF.
+*
+*  E       (input) COMPLEX array, dimension (N-1)
+*          The (n-1) off-diagonal elements of the unit bidiagonal factor
+*          U or L from the factorization of A, as computed by CPTTRF.
+*
+*  ANORM   (input) REAL
+*          The 1-norm of the original matrix A.
+*
+*  RCOND   (output) REAL
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is the
+*          1-norm of inv(A) computed in this routine.
+*
+*  RWORK   (workspace) REAL array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  Further Details
+*  ===============
+*
+*  The method used is described in Nicholas J. Higham, "Efficient
+*  Algorithms for Computing the Condition Number of a Tridiagonal
+*  Matrix", SIAM J. Sci. Stat. Comput., Vol. 7, No. 1, January 1986.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="cptts2"></A>
   <H2>cptts2</H2>
+  
   <PRE>
 USAGE:
   b = NumRu::Lapack.cptts2( iuplo, d, e, b)
@@ -93,6 +163,7 @@ FORTRAN MANUAL
 
   <A NAME="cpttrf"></A>
   <H2>cpttrf</H2>
+  Computes the LDL**H factorization of a Hermitian
   <PRE>
 USAGE:
   info, d, e = NumRu::Lapack.cpttrf( d, e)
@@ -147,6 +218,7 @@ FORTRAN MANUAL
 
   <A NAME="cptrfs"></A>
   <H2>cptrfs</H2>
+  Improves the computed solution to a Hermitian positive
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.cptrfs( uplo, d, e, df, ef, b, x)
@@ -249,6 +321,7 @@ FORTRAN MANUAL
 
   <A NAME="cptsv"></A>
   <H2>cptsv</H2>
+  Solves a Hermitian positive definite tridiagonal system
   <PRE>
 USAGE:
   info, d, e, b = NumRu::Lapack.cptsv( d, e, b)
@@ -323,6 +396,7 @@ FORTRAN MANUAL
 
   <A NAME="cptsvx"></A>
   <H2>cptsvx</H2>
+  Solves a Hermitian positive definite tridiagonal
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, df, ef = NumRu::Lapack.cptsvx( fact, d, e, df, ef, b)
@@ -471,6 +545,7 @@ FORTRAN MANUAL
 
   <A NAME="cpteqr"></A>
   <H2>cpteqr</H2>
+  Computes all eigenvalues and eigenvectors of a complex symmetric
   <PRE>
 USAGE:
   info, d, e, z = NumRu::Lapack.cpteqr( compz, d, e, z)
@@ -565,6 +640,7 @@ FORTRAN MANUAL
 
   <A NAME="cpttrs"></A>
   <H2>cpttrs</H2>
+  Solves a Hermitian positive definite tridiagonal
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.cpttrs( uplo, d, e, b)
@@ -642,74 +718,6 @@ FORTRAN MANUAL
 *     .. Intrinsic Functions ..
       INTRINSIC          MAX, MIN
 *     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="cptcon"></A>
-  <H2>cptcon</H2>
-  <PRE>
-USAGE:
-  rcond, info = NumRu::Lapack.cptcon( d, e, anorm)
-    or
-  NumRu::Lapack.cptcon  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CPTCON( N, D, E, ANORM, RCOND, RWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  CPTCON computes the reciprocal of the condition number (in the
-*  1-norm) of a complex Hermitian positive definite tridiagonal matrix
-*  using the factorization A = L*D*L**H or A = U**H*D*U computed by
-*  CPTTRF.
-*
-*  Norm(inv(A)) is computed by a direct method, and the reciprocal of
-*  the condition number is computed as
-*                   RCOND = 1 / (ANORM * norm(inv(A))).
-*
-
-*  Arguments
-*  =========
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  D       (input) REAL array, dimension (N)
-*          The n diagonal elements of the diagonal matrix D from the
-*          factorization of A, as computed by CPTTRF.
-*
-*  E       (input) COMPLEX array, dimension (N-1)
-*          The (n-1) off-diagonal elements of the unit bidiagonal factor
-*          U or L from the factorization of A, as computed by CPTTRF.
-*
-*  ANORM   (input) REAL
-*          The 1-norm of the original matrix A.
-*
-*  RCOND   (output) REAL
-*          The reciprocal of the condition number of the matrix A,
-*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is the
-*          1-norm of inv(A) computed in this routine.
-*
-*  RWORK   (workspace) REAL array, dimension (N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  Further Details
-*  ===============
-*
-*  The method used is described in Nicholas J. Higham, "Efficient
-*  Algorithms for Computing the Condition Number of a Tridiagonal
-*  Matrix", SIAM J. Sci. Stat. Comput., Vol. 7, No. 1, January 1986.
-*
-*  =====================================================================
-*
 
 
     </PRE>

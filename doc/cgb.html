@@ -6,19 +6,135 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for general band matrix</H1>
     <UL>
-      <LI><A HREF="#cgbtf2">cgbtf2</A></LI>
-      <LI><A HREF="#cgbtrs">cgbtrs</A></LI>
-      <LI><A HREF="#cgbtrf">cgbtrf</A></LI>
-      <LI><A HREF="#cgbsv">cgbsv</A></LI>
-      <LI><A HREF="#cgbequ">cgbequ</A></LI>
-      <LI><A HREF="#cgbcon">cgbcon</A></LI>
-      <LI><A HREF="#cgbsvx">cgbsvx</A></LI>
-      <LI><A HREF="#cgbbrd">cgbbrd</A></LI>
-      <LI><A HREF="#cgbrfs">cgbrfs</A></LI>
+      <LI><A HREF="#cgbrfs">cgbrfs</A>: Improves the computed solution to a general banded system of</LI>
+      <LI><A HREF="#cgbtf2">cgbtf2</A>: </LI>
+      <LI><A HREF="#cgbtrs">cgbtrs</A>: Solves a general banded system of linear equations AX=B,</LI>
+      <LI><A HREF="#cgbtrf">cgbtrf</A>: Computes an LU factorization of a general band matrix, using</LI>
+      <LI><A HREF="#cgbsv">cgbsv</A>: Solves a general banded system of linear equations AX=B.</LI>
+      <LI><A HREF="#cgbequ">cgbequ</A>: Computes row and column scalings to equilibrate a general band</LI>
+      <LI><A HREF="#cgbcon">cgbcon</A>: Estimates the reciprocal of the condition number of a general</LI>
+      <LI><A HREF="#cgbsvx">cgbsvx</A>: Solves a general banded system of linear equations AX=B,</LI>
+      <LI><A HREF="#cgbbrd">cgbbrd</A>: </LI>
     </UL>
+
+  <A NAME="cgbrfs"></A>
+  <H2>cgbrfs</H2>
+  Improves the computed solution to a general banded system of
+  <PRE>
+USAGE:
+  ferr, berr, info, x = NumRu::Lapack.cgbrfs( trans, kl, ku, ab, afb, ipiv, b, x)
+    or
+  NumRu::Lapack.cgbrfs  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CGBRFS( TRANS, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB, IPIV, B, LDB, X, LDX, FERR, BERR, WORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CGBRFS improves the computed solution to a system of linear
+*  equations when the coefficient matrix is banded, and provides
+*  error bounds and backward error estimates for the solution.
+*
+
+*  Arguments
+*  =========
+*
+*  TRANS   (input) CHARACTER*1
+*          Specifies the form of the system of equations:
+*          = 'N':  A * X = B     (No transpose)
+*          = 'T':  A**T * X = B  (Transpose)
+*          = 'C':  A**H * X = B  (Conjugate transpose)
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  KL      (input) INTEGER
+*          The number of subdiagonals within the band of A.  KL >= 0.
+*
+*  KU      (input) INTEGER
+*          The number of superdiagonals within the band of A.  KU >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrices B and X.  NRHS >= 0.
+*
+*  AB      (input) COMPLEX array, dimension (LDAB,N)
+*          The original band matrix A, stored in rows 1 to KL+KU+1.
+*          The j-th column of A is stored in the j-th column of the
+*          array AB as follows:
+*          AB(ku+1+i-j,j) = A(i,j) for max(1,j-ku)<=i<=min(n,j+kl).
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KL+KU+1.
+*
+*  AFB     (input) COMPLEX array, dimension (LDAFB,N)
+*          Details of the LU factorization of the band matrix A, as
+*          computed by CGBTRF.  U is stored as an upper triangular band
+*          matrix with KL+KU superdiagonals in rows 1 to KL+KU+1, and
+*          the multipliers used during the factorization are stored in
+*          rows KL+KU+2 to 2*KL+KU+1.
+*
+*  LDAFB   (input) INTEGER
+*          The leading dimension of the array AFB.  LDAFB >= 2*KL*KU+1.
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          The pivot indices from CGBTRF; for 1<=i<=N, row i of the
+*          matrix was interchanged with row IPIV(i).
+*
+*  B       (input) COMPLEX array, dimension (LDB,NRHS)
+*          The right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (input/output) COMPLEX array, dimension (LDX,NRHS)
+*          On entry, the solution matrix X, as computed by CGBTRS.
+*          On exit, the improved solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  FERR    (output) REAL array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) REAL array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*  RWORK   (workspace) REAL array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+*  Internal Parameters
+*  ===================
+*
+*  ITMAX is the maximum number of steps of iterative refinement.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="cgbtf2"></A>
   <H2>cgbtf2</H2>
+  
   <PRE>
 USAGE:
   ipiv, info, ab = NumRu::Lapack.cgbtf2( m, kl, ku, ab)
@@ -111,6 +227,7 @@ FORTRAN MANUAL
 
   <A NAME="cgbtrs"></A>
   <H2>cgbtrs</H2>
+  Solves a general banded system of linear equations AX=B,
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.cgbtrs( trans, kl, ku, ab, ipiv, b)
@@ -187,6 +304,7 @@ FORTRAN MANUAL
 
   <A NAME="cgbtrf"></A>
   <H2>cgbtrf</H2>
+  Computes an LU factorization of a general band matrix, using
   <PRE>
 USAGE:
   ipiv, info, ab = NumRu::Lapack.cgbtrf( m, kl, ku, ab)
@@ -278,6 +396,7 @@ FORTRAN MANUAL
 
   <A NAME="cgbsv"></A>
   <H2>cgbsv</H2>
+  Solves a general banded system of linear equations AX=B.
   <PRE>
 USAGE:
   ipiv, info, ab, b = NumRu::Lapack.cgbsv( kl, ku, ab, b)
@@ -387,6 +506,7 @@ FORTRAN MANUAL
 
   <A NAME="cgbequ"></A>
   <H2>cgbequ</H2>
+  Computes row and column scalings to equilibrate a general band
   <PRE>
 USAGE:
   r, c, rowcnd, colcnd, amax, info = NumRu::Lapack.cgbequ( m, kl, ku, ab)
@@ -476,6 +596,7 @@ FORTRAN MANUAL
 
   <A NAME="cgbcon"></A>
   <H2>cgbcon</H2>
+  Estimates the reciprocal of the condition number of a general
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.cgbcon( norm, kl, ku, ab, ipiv, anorm)
@@ -556,6 +677,7 @@ FORTRAN MANUAL
 
   <A NAME="cgbsvx"></A>
   <H2>cgbsvx</H2>
+  Solves a general banded system of linear equations AX=B,
   <PRE>
 USAGE:
   x, rcond, ferr, berr, rwork, info, ab, afb, ipiv, equed, r, c, b = NumRu::Lapack.cgbsvx( fact, trans, kl, ku, ab, afb, ipiv, equed, r, c, b)
@@ -819,6 +941,7 @@ FORTRAN MANUAL
 
   <A NAME="cgbbrd"></A>
   <H2>cgbbrd</H2>
+  
   <PRE>
 USAGE:
   d, e, q, pt, info, ab, c = NumRu::Lapack.cgbbrd( vect, kl, ku, ab, c)
@@ -914,120 +1037,6 @@ FORTRAN MANUAL
 *  INFO    (output) INTEGER
 *          = 0:  successful exit.
 *          < 0:  if INFO = -i, the i-th argument had an illegal value.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="cgbrfs"></A>
-  <H2>cgbrfs</H2>
-  <PRE>
-USAGE:
-  ferr, berr, info, x = NumRu::Lapack.cgbrfs( trans, kl, ku, ab, afb, ipiv, b, x)
-    or
-  NumRu::Lapack.cgbrfs  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CGBRFS( TRANS, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB, IPIV, B, LDB, X, LDX, FERR, BERR, WORK, RWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  CGBRFS improves the computed solution to a system of linear
-*  equations when the coefficient matrix is banded, and provides
-*  error bounds and backward error estimates for the solution.
-*
-
-*  Arguments
-*  =========
-*
-*  TRANS   (input) CHARACTER*1
-*          Specifies the form of the system of equations:
-*          = 'N':  A * X = B     (No transpose)
-*          = 'T':  A**T * X = B  (Transpose)
-*          = 'C':  A**H * X = B  (Conjugate transpose)
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  KL      (input) INTEGER
-*          The number of subdiagonals within the band of A.  KL >= 0.
-*
-*  KU      (input) INTEGER
-*          The number of superdiagonals within the band of A.  KU >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrices B and X.  NRHS >= 0.
-*
-*  AB      (input) COMPLEX array, dimension (LDAB,N)
-*          The original band matrix A, stored in rows 1 to KL+KU+1.
-*          The j-th column of A is stored in the j-th column of the
-*          array AB as follows:
-*          AB(ku+1+i-j,j) = A(i,j) for max(1,j-ku)<=i<=min(n,j+kl).
-*
-*  LDAB    (input) INTEGER
-*          The leading dimension of the array AB.  LDAB >= KL+KU+1.
-*
-*  AFB     (input) COMPLEX array, dimension (LDAFB,N)
-*          Details of the LU factorization of the band matrix A, as
-*          computed by CGBTRF.  U is stored as an upper triangular band
-*          matrix with KL+KU superdiagonals in rows 1 to KL+KU+1, and
-*          the multipliers used during the factorization are stored in
-*          rows KL+KU+2 to 2*KL+KU+1.
-*
-*  LDAFB   (input) INTEGER
-*          The leading dimension of the array AFB.  LDAFB >= 2*KL*KU+1.
-*
-*  IPIV    (input) INTEGER array, dimension (N)
-*          The pivot indices from CGBTRF; for 1<=i<=N, row i of the
-*          matrix was interchanged with row IPIV(i).
-*
-*  B       (input) COMPLEX array, dimension (LDB,NRHS)
-*          The right hand side matrix B.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,N).
-*
-*  X       (input/output) COMPLEX array, dimension (LDX,NRHS)
-*          On entry, the solution matrix X, as computed by CGBTRS.
-*          On exit, the improved solution matrix X.
-*
-*  LDX     (input) INTEGER
-*          The leading dimension of the array X.  LDX >= max(1,N).
-*
-*  FERR    (output) REAL array, dimension (NRHS)
-*          The estimated forward error bound for each solution vector
-*          X(j) (the j-th column of the solution matrix X).
-*          If XTRUE is the true solution corresponding to X(j), FERR(j)
-*          is an estimated upper bound for the magnitude of the largest
-*          element in (X(j) - XTRUE) divided by the magnitude of the
-*          largest element in X(j).  The estimate is as reliable as
-*          the estimate for RCOND, and is almost always a slight
-*          overestimate of the true error.
-*
-*  BERR    (output) REAL array, dimension (NRHS)
-*          The componentwise relative backward error of each solution
-*          vector X(j) (i.e., the smallest relative change in
-*          any element of A or B that makes X(j) an exact solution).
-*
-*  WORK    (workspace) COMPLEX array, dimension (2*N)
-*
-*  RWORK   (workspace) REAL array, dimension (N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-*  Internal Parameters
-*  ===================
-*
-*  ITMAX is the maximum number of steps of iterative refinement.
 *
 
 *  =====================================================================

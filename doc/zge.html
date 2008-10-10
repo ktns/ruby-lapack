@@ -6,50 +6,783 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for general (i.e., unsymmetric, in some cases rectangular) matrix</H1>
     <UL>
-      <LI><A HREF="#zgeql2">zgeql2</A></LI>
-      <LI><A HREF="#zgesv">zgesv</A></LI>
-      <LI><A HREF="#zgesdd">zgesdd</A></LI>
-      <LI><A HREF="#zgehd2">zgehd2</A></LI>
-      <LI><A HREF="#zgeqpf">zgeqpf</A></LI>
-      <LI><A HREF="#zgeevx">zgeevx</A></LI>
-      <LI><A HREF="#zgetri">zgetri</A></LI>
-      <LI><A HREF="#zgesvx">zgesvx</A></LI>
-      <LI><A HREF="#zgesc2">zgesc2</A></LI>
-      <LI><A HREF="#zgeqlf">zgeqlf</A></LI>
-      <LI><A HREF="#zgeqr2">zgeqr2</A></LI>
-      <LI><A HREF="#zgegs">zgegs</A></LI>
-      <LI><A HREF="#zgeqp3">zgeqp3</A></LI>
-      <LI><A HREF="#zgerfs">zgerfs</A></LI>
-      <LI><A HREF="#zgelq2">zgelq2</A></LI>
-      <LI><A HREF="#zgetrs">zgetrs</A></LI>
-      <LI><A HREF="#zgebd2">zgebd2</A></LI>
-      <LI><A HREF="#zgerq2">zgerq2</A></LI>
-      <LI><A HREF="#zgebak">zgebak</A></LI>
-      <LI><A HREF="#zgebrd">zgebrd</A></LI>
-      <LI><A HREF="#zgetrf">zgetrf</A></LI>
-      <LI><A HREF="#zgetc2">zgetc2</A></LI>
-      <LI><A HREF="#zgeequ">zgeequ</A></LI>
-      <LI><A HREF="#zgerqf">zgerqf</A></LI>
-      <LI><A HREF="#zgelqf">zgelqf</A></LI>
-      <LI><A HREF="#zgebal">zgebal</A></LI>
-      <LI><A HREF="#zgetf2">zgetf2</A></LI>
-      <LI><A HREF="#zgelsy">zgelsy</A></LI>
-      <LI><A HREF="#zgeesx">zgeesx</A></LI>
-      <LI><A HREF="#zgelsd">zgelsd</A></LI>
-      <LI><A HREF="#zgegv">zgegv</A></LI>
-      <LI><A HREF="#zgesvd">zgesvd</A></LI>
-      <LI><A HREF="#zgees">zgees</A></LI>
-      <LI><A HREF="#zgeev">zgeev</A></LI>
-      <LI><A HREF="#zgelsx">zgelsx</A></LI>
-      <LI><A HREF="#zgels">zgels</A></LI>
-      <LI><A HREF="#zgecon">zgecon</A></LI>
-      <LI><A HREF="#zgelss">zgelss</A></LI>
-      <LI><A HREF="#zgeqrf">zgeqrf</A></LI>
-      <LI><A HREF="#zgehrd">zgehrd</A></LI>
+      <LI><A HREF="#zgeev">zgeev</A>: Computes the eigenvalues and left and right eigenvectors of</LI>
+      <LI><A HREF="#zgelsx">zgelsx</A>: Computes the minimum norm least squares solution to an over-</LI>
+      <LI><A HREF="#zgels">zgels</A>: Computes the least squares solution to an over-determined system</LI>
+      <LI><A HREF="#zgecon">zgecon</A>: Estimates the reciprocal of the condition number of a general</LI>
+      <LI><A HREF="#zgelss">zgelss</A>: Computes the minimum norm least squares solution to an over-</LI>
+      <LI><A HREF="#zgeqrf">zgeqrf</A>: Computes a QR factorization of a general rectangular matrix.</LI>
+      <LI><A HREF="#zgehrd">zgehrd</A>: Reduces a general matrix to upper Hessenberg form by an</LI>
+      <LI><A HREF="#zgeql2">zgeql2</A>: </LI>
+      <LI><A HREF="#zgesv">zgesv</A>: Solves a general system of linear equations AX=B.</LI>
+      <LI><A HREF="#zgesdd">zgesdd</A>: Computes the singular value decomposition (SVD) of a general</LI>
+      <LI><A HREF="#zgehd2">zgehd2</A>: </LI>
+      <LI><A HREF="#zgeqpf">zgeqpf</A>: Computes a QR factorization with column pivoting of a general</LI>
+      <LI><A HREF="#zgeevx">zgeevx</A>: Computes the eigenvalues and left and right eigenvectors of</LI>
+      <LI><A HREF="#zgetri">zgetri</A>: Computes the inverse of a general matrix, using the LU factorization</LI>
+      <LI><A HREF="#zgesvx">zgesvx</A>: Solves a general system of linear equations AX=B, A**T X=B</LI>
+      <LI><A HREF="#zgesc2">zgesc2</A>: </LI>
+      <LI><A HREF="#zgeqlf">zgeqlf</A>: Computes a QL factorization of a general rectangular matrix.</LI>
+      <LI><A HREF="#zgeqr2">zgeqr2</A>: </LI>
+      <LI><A HREF="#zgegs">zgegs</A>: Computes the generalized eigenvalues, Schur form, and left and/or</LI>
+      <LI><A HREF="#zgeqp3">zgeqp3</A>: Computes a QR factorization with column pivoting of a general</LI>
+      <LI><A HREF="#zgerfs">zgerfs</A>: Improves the computed solution to a general system of linear</LI>
+      <LI><A HREF="#zgelq2">zgelq2</A>: </LI>
+      <LI><A HREF="#zgetrs">zgetrs</A>: Solves a general system of linear equations AX=B, A**T X=B</LI>
+      <LI><A HREF="#zgebd2">zgebd2</A>: </LI>
+      <LI><A HREF="#zgerq2">zgerq2</A>: </LI>
+      <LI><A HREF="#zgebak">zgebak</A>: Transforms eigenvectors of a balanced matrix to those of the</LI>
+      <LI><A HREF="#zgebrd">zgebrd</A>: Reduces a general rectangular matrix to real bidiagonal form</LI>
+      <LI><A HREF="#zgetrf">zgetrf</A>: Computes an LU factorization of a general matrix, using partial</LI>
+      <LI><A HREF="#zgetc2">zgetc2</A>: </LI>
+      <LI><A HREF="#zgeequ">zgeequ</A>: Computes row and column scalings to equilibrate a general</LI>
+      <LI><A HREF="#zgerqf">zgerqf</A>: Computes an RQ factorization of a general rectangular matrix.</LI>
+      <LI><A HREF="#zgelqf">zgelqf</A>: Computes an LQ factorization of a general rectangular matrix.</LI>
+      <LI><A HREF="#zgebal">zgebal</A>: Balances a general matrix in order to improve the accuracy</LI>
+      <LI><A HREF="#zgetf2">zgetf2</A>: </LI>
+      <LI><A HREF="#zgelsy">zgelsy</A>: Computes the minimum norm least squares solution to an over-</LI>
+      <LI><A HREF="#zgeesx">zgeesx</A>: Computes the eigenvalues and Schur factorization of a general</LI>
+      <LI><A HREF="#zgelsd">zgelsd</A>: Computes the least squares solution to an over-determined system</LI>
+      <LI><A HREF="#zgegv">zgegv</A>: Computes the generalized eigenvalues, and left and/or right</LI>
+      <LI><A HREF="#zgesvd">zgesvd</A>: Computes the singular value decomposition (SVD) of a general</LI>
+      <LI><A HREF="#zgees">zgees</A>: Computes the eigenvalues and Schur factorization of a general</LI>
     </UL>
+
+  <A NAME="zgeev"></A>
+  <H2>zgeev</H2>
+  Computes the eigenvalues and left and right eigenvectors of
+  <PRE>
+USAGE:
+  w, vl, vr, work, info, a = NumRu::Lapack.zgeev( jobvl, jobvr, a, lwork)
+    or
+  NumRu::Lapack.zgeev  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZGEEV( JOBVL, JOBVR, N, A, LDA, W, VL, LDVL, VR, LDVR, WORK, LWORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZGEEV computes for an N-by-N complex nonsymmetric matrix A, the
+*  eigenvalues and, optionally, the left and/or right eigenvectors.
+*
+*  The right eigenvector v(j) of A satisfies
+*                   A * v(j) = lambda(j) * v(j)
+*  where lambda(j) is its eigenvalue.
+*  The left eigenvector u(j) of A satisfies
+*                u(j)**H * A = lambda(j) * u(j)**H
+*  where u(j)**H denotes the conjugate transpose of u(j).
+*
+*  The computed eigenvectors are normalized to have Euclidean norm
+*  equal to 1 and largest component real.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBVL   (input) CHARACTER*1
+*          = 'N': left eigenvectors of A are not computed;
+*          = 'V': left eigenvectors of are computed.
+*
+*  JOBVR   (input) CHARACTER*1
+*          = 'N': right eigenvectors of A are not computed;
+*          = 'V': right eigenvectors of A are computed.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A. N >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+*          On entry, the N-by-N matrix A.
+*          On exit, A has been overwritten.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  W       (output) COMPLEX*16 array, dimension (N)
+*          W contains the computed eigenvalues.
+*
+*  VL      (output) COMPLEX*16 array, dimension (LDVL,N)
+*          If JOBVL = 'V', the left eigenvectors u(j) are stored one
+*          after another in the columns of VL, in the same order
+*          as their eigenvalues.
+*          If JOBVL = 'N', VL is not referenced.
+*          u(j) = VL(:,j), the j-th column of VL.
+*
+*  LDVL    (input) INTEGER
+*          The leading dimension of the array VL.  LDVL >= 1; if
+*          JOBVL = 'V', LDVL >= N.
+*
+*  VR      (output) COMPLEX*16 array, dimension (LDVR,N)
+*          If JOBVR = 'V', the right eigenvectors v(j) are stored one
+*          after another in the columns of VR, in the same order
+*          as their eigenvalues.
+*          If JOBVR = 'N', VR is not referenced.
+*          v(j) = VR(:,j), the j-th column of VR.
+*
+*  LDVR    (input) INTEGER
+*          The leading dimension of the array VR.  LDVR >= 1; if
+*          JOBVR = 'V', LDVR >= N.
+*
+*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.  LWORK >= max(1,2*N).
+*          For good performance, LWORK must generally be larger.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (2*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, the QR algorithm failed to compute all the
+*                eigenvalues, and no eigenvectors have been computed;
+*                elements and i+1:N of W contain eigenvalues which have
+*                converged.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zgelsx"></A>
+  <H2>zgelsx</H2>
+  Computes the minimum norm least squares solution to an over-
+  <PRE>
+USAGE:
+  rank, info, a, b, jpvt = NumRu::Lapack.zgelsx( m, a, b, jpvt, rcond)
+    or
+  NumRu::Lapack.zgelsx  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZGELSX( M, N, NRHS, A, LDA, B, LDB, JPVT, RCOND, RANK, WORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  This routine is deprecated and has been replaced by routine ZGELSY.
+*
+*  ZGELSX computes the minimum-norm solution to a complex linear least
+*  squares problem:
+*      minimize || A * X - B ||
+*  using a complete orthogonal factorization of A.  A is an M-by-N
+*  matrix which may be rank-deficient.
+*
+*  Several right hand side vectors b and solution vectors x can be
+*  handled in a single call; they are stored as the columns of the
+*  M-by-NRHS right hand side matrix B and the N-by-NRHS solution
+*  matrix X.
+*
+*  The routine first computes a QR factorization with column pivoting:
+*      A * P = Q * [ R11 R12 ]
+*                  [  0  R22 ]
+*  with R11 defined as the largest leading submatrix whose estimated
+*  condition number is less than 1/RCOND.  The order of R11, RANK,
+*  is the effective rank of A.
+*
+*  Then, R22 is considered to be negligible, and R12 is annihilated
+*  by unitary transformations from the right, arriving at the
+*  complete orthogonal factorization:
+*     A * P = Q * [ T11 0 ] * Z
+*                 [  0  0 ]
+*  The minimum-norm solution is then
+*     X = P * Z' [ inv(T11)*Q1'*B ]
+*                [        0       ]
+*  where Q1 consists of the first RANK columns of Q.
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix A.  M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of
+*          columns of matrices B and X. NRHS >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+*          On entry, the M-by-N matrix A.
+*          On exit, A has been overwritten by details of its
+*          complete orthogonal factorization.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,M).
+*
+*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
+*          On entry, the M-by-NRHS right hand side matrix B.
+*          On exit, the N-by-NRHS solution matrix X.
+*          If m >= n and RANK = n, the residual sum-of-squares for
+*          the solution in the i-th column is given by the sum of
+*          squares of elements N+1:M in that column.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B. LDB >= max(1,M,N).
+*
+*  JPVT    (input/output) INTEGER array, dimension (N)
+*          On entry, if JPVT(i) .ne. 0, the i-th column of A is an
+*          initial column, otherwise it is a free column.  Before
+*          the QR factorization of A, all initial columns are
+*          permuted to the leading positions; only the remaining
+*          free columns are moved as a result of column pivoting
+*          during the factorization.
+*          On exit, if JPVT(i) = k, then the i-th column of A*P
+*          was the k-th column of A.
+*
+*  RCOND   (input) DOUBLE PRECISION
+*          RCOND is used to determine the effective rank of A, which
+*          is defined as the order of the largest leading triangular
+*          submatrix R11 in the QR factorization with pivoting of A,
+*          whose estimated condition number < 1/RCOND.
+*
+*  RANK    (output) INTEGER
+*          The effective rank of A, i.e., the order of the submatrix
+*          R11.  This is the same as the order of the submatrix T11
+*          in the complete orthogonal factorization of A.
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension
+*                      (min(M,N) + max( N, 2*min(M,N)+NRHS )),
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (2*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zgels"></A>
+  <H2>zgels</H2>
+  Computes the least squares solution to an over-determined system
+  <PRE>
+USAGE:
+  work, info, a, b = NumRu::Lapack.zgels( trans, m, a, b, lwork)
+    or
+  NumRu::Lapack.zgels  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZGELS( TRANS, M, N, NRHS, A, LDA, B, LDB, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZGELS solves overdetermined or underdetermined complex linear systems
+*  involving an M-by-N matrix A, or its conjugate-transpose, using a QR
+*  or LQ factorization of A.  It is assumed that A has full rank.
+*
+*  The following options are provided:
+*
+*  1. If TRANS = 'N' and m >= n:  find the least squares solution of
+*     an overdetermined system, i.e., solve the least squares problem
+*                  minimize || B - A*X ||.
+*
+*  2. If TRANS = 'N' and m < n:  find the minimum norm solution of
+*     an underdetermined system A * X = B.
+*
+*  3. If TRANS = 'C' and m >= n:  find the minimum norm solution of
+*     an undetermined system A**H * X = B.
+*
+*  4. If TRANS = 'C' and m < n:  find the least squares solution of
+*     an overdetermined system, i.e., solve the least squares problem
+*                  minimize || B - A**H * X ||.
+*
+*  Several right hand side vectors b and solution vectors x can be
+*  handled in a single call; they are stored as the columns of the
+*  M-by-NRHS right hand side matrix B and the N-by-NRHS solution
+*  matrix X.
+*
+
+*  Arguments
+*  =========
+*
+*  TRANS   (input) CHARACTER*1
+*          = 'N': the linear system involves A;
+*          = 'C': the linear system involves A**H.
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix A.  M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of
+*          columns of the matrices B and X. NRHS >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+*          On entry, the M-by-N matrix A.
+*            if M >= N, A is overwritten by details of its QR
+*                       factorization as returned by ZGEQRF;
+*            if M <  N, A is overwritten by details of its LQ
+*                       factorization as returned by ZGELQF.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,M).
+*
+*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
+*          On entry, the matrix B of right hand side vectors, stored
+*          columnwise; B is M-by-NRHS if TRANS = 'N', or N-by-NRHS
+*          if TRANS = 'C'.
+*          On exit, if INFO = 0, B is overwritten by the solution
+*          vectors, stored columnwise:
+*          if TRANS = 'N' and m >= n, rows 1 to n of B contain the least
+*          squares solution vectors; the residual sum of squares for the
+*          solution in each column is given by the sum of squares of the
+*          modulus of elements N+1 to M in that column;
+*          if TRANS = 'N' and m < n, rows 1 to N of B contain the
+*          minimum norm solution vectors;
+*          if TRANS = 'C' and m >= n, rows 1 to M of B contain the
+*          minimum norm solution vectors;
+*          if TRANS = 'C' and m < n, rows 1 to M of B contain the
+*          least squares solution vectors; the residual sum of squares
+*          for the solution in each column is given by the sum of
+*          squares of the modulus of elements M+1 to N in that column.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B. LDB >= MAX(1,M,N).
+*
+*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          LWORK >= max( 1, MN + max( MN, NRHS ) ).
+*          For optimal performance,
+*          LWORK >= max( 1, MN + max( MN, NRHS )*NB ).
+*          where MN = min(M,N) and NB is the optimum block size.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO =  i, the i-th diagonal element of the
+*                triangular factor of A is zero, so that A does not have
+*                full rank; the least squares solution could not be
+*                computed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zgecon"></A>
+  <H2>zgecon</H2>
+  Estimates the reciprocal of the condition number of a general
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.zgecon( norm, a, anorm)
+    or
+  NumRu::Lapack.zgecon  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZGECON( NORM, N, A, LDA, ANORM, RCOND, WORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZGECON estimates the reciprocal of the condition number of a general
+*  complex matrix A, in either the 1-norm or the infinity-norm, using
+*  the LU factorization computed by ZGETRF.
+*
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as
+*     RCOND = 1 / ( norm(A) * norm(inv(A)) ).
+*
+
+*  Arguments
+*  =========
+*
+*  NORM    (input) CHARACTER*1
+*          Specifies whether the 1-norm condition number or the
+*          infinity-norm condition number is required:
+*          = '1' or 'O':  1-norm;
+*          = 'I':         Infinity-norm.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input) COMPLEX*16 array, dimension (LDA,N)
+*          The factors L and U from the factorization A = P*L*U
+*          as computed by ZGETRF.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  ANORM   (input) DOUBLE PRECISION
+*          If NORM = '1' or 'O', the 1-norm of the original matrix A.
+*          If NORM = 'I', the infinity-norm of the original matrix A.
+*
+*  RCOND   (output) DOUBLE PRECISION
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(norm(A) * norm(inv(A))).
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (2*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zgelss"></A>
+  <H2>zgelss</H2>
+  Computes the minimum norm least squares solution to an over-
+  <PRE>
+USAGE:
+  s, rank, work, info, a, b = NumRu::Lapack.zgelss( m, a, b, rcond, lwork)
+    or
+  NumRu::Lapack.zgelss  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZGELSS( M, N, NRHS, A, LDA, B, LDB, S, RCOND, RANK, WORK, LWORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZGELSS computes the minimum norm solution to a complex linear
+*  least squares problem:
+*
+*  Minimize 2-norm(| b - A*x |).
+*
+*  using the singular value decomposition (SVD) of A. A is an M-by-N
+*  matrix which may be rank-deficient.
+*
+*  Several right hand side vectors b and solution vectors x can be
+*  handled in a single call; they are stored as the columns of the
+*  M-by-NRHS right hand side matrix B and the N-by-NRHS solution matrix
+*  X.
+*
+*  The effective rank of A is determined by treating as zero those
+*  singular values which are less than RCOND times the largest singular
+*  value.
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix A. M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix A. N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrices B and X. NRHS >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+*          On entry, the M-by-N matrix A.
+*          On exit, the first min(m,n) rows of A are overwritten with
+*          its right singular vectors, stored rowwise.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A. LDA >= max(1,M).
+*
+*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
+*          On entry, the M-by-NRHS right hand side matrix B.
+*          On exit, B is overwritten by the N-by-NRHS solution matrix X.
+*          If m >= n and RANK = n, the residual sum-of-squares for
+*          the solution in the i-th column is given by the sum of
+*          squares of the modulus of elements n+1:m in that column.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,M,N).
+*
+*  S       (output) DOUBLE PRECISION array, dimension (min(M,N))
+*          The singular values of A in decreasing order.
+*          The condition number of A in the 2-norm = S(1)/S(min(m,n)).
+*
+*  RCOND   (input) DOUBLE PRECISION
+*          RCOND is used to determine the effective rank of A.
+*          Singular values S(i) <= RCOND*S(1) are treated as zero.
+*          If RCOND < 0, machine precision is used instead.
+*
+*  RANK    (output) INTEGER
+*          The effective rank of A, i.e., the number of singular values
+*          which are greater than RCOND*S(1).
+*
+*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK. LWORK >= 1, and also:
+*          LWORK >=  2*min(M,N) + max(M,N,NRHS)
+*          For good performance, LWORK should generally be larger.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (5*min(M,N))
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  the algorithm for computing the SVD failed to converge;
+*                if INFO = i, i off-diagonal elements of an intermediate
+*                bidiagonal form did not converge to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zgeqrf"></A>
+  <H2>zgeqrf</H2>
+  Computes a QR factorization of a general rectangular matrix.
+  <PRE>
+USAGE:
+  tau, work, info, a = NumRu::Lapack.zgeqrf( m, a, lwork)
+    or
+  NumRu::Lapack.zgeqrf  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZGEQRF( M, N, A, LDA, TAU, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZGEQRF computes a QR factorization of a complex M-by-N matrix A:
+*  A = Q * R.
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix A.  M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+*          On entry, the M-by-N matrix A.
+*          On exit, the elements on and above the diagonal of the array
+*          contain the min(M,N)-by-N upper trapezoidal matrix R (R is
+*          upper triangular if m >= n); the elements below the diagonal,
+*          with the array TAU, represent the unitary matrix Q as a
+*          product of min(m,n) elementary reflectors (see Further
+*          Details).
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,M).
+*
+*  TAU     (output) COMPLEX*16 array, dimension (min(M,N))
+*          The scalar factors of the elementary reflectors (see Further
+*          Details).
+*
+*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.  LWORK >= max(1,N).
+*          For optimum performance LWORK >= N*NB, where NB is
+*          the optimal blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  Further Details
+*  ===============
+*
+*  The matrix Q is represented as a product of elementary reflectors
+*
+*     Q = H(1) H(2) . . . H(k), where k = min(m,n).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a complex scalar, and v is a complex vector with
+*  v(1:i-1) = 0 and v(i) = 1; v(i+1:m) is stored on exit in A(i+1:m,i),
+*  and tau in TAU(i).
+*
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            LQUERY
+      INTEGER            I, IB, IINFO, IWS, K, LDWORK, LWKOPT, NB,
+     $                   NBMIN, NX
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           XERBLA, ZGEQR2, ZLARFB, ZLARFT
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX, MIN
+*     ..
+*     .. External Functions ..
+      INTEGER            ILAENV
+      EXTERNAL           ILAENV
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zgehrd"></A>
+  <H2>zgehrd</H2>
+  Reduces a general matrix to upper Hessenberg form by an
+  <PRE>
+USAGE:
+  tau, work, info, a = NumRu::Lapack.zgehrd( ilo, ihi, a, lwork)
+    or
+  NumRu::Lapack.zgehrd  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZGEHRD( N, ILO, IHI, A, LDA, TAU, WORK, LWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZGEHRD reduces a complex general matrix A to upper Hessenberg form H by
+*  an unitary similarity transformation:  Q' * A * Q = H .
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  ILO     (input) INTEGER
+*  IHI     (input) INTEGER
+*          It is assumed that A is already upper triangular in rows
+*          and columns 1:ILO-1 and IHI+1:N. ILO and IHI are normally
+*          set by a previous call to ZGEBAL; otherwise they should be
+*          set to 1 and N respectively. See Further Details.
+*          1 <= ILO <= IHI <= N, if N > 0; ILO=1 and IHI=0, if N=0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+*          On entry, the N-by-N general matrix to be reduced.
+*          On exit, the upper triangle and the first subdiagonal of A
+*          are overwritten with the upper Hessenberg matrix H, and the
+*          elements below the first subdiagonal, with the array TAU,
+*          represent the unitary matrix Q as a product of elementary
+*          reflectors. See Further Details.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  TAU     (output) COMPLEX*16 array, dimension (N-1)
+*          The scalar factors of the elementary reflectors (see Further
+*          Details). Elements 1:ILO-1 and IHI:N-1 of TAU are set to
+*          zero.
+*
+*  WORK    (workspace/output) COMPLEX*16 array, dimension (LWORK)
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The length of the array WORK.  LWORK >= max(1,N).
+*          For optimum performance LWORK >= N*NB, where NB is the
+*          optimal blocksize.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*
+
+*  Further Details
+*  ===============
+*
+*  The matrix Q is represented as a product of (ihi-ilo) elementary
+*  reflectors
+*
+*     Q = H(ilo) H(ilo+1) . . . H(ihi-1).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a complex scalar, and v is a complex vector with
+*  v(1:i) = 0, v(i+1) = 1 and v(ihi+1:n) = 0; v(i+2:ihi) is stored on
+*  exit in A(i+2:ihi,i), and tau in TAU(i).
+*
+*  The contents of A are illustrated by the following example, with
+*  n = 7, ilo = 2 and ihi = 6:
+*
+*  on entry,                        on exit,
+*
+*  ( a   a   a   a   a   a   a )    (  a   a   h   h   h   h   a )
+*  (     a   a   a   a   a   a )    (      a   h   h   h   h   a )
+*  (     a   a   a   a   a   a )    (      h   h   h   h   h   h )
+*  (     a   a   a   a   a   a )    (      v2  h   h   h   h   h )
+*  (     a   a   a   a   a   a )    (      v2  v3  h   h   h   h )
+*  (     a   a   a   a   a   a )    (      v2  v3  v4  h   h   h )
+*  (                         a )    (                          a )
+*
+*  where a denotes an element of the original matrix A, h denotes a
+*  modified element of the upper Hessenberg matrix H, and vi denotes an
+*  element of the vector defining H(i).
+*
+*  This file is a slight modification of LAPACK-3.0's ZGEHRD
+*  subroutine incorporating improvements proposed by Quintana-Orti and
+*  Van de Geijn (2005). 
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="zgeql2"></A>
   <H2>zgeql2</H2>
+  
   <PRE>
 USAGE:
   tau, info, a = NumRu::Lapack.zgeql2( m, a)
@@ -124,6 +857,7 @@ FORTRAN MANUAL
 
   <A NAME="zgesv"></A>
   <H2>zgesv</H2>
+  Solves a general system of linear equations AX=B.
   <PRE>
 USAGE:
   ipiv, info, a, b = NumRu::Lapack.zgesv( a, b)
@@ -202,6 +936,7 @@ FORTRAN MANUAL
 
   <A NAME="zgesdd"></A>
   <H2>zgesdd</H2>
+  Computes the singular value decomposition (SVD) of a general
   <PRE>
 USAGE:
   s, u, vt, work, info, a = NumRu::Lapack.zgesdd( jobz, m, a, lwork)
@@ -348,6 +1083,7 @@ FORTRAN MANUAL
 
   <A NAME="zgehd2"></A>
   <H2>zgehd2</H2>
+  
   <PRE>
 USAGE:
   tau, info, a = NumRu::Lapack.zgehd2( ilo, ihi, a)
@@ -443,6 +1179,7 @@ FORTRAN MANUAL
 
   <A NAME="zgeqpf"></A>
   <H2>zgeqpf</H2>
+  Computes a QR factorization with column pivoting of a general
   <PRE>
 USAGE:
   tau, info, a, jpvt = NumRu::Lapack.zgeqpf( m, a, jpvt)
@@ -534,6 +1271,7 @@ FORTRAN MANUAL
 
   <A NAME="zgeevx"></A>
   <H2>zgeevx</H2>
+  Computes the eigenvalues and left and right eigenvectors of
   <PRE>
 USAGE:
   w, vl, vr, ilo, ihi, scale, abnrm, rconde, rcondv, work, info, a = NumRu::Lapack.zgeevx( balanc, jobvl, jobvr, sense, a, lwork)
@@ -718,6 +1456,7 @@ FORTRAN MANUAL
 
   <A NAME="zgetri"></A>
   <H2>zgetri</H2>
+  Computes the inverse of a general matrix, using the LU factorization
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.zgetri( a, ipiv, lwork)
@@ -785,6 +1524,7 @@ FORTRAN MANUAL
 
   <A NAME="zgesvx"></A>
   <H2>zgesvx</H2>
+  Solves a general system of linear equations AX=B, A**T X=B
   <PRE>
 USAGE:
   x, rcond, ferr, berr, rwork, info, a, af, ipiv, equed, r, c, b = NumRu::Lapack.zgesvx( fact, trans, a, af, ipiv, equed, r, c, b)
@@ -1031,6 +1771,7 @@ FORTRAN MANUAL
 
   <A NAME="zgesc2"></A>
   <H2>zgesc2</H2>
+  
   <PRE>
 USAGE:
   scale, rhs = NumRu::Lapack.zgesc2( a, rhs, ipiv, jpiv)
@@ -1099,6 +1840,7 @@ FORTRAN MANUAL
 
   <A NAME="zgeqlf"></A>
   <H2>zgeqlf</H2>
+  Computes a QL factorization of a general rectangular matrix.
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.zgeqlf( m, a, lwork)
@@ -1200,6 +1942,7 @@ FORTRAN MANUAL
 
   <A NAME="zgeqr2"></A>
   <H2>zgeqr2</H2>
+  
   <PRE>
 USAGE:
   tau, info, a = NumRu::Lapack.zgeqr2( m, a)
@@ -1272,6 +2015,7 @@ FORTRAN MANUAL
 
   <A NAME="zgegs"></A>
   <H2>zgegs</H2>
+  Computes the generalized eigenvalues, Schur form, and left and/or
   <PRE>
 USAGE:
   alpha, beta, vsl, vsr, work, info, a, b = NumRu::Lapack.zgegs( jobvsl, jobvsr, a, b, lwork)
@@ -1414,6 +2158,7 @@ FORTRAN MANUAL
 
   <A NAME="zgeqp3"></A>
   <H2>zgeqp3</H2>
+  Computes a QR factorization with column pivoting of a general
   <PRE>
 USAGE:
   tau, work, info, a, jpvt = NumRu::Lapack.zgeqp3( m, a, jpvt, lwork)
@@ -1509,6 +2254,7 @@ FORTRAN MANUAL
 
   <A NAME="zgerfs"></A>
   <H2>zgerfs</H2>
+  Improves the computed solution to a general system of linear
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.zgerfs( trans, a, af, ipiv, b, x)
@@ -1611,6 +2357,7 @@ FORTRAN MANUAL
 
   <A NAME="zgelq2"></A>
   <H2>zgelq2</H2>
+  
   <PRE>
 USAGE:
   tau, info, a = NumRu::Lapack.zgelq2( a)
@@ -1683,6 +2430,7 @@ FORTRAN MANUAL
 
   <A NAME="zgetrs"></A>
   <H2>zgetrs</H2>
+  Solves a general system of linear equations AX=B, A**T X=B
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.zgetrs( trans, a, ipiv, b)
@@ -1750,6 +2498,7 @@ FORTRAN MANUAL
 
   <A NAME="zgebd2"></A>
   <H2>zgebd2</H2>
+  
   <PRE>
 USAGE:
   d, e, tauq, taup, info, a = NumRu::Lapack.zgebd2( m, a)
@@ -1880,6 +2629,7 @@ FORTRAN MANUAL
 
   <A NAME="zgerq2"></A>
   <H2>zgerq2</H2>
+  
   <PRE>
 USAGE:
   tau, info, a = NumRu::Lapack.zgerq2( a)
@@ -1954,6 +2704,7 @@ FORTRAN MANUAL
 
   <A NAME="zgebak"></A>
   <H2>zgebak</H2>
+  Transforms eigenvectors of a balanced matrix to those of the
   <PRE>
 USAGE:
   info, v = NumRu::Lapack.zgebak( job, side, ilo, ihi, scale, v)
@@ -2025,6 +2776,7 @@ FORTRAN MANUAL
 
   <A NAME="zgebrd"></A>
   <H2>zgebrd</H2>
+  Reduces a general rectangular matrix to real bidiagonal form
   <PRE>
 USAGE:
   d, e, tauq, taup, work, info, a = NumRu::Lapack.zgebrd( m, a, lwork)
@@ -2166,6 +2918,7 @@ FORTRAN MANUAL
 
   <A NAME="zgetrf"></A>
   <H2>zgetrf</H2>
+  Computes an LU factorization of a general matrix, using partial
   <PRE>
 USAGE:
   ipiv, info, a = NumRu::Lapack.zgetrf( m, a)
@@ -2230,6 +2983,7 @@ FORTRAN MANUAL
 
   <A NAME="zgetc2"></A>
   <H2>zgetc2</H2>
+  
   <PRE>
 USAGE:
   ipiv, jpiv, info, a = NumRu::Lapack.zgetc2( a)
@@ -2298,6 +3052,7 @@ FORTRAN MANUAL
 
   <A NAME="zgeequ"></A>
   <H2>zgeequ</H2>
+  Computes row and column scalings to equilibrate a general
   <PRE>
 USAGE:
   r, c, rowcnd, colcnd, amax, info = NumRu::Lapack.zgeequ( a)
@@ -2379,6 +3134,7 @@ FORTRAN MANUAL
 
   <A NAME="zgerqf"></A>
   <H2>zgerqf</H2>
+  Computes an RQ factorization of a general rectangular matrix.
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.zgerqf( m, a, lwork)
@@ -2480,6 +3236,7 @@ FORTRAN MANUAL
 
   <A NAME="zgelqf"></A>
   <H2>zgelqf</H2>
+  Computes an LQ factorization of a general rectangular matrix.
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.zgelqf( m, a, lwork)
@@ -2578,6 +3335,7 @@ FORTRAN MANUAL
 
   <A NAME="zgebal"></A>
   <H2>zgebal</H2>
+  Balances a general matrix in order to improve the accuracy
   <PRE>
 USAGE:
   ilo, ihi, scale, info, a = NumRu::Lapack.zgebal( job, a)
@@ -2685,6 +3443,7 @@ FORTRAN MANUAL
 
   <A NAME="zgetf2"></A>
   <H2>zgetf2</H2>
+  
   <PRE>
 USAGE:
   ipiv, info, a = NumRu::Lapack.zgetf2( m, a)
@@ -2749,6 +3508,7 @@ FORTRAN MANUAL
 
   <A NAME="zgelsy"></A>
   <H2>zgelsy</H2>
+  Computes the minimum norm least squares solution to an over-
   <PRE>
 USAGE:
   rank, work, info, a, b, jpvt = NumRu::Lapack.zgelsy( m, a, b, jpvt, rcond, lwork)
@@ -2888,6 +3648,7 @@ FORTRAN MANUAL
 
   <A NAME="zgeesx"></A>
   <H2>zgeesx</H2>
+  Computes the eigenvalues and Schur factorization of a general
   <PRE>
 USAGE:
   sdim, w, vs, rconde, rcondv, work, info, a = NumRu::Lapack.zgeesx( jobvs, sort, sense, a, lwork){|a| ... }
@@ -3036,6 +3797,7 @@ FORTRAN MANUAL
 
   <A NAME="zgelsd"></A>
   <H2>zgelsd</H2>
+  Computes the least squares solution to an over-determined system
   <PRE>
 USAGE:
   s, rank, work, info, b = NumRu::Lapack.zgelsd( m, a, b, rcond, lwork)
@@ -3187,6 +3949,7 @@ FORTRAN MANUAL
 
   <A NAME="zgegv"></A>
   <H2>zgegv</H2>
+  Computes the generalized eigenvalues, and left and/or right
   <PRE>
 USAGE:
   alpha, beta, vl, vr, work, rwork, info, a, b = NumRu::Lapack.zgegv( jobvl, jobvr, a, b, lwork)
@@ -3385,6 +4148,7 @@ FORTRAN MANUAL
 
   <A NAME="zgesvd"></A>
   <H2>zgesvd</H2>
+  Computes the singular value decomposition (SVD) of a general
   <PRE>
 USAGE:
   s, u, vt, work, info, a = NumRu::Lapack.zgesvd( jobu, jobvt, m, a, lwork)
@@ -3524,6 +4288,7 @@ FORTRAN MANUAL
 
   <A NAME="zgees"></A>
   <H2>zgees</H2>
+  Computes the eigenvalues and Schur factorization of a general
   <PRE>
 USAGE:
   sdim, w, vs, work, info, a = NumRu::Lapack.zgees( jobvs, sort, a, lwork){|a| ... }
@@ -3633,731 +4398,6 @@ FORTRAN MANUAL
 *                      underflow due to scaling.
 *
 
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zgeev"></A>
-  <H2>zgeev</H2>
-  <PRE>
-USAGE:
-  w, vl, vr, work, info, a = NumRu::Lapack.zgeev( jobvl, jobvr, a, lwork)
-    or
-  NumRu::Lapack.zgeev  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZGEEV( JOBVL, JOBVR, N, A, LDA, W, VL, LDVL, VR, LDVR, WORK, LWORK, RWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZGEEV computes for an N-by-N complex nonsymmetric matrix A, the
-*  eigenvalues and, optionally, the left and/or right eigenvectors.
-*
-*  The right eigenvector v(j) of A satisfies
-*                   A * v(j) = lambda(j) * v(j)
-*  where lambda(j) is its eigenvalue.
-*  The left eigenvector u(j) of A satisfies
-*                u(j)**H * A = lambda(j) * u(j)**H
-*  where u(j)**H denotes the conjugate transpose of u(j).
-*
-*  The computed eigenvectors are normalized to have Euclidean norm
-*  equal to 1 and largest component real.
-*
-
-*  Arguments
-*  =========
-*
-*  JOBVL   (input) CHARACTER*1
-*          = 'N': left eigenvectors of A are not computed;
-*          = 'V': left eigenvectors of are computed.
-*
-*  JOBVR   (input) CHARACTER*1
-*          = 'N': right eigenvectors of A are not computed;
-*          = 'V': right eigenvectors of A are computed.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A. N >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
-*          On entry, the N-by-N matrix A.
-*          On exit, A has been overwritten.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  W       (output) COMPLEX*16 array, dimension (N)
-*          W contains the computed eigenvalues.
-*
-*  VL      (output) COMPLEX*16 array, dimension (LDVL,N)
-*          If JOBVL = 'V', the left eigenvectors u(j) are stored one
-*          after another in the columns of VL, in the same order
-*          as their eigenvalues.
-*          If JOBVL = 'N', VL is not referenced.
-*          u(j) = VL(:,j), the j-th column of VL.
-*
-*  LDVL    (input) INTEGER
-*          The leading dimension of the array VL.  LDVL >= 1; if
-*          JOBVL = 'V', LDVL >= N.
-*
-*  VR      (output) COMPLEX*16 array, dimension (LDVR,N)
-*          If JOBVR = 'V', the right eigenvectors v(j) are stored one
-*          after another in the columns of VR, in the same order
-*          as their eigenvalues.
-*          If JOBVR = 'N', VR is not referenced.
-*          v(j) = VR(:,j), the j-th column of VR.
-*
-*  LDVR    (input) INTEGER
-*          The leading dimension of the array VR.  LDVR >= 1; if
-*          JOBVR = 'V', LDVR >= N.
-*
-*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.  LWORK >= max(1,2*N).
-*          For good performance, LWORK must generally be larger.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  RWORK   (workspace) DOUBLE PRECISION array, dimension (2*N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value.
-*          > 0:  if INFO = i, the QR algorithm failed to compute all the
-*                eigenvalues, and no eigenvectors have been computed;
-*                elements and i+1:N of W contain eigenvalues which have
-*                converged.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zgelsx"></A>
-  <H2>zgelsx</H2>
-  <PRE>
-USAGE:
-  rank, info, a, b, jpvt = NumRu::Lapack.zgelsx( m, a, b, jpvt, rcond)
-    or
-  NumRu::Lapack.zgelsx  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZGELSX( M, N, NRHS, A, LDA, B, LDB, JPVT, RCOND, RANK, WORK, RWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  This routine is deprecated and has been replaced by routine ZGELSY.
-*
-*  ZGELSX computes the minimum-norm solution to a complex linear least
-*  squares problem:
-*      minimize || A * X - B ||
-*  using a complete orthogonal factorization of A.  A is an M-by-N
-*  matrix which may be rank-deficient.
-*
-*  Several right hand side vectors b and solution vectors x can be
-*  handled in a single call; they are stored as the columns of the
-*  M-by-NRHS right hand side matrix B and the N-by-NRHS solution
-*  matrix X.
-*
-*  The routine first computes a QR factorization with column pivoting:
-*      A * P = Q * [ R11 R12 ]
-*                  [  0  R22 ]
-*  with R11 defined as the largest leading submatrix whose estimated
-*  condition number is less than 1/RCOND.  The order of R11, RANK,
-*  is the effective rank of A.
-*
-*  Then, R22 is considered to be negligible, and R12 is annihilated
-*  by unitary transformations from the right, arriving at the
-*  complete orthogonal factorization:
-*     A * P = Q * [ T11 0 ] * Z
-*                 [  0  0 ]
-*  The minimum-norm solution is then
-*     X = P * Z' [ inv(T11)*Q1'*B ]
-*                [        0       ]
-*  where Q1 consists of the first RANK columns of Q.
-*
-
-*  Arguments
-*  =========
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix A.  M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of
-*          columns of matrices B and X. NRHS >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
-*          On entry, the M-by-N matrix A.
-*          On exit, A has been overwritten by details of its
-*          complete orthogonal factorization.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,M).
-*
-*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
-*          On entry, the M-by-NRHS right hand side matrix B.
-*          On exit, the N-by-NRHS solution matrix X.
-*          If m >= n and RANK = n, the residual sum-of-squares for
-*          the solution in the i-th column is given by the sum of
-*          squares of elements N+1:M in that column.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B. LDB >= max(1,M,N).
-*
-*  JPVT    (input/output) INTEGER array, dimension (N)
-*          On entry, if JPVT(i) .ne. 0, the i-th column of A is an
-*          initial column, otherwise it is a free column.  Before
-*          the QR factorization of A, all initial columns are
-*          permuted to the leading positions; only the remaining
-*          free columns are moved as a result of column pivoting
-*          during the factorization.
-*          On exit, if JPVT(i) = k, then the i-th column of A*P
-*          was the k-th column of A.
-*
-*  RCOND   (input) DOUBLE PRECISION
-*          RCOND is used to determine the effective rank of A, which
-*          is defined as the order of the largest leading triangular
-*          submatrix R11 in the QR factorization with pivoting of A,
-*          whose estimated condition number < 1/RCOND.
-*
-*  RANK    (output) INTEGER
-*          The effective rank of A, i.e., the order of the submatrix
-*          R11.  This is the same as the order of the submatrix T11
-*          in the complete orthogonal factorization of A.
-*
-*  WORK    (workspace) COMPLEX*16 array, dimension
-*                      (min(M,N) + max( N, 2*min(M,N)+NRHS )),
-*
-*  RWORK   (workspace) DOUBLE PRECISION array, dimension (2*N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zgels"></A>
-  <H2>zgels</H2>
-  <PRE>
-USAGE:
-  work, info, a, b = NumRu::Lapack.zgels( trans, m, a, b, lwork)
-    or
-  NumRu::Lapack.zgels  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZGELS( TRANS, M, N, NRHS, A, LDA, B, LDB, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZGELS solves overdetermined or underdetermined complex linear systems
-*  involving an M-by-N matrix A, or its conjugate-transpose, using a QR
-*  or LQ factorization of A.  It is assumed that A has full rank.
-*
-*  The following options are provided:
-*
-*  1. If TRANS = 'N' and m >= n:  find the least squares solution of
-*     an overdetermined system, i.e., solve the least squares problem
-*                  minimize || B - A*X ||.
-*
-*  2. If TRANS = 'N' and m < n:  find the minimum norm solution of
-*     an underdetermined system A * X = B.
-*
-*  3. If TRANS = 'C' and m >= n:  find the minimum norm solution of
-*     an undetermined system A**H * X = B.
-*
-*  4. If TRANS = 'C' and m < n:  find the least squares solution of
-*     an overdetermined system, i.e., solve the least squares problem
-*                  minimize || B - A**H * X ||.
-*
-*  Several right hand side vectors b and solution vectors x can be
-*  handled in a single call; they are stored as the columns of the
-*  M-by-NRHS right hand side matrix B and the N-by-NRHS solution
-*  matrix X.
-*
-
-*  Arguments
-*  =========
-*
-*  TRANS   (input) CHARACTER*1
-*          = 'N': the linear system involves A;
-*          = 'C': the linear system involves A**H.
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix A.  M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix A.  N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of
-*          columns of the matrices B and X. NRHS >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
-*          On entry, the M-by-N matrix A.
-*            if M >= N, A is overwritten by details of its QR
-*                       factorization as returned by ZGEQRF;
-*            if M <  N, A is overwritten by details of its LQ
-*                       factorization as returned by ZGELQF.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,M).
-*
-*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
-*          On entry, the matrix B of right hand side vectors, stored
-*          columnwise; B is M-by-NRHS if TRANS = 'N', or N-by-NRHS
-*          if TRANS = 'C'.
-*          On exit, if INFO = 0, B is overwritten by the solution
-*          vectors, stored columnwise:
-*          if TRANS = 'N' and m >= n, rows 1 to n of B contain the least
-*          squares solution vectors; the residual sum of squares for the
-*          solution in each column is given by the sum of squares of the
-*          modulus of elements N+1 to M in that column;
-*          if TRANS = 'N' and m < n, rows 1 to N of B contain the
-*          minimum norm solution vectors;
-*          if TRANS = 'C' and m >= n, rows 1 to M of B contain the
-*          minimum norm solution vectors;
-*          if TRANS = 'C' and m < n, rows 1 to M of B contain the
-*          least squares solution vectors; the residual sum of squares
-*          for the solution in each column is given by the sum of
-*          squares of the modulus of elements M+1 to N in that column.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B. LDB >= MAX(1,M,N).
-*
-*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.
-*          LWORK >= max( 1, MN + max( MN, NRHS ) ).
-*          For optimal performance,
-*          LWORK >= max( 1, MN + max( MN, NRHS )*NB ).
-*          where MN = min(M,N) and NB is the optimum block size.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO =  i, the i-th diagonal element of the
-*                triangular factor of A is zero, so that A does not have
-*                full rank; the least squares solution could not be
-*                computed.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zgecon"></A>
-  <H2>zgecon</H2>
-  <PRE>
-USAGE:
-  rcond, info = NumRu::Lapack.zgecon( norm, a, anorm)
-    or
-  NumRu::Lapack.zgecon  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZGECON( NORM, N, A, LDA, ANORM, RCOND, WORK, RWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZGECON estimates the reciprocal of the condition number of a general
-*  complex matrix A, in either the 1-norm or the infinity-norm, using
-*  the LU factorization computed by ZGETRF.
-*
-*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
-*  condition number is computed as
-*     RCOND = 1 / ( norm(A) * norm(inv(A)) ).
-*
-
-*  Arguments
-*  =========
-*
-*  NORM    (input) CHARACTER*1
-*          Specifies whether the 1-norm condition number or the
-*          infinity-norm condition number is required:
-*          = '1' or 'O':  1-norm;
-*          = 'I':         Infinity-norm.
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  A       (input) COMPLEX*16 array, dimension (LDA,N)
-*          The factors L and U from the factorization A = P*L*U
-*          as computed by ZGETRF.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  ANORM   (input) DOUBLE PRECISION
-*          If NORM = '1' or 'O', the 1-norm of the original matrix A.
-*          If NORM = 'I', the infinity-norm of the original matrix A.
-*
-*  RCOND   (output) DOUBLE PRECISION
-*          The reciprocal of the condition number of the matrix A,
-*          computed as RCOND = 1/(norm(A) * norm(inv(A))).
-*
-*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
-*
-*  RWORK   (workspace) DOUBLE PRECISION array, dimension (2*N)
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zgelss"></A>
-  <H2>zgelss</H2>
-  <PRE>
-USAGE:
-  s, rank, work, info, a, b = NumRu::Lapack.zgelss( m, a, b, rcond, lwork)
-    or
-  NumRu::Lapack.zgelss  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZGELSS( M, N, NRHS, A, LDA, B, LDB, S, RCOND, RANK, WORK, LWORK, RWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZGELSS computes the minimum norm solution to a complex linear
-*  least squares problem:
-*
-*  Minimize 2-norm(| b - A*x |).
-*
-*  using the singular value decomposition (SVD) of A. A is an M-by-N
-*  matrix which may be rank-deficient.
-*
-*  Several right hand side vectors b and solution vectors x can be
-*  handled in a single call; they are stored as the columns of the
-*  M-by-NRHS right hand side matrix B and the N-by-NRHS solution matrix
-*  X.
-*
-*  The effective rank of A is determined by treating as zero those
-*  singular values which are less than RCOND times the largest singular
-*  value.
-*
-
-*  Arguments
-*  =========
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix A. M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix A. N >= 0.
-*
-*  NRHS    (input) INTEGER
-*          The number of right hand sides, i.e., the number of columns
-*          of the matrices B and X. NRHS >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
-*          On entry, the M-by-N matrix A.
-*          On exit, the first min(m,n) rows of A are overwritten with
-*          its right singular vectors, stored rowwise.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A. LDA >= max(1,M).
-*
-*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)
-*          On entry, the M-by-NRHS right hand side matrix B.
-*          On exit, B is overwritten by the N-by-NRHS solution matrix X.
-*          If m >= n and RANK = n, the residual sum-of-squares for
-*          the solution in the i-th column is given by the sum of
-*          squares of the modulus of elements n+1:m in that column.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B.  LDB >= max(1,M,N).
-*
-*  S       (output) DOUBLE PRECISION array, dimension (min(M,N))
-*          The singular values of A in decreasing order.
-*          The condition number of A in the 2-norm = S(1)/S(min(m,n)).
-*
-*  RCOND   (input) DOUBLE PRECISION
-*          RCOND is used to determine the effective rank of A.
-*          Singular values S(i) <= RCOND*S(1) are treated as zero.
-*          If RCOND < 0, machine precision is used instead.
-*
-*  RANK    (output) INTEGER
-*          The effective rank of A, i.e., the number of singular values
-*          which are greater than RCOND*S(1).
-*
-*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK. LWORK >= 1, and also:
-*          LWORK >=  2*min(M,N) + max(M,N,NRHS)
-*          For good performance, LWORK should generally be larger.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  RWORK   (workspace) DOUBLE PRECISION array, dimension (5*min(M,N))
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value.
-*          > 0:  the algorithm for computing the SVD failed to converge;
-*                if INFO = i, i off-diagonal elements of an intermediate
-*                bidiagonal form did not converge to zero.
-*
-
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zgeqrf"></A>
-  <H2>zgeqrf</H2>
-  <PRE>
-USAGE:
-  tau, work, info, a = NumRu::Lapack.zgeqrf( m, a, lwork)
-    or
-  NumRu::Lapack.zgeqrf  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZGEQRF( M, N, A, LDA, TAU, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZGEQRF computes a QR factorization of a complex M-by-N matrix A:
-*  A = Q * R.
-*
-
-*  Arguments
-*  =========
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix A.  M >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrix A.  N >= 0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
-*          On entry, the M-by-N matrix A.
-*          On exit, the elements on and above the diagonal of the array
-*          contain the min(M,N)-by-N upper trapezoidal matrix R (R is
-*          upper triangular if m >= n); the elements below the diagonal,
-*          with the array TAU, represent the unitary matrix Q as a
-*          product of min(m,n) elementary reflectors (see Further
-*          Details).
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,M).
-*
-*  TAU     (output) COMPLEX*16 array, dimension (min(M,N))
-*          The scalar factors of the elementary reflectors (see Further
-*          Details).
-*
-*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The dimension of the array WORK.  LWORK >= max(1,N).
-*          For optimum performance LWORK >= N*NB, where NB is
-*          the optimal blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*
-
-*  Further Details
-*  ===============
-*
-*  The matrix Q is represented as a product of elementary reflectors
-*
-*     Q = H(1) H(2) . . . H(k), where k = min(m,n).
-*
-*  Each H(i) has the form
-*
-*     H(i) = I - tau * v * v'
-*
-*  where tau is a complex scalar, and v is a complex vector with
-*  v(1:i-1) = 0 and v(i) = 1; v(i+1:m) is stored on exit in A(i+1:m,i),
-*  and tau in TAU(i).
-*
-*  =====================================================================
-*
-*     .. Local Scalars ..
-      LOGICAL            LQUERY
-      INTEGER            I, IB, IINFO, IWS, K, LDWORK, LWKOPT, NB,
-     $                   NBMIN, NX
-*     ..
-*     .. External Subroutines ..
-      EXTERNAL           XERBLA, ZGEQR2, ZLARFB, ZLARFT
-*     ..
-*     .. Intrinsic Functions ..
-      INTRINSIC          MAX, MIN
-*     ..
-*     .. External Functions ..
-      INTEGER            ILAENV
-      EXTERNAL           ILAENV
-*     ..
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="zgehrd"></A>
-  <H2>zgehrd</H2>
-  <PRE>
-USAGE:
-  tau, work, info, a = NumRu::Lapack.zgehrd( ilo, ihi, a, lwork)
-    or
-  NumRu::Lapack.zgehrd  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE ZGEHRD( N, ILO, IHI, A, LDA, TAU, WORK, LWORK, INFO )
-
-*  Purpose
-*  =======
-*
-*  ZGEHRD reduces a complex general matrix A to upper Hessenberg form H by
-*  an unitary similarity transformation:  Q' * A * Q = H .
-*
-
-*  Arguments
-*  =========
-*
-*  N       (input) INTEGER
-*          The order of the matrix A.  N >= 0.
-*
-*  ILO     (input) INTEGER
-*  IHI     (input) INTEGER
-*          It is assumed that A is already upper triangular in rows
-*          and columns 1:ILO-1 and IHI+1:N. ILO and IHI are normally
-*          set by a previous call to ZGEBAL; otherwise they should be
-*          set to 1 and N respectively. See Further Details.
-*          1 <= ILO <= IHI <= N, if N > 0; ILO=1 and IHI=0, if N=0.
-*
-*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
-*          On entry, the N-by-N general matrix to be reduced.
-*          On exit, the upper triangle and the first subdiagonal of A
-*          are overwritten with the upper Hessenberg matrix H, and the
-*          elements below the first subdiagonal, with the array TAU,
-*          represent the unitary matrix Q as a product of elementary
-*          reflectors. See Further Details.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A.  LDA >= max(1,N).
-*
-*  TAU     (output) COMPLEX*16 array, dimension (N-1)
-*          The scalar factors of the elementary reflectors (see Further
-*          Details). Elements 1:ILO-1 and IHI:N-1 of TAU are set to
-*          zero.
-*
-*  WORK    (workspace/output) COMPLEX*16 array, dimension (LWORK)
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER
-*          The length of the array WORK.  LWORK >= max(1,N).
-*          For optimum performance LWORK >= N*NB, where NB is the
-*          optimal blocksize.
-*
-*          If LWORK = -1, then a workspace query is assumed; the routine
-*          only calculates the optimal size of the WORK array, returns
-*          this value as the first entry of the WORK array, and no error
-*          message related to LWORK is issued by XERBLA.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value.
-*
-
-*  Further Details
-*  ===============
-*
-*  The matrix Q is represented as a product of (ihi-ilo) elementary
-*  reflectors
-*
-*     Q = H(ilo) H(ilo+1) . . . H(ihi-1).
-*
-*  Each H(i) has the form
-*
-*     H(i) = I - tau * v * v'
-*
-*  where tau is a complex scalar, and v is a complex vector with
-*  v(1:i) = 0, v(i+1) = 1 and v(ihi+1:n) = 0; v(i+2:ihi) is stored on
-*  exit in A(i+2:ihi,i), and tau in TAU(i).
-*
-*  The contents of A are illustrated by the following example, with
-*  n = 7, ilo = 2 and ihi = 6:
-*
-*  on entry,                        on exit,
-*
-*  ( a   a   a   a   a   a   a )    (  a   a   h   h   h   h   a )
-*  (     a   a   a   a   a   a )    (      a   h   h   h   h   a )
-*  (     a   a   a   a   a   a )    (      h   h   h   h   h   h )
-*  (     a   a   a   a   a   a )    (      v2  h   h   h   h   h )
-*  (     a   a   a   a   a   a )    (      v2  v3  h   h   h   h )
-*  (     a   a   a   a   a   a )    (      v2  v3  v4  h   h   h )
-*  (                         a )    (                          a )
-*
-*  where a denotes an element of the original matrix A, h denotes a
-*  modified element of the upper Hessenberg matrix H, and vi denotes an
-*  element of the vector defining H(i).
-*
-*  This file is a slight modification of LAPACK-3.0's ZGEHRD
-*  subroutine incorporating improvements proposed by Quintana-Orti and
-*  Van de Geijn (2005). 
-*
 *  =====================================================================
 *
 

@@ -6,18 +6,279 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for triangular matrices, generalized problem (i.e., a pair of triangular matrices) matrix</H1>
     <UL>
-      <LI><A HREF="#ctgsen">ctgsen</A></LI>
-      <LI><A HREF="#ctgex2">ctgex2</A></LI>
-      <LI><A HREF="#ctgsyl">ctgsyl</A></LI>
-      <LI><A HREF="#ctgevc">ctgevc</A></LI>
-      <LI><A HREF="#ctgexc">ctgexc</A></LI>
-      <LI><A HREF="#ctgsna">ctgsna</A></LI>
-      <LI><A HREF="#ctgsy2">ctgsy2</A></LI>
-      <LI><A HREF="#ctgsja">ctgsja</A></LI>
+      <LI><A HREF="#ctgsja">ctgsja</A>: Computes the generalized singular value decomposition of two complex</LI>
+      <LI><A HREF="#ctgsen">ctgsen</A>: Reorders the generalized Schur decomposition of a complex</LI>
+      <LI><A HREF="#ctgex2">ctgex2</A>: </LI>
+      <LI><A HREF="#ctgsyl">ctgsyl</A>: Solves the generalized Sylvester equation.</LI>
+      <LI><A HREF="#ctgevc">ctgevc</A>: Computes some or all of the right and/or left generalized eigenvectors</LI>
+      <LI><A HREF="#ctgexc">ctgexc</A>: Reorders the generalized Schur decomposition of a complex</LI>
+      <LI><A HREF="#ctgsna">ctgsna</A>: Estimates reciprocal condition numbers for specified</LI>
+      <LI><A HREF="#ctgsy2">ctgsy2</A>: </LI>
     </UL>
+
+  <A NAME="ctgsja"></A>
+  <H2>ctgsja</H2>
+  Computes the generalized singular value decomposition of two complex
+  <PRE>
+USAGE:
+  alpha, beta, ncycle, info, a, b, u, v, q = NumRu::Lapack.ctgsja( jobu, jobv, jobq, k, l, a, b, tola, tolb, u, v, q)
+    or
+  NumRu::Lapack.ctgsja  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CTGSJA( JOBU, JOBV, JOBQ, M, P, N, K, L, A, LDA, B, LDB, TOLA, TOLB, ALPHA, BETA, U, LDU, V, LDV, Q, LDQ, WORK, NCYCLE, INFO )
+
+*  Purpose
+*  =======
+*
+*  CTGSJA computes the generalized singular value decomposition (GSVD)
+*  of two complex upper triangular (or trapezoidal) matrices A and B.
+*
+*  On entry, it is assumed that matrices A and B have the following
+*  forms, which may be obtained by the preprocessing subroutine CGGSVP
+*  from a general M-by-N matrix A and P-by-N matrix B:
+*
+*               N-K-L  K    L
+*     A =    K ( 0    A12  A13 ) if M-K-L >= 0;
+*            L ( 0     0   A23 )
+*        M-K-L ( 0     0    0  )
+*
+*             N-K-L  K    L
+*     A =  K ( 0    A12  A13 ) if M-K-L < 0;
+*        M-K ( 0     0   A23 )
+*
+*             N-K-L  K    L
+*     B =  L ( 0     0   B13 )
+*        P-L ( 0     0    0  )
+*
+*  where the K-by-K matrix A12 and L-by-L matrix B13 are nonsingular
+*  upper triangular; A23 is L-by-L upper triangular if M-K-L >= 0,
+*  otherwise A23 is (M-K)-by-L upper trapezoidal.
+*
+*  On exit,
+*
+*         U'*A*Q = D1*( 0 R ),    V'*B*Q = D2*( 0 R ),
+*
+*  where U, V and Q are unitary matrices, Z' denotes the conjugate
+*  transpose of Z, R is a nonsingular upper triangular matrix, and D1
+*  and D2 are ``diagonal'' matrices, which are of the following
+*  structures:
+*
+*  If M-K-L >= 0,
+*
+*                      K  L
+*         D1 =     K ( I  0 )
+*                  L ( 0  C )
+*              M-K-L ( 0  0 )
+*
+*                     K  L
+*         D2 = L   ( 0  S )
+*              P-L ( 0  0 )
+*
+*                 N-K-L  K    L
+*    ( 0 R ) = K (  0   R11  R12 ) K
+*              L (  0    0   R22 ) L
+*
+*  where
+*
+*    C = diag( ALPHA(K+1), ... , ALPHA(K+L) ),
+*    S = diag( BETA(K+1),  ... , BETA(K+L) ),
+*    C**2 + S**2 = I.
+*
+*    R is stored in A(1:K+L,N-K-L+1:N) on exit.
+*
+*  If M-K-L < 0,
+*
+*                 K M-K K+L-M
+*      D1 =   K ( I  0    0   )
+*           M-K ( 0  C    0   )
+*
+*                   K M-K K+L-M
+*      D2 =   M-K ( 0  S    0   )
+*           K+L-M ( 0  0    I   )
+*             P-L ( 0  0    0   )
+*
+*                 N-K-L  K   M-K  K+L-M
+* ( 0 R ) =    K ( 0    R11  R12  R13  )
+*            M-K ( 0     0   R22  R23  )
+*          K+L-M ( 0     0    0   R33  )
+*
+*  where
+*  C = diag( ALPHA(K+1), ... , ALPHA(M) ),
+*  S = diag( BETA(K+1),  ... , BETA(M) ),
+*  C**2 + S**2 = I.
+*
+*  R = ( R11 R12 R13 ) is stored in A(1:M, N-K-L+1:N) and R33 is stored
+*      (  0  R22 R23 )
+*  in B(M-K+1:L,N+M-K-L+1:N) on exit.
+*
+*  The computation of the unitary transformation matrices U, V or Q
+*  is optional.  These matrices may either be formed explicitly, or they
+*  may be postmultiplied into input matrices U1, V1, or Q1.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBU    (input) CHARACTER*1
+*          = 'U':  U must contain a unitary matrix U1 on entry, and
+*                  the product U1*U is returned;
+*          = 'I':  U is initialized to the unit matrix, and the
+*                  unitary matrix U is returned;
+*          = 'N':  U is not computed.
+*
+*  JOBV    (input) CHARACTER*1
+*          = 'V':  V must contain a unitary matrix V1 on entry, and
+*                  the product V1*V is returned;
+*          = 'I':  V is initialized to the unit matrix, and the
+*                  unitary matrix V is returned;
+*          = 'N':  V is not computed.
+*
+*  JOBQ    (input) CHARACTER*1
+*          = 'Q':  Q must contain a unitary matrix Q1 on entry, and
+*                  the product Q1*Q is returned;
+*          = 'I':  Q is initialized to the unit matrix, and the
+*                  unitary matrix Q is returned;
+*          = 'N':  Q is not computed.
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix A.  M >= 0.
+*
+*  P       (input) INTEGER
+*          The number of rows of the matrix B.  P >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrices A and B.  N >= 0.
+*
+*  K       (input) INTEGER
+*  L       (input) INTEGER
+*          K and L specify the subblocks in the input matrices A and B:
+*          A23 = A(K+1:MIN(K+L,M),N-L+1:N) and B13 = B(1:L,,N-L+1:N)
+*          of A and B, whose GSVD is going to be computed by CTGSJA.
+*          See Further details.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the M-by-N matrix A.
+*          On exit, A(N-K+1:N,1:MIN(K+L,M) ) contains the triangular
+*          matrix R or part of R.  See Purpose for details.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A. LDA >= max(1,M).
+*
+*  B       (input/output) COMPLEX array, dimension (LDB,N)
+*          On entry, the P-by-N matrix B.
+*          On exit, if necessary, B(M-K+1:L,N+M-K-L+1:N) contains
+*          a part of R.  See Purpose for details.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B. LDB >= max(1,P).
+*
+*  TOLA    (input) REAL
+*  TOLB    (input) REAL
+*          TOLA and TOLB are the convergence criteria for the Jacobi-
+*          Kogbetliantz iteration procedure. Generally, they are the
+*          same as used in the preprocessing step, say
+*              TOLA = MAX(M,N)*norm(A)*MACHEPS,
+*              TOLB = MAX(P,N)*norm(B)*MACHEPS.
+*
+*  ALPHA   (output) REAL array, dimension (N)
+*  BETA    (output) REAL array, dimension (N)
+*          On exit, ALPHA and BETA contain the generalized singular
+*          value pairs of A and B;
+*            ALPHA(1:K) = 1,
+*            BETA(1:K)  = 0,
+*          and if M-K-L >= 0,
+*            ALPHA(K+1:K+L) = diag(C),
+*            BETA(K+1:K+L)  = diag(S),
+*          or if M-K-L < 0,
+*            ALPHA(K+1:M)= C, ALPHA(M+1:K+L)= 0
+*            BETA(K+1:M) = S, BETA(M+1:K+L) = 1.
+*          Furthermore, if K+L < N,
+*            ALPHA(K+L+1:N) = 0
+*            BETA(K+L+1:N)  = 0.
+*
+*  U       (input/output) COMPLEX array, dimension (LDU,M)
+*          On entry, if JOBU = 'U', U must contain a matrix U1 (usually
+*          the unitary matrix returned by CGGSVP).
+*          On exit,
+*          if JOBU = 'I', U contains the unitary matrix U;
+*          if JOBU = 'U', U contains the product U1*U.
+*          If JOBU = 'N', U is not referenced.
+*
+*  LDU     (input) INTEGER
+*          The leading dimension of the array U. LDU >= max(1,M) if
+*          JOBU = 'U'; LDU >= 1 otherwise.
+*
+*  V       (input/output) COMPLEX array, dimension (LDV,P)
+*          On entry, if JOBV = 'V', V must contain a matrix V1 (usually
+*          the unitary matrix returned by CGGSVP).
+*          On exit,
+*          if JOBV = 'I', V contains the unitary matrix V;
+*          if JOBV = 'V', V contains the product V1*V.
+*          If JOBV = 'N', V is not referenced.
+*
+*  LDV     (input) INTEGER
+*          The leading dimension of the array V. LDV >= max(1,P) if
+*          JOBV = 'V'; LDV >= 1 otherwise.
+*
+*  Q       (input/output) COMPLEX array, dimension (LDQ,N)
+*          On entry, if JOBQ = 'Q', Q must contain a matrix Q1 (usually
+*          the unitary matrix returned by CGGSVP).
+*          On exit,
+*          if JOBQ = 'I', Q contains the unitary matrix Q;
+*          if JOBQ = 'Q', Q contains the product Q1*Q.
+*          If JOBQ = 'N', Q is not referenced.
+*
+*  LDQ     (input) INTEGER
+*          The leading dimension of the array Q. LDQ >= max(1,N) if
+*          JOBQ = 'Q'; LDQ >= 1 otherwise.
+*
+*  WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*  NCYCLE  (output) INTEGER
+*          The number of cycles required for convergence.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          = 1:  the procedure does not converge after MAXIT cycles.
+*
+*  Internal Parameters
+*  ===================
+*
+*  MAXIT   INTEGER
+*          MAXIT specifies the total loops that the iterative procedure
+*          may take. If after MAXIT cycles, the routine fails to
+*          converge, we return INFO = 1.
+*
+
+*  Further Details
+*  ===============
+*
+*  CTGSJA essentially uses a variant of Kogbetliantz algorithm to reduce
+*  min(L,M-K)-by-L triangular (or trapezoidal) matrix A23 and L-by-L
+*  matrix B13 to the form:
+*
+*           U1'*A13*Q1 = C1*R1; V1'*B13*Q1 = S1*R1,
+*
+*  where U1, V1 and Q1 are unitary matrix, and Z' is the conjugate
+*  transpose of Z.  C1 and S1 are diagonal matrices satisfying
+*
+*                C1**2 + S1**2 = I,
+*
+*  and R1 is an L-by-L nonsingular upper triangular matrix.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
 
   <A NAME="ctgsen"></A>
   <H2>ctgsen</H2>
+  Reorders the generalized Schur decomposition of a complex
   <PRE>
 USAGE:
   alpha, beta, m, pl, pr, dif, work, iwork, info, a, b, q, z = NumRu::Lapack.ctgsen( ijob, wantq, wantz, select, a, b, q, z, lwork, liwork)
@@ -337,6 +598,7 @@ FORTRAN MANUAL
 
   <A NAME="ctgex2"></A>
   <H2>ctgex2</H2>
+  
   <PRE>
 USAGE:
   info, a, b, q, z = NumRu::Lapack.ctgex2( wantq, wantz, a, b, q, ldq, z, ldz, j1)
@@ -455,6 +717,7 @@ FORTRAN MANUAL
 
   <A NAME="ctgsyl"></A>
   <H2>ctgsyl</H2>
+  Solves the generalized Sylvester equation.
   <PRE>
 USAGE:
   scale, dif, work, info, c, f = NumRu::Lapack.ctgsyl( trans, ijob, a, b, c, d, e, f, lwork)
@@ -649,6 +912,7 @@ FORTRAN MANUAL
 
   <A NAME="ctgevc"></A>
   <H2>ctgevc</H2>
+  Computes some or all of the right and/or left generalized eigenvectors
   <PRE>
 USAGE:
   m, info, vl, vr = NumRu::Lapack.ctgevc( side, howmny, select, s, p, vl, vr)
@@ -785,6 +1049,7 @@ FORTRAN MANUAL
 
   <A NAME="ctgexc"></A>
   <H2>ctgexc</H2>
+  Reorders the generalized Schur decomposition of a complex
   <PRE>
 USAGE:
   info, a, b, q, z, ilst = NumRu::Lapack.ctgexc( wantq, wantz, a, b, q, ldq, z, ifst, ilst)
@@ -921,6 +1186,7 @@ FORTRAN MANUAL
 
   <A NAME="ctgsna"></A>
   <H2>ctgsna</H2>
+  Estimates reciprocal condition numbers for specified
   <PRE>
 USAGE:
   s, dif, m, work, info = NumRu::Lapack.ctgsna( job, howmny, select, a, b, vl, vr, lwork)
@@ -1130,6 +1396,7 @@ FORTRAN MANUAL
 
   <A NAME="ctgsy2"></A>
   <H2>ctgsy2</H2>
+  
   <PRE>
 USAGE:
   scale, info, c, f, rdsum, rdscal = NumRu::Lapack.ctgsy2( trans, ijob, a, b, c, d, e, f, rdsum, rdscal)
@@ -1288,265 +1555,6 @@ FORTRAN MANUAL
 *  Based on contributions by
 *     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
 *     Umea University, S-901 87 Umea, Sweden.
-*
-*  =====================================================================
-*
-
-
-    </PRE>
-    <A HREF="#top">go to the page top</A>
-
-  <A NAME="ctgsja"></A>
-  <H2>ctgsja</H2>
-  <PRE>
-USAGE:
-  alpha, beta, ncycle, info, a, b, u, v, q = NumRu::Lapack.ctgsja( jobu, jobv, jobq, k, l, a, b, tola, tolb, u, v, q)
-    or
-  NumRu::Lapack.ctgsja  # print help
-
-
-FORTRAN MANUAL
-      SUBROUTINE CTGSJA( JOBU, JOBV, JOBQ, M, P, N, K, L, A, LDA, B, LDB, TOLA, TOLB, ALPHA, BETA, U, LDU, V, LDV, Q, LDQ, WORK, NCYCLE, INFO )
-
-*  Purpose
-*  =======
-*
-*  CTGSJA computes the generalized singular value decomposition (GSVD)
-*  of two complex upper triangular (or trapezoidal) matrices A and B.
-*
-*  On entry, it is assumed that matrices A and B have the following
-*  forms, which may be obtained by the preprocessing subroutine CGGSVP
-*  from a general M-by-N matrix A and P-by-N matrix B:
-*
-*               N-K-L  K    L
-*     A =    K ( 0    A12  A13 ) if M-K-L >= 0;
-*            L ( 0     0   A23 )
-*        M-K-L ( 0     0    0  )
-*
-*             N-K-L  K    L
-*     A =  K ( 0    A12  A13 ) if M-K-L < 0;
-*        M-K ( 0     0   A23 )
-*
-*             N-K-L  K    L
-*     B =  L ( 0     0   B13 )
-*        P-L ( 0     0    0  )
-*
-*  where the K-by-K matrix A12 and L-by-L matrix B13 are nonsingular
-*  upper triangular; A23 is L-by-L upper triangular if M-K-L >= 0,
-*  otherwise A23 is (M-K)-by-L upper trapezoidal.
-*
-*  On exit,
-*
-*         U'*A*Q = D1*( 0 R ),    V'*B*Q = D2*( 0 R ),
-*
-*  where U, V and Q are unitary matrices, Z' denotes the conjugate
-*  transpose of Z, R is a nonsingular upper triangular matrix, and D1
-*  and D2 are ``diagonal'' matrices, which are of the following
-*  structures:
-*
-*  If M-K-L >= 0,
-*
-*                      K  L
-*         D1 =     K ( I  0 )
-*                  L ( 0  C )
-*              M-K-L ( 0  0 )
-*
-*                     K  L
-*         D2 = L   ( 0  S )
-*              P-L ( 0  0 )
-*
-*                 N-K-L  K    L
-*    ( 0 R ) = K (  0   R11  R12 ) K
-*              L (  0    0   R22 ) L
-*
-*  where
-*
-*    C = diag( ALPHA(K+1), ... , ALPHA(K+L) ),
-*    S = diag( BETA(K+1),  ... , BETA(K+L) ),
-*    C**2 + S**2 = I.
-*
-*    R is stored in A(1:K+L,N-K-L+1:N) on exit.
-*
-*  If M-K-L < 0,
-*
-*                 K M-K K+L-M
-*      D1 =   K ( I  0    0   )
-*           M-K ( 0  C    0   )
-*
-*                   K M-K K+L-M
-*      D2 =   M-K ( 0  S    0   )
-*           K+L-M ( 0  0    I   )
-*             P-L ( 0  0    0   )
-*
-*                 N-K-L  K   M-K  K+L-M
-* ( 0 R ) =    K ( 0    R11  R12  R13  )
-*            M-K ( 0     0   R22  R23  )
-*          K+L-M ( 0     0    0   R33  )
-*
-*  where
-*  C = diag( ALPHA(K+1), ... , ALPHA(M) ),
-*  S = diag( BETA(K+1),  ... , BETA(M) ),
-*  C**2 + S**2 = I.
-*
-*  R = ( R11 R12 R13 ) is stored in A(1:M, N-K-L+1:N) and R33 is stored
-*      (  0  R22 R23 )
-*  in B(M-K+1:L,N+M-K-L+1:N) on exit.
-*
-*  The computation of the unitary transformation matrices U, V or Q
-*  is optional.  These matrices may either be formed explicitly, or they
-*  may be postmultiplied into input matrices U1, V1, or Q1.
-*
-
-*  Arguments
-*  =========
-*
-*  JOBU    (input) CHARACTER*1
-*          = 'U':  U must contain a unitary matrix U1 on entry, and
-*                  the product U1*U is returned;
-*          = 'I':  U is initialized to the unit matrix, and the
-*                  unitary matrix U is returned;
-*          = 'N':  U is not computed.
-*
-*  JOBV    (input) CHARACTER*1
-*          = 'V':  V must contain a unitary matrix V1 on entry, and
-*                  the product V1*V is returned;
-*          = 'I':  V is initialized to the unit matrix, and the
-*                  unitary matrix V is returned;
-*          = 'N':  V is not computed.
-*
-*  JOBQ    (input) CHARACTER*1
-*          = 'Q':  Q must contain a unitary matrix Q1 on entry, and
-*                  the product Q1*Q is returned;
-*          = 'I':  Q is initialized to the unit matrix, and the
-*                  unitary matrix Q is returned;
-*          = 'N':  Q is not computed.
-*
-*  M       (input) INTEGER
-*          The number of rows of the matrix A.  M >= 0.
-*
-*  P       (input) INTEGER
-*          The number of rows of the matrix B.  P >= 0.
-*
-*  N       (input) INTEGER
-*          The number of columns of the matrices A and B.  N >= 0.
-*
-*  K       (input) INTEGER
-*  L       (input) INTEGER
-*          K and L specify the subblocks in the input matrices A and B:
-*          A23 = A(K+1:MIN(K+L,M),N-L+1:N) and B13 = B(1:L,,N-L+1:N)
-*          of A and B, whose GSVD is going to be computed by CTGSJA.
-*          See Further details.
-*
-*  A       (input/output) COMPLEX array, dimension (LDA,N)
-*          On entry, the M-by-N matrix A.
-*          On exit, A(N-K+1:N,1:MIN(K+L,M) ) contains the triangular
-*          matrix R or part of R.  See Purpose for details.
-*
-*  LDA     (input) INTEGER
-*          The leading dimension of the array A. LDA >= max(1,M).
-*
-*  B       (input/output) COMPLEX array, dimension (LDB,N)
-*          On entry, the P-by-N matrix B.
-*          On exit, if necessary, B(M-K+1:L,N+M-K-L+1:N) contains
-*          a part of R.  See Purpose for details.
-*
-*  LDB     (input) INTEGER
-*          The leading dimension of the array B. LDB >= max(1,P).
-*
-*  TOLA    (input) REAL
-*  TOLB    (input) REAL
-*          TOLA and TOLB are the convergence criteria for the Jacobi-
-*          Kogbetliantz iteration procedure. Generally, they are the
-*          same as used in the preprocessing step, say
-*              TOLA = MAX(M,N)*norm(A)*MACHEPS,
-*              TOLB = MAX(P,N)*norm(B)*MACHEPS.
-*
-*  ALPHA   (output) REAL array, dimension (N)
-*  BETA    (output) REAL array, dimension (N)
-*          On exit, ALPHA and BETA contain the generalized singular
-*          value pairs of A and B;
-*            ALPHA(1:K) = 1,
-*            BETA(1:K)  = 0,
-*          and if M-K-L >= 0,
-*            ALPHA(K+1:K+L) = diag(C),
-*            BETA(K+1:K+L)  = diag(S),
-*          or if M-K-L < 0,
-*            ALPHA(K+1:M)= C, ALPHA(M+1:K+L)= 0
-*            BETA(K+1:M) = S, BETA(M+1:K+L) = 1.
-*          Furthermore, if K+L < N,
-*            ALPHA(K+L+1:N) = 0
-*            BETA(K+L+1:N)  = 0.
-*
-*  U       (input/output) COMPLEX array, dimension (LDU,M)
-*          On entry, if JOBU = 'U', U must contain a matrix U1 (usually
-*          the unitary matrix returned by CGGSVP).
-*          On exit,
-*          if JOBU = 'I', U contains the unitary matrix U;
-*          if JOBU = 'U', U contains the product U1*U.
-*          If JOBU = 'N', U is not referenced.
-*
-*  LDU     (input) INTEGER
-*          The leading dimension of the array U. LDU >= max(1,M) if
-*          JOBU = 'U'; LDU >= 1 otherwise.
-*
-*  V       (input/output) COMPLEX array, dimension (LDV,P)
-*          On entry, if JOBV = 'V', V must contain a matrix V1 (usually
-*          the unitary matrix returned by CGGSVP).
-*          On exit,
-*          if JOBV = 'I', V contains the unitary matrix V;
-*          if JOBV = 'V', V contains the product V1*V.
-*          If JOBV = 'N', V is not referenced.
-*
-*  LDV     (input) INTEGER
-*          The leading dimension of the array V. LDV >= max(1,P) if
-*          JOBV = 'V'; LDV >= 1 otherwise.
-*
-*  Q       (input/output) COMPLEX array, dimension (LDQ,N)
-*          On entry, if JOBQ = 'Q', Q must contain a matrix Q1 (usually
-*          the unitary matrix returned by CGGSVP).
-*          On exit,
-*          if JOBQ = 'I', Q contains the unitary matrix Q;
-*          if JOBQ = 'Q', Q contains the product Q1*Q.
-*          If JOBQ = 'N', Q is not referenced.
-*
-*  LDQ     (input) INTEGER
-*          The leading dimension of the array Q. LDQ >= max(1,N) if
-*          JOBQ = 'Q'; LDQ >= 1 otherwise.
-*
-*  WORK    (workspace) COMPLEX array, dimension (2*N)
-*
-*  NCYCLE  (output) INTEGER
-*          The number of cycles required for convergence.
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value.
-*          = 1:  the procedure does not converge after MAXIT cycles.
-*
-*  Internal Parameters
-*  ===================
-*
-*  MAXIT   INTEGER
-*          MAXIT specifies the total loops that the iterative procedure
-*          may take. If after MAXIT cycles, the routine fails to
-*          converge, we return INFO = 1.
-*
-
-*  Further Details
-*  ===============
-*
-*  CTGSJA essentially uses a variant of Kogbetliantz algorithm to reduce
-*  min(L,M-K)-by-L triangular (or trapezoidal) matrix A23 and L-by-L
-*  matrix B13 to the form:
-*
-*           U1'*A13*Q1 = C1*R1; V1'*B13*Q1 = S1*R1,
-*
-*  where U1, V1 and Q1 are unitary matrix, and Z' is the conjugate
-*  transpose of Z.  C1 and S1 are diagonal matrices satisfying
-*
-*                C1**2 + S1**2 = I,
-*
-*  and R1 is an L-by-L nonsingular upper triangular matrix.
 *
 *  =====================================================================
 *

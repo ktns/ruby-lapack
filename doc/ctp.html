@@ -6,14 +6,15 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for triangular, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#ctpcon">ctpcon</A></LI>
-      <LI><A HREF="#ctptrs">ctptrs</A></LI>
-      <LI><A HREF="#ctptri">ctptri</A></LI>
-      <LI><A HREF="#ctprfs">ctprfs</A></LI>
+      <LI><A HREF="#ctpcon">ctpcon</A>: Estimates the reciprocal of the condition number of a triangular</LI>
+      <LI><A HREF="#ctptrs">ctptrs</A>: Solves a triangular system of linear equations AX=B,</LI>
+      <LI><A HREF="#ctptri">ctptri</A>: Computes the inverse of a triangular matrix in packed storage.</LI>
+      <LI><A HREF="#ctprfs">ctprfs</A>: Provides forward and backward error bounds for the solution</LI>
     </UL>
 
   <A NAME="ctpcon"></A>
   <H2>ctpcon</H2>
+  Estimates the reciprocal of the condition number of a triangular
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.ctpcon( norm, uplo, diag, ap)
@@ -87,6 +88,7 @@ FORTRAN MANUAL
 
   <A NAME="ctptrs"></A>
   <H2>ctptrs</H2>
+  Solves a triangular system of linear equations AX=B,
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.ctptrs( uplo, trans, diag, n, ap, b)
@@ -164,6 +166,7 @@ FORTRAN MANUAL
 
   <A NAME="ctptri"></A>
   <H2>ctptri</H2>
+  Computes the inverse of a triangular matrix in packed storage.
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.ctptri( uplo, diag, n, ap)
@@ -237,6 +240,7 @@ FORTRAN MANUAL
 
   <A NAME="ctprfs"></A>
   <H2>ctprfs</H2>
+  Provides forward and backward error bounds for the solution
   <PRE>
 USAGE:
   ferr, berr, info = NumRu::Lapack.ctprfs( uplo, trans, diag, ap, b, x)
