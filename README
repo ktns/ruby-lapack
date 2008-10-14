@@ -1,0 +1,52 @@
+* What's Ruby-LAPACK
+Ruby-LAPACK is a Ruby wrapper of LAPACK.
+Requires
+
+    * CLAPACK (http://www.netlib.org/clapack/)
+    * NArray (http://narray.rubyforge.org/index.html.en)
+
+
+* Usage
+returns = NumRu::Lapack.method_name(args)
+
+    * Arguments
+    * The arguments of each method are the arguments of the corresponding subroutine/function without arguments for output and dimension size of array. Returns
+      The methods return the arguments for output of the correspoing subroutine/function. 
+
+In the arguments and returns, array (Matrix) is NArray object. The order of Matrix dimensions is the same as the notation of mathematics: x_ij => x[i-1,j-1].
+If you call methods with no arguments, help message will be printed.
+
+
+* Documents
+Documents for individual methods are "doc" directory in the source
+
+
+* Example
+DSYEVR: Compultes selected eigenvalues, and optinally, eigenvectors of a real symmetric matrix.
+The following script calculats the leading eigenvalue and corresponding eigenvector of the matrix (x_11 = 1, x_12 = x_21 = 2, x_22 = 3).
+Ruby method is NumRu::Lapack.dsyevr.
+
+jobz = "V"
+range = "I"
+uplo = "U"
+a = NArray[[1,0],[2,3]]
+vl =  vu = 0 # not be used in this example
+il = 1
+iu = 2
+abstol = 0.0
+lwork = 66
+liwork = 26
+
+m, w, z, isuppz, work, iwork, info, a = NumRu::Lapack.dsyevr(jobz, range, uplo, a, vl, vu, il, iu, abstol, lwork, liwork)
+
+The corresponding FORTRAN subroutine is DSYEVR.
+
+SUBROUTINE DSYEVR(JOBZ, RANGE, UPLO, N, A, LDA, VL, IL, IU, ABSTOL, M, W, Z, LDZ, ISUPPZ, WORK, LWORK, IWORK, LIWORK, INFO)
+# JOBZ(input), RANGE(input), UPLO(input)
+# N(input), A(input/output), LDA(input)
+# VL(input), IL(input), IU(input), ABSTOL(input)
+# M(output), W(output), Z(output), LDZ(input), ISUPPZ(output)
+# WORK(workspace/output), IWORK(input), LWORK(workspace/output), LIWORK(input)
+# INFO(output)
+
+N is the order of the matrix A, LDA is the leading dimension of array A, and LDZ is the leading dimension of array Z. 
