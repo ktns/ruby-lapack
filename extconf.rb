@@ -31,7 +31,7 @@ EOF
   end
 end
 
-def find_library(lib, func, name=nil)
+def find_library(lib, func=nil, name=nil)
   func = "main" if !func or func.empty?
   ldir = with_config(lib+'-lib')
   ldirs = ldir ? Array === ldir ? ldir : ldir.split(File::PATH_SEPARATOR) : []
@@ -74,7 +74,7 @@ dir_config("f2c", "/usr/local")
 unless find_header("f2c.h")
   header_not_found("f2c")
 end
-unless find_library("f2c", "s_copy")
+unless find_library("f2c")
   library_not_found("f2c")
 end
 
@@ -82,16 +82,16 @@ dir_config("clapack", "/usr/local")
 unless find_header("clapack.h")
   header_not_found("clapack")
 end
-#unless find_library("lapack","dsyevr_")
+#unless find_library("lapack")
 #  library_not_found("lapack",nil)
 
   warn "CLAPACK will be tried to find"
   name = with_config("cblas-name","blas_LINUX.a")
-  unless find_library("cblas", "f2c_dcopy", name)
+  unless find_library("cblas", nil, name)
     library_not_found("cblas",name)
   end
   name = with_config("clapack-name","lapack_LINUX.a")
-  unless find_library("clapack", "dsyevr_", name)
+  unless find_library("clapack", nil, name)
     library_not_found("lapack",name)
   end
 #end
@@ -101,7 +101,7 @@ dir_config("narray", sitearchdir, sitearchdir)
 unless find_header("narray.h") && have_header("narray_config.h")
   header_not_found("narray")
 end
-unless find_library("narray", "na_make_object", "narray.so")
+unless find_library("narray", nil, "narray.so")
   library_not_found("narray","narray.so")
 end
 
