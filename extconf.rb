@@ -31,6 +31,25 @@ EOF
   end
 end
 
+def try_func(func, libs, headers = nil, &b)
+  headers = cpp_include(headers)
+    try_link(<<"SRC", libs, &b) or try_link(<<"SRC", libs, &b)
+#{COMMON_HEADERS}
+#{headers}
+/*top*/
+int main() { return 0; }
+int MAIN__() { return main(); }
+int t() { void ((*volatile p)()); p = (void ((*)()))#{func}; return 0; }
+SRC
+#{headers}
+/*top*/
+int main() { return 0; }
+int MAIN__() { return main(); }
+int t() { #{func}(); return 0; }
+SRC
+end
+    
+
 def find_library(lib, func=nil, name=nil)
   func = "main" if !func or func.empty?
   ldir = with_config(lib+'-lib')
@@ -74,7 +93,7 @@ dir_config("f2c", "/usr/local")
 unless find_header("f2c.h")
   header_not_found("f2c")
 end
-unless find_library("f2c")
+unless find_library("f2c","MAIN__")
   library_not_found("f2c")
 end
 
