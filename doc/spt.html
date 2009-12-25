@@ -6,19 +6,19 @@
     <A NAME="top"></A>
     <H1>REAL routines for symmetric or Hermitian positive definite tridiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#sptcon">sptcon</A> : Computes the reciprocal of the condition number of asymmetric positive definite tridiagonal matrix,using the LDL**H factorization computed by SPTTRF.</LI>
-      <LI><A HREF="#spteqr">spteqr</A> : Computes all eigenvalues and eigenvectors of a real symmetricpositive definite tridiagonal matrix, by computing the SVD ofits bidiagonal Cholesky factor.</LI>
-      <LI><A HREF="#sptrfs">sptrfs</A> : Improves the computed solution to a symmetric positivedefinite tridiagonal system of linear equations AX=B, and providesforward and backward error bounds for the solution.</LI>
-      <LI><A HREF="#sptsv">sptsv</A> : Solves a symmetric positive definite tridiagonal systemof linear equations AX=B.</LI>
-      <LI><A HREF="#sptsvx">sptsvx</A> : Solves a symmetric positive definite tridiagonalsystem of linear equations AX=B, and provides an estimate ofthe condition number and error bounds on the solution.</LI>
-      <LI><A HREF="#spttrf">spttrf</A> : Computes the LDL**H factorization of a symmetricpositive definite tridiagonal matrix.</LI>
-      <LI><A HREF="#spttrs">spttrs</A> : Solves a symmetric positive definite tridiagonalsystem of linear equations, using the LDL**H factorizationcomputed by SPTTRF.</LI>
+      <LI><A HREF="#sptcon">sptcon</A> : </LI>
+      <LI><A HREF="#spteqr">spteqr</A> : </LI>
+      <LI><A HREF="#sptrfs">sptrfs</A> : </LI>
+      <LI><A HREF="#sptsv">sptsv</A> : </LI>
+      <LI><A HREF="#sptsvx">sptsvx</A> : </LI>
+      <LI><A HREF="#spttrf">spttrf</A> : </LI>
+      <LI><A HREF="#spttrs">spttrs</A> : </LI>
       <LI><A HREF="#sptts2">sptts2</A> : </LI>
     </UL>
 
   <A NAME="sptcon"></A>
   <H2>sptcon</H2>
-  Computes the reciprocal of the condition number of asymmetric positive definite tridiagonal matrix,using the LDL**H factorization computed by SPTTRF.
+  
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.sptcon( d, e, anorm)
@@ -87,7 +87,7 @@ FORTRAN MANUAL
 
   <A NAME="spteqr"></A>
   <H2>spteqr</H2>
-  Computes all eigenvalues and eigenvectors of a real symmetricpositive definite tridiagonal matrix, by computing the SVD ofits bidiagonal Cholesky factor.
+  
   <PRE>
 USAGE:
   info, d, e, z = NumRu::Lapack.spteqr( compz, d, e, z)
@@ -183,7 +183,7 @@ FORTRAN MANUAL
 
   <A NAME="sptrfs"></A>
   <H2>sptrfs</H2>
-  Improves the computed solution to a symmetric positivedefinite tridiagonal system of linear equations AX=B, and providesforward and backward error bounds for the solution.
+  
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.sptrfs( d, e, df, ef, b, x)
@@ -274,7 +274,7 @@ FORTRAN MANUAL
 
   <A NAME="sptsv"></A>
   <H2>sptsv</H2>
-  Solves a symmetric positive definite tridiagonal systemof linear equations AX=B.
+  
   <PRE>
 USAGE:
   info, d, e, b = NumRu::Lapack.sptsv( d, e, b)
@@ -349,7 +349,7 @@ FORTRAN MANUAL
 
   <A NAME="sptsvx"></A>
   <H2>sptsvx</H2>
-  Solves a symmetric positive definite tridiagonalsystem of linear equations AX=B, and provides an estimate ofthe condition number and error bounds on the solution.
+  
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, df, ef = NumRu::Lapack.sptsvx( fact, d, e, df, ef, b)
@@ -496,7 +496,7 @@ FORTRAN MANUAL
 
   <A NAME="spttrf"></A>
   <H2>spttrf</H2>
-  Computes the LDL**H factorization of a symmetricpositive definite tridiagonal matrix.
+  
   <PRE>
 USAGE:
   info, d, e = NumRu::Lapack.spttrf( d, e)
@@ -551,7 +551,7 @@ FORTRAN MANUAL
 
   <A NAME="spttrs"></A>
   <H2>spttrs</H2>
-  Solves a symmetric positive definite tridiagonalsystem of linear equations, using the LDL**H factorizationcomputed by SPTTRF.
+  
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.spttrs( d, e, b)

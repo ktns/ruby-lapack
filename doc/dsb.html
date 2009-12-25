@@ -6,19 +6,19 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for (real) symmetric band matrix</H1>
     <UL>
-      <LI><A HREF="#dsbev">dsbev</A> : Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric band matrix.</LI>
-      <LI><A HREF="#dsbevd">dsbevd</A> : Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric band matrix.  If eigenvectors are desired, it uses adivide and conquer algorithm.</LI>
-      <LI><A HREF="#dsbevx">dsbevx</A> : Computes selected eigenvalues and eigenvectors of asymmetric band matrix.</LI>
-      <LI><A HREF="#dsbgst">dsbgst</A> : Reduces a real symmetric-definite banded generalized eigenproblemA x = lambda B x to standard form, where B has been factorized byDPBSTF (Crawford's algorithm).</LI>
-      <LI><A HREF="#dsbgv">dsbgv</A> : Computes all the eigenvalues, and optionally, the eigenvectorsof a real generalized symmetric-definite banded eigenproblem, ofthe form A*x=(lambda)*B*x.  A and B are assumed to be symmetricand banded, and B is also positive definite.</LI>
-      <LI><A HREF="#dsbgvd">dsbgvd</A> : Computes all the eigenvalues, and optionally, the eigenvectorsof a real generalized symmetric-definite banded eigenproblem, ofthe form A*x=(lambda)*B*x.  A and B are assumed to be symmetricand banded, and B is also positive definite.If eigenvectors are desired, it uses a divide and conquer algorithm.</LI>
-      <LI><A HREF="#dsbgvx">dsbgvx</A> : Computes selected eigenvalues, and optionally, the eigenvectorsof a real generalized symmetric-definite banded eigenproblem, ofthe form A*x=(lambda)*B*x.  A and B are assumed to be symmetricand banded, and B is also positive definite.</LI>
-      <LI><A HREF="#dsbtrd">dsbtrd</A> : Reduces a symmetric band matrix to real symmetrictridiagonal form by an orthogonal similarity transformation.</LI>
+      <LI><A HREF="#dsbev">dsbev</A> : </LI>
+      <LI><A HREF="#dsbevd">dsbevd</A> : </LI>
+      <LI><A HREF="#dsbevx">dsbevx</A> : </LI>
+      <LI><A HREF="#dsbgst">dsbgst</A> : </LI>
+      <LI><A HREF="#dsbgv">dsbgv</A> : </LI>
+      <LI><A HREF="#dsbgvd">dsbgvd</A> : </LI>
+      <LI><A HREF="#dsbgvx">dsbgvx</A> : </LI>
+      <LI><A HREF="#dsbtrd">dsbtrd</A> : </LI>
     </UL>
 
   <A NAME="dsbev"></A>
   <H2>dsbev</H2>
-  Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric band matrix.
+  
   <PRE>
 USAGE:
   w, z, info, ab = NumRu::Lapack.dsbev( jobz, uplo, kd, ab)
@@ -104,7 +104,7 @@ FORTRAN MANUAL
 
   <A NAME="dsbevd"></A>
   <H2>dsbevd</H2>
-  Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric band matrix.  If eigenvectors are desired, it uses adivide and conquer algorithm.
+  
   <PRE>
 USAGE:
   w, z, work, iwork, info, ab = NumRu::Lapack.dsbevd( jobz, uplo, kd, ab, lwork, liwork)
@@ -227,7 +227,7 @@ FORTRAN MANUAL
 
   <A NAME="dsbevx"></A>
   <H2>dsbevx</H2>
-  Computes selected eigenvalues and eigenvectors of asymmetric band matrix.
+  
   <PRE>
 USAGE:
   q, m, w, z, ifail, info, ab = NumRu::Lapack.dsbevx( jobz, range, uplo, kd, ab, vl, vu, il, iu, abstol)
@@ -385,7 +385,7 @@ FORTRAN MANUAL
 
   <A NAME="dsbgst"></A>
   <H2>dsbgst</H2>
-  Reduces a real symmetric-definite banded generalized eigenproblemA x = lambda B x to standard form, where B has been factorized byDPBSTF (Crawford's algorithm).
+  
   <PRE>
 USAGE:
   x, info, ab = NumRu::Lapack.dsbgst( vect, uplo, ka, kb, ab, bb)
@@ -477,7 +477,7 @@ FORTRAN MANUAL
 
   <A NAME="dsbgv"></A>
   <H2>dsbgv</H2>
-  Computes all the eigenvalues, and optionally, the eigenvectorsof a real generalized symmetric-definite banded eigenproblem, ofthe form A*x=(lambda)*B*x.  A and B are assumed to be symmetricand banded, and B is also positive definite.
+  
   <PRE>
 USAGE:
   w, z, info, ab, bb = NumRu::Lapack.dsbgv( jobz, uplo, ka, kb, ab, bb)
@@ -596,7 +596,7 @@ FORTRAN MANUAL
 
   <A NAME="dsbgvd"></A>
   <H2>dsbgvd</H2>
-  Computes all the eigenvalues, and optionally, the eigenvectorsof a real generalized symmetric-definite banded eigenproblem, ofthe form A*x=(lambda)*B*x.  A and B are assumed to be symmetricand banded, and B is also positive definite.If eigenvectors are desired, it uses a divide and conquer algorithm.
+  
   <PRE>
 USAGE:
   w, z, work, iwork, info, ab, bb = NumRu::Lapack.dsbgvd( jobz, uplo, ka, kb, ab, bb, lwork, liwork)
@@ -744,7 +744,7 @@ FORTRAN MANUAL
 
   <A NAME="dsbgvx"></A>
   <H2>dsbgvx</H2>
-  Computes selected eigenvalues, and optionally, the eigenvectorsof a real generalized symmetric-definite banded eigenproblem, ofthe form A*x=(lambda)*B*x.  A and B are assumed to be symmetricand banded, and B is also positive definite.
+  
   <PRE>
 USAGE:
   q, m, w, z, work, iwork, ifail, info, ab, bb = NumRu::Lapack.dsbgvx( jobz, range, uplo, ka, kb, ab, bb, vl, vu, il, iu, abstol)
@@ -918,7 +918,7 @@ FORTRAN MANUAL
 
   <A NAME="dsbtrd"></A>
   <H2>dsbtrd</H2>
-  Reduces a symmetric band matrix to real symmetrictridiagonal form by an orthogonal similarity transformation.
+  
   <PRE>
 USAGE:
   d, e, info, ab, q = NumRu::Lapack.dsbtrd( vect, uplo, kd, ab, q)

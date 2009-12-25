@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID slansy_(real *__out__, char *norm, char *uplo, integer *n, real *a, integer *lda, real *work);
 static VALUE
 rb_slansy(int argc, VALUE *argv, VALUE self){
   VALUE rb_norm;
@@ -41,7 +40,7 @@ rb_slansy(int argc, VALUE *argv, VALUE self){
   lwork = ((lsame_(&norm,"I")) || ((('1') || ('o')))) ? n : 0;
   work = ALLOC_N(real, (MAX(1,lwork)));
 
-  slansy_(&__out__, &norm, &uplo, &n, a, &lda, work);
+  __out__ = slansy_(&norm, &uplo, &n, a, &lda, work);
 
   free(work);
   rb___out__ = rb_float_new((double)__out__);

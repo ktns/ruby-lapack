@@ -91,7 +91,7 @@ rb_dbdsdc(int argc, VALUE *argv, VALUE self){
   vt = NA_PTR_TYPE(rb_vt, doublereal*);
   c__0 = 0;
   c__9 = 9;
-  smlsiz = ilaenv_(&c__9, "DBDSDC", " ", &c__0, &c__0, &c__0, &c__0, (ftnlen)6, (ftnlen)1);
+  smlsiz = ilaenv_(&c__9, "DBDSDC", " ", &c__0, &c__0, &c__0, &c__0);
   ldq = lsame_(&compq,"P") ? n*(11+2*smlsiz+8*(int)(log(((double)n)/(smlsiz+1))/log(2.0))) : 0;
   {
     int shape[1];

@@ -6,19 +6,19 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for symmetric or Hermitian positive definite, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#cppcon">cppcon</A> : Estimates the reciprocal of the condition number of aHermitian positive definite matrix in packed storage,using the Cholesky factorization computed by CPPTRF.</LI>
-      <LI><A HREF="#cppequ">cppequ</A> : Computes row and column scalings to equilibrate a Hermitianpositive definite matrix in packed storage and reduce its conditionnumber.</LI>
-      <LI><A HREF="#cpprfs">cpprfs</A> : Improves the computed solution to a Hermitian positivedefinite system of linear equations AX=B, where A is held inpacked storage, and provides forward and backward error boundsfor the solution.</LI>
-      <LI><A HREF="#cppsv">cppsv</A> : Solves a Hermitian positive definite system of linearequations AX=B, where A is in packed storage.</LI>
-      <LI><A HREF="#cppsvx">cppsvx</A> : Solves a Hermitian positive definite system of linearequations AX=B, where A is held in packed storage, and providesan estimate of the condition number and error bounds on thesolution.</LI>
-      <LI><A HREF="#cpptrf">cpptrf</A> : Computes the Cholesky factorization of a Hermitianpositive definite matrix in packed storage.</LI>
-      <LI><A HREF="#cpptri">cpptri</A> : Computes the inverse of a Hermitian positive definitematrix in packed storage, using the Cholesky factorization computedby CPPTRF.</LI>
-      <LI><A HREF="#cpptrs">cpptrs</A> : Solves a Hermitian positive definite system of linearequations AX=B, where A is held in packed storage, using theCholesky factorization computed by CPPTRF.</LI>
+      <LI><A HREF="#cppcon">cppcon</A> : </LI>
+      <LI><A HREF="#cppequ">cppequ</A> : </LI>
+      <LI><A HREF="#cpprfs">cpprfs</A> : </LI>
+      <LI><A HREF="#cppsv">cppsv</A> : </LI>
+      <LI><A HREF="#cppsvx">cppsvx</A> : </LI>
+      <LI><A HREF="#cpptrf">cpptrf</A> : </LI>
+      <LI><A HREF="#cpptri">cpptri</A> : </LI>
+      <LI><A HREF="#cpptrs">cpptrs</A> : </LI>
     </UL>
 
   <A NAME="cppcon"></A>
   <H2>cppcon</H2>
-  Estimates the reciprocal of the condition number of aHermitian positive definite matrix in packed storage,using the Cholesky factorization computed by CPPTRF.
+  
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.cppcon( uplo, ap, anorm)
@@ -85,7 +85,7 @@ FORTRAN MANUAL
 
   <A NAME="cppequ"></A>
   <H2>cppequ</H2>
-  Computes row and column scalings to equilibrate a Hermitianpositive definite matrix in packed storage and reduce its conditionnumber.
+  
   <PRE>
 USAGE:
   s, scond, amax, info = NumRu::Lapack.cppequ( uplo, ap)
@@ -154,7 +154,7 @@ FORTRAN MANUAL
 
   <A NAME="cpprfs"></A>
   <H2>cpprfs</H2>
-  Improves the computed solution to a Hermitian positivedefinite system of linear equations AX=B, where A is held inpacked storage, and provides forward and backward error boundsfor the solution.
+  
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.cpprfs( uplo, ap, afp, b, x)
@@ -252,7 +252,7 @@ FORTRAN MANUAL
 
   <A NAME="cppsv"></A>
   <H2>cppsv</H2>
-  Solves a Hermitian positive definite system of linearequations AX=B, where A is in packed storage.
+  
   <PRE>
 USAGE:
   info, ap, b = NumRu::Lapack.cppsv( uplo, n, ap, b)
@@ -357,7 +357,7 @@ FORTRAN MANUAL
 
   <A NAME="cppsvx"></A>
   <H2>cppsvx</H2>
-  Solves a Hermitian positive definite system of linearequations AX=B, where A is held in packed storage, and providesan estimate of the condition number and error bounds on thesolution.
+  
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, ap, afp, equed, s, b = NumRu::Lapack.cppsvx( fact, uplo, ap, afp, equed, s, b)
@@ -578,7 +578,7 @@ FORTRAN MANUAL
 
   <A NAME="cpptrf"></A>
   <H2>cpptrf</H2>
-  Computes the Cholesky factorization of a Hermitianpositive definite matrix in packed storage.
+  
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.cpptrf( uplo, n, ap)
@@ -657,7 +657,7 @@ FORTRAN MANUAL
 
   <A NAME="cpptri"></A>
   <H2>cpptri</H2>
-  Computes the inverse of a Hermitian positive definitematrix in packed storage, using the Cholesky factorization computedby CPPTRF.
+  
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.cpptri( uplo, n, ap)
@@ -713,7 +713,7 @@ FORTRAN MANUAL
 
   <A NAME="cpptrs"></A>
   <H2>cpptrs</H2>
-  Solves a Hermitian positive definite system of linearequations AX=B, where A is held in packed storage, using theCholesky factorization computed by CPPTRF.
+  
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.cpptrs( uplo, n, ap, b)

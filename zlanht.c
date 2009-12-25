@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID zlanht_(doublereal *__out__, char *norm, integer *n, doublereal *d, doublecomplex *e);
 static VALUE
 rb_zlanht(int argc, VALUE *argv, VALUE self){
   VALUE rb_norm;
@@ -43,7 +42,7 @@ rb_zlanht(int argc, VALUE *argv, VALUE self){
     rb_e = na_change_type(rb_e, NA_DCOMPLEX);
   e = NA_PTR_TYPE(rb_e, doublecomplex*);
 
-  zlanht_(&__out__, &norm, &n, d, e);
+  __out__ = zlanht_(&norm, &n, d, e);
 
   rb___out__ = rb_float_new((double)__out__);
   return rb___out__;

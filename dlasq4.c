@@ -24,6 +24,8 @@ rb_dlasq4(int argc, VALUE *argv, VALUE self){
   doublereal dn1; 
   VALUE rb_dn2;
   doublereal dn2; 
+  VALUE rb_g;
+  real g; 
   VALUE rb_tau;
   doublereal tau; 
   VALUE rb_ttype;
@@ -31,11 +33,11 @@ rb_dlasq4(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  tau, ttype = NumRu::Lapack.dlasq4( i0, n0, z, pp, n0in, dmin, dmin1, dmin2, dn, dn1, dn2)\n    or\n  NumRu::Lapack.dlasq4  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLASQ4( I0, N0, Z, PP, N0IN, DMIN, DMIN1, DMIN2, DN, DN1, DN2, TAU, TTYPE )\n\n*  Purpose\n*  =======\n*\n*  DLASQ4 computes an approximation TAU to the smallest eigenvalue \n*  using values of d from the previous transform.\n*\n\n*  I0    (input) INTEGER\n*        First index.\n*\n*  N0    (input) INTEGER\n*        Last index.\n*\n*  Z     (input) DOUBLE PRECISION array, dimension ( 4*N )\n*        Z holds the qd array.\n*\n*  PP    (input) INTEGER\n*        PP=0 for ping, PP=1 for pong.\n*\n*  N0IN  (input) INTEGER\n*        The value of N0 at start of EIGTEST.\n*\n*  DMIN  (input) DOUBLE PRECISION\n*        Minimum value of d.\n*\n*  DMIN1 (input) DOUBLE PRECISION\n*        Minimum value of d, excluding D( N0 ).\n*\n*  DMIN2 (input) DOUBLE PRECISION\n*        Minimum value of d, excluding D( N0 ) and D( N0-1 ).\n*\n*  DN    (input) DOUBLE PRECISION\n*        d(N)\n*\n*  DN1   (input) DOUBLE PRECISION\n*        d(N-1)\n*\n*  DN2   (input) DOUBLE PRECISION\n*        d(N-2)\n*\n*  TAU   (output) DOUBLE PRECISION\n*        This is the shift.\n*\n*  TTYPE (output) INTEGER\n*        Shift type.\n*\n\n*  Further Details\n*  ===============\n*  CNST1 = 9/16\n*\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  tau, ttype, g = NumRu::Lapack.dlasq4( i0, n0, z, pp, n0in, dmin, dmin1, dmin2, dn, dn1, dn2, g)\n    or\n  NumRu::Lapack.dlasq4  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLASQ4( I0, N0, Z, PP, N0IN, DMIN, DMIN1, DMIN2, DN, DN1, DN2, TAU, TTYPE, G )\n\n*  Purpose\n*  =======\n*\n*  DLASQ4 computes an approximation TAU to the smallest eigenvalue\n*  using values of d from the previous transform.\n*\n\n*  I0    (input) INTEGER\n*        First index.\n*\n*  N0    (input) INTEGER\n*        Last index.\n*\n*  Z     (input) DOUBLE PRECISION array, dimension ( 4*N )\n*        Z holds the qd array.\n*\n*  PP    (input) INTEGER\n*        PP=0 for ping, PP=1 for pong.\n*\n*  NOIN  (input) INTEGER\n*        The value of N0 at start of EIGTEST.\n*\n*  DMIN  (input) DOUBLE PRECISION\n*        Minimum value of d.\n*\n*  DMIN1 (input) DOUBLE PRECISION\n*        Minimum value of d, excluding D( N0 ).\n*\n*  DMIN2 (input) DOUBLE PRECISION\n*        Minimum value of d, excluding D( N0 ) and D( N0-1 ).\n*\n*  DN    (input) DOUBLE PRECISION\n*        d(N)\n*\n*  DN1   (input) DOUBLE PRECISION\n*        d(N-1)\n*\n*  DN2   (input) DOUBLE PRECISION\n*        d(N-2)\n*\n*  TAU   (output) DOUBLE PRECISION\n*        This is the shift.\n*\n*  TTYPE (output) INTEGER\n*        Shift type.\n*\n*  G     (input/output) REAL\n*        G is passed as an argument in order to save its value between\n*        calls to DLASQ4.\n*\n\n*  Further Details\n*  ===============\n*  CNST1 = 9/16\n*\n*  =====================================================================\n*\n\n");
     return Qnil;
   }
-  if (argc != 11)
-    rb_raise(rb_eArgError,"wrong number of arguments (%d for 11)", argc);
+  if (argc != 12)
+    rb_raise(rb_eArgError,"wrong number of arguments (%d for 12)", argc);
   rb_i0 = argv[0];
   rb_n0 = argv[1];
   rb_z = argv[2];
@@ -47,6 +49,7 @@ rb_dlasq4(int argc, VALUE *argv, VALUE self){
   rb_dn = argv[8];
   rb_dn1 = argv[9];
   rb_dn2 = argv[10];
+  rb_g = argv[11];
 
   i0 = NUM2INT(rb_i0);
   n0 = NUM2INT(rb_n0);
@@ -58,6 +61,7 @@ rb_dlasq4(int argc, VALUE *argv, VALUE self){
   dn = NUM2DBL(rb_dn);
   dn1 = NUM2DBL(rb_dn1);
   dn2 = NUM2DBL(rb_dn2);
+  g = (real)NUM2DBL(rb_g);
   if (!NA_IsNArray(rb_z))
     rb_raise(rb_eArgError, "z (3th argument) must be NArray");
   if (NA_RANK(rb_z) != 1)
@@ -68,11 +72,12 @@ rb_dlasq4(int argc, VALUE *argv, VALUE self){
     rb_z = na_change_type(rb_z, NA_DFLOAT);
   z = NA_PTR_TYPE(rb_z, doublereal*);
 
-  dlasq4_(&i0, &n0, z, &pp, &n0in, &dmin, &dmin1, &dmin2, &dn, &dn1, &dn2, &tau, &ttype);
+  dlasq4_(&i0, &n0, z, &pp, &n0in, &dmin, &dmin1, &dmin2, &dn, &dn1, &dn2, &tau, &ttype, &g);
 
   rb_tau = rb_float_new((double)tau);
   rb_ttype = INT2NUM(ttype);
-  return rb_ary_new3(2, rb_tau, rb_ttype);
+  rb_g = rb_float_new((double)g);
+  return rb_ary_new3(3, rb_tau, rb_ttype, rb_g);
 }
 
 void

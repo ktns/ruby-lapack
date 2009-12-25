@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID slaneg_(integer *__out__, integer *n, real *d, real *lld, real *sigma, real *pivmin, integer *r);
 static VALUE
 rb_slaneg(int argc, VALUE *argv, VALUE self){
   VALUE rb_d;
@@ -51,7 +50,7 @@ rb_slaneg(int argc, VALUE *argv, VALUE self){
     rb_lld = na_change_type(rb_lld, NA_SFLOAT);
   lld = NA_PTR_TYPE(rb_lld, real*);
 
-  slaneg_(&__out__, &n, d, lld, &sigma, &pivmin, &r);
+  __out__ = slaneg_(&n, d, lld, &sigma, &pivmin, &r);
 
   rb___out__ = INT2NUM(__out__);
   return rb___out__;

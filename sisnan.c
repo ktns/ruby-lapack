@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID sisnan_(logical *__out__, real *sin);
 static VALUE
 rb_sisnan(int argc, VALUE *argv, VALUE self){
   VALUE rb_sin;
@@ -19,7 +18,7 @@ rb_sisnan(int argc, VALUE *argv, VALUE self){
 
   sin = (real)NUM2DBL(rb_sin);
 
-  sisnan_(&__out__, &sin);
+  __out__ = sisnan_(&sin);
 
   rb___out__ = __out__ ? Qtrue : Qfalse;
   return rb___out__;

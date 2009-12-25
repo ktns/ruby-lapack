@@ -20,8 +20,118 @@ NATYPES = {
   "logical" => "NA_LINT",
 }
 
+FUNCS = %w(slapy2 dlapy2 slapy3 dlapy3 sisnan disnan scsum1 dzsum1 icmax1 ieeeck ilaclc ilaclr iladiag iladlc iladlr ilaprec ilaslc ilaslr ilatrans ilauplo ilazlc ilazlr iparmq izmax1 lsamen smaxloc ilaenv)
 
 ARGS = {
+  "csyequb" => {
+    "uplo" => {:intent => "input", :type => "char"},
+    "work" => {:intent => "input", :type => "real"}
+  },
+  "zsyequb" => {
+    "uplo" => {:intent => "input", :type => "char"},
+    "work" => {:intent => "input", :type => "doublereal"}
+  },
+  "zhfrk" => {
+    "uplo" => {:intent => "input", :type => "char"},
+    "trans" => {:intent => "input", :type => "char"},
+    "n" => {:intent => "input", :type => "integer"},
+    "k" => {:intent => "input", :type => "integer"},
+    "alpha" => {:intent => "input", :type => "doublereal"},
+    "beta" => {:intent => "input", :type => "doublereal"},
+    "a" => {:intent => "input", :type => "doublereal"},
+    "lda" => {:intent => "input", :type => "integer"},
+    "c" => {:intent => "input", :type => "doublereal"},
+  },
+  "zpstf2" => {
+    "work" => {:intent => "input", :type => "doublereal"}
+  },
+  "ssfrk" => {
+    "uplo" => {:intent => "input", :type => "char"},
+    "trans" => {:intent => "input", :type => "char"},
+    "n" => {:intent => "input", :type => "integer"},
+    "k" => {:intent => "input", :type => "integer"},
+    "alpha" => {:intent => "input", :type => "real"},
+    "beta" => {:intent => "input", :type => "real"},
+    "a" => {:intent => "input", :type => "real"},
+    "lda" => {:intent => "input", :type => "integer"},
+    "c" => {:intent => "input", :type => "real"},
+  },
+  "dsfrk" => {
+    "uplo" => {:intent => "input", :type => "char"},
+    "trans" => {:intent => "input", :type => "char"},
+    "n" => {:intent => "input", :type => "integer"},
+    "k" => {:intent => "input", :type => "integer"},
+    "alpha" => {:intent => "input", :type => "doublereal"},
+    "beta" => {:intent => "input", :type => "doublereal"},
+    "a" => {:intent => "input", :type => "doublereal"},
+    "lda" => {:intent => "input", :type => "integer"},
+    "c" => {:intent => "input", :type => "doublereal"},
+  },
+  "spstf2" => {
+    "work" => {:intent => "input", :type => "real"}
+  },
+  "slarrf" => {
+    "clgapl" => {:intent => "input", :type => "real"},
+    "clgapr" => {:intent => "input", :type => "real"},
+  },
+  "cheequb" => {
+    "uplo" => {:intent => "input", :type => "char"},
+    "work" => {:intent => "input", :type => "complex"}
+  },
+  "zheequb" => {
+    "uplo" => {:intent => "input", :type => "char"},
+    "work" => {:intent => "input", :type => "doublecomplex"}
+  },
+  "dsyequb" => {
+    "uplo" => {:intent => "input", :type => "char"},
+    "work" => {:intent => "input", :type => "doublereal"}
+  },
+  "chesvxx" => {
+    "uplo" => {:intent => "input", :type => "char"}
+  },
+  "zhesvxx" => {
+    "uplo" => {:intent => "input", :type => "char"}
+  },
+  "dgesvj" => {
+    "lwork" => {:intent => "input", :type => "integer"}
+  },
+  "dpstf2" => {
+    "work" => {:intent => "input", :type => "doublereal"}
+  },
+  "cpstf2" => {
+    "work" => {:intent => "input", :type => "real"}
+  },
+  "spstrf" => {
+    "work" => {:intent => "input", :type => "real"}
+  },
+  "dpstrf" => {
+    "work" => {:intent => "input", :type => "doublereal"}
+  },
+  "zpstrf" => {
+    "work" => {:intent => "input", :type => "doublereal"}
+  },
+  "cpstrf" => {
+    "work" => {:intent => "input", :type => "doublereal"}
+  },
+  "sgesvj" => {
+    "lwork" => {:intent => "input", :type => "integer"}
+  },
+  "sla_lin_berr" => {
+    "berr" => {:intent => "output", :type => "real"}
+  },
+  "dla_lin_berr" => {
+    "berr" => {:intent => "output", :type => "doublereal"}
+  },
+  "ssyequb" => {
+    "uplo" => {:intent => "input", :type => "char"},
+    "work" => {:intent => "input", :type => "real"},
+  },
+  "slasq4" => {
+    "n0in" => {:intent => "input", :type => "integer"},
+  },
+  "dlasq4" => {
+    "n0in" => {:intent => "input", :type => "integer"},
+  },
   "slaqr1" => {
     "si1" => {:intent => "input", :type => "real"},
     "sr2" => {:intent => "input", :type => "real"},
@@ -51,6 +161,42 @@ ARGS = {
 }
 
 DIMS = {
+  "strttp" => {
+    "ap" => ["n*(n+1)/2"]
+  },
+  "dtrttp" => {
+    "ap" => ["n*(n+1)/2"]
+  },
+  "stftri" => {
+    "a" => ["n*(n+1)/2"]
+  },
+  "dtftri" => {
+    "a" => ["n*(n+1)/2"]
+  },
+  "zpstrf" => {
+    "work" => ["2*n"]
+  },
+  "spftrf" => {
+    "a" => ["n*(n+1)/2"]
+  },
+  "cpftrf" => {
+    "a" => ["n*(n+1)/2"]
+  },
+  "cpftrs" => {
+    "a" => ["n*(n+1)/2"]
+  },
+  "zpftrs" => {
+    "a" => ["n*(n+1)/2"]
+  },
+  "strttf" => {
+    "arf" => ["n*(n+1)/2"]
+  },
+  "dtrttf" => {
+    "arf" => ["n*(n+1)/2"]
+  },
+  "sla_gbrfsx_extended" => {
+    "ab" => ["ldab", "n"]
+  },
   "stgex2" => {
     "work" => ["lwork"]
   },
@@ -1402,7 +1548,7 @@ SUBSTS = {
     "iwork" => {
       "c__0" => "0",
       "c__9" => "9",
-      "smlsiz" => 'ilaenv_(&c__9,"DGELSD"," ",&c__0,&c__0,&c__0,&c__0,(ftnlen)6,(ftnlen)1)',
+      "smlsiz" => 'ilaenv_(&c__9,"DGELSD"," ",&c__0,&c__0,&c__0,&c__0)',
       "nlvl" => 'MAX(0,((int)(log(((double)(MIN(m,n)))/(smlsiz+1))/log(2.0))+1))',
       "liwork" => '3*(MIN(m,n))*nlvl+11*(MIN(m,n))',
     },
@@ -1414,7 +1560,7 @@ SUBSTS = {
     "iwork" => {
       "c__0" => "0",
       "c__9" => "9",
-      "smlsiz" => 'ilaenv_(&c__9,"DGELSD"," ",&c__0,&c__0,&c__0,&c__0,(ftnlen)6,(ftnlen)1)',
+      "smlsiz" => 'ilaenv_(&c__9,"DGELSD"," ",&c__0,&c__0,&c__0,&c__0)',
       "nlvl" => 'MAX(0,((int)(log(((double)(MIN(m,n)))/(smlsiz+1))/log(2.0))+1))',
       "liwork" => '3*(MIN(m,n))*nlvl+11*(MIN(m,n))',
     },
@@ -1426,7 +1572,7 @@ SUBSTS = {
     "rwork" => {
       "c__0" => "0",
       "c__9" => "9",
-      "smlsiz" => 'ilaenv_(&c__9,"CGELSD"," ",&c__0,&c__0,&c__0,&c__0,(ftnlen)6,(ftnlen)1)',
+      "smlsiz" => 'ilaenv_(&c__9,"CGELSD"," ",&c__0,&c__0,&c__0,&c__0)',
       "nlvl" => 'MAX(0,(int)(log(1.0*MIN(m,n)/(smlsiz+1))/log(2.0)))',
       "lrwork" => 'm>=n ? 10*n+2*n*smlsiz+8*n*nlvl+3*smlsiz*nrhs+(smlsiz+1)*(smlsiz+1) : 10*m+2*m*smlsiz+8*m*nlvl+2*smlsiz*nrhs+(smlsiz+1)*(smlsiz+1)',
     },
@@ -1441,7 +1587,7 @@ SUBSTS = {
     "rwork" => {
       "c__9" => "9",
       "c__0" => "0",
-      "smlsiz" => 'ilaenv_(&c__9,"ZGELSD"," ",&c__0,&c__0,&c__0,&c__0,(ftnlen)6,(ftnlen)1)',
+      "smlsiz" => 'ilaenv_(&c__9,"ZGELSD"," ",&c__0,&c__0,&c__0,&c__0)',
       "nlvl" => 'MAX(0,(int)(log(1.0*MIN(m,n)/(smlsiz+1))/log(2.0)))',
       "lrwork" => 'm>=n ? 10*n+2*n*smlsiz+8*n*nlvl+3*smlsiz*nrhs+(smlsiz+1)*(smlsiz+1) : 10*m+2*m*smlsiz+8*m*nlvl+2*smlsiz*nrhs+(smlsiz+1)*(smlsiz+1)',
     },
@@ -1468,7 +1614,7 @@ SUBSTS = {
     "q" => {
       "c__0" => "0",
       "c__9" => "9",
-      "smlsiz" => 'ilaenv_(&c__9, "SBDSDC", " ", &c__0, &c__0, &c__0, &c__0, (ftnlen)6, (ftnlen)1)',
+      "smlsiz" => 'ilaenv_(&c__9, "SBDSDC", " ", &c__0, &c__0, &c__0, &c__0)',
       "ldq" => 'lsame_(&compq,"P") ? n*(11+2*smlsiz+8*(int)(log(((double)n)/(smlsiz+1))/log(2.0))) : 0'
     },
     "iq" => {
@@ -1483,7 +1629,7 @@ SUBSTS = {
     "q" => {
       "c__0" => "0",
       "c__9" => "9",
-      "smlsiz" => 'ilaenv_(&c__9, "DBDSDC", " ", &c__0, &c__0, &c__0, &c__0, (ftnlen)6, (ftnlen)1)',
+      "smlsiz" => 'ilaenv_(&c__9, "DBDSDC", " ", &c__0, &c__0, &c__0, &c__0)',
       "ldq" => 'lsame_(&compq,"P") ? n*(11+2*smlsiz+8*(int)(log(((double)n)/(smlsiz+1))/log(2.0))) : 0'
     },
     "iq" => {
@@ -1514,7 +1660,7 @@ SUBSTS = {
 
 
 
-#IGNORE = %w(sgees dgees cgees zgees sgeesx dgeesx cgeesx zgeesx sgges dgges cgges zgges sggesx dggesx cggesx zggesx)
+IGNORE = %w(sla_gbrfsx_extended cla_gbrfsx_extended zla_gbrfsx_extended dla_gerfsx_extended cla_gerfsx_extended zla_gerfsx_extended dla_gbrfsx_extended zla_porfsx_extended sla_geamv dla_geamv cla_geamv zla_geamv sla_syamv dla_syamv cla_syamv zla_syamv sgsvj0 dgsvj0 sgsvj1 dgsvj1 sggsvp dggsvp cggsvp zggsvp sgbequb dgbequb cgbequb zgbequb dpftrf cpftri zpftrf stfsm dtfsm ctfsm ztfsm slarrf dlarrf cla_heamv zla_heamv clanhf zlanhf sla_gbamv dla_gbamv cla_gbamv zla_gbamv chfrk ctftri slansf dlansf ztftri zpftri cla_lin_berr zla_lin_berr sgejsv dgejsv dlat2s zlat2c)
 
 
 def get_cobj(name, type)
@@ -1686,7 +1832,7 @@ def parse_file(fname)
     end
 
     if flag_sub
-      if (/^     \$\s* (.+)$/ =~ line) || (/^     \+\s* (.+)$/ =~ line)
+      if (/^     \$\s* (.+)$/ =~ line) || (/^     \+\s* (.+)$/ =~ line) || (/^     \&\s* (.+)$/ =~ line)
         subr << " " << $1.chomp
       else
         flag_sub = false
@@ -1804,15 +1950,18 @@ def parse_file(fname)
   help = subr + "\n\n" + purpose + "\n" + args
   help << "\n" + fd if fd
 
-  if /^      SUBROUTINE\s+([A-Z\d]+)\(([^\)]+)\)/ =~ subr
+  if /^      SUBROUTINE\s+([A-Z\d_]+)\s*\(([^\)]+)\)/ =~ subr
     sub_name = $1.downcase
     arg_names = $2
     sub_type = :sub
-  elsif /^      ([A-Z\s\*\d]+[A-Z\d])\s+FUNCTION\s+([A-Z\d]+)\(([^\)]+)\)/ =~ subr
+  elsif /^      ([A-Z\s\*\d]+[A-Z\d])\s+FUNCTION\s+([A-Z\d_]+)\s*\(([^\)]+)\)/ =~ subr
     f_type = $1.strip
     sub_name = $2.downcase
     arg_names = $3
     sub_type = :func
+    if f_type == "CHARACTER*1"
+      f_type = "CHARACTER"
+    end
     func_type = CTYPES[f_type]
     unless func_type
       raise "func_type #{f_type} is not defined"
@@ -1851,10 +2000,11 @@ def parse_file(fname)
       next
     end
 
-    if /^\*\s+([A-Z_\d]+)\s+\((input|output|workspace|in|external procedure)[^\)]*\)\s+([A-Za-z]+)/ =~ line
+    if /^\*\s+([A-Z_\d,\s]+)\s+\((input|output|workspace|in|external procedure)[^\)]*\)\s+([A-Za-z]+)/ =~ line
       name = $1
       intent = $2
       type = $3
+      name.strip!
       ary.push line.chomp
       if /array/i =~ line
         flag = true
@@ -1911,11 +2061,10 @@ def parse_file(fname)
   args = Hash.new
   ary.each{|line|
     line.strip!
-    /^\*\s+([A-Z\d_]+)\s+\(([^\)]+)\)\s*(.*)$/ =~ line
-    name = $1.downcase
+    /^\*\s+([A-Z\d_,\s]+)\s+\(([^\)]+)\)\s*(.*)$/ =~ line
+    name = $1.downcase.strip
     intent = $2
     type = $3.sub(/\.$/,"")
-
     hash =  Hash.new
 
     intent = "input" if intent == "in"
@@ -1933,7 +2082,6 @@ def parse_file(fname)
       end
     end
     hash[:intent] =  intent
-
     subst = Hash.new
     if /^l.*work/ =~ name && (/The (dimension|length)? of (the )?(array|work|WORK)/ =~ type || /The amount of workspace available/ =~ type)
       if (/^(.*?) The (?:dimension|length)? of (?:the )?array\s+(?:WORK\.\s*)?(.+)/ =~ type) || (/^(.*?) The (?:dimension|length)? of (?:the )?(?:array|work|WORK)\.?\s+(.+)/ =~ type)
@@ -1969,7 +2117,7 @@ def parse_file(fname)
         end
       end
     elsif /^ld/ =~ name && (/(leading|first) dimension of/ =~ type || /(Leading|First) dimension of/ =~ type)
-      if /^([^,]+) T[Hh]e (?:leading|first) dimension of\s+(.+)$/ =~ type || /^(.+?) LD[A-Z]+ is the leading dimension of\s+(.+)$/ =~ type || /^(.+?) On entry, (?:LD[A-Z]+\s+specifies the )?(?:leading|first) dimension of (.+)$/ =~ type || /^([^,]+) (?:[Ll]eading|First) dimension of\s+(.+)$/ =~ type
+      if /^([^,]+) T[Hh]e (?:leading|first) dimension of\s+(?:(?:the )?vector)?(?:the array(?:s)?)?\s*(.+)$/ =~ type || /^(.+?) LD[A-Z]+ is the leading dimension of\s+(.+)$/ =~ type || /^(.+?) On entry, (?:LD[A-Z]+\s+specifies the )?(?:leading|first) dimension of (.+)$/ =~ type || /^([^,]+) (?:[Ll]eading|First) dimension of\s+(.+)$/ =~ type
         type = $1.strip
         str = $2.strip
       elsif /^([^,]+)\,\s+(.+?)\s+The (?:leading|first) dimension of\s+(.+)$/ =~ type
@@ -2151,6 +2299,12 @@ def parse_file(fname)
       if /^([A-Z\s]+) work$/ =~ type
         type = $1.strip
       end
+      if "CHARACTER(1)" == type
+        type = "CHARACTER"
+      end
+      if /\Alength (.*)\z/ =~ str
+        str = $1
+      end
       d = DIMS[sub_name]
       dims = d[name] if d
 
@@ -2175,6 +2329,9 @@ def parse_file(fname)
         str.strip!
         if intent == "input"
           str.sub!(/\s*if .*$/i, "")
+        end
+        if /(...rfsx|...svxx)/ =~ sub_name && name == "params"
+          str = ""
         end
         if /[Ii]f/ =~ str || /where/ =~ str || /when/ =~ str
           dims = Array.new
@@ -2432,7 +2589,7 @@ def parse_file(fname)
       unless dims
         raise "dimension is not defined (#{name} in #{fname})"
       end
-    elsif /^CHARACTER\*(\d+)$/ =~ type || /^CHARACTER\*\((\d+)\)$/ =~ type || /^character string/ =~ type
+    elsif /^CHARACTER\*\s*(\d+)$/ =~ type || /^CHARACTER\*?\((\d+)\)$/ =~ type || /^character string/ =~ type
       type = "CHARACTER"
       if $1 && $1 != "1"
         hash[:dims] = [$1]
@@ -2459,7 +2616,13 @@ def parse_file(fname)
         hash[:type] = CTYPES[type.upcase] || raise("type (#{type}) is not defined in #{name} (#{fname})")
       end
     end
-    args[name] = hash
+    if /,/ =~ name
+      name.split(",").each{|n1|
+        args[n1.strip] = hash.dup
+      }
+    else
+      args[name] = hash
+    end
   }
   case sub_name
   when /^[cz]laqr[04]$/
@@ -2475,12 +2638,10 @@ end
 
 
 def create_code(fname)
-=begin
   if IGNORE.include?( File.basename(fname).sub(/\.\w+$/,"") )
     warn "skip #{fname}"
     return nil
   end
-=end
   hash = parse_file(fname)
   if hash.nil?
     warn "skip #{fname}"
@@ -2529,7 +2690,7 @@ def create_code(fname)
       if ARGS[sub_name] && arg = ARGS[sub_name][name]
         args[name] = arg
       else
-        raise "arg #{name} is not defined (#{fname})"
+        raise "arg #{name} is not defined (#{sub_name} in #{fname})"
       end
     end
     case arg[:intent]
@@ -2537,7 +2698,7 @@ def create_code(fname)
       inputs.push name
     when "output"
       outputs.push name
-    when "input/output", "input or output", "input or input/output"
+    when "input/output", "input or output", "input or input/output", "input / output", "input/workspace/output"
       inputs.push name
       inouts.push name
     when "workspace"
@@ -2579,7 +2740,7 @@ def create_code(fname)
   if sub_type == :func
     outputs.push "__out__"
     args["__out__"] = {:type => func_type}
-    unless sub_name == "lsame" || sub_name == "ilaenv" || sub_name == "zladiv"
+    unless FUNCS.include?(sub_name) || /\A[sdcz]lan[eghts]/ =~ sub_name
       code += "extern VOID #{sub_name}_(#{func_type} *__out__, #{arg_names.collect{|an|t = args[an][:type];t+' *'+an}.join(', ')});\n"
     end
   end
@@ -2757,7 +2918,8 @@ EOF
 EOF
       elsif /^[a-z][a-z_\d]*$/ !~ dim
         get_vars(dim).each{|d|
-          unless dimdefs[d] || substs.include?(d) || ((inputs.include?(d)) && (ar = args[d]) && (ar[:type]=="integer"||ar[:type]=="logical"))
+#          unless dimdefs[d] || substs.include?(d) || ((inputs.include?(d)) && (ar = args[d]) && (ar[:type]=="integer"||ar[:type]=="logical"))
+          unless dimdefs[d] || substs.include?(d) || ((ar = args[d]) && (ar[:type]=="integer"||ar[:type]=="logical"))
             raise "undefined #{d}  #{name} #{sub_name}"
           end
         }
@@ -2802,7 +2964,8 @@ EOF
 EOF
       dims.each_with_index{|dim,k|
         get_vars(dim).each{|d|
-          unless dimdefs[d] || substs.include?(d) || ((inputs.include?(d)) && (ar = args[d]) && (ar[:type]=="integer"||ar[:type]=="logical"))
+#          unless dimdefs[d] || substs.include?(d) || ((inputs.include?(d)) && (ar = args[d]) && (ar[:type]=="integer"||ar[:type]=="logical"))
+          unless dimdefs[d] || substs.include?(d) || ( (ar = args[d]) && (ar[:type]=="integer"||ar[:type]=="logical"))
             raise "undefined #{d}  #{name} #{sub_name}"
           end
         }
@@ -2878,8 +3041,8 @@ EOF
   cargs = arg_names.collect{|name|
     block== name ? RBPREFIX+name : args[name][:dims] ? name : "&"+name
   }
-  if sub_name == "ilaenv"
-    code << "  __out__ = #{sub_name}_(#{cargs.join(", ")}, (ftnlen) strlen(name), (ftnlen)1);\n\n"
+  if FUNCS.include?(sub_name) || /\A[sdcz]lan[eghts]/ =~ sub_name
+    code << "  __out__ = #{sub_name}_(#{cargs.join(", ")});\n\n"
   else
     code << "  #{sub_name}_(#{sub_type==:func ? "&__out__, " : ""}#{cargs.join(", ")});\n\n"
   end
@@ -2999,7 +3162,6 @@ def generate_code(fnames)
 #define LG(n) (int)ceil(log((double)n)/log(2.0))
 
 extern logical lsame_(char *ca, char *cb);
-extern logical ilaenv_(integer *ispec, char *name__, char *opts, integer *n1, integer *n2, integer *n3, integer *n4, ftnlen name_len, ftnlen opts_len);
 extern int cunmtr_(char *side, char *uplo, char *trans, integer *m, integer *n, complex *a, integer *lda, complex *tau, complex *c__, integer *ldc, complex *work, integer *lwork, integer *info);
 extern int cunmrz_(char *side, char *trans, integer *m, integer *n, integer *k, integer *l, complex *a, integer *lda, complex *tau, complex *c__, integer *ldc, complex *work, integer *lwork, integer *info);
 EOF

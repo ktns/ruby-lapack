@@ -6,14 +6,14 @@
     <A NAME="top"></A>
     <H1>REAL routines for triangular band matrix</H1>
     <UL>
-      <LI><A HREF="#stbcon">stbcon</A> : Estimates the reciprocal of the condition number of a triangularband matrix, in either the 1-norm or the infinity-norm.</LI>
-      <LI><A HREF="#stbrfs">stbrfs</A> : Provides forward and backward error bounds for the solutionof a triangular banded system of linear equations AX=B,A**T X=B or A**H X=B.</LI>
-      <LI><A HREF="#stbtrs">stbtrs</A> : Solves a triangular banded system of linear equations AX=B,A**T X=B or A**H X=B.</LI>
+      <LI><A HREF="#stbcon">stbcon</A> : </LI>
+      <LI><A HREF="#stbrfs">stbrfs</A> : </LI>
+      <LI><A HREF="#stbtrs">stbtrs</A> : </LI>
     </UL>
 
   <A NAME="stbcon"></A>
   <H2>stbcon</H2>
-  Estimates the reciprocal of the condition number of a triangularband matrix, in either the 1-norm or the infinity-norm.
+  
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.stbcon( norm, uplo, diag, kd, ab)
@@ -94,7 +94,7 @@ FORTRAN MANUAL
 
   <A NAME="stbrfs"></A>
   <H2>stbrfs</H2>
-  Provides forward and backward error bounds for the solutionof a triangular banded system of linear equations AX=B,A**T X=B or A**H X=B.
+  
   <PRE>
 USAGE:
   ferr, berr, info = NumRu::Lapack.stbrfs( uplo, trans, diag, kd, ab, b, x)
@@ -202,7 +202,7 @@ FORTRAN MANUAL
 
   <A NAME="stbtrs"></A>
   <H2>stbtrs</H2>
-  Solves a triangular banded system of linear equations AX=B,A**T X=B or A**H X=B.
+  
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.stbtrs( uplo, trans, diag, kd, ab, b)

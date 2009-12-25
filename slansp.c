@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID slansp_(real *__out__, char *norm, char *uplo, integer *n, real *ap, real *work);
 static VALUE
 rb_slansp(int argc, VALUE *argv, VALUE self){
   VALUE rb_norm;
@@ -43,7 +42,7 @@ rb_slansp(int argc, VALUE *argv, VALUE self){
   lwork = ((lsame_(&norm,"I")) || ((('1') || ('o')))) ? n : 0;
   work = ALLOC_N(real, (MAX(1,lwork)));
 
-  slansp_(&__out__, &norm, &uplo, &n, ap, work);
+  __out__ = slansp_(&norm, &uplo, &n, ap, work);
 
   free(work);
   rb___out__ = rb_float_new((double)__out__);

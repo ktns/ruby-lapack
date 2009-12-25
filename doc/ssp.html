@@ -6,26 +6,26 @@
     <A NAME="top"></A>
     <H1>REAL routines for symmetric, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#sspcon">sspcon</A> : Estimates the reciprocal of the condition number of areal symmetric indefinitematrix in packed storage, using the factorization computedby SSPTRF.</LI>
-      <LI><A HREF="#sspev">sspev</A> : Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric matrix in packed storage.</LI>
-      <LI><A HREF="#sspevd">sspevd</A> : Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric matrix in packed storage.  If eigenvectors are desired,it uses a divide and conquer algorithm.</LI>
-      <LI><A HREF="#sspevx">sspevx</A> : Computes selected eigenvalues and eigenvectors of asymmetric matrix in packed storage.</LI>
-      <LI><A HREF="#sspgst">sspgst</A> : Reduces a symmetric-definite generalized eigenproblemAx= lambda Bx,  ABx= lambda x,  or BAx= lambda x, to standardform,  where A and B are held in packed storage, and B has beenfactorized by SPPTRF.</LI>
-      <LI><A HREF="#sspgv">sspgv</A> : Computes all eigenvalues and eigenvectors of  a generalizedsymmetric-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.</LI>
-      <LI><A HREF="#sspgvd">sspgvd</A> : Computes all eigenvalues and eigenvectors of  a generalizedsymmetric-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.If eigenvectors are desired, it uses a divide and conquer algorithm.</LI>
-      <LI><A HREF="#sspgvx">sspgvx</A> : Computes selected eigenvalues, and optionally, eigenvectors ofa generalized symmetric-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.</LI>
-      <LI><A HREF="#ssprfs">ssprfs</A> : Improves the computed solution to a realsymmetric indefinite system of linear equationsAX=B, where A is held in packed storage, and provides forwardand backward error bounds for the solution.</LI>
-      <LI><A HREF="#sspsv">sspsv</A> : Solves a real symmetric indefinite system of linear equations AX=B,where A is held in packed storage.</LI>
-      <LI><A HREF="#sspsvx">sspsvx</A> : Solves a real symmetricindefinite system of linear equations AX=B, where A is heldin packed storage, and provides an estimate of the conditionnumber and error bounds on the solution.</LI>
-      <LI><A HREF="#ssptrd">ssptrd</A> : Reduces a symmetric matrix in packed storage to realsymmetric tridiagonal form by an orthogonal similaritytransformation.</LI>
-      <LI><A HREF="#ssptrf">ssptrf</A> : Computes the factorization of a realsymmetric-indefinite matrix in packed storage,using the diagonal pivoting method.</LI>
-      <LI><A HREF="#ssptri">ssptri</A> : Computes the inverse of a real symmetricindefinite matrix in packed storage, using the factorizationcomputed by SSPTRF.</LI>
-      <LI><A HREF="#ssptrs">ssptrs</A> : Solves a real symmetricindefinite system of linear equations AX=B, where A is heldin packed storage, using the factorization computedby SSPTRF.</LI>
+      <LI><A HREF="#sspcon">sspcon</A> : </LI>
+      <LI><A HREF="#sspev">sspev</A> : </LI>
+      <LI><A HREF="#sspevd">sspevd</A> : </LI>
+      <LI><A HREF="#sspevx">sspevx</A> : </LI>
+      <LI><A HREF="#sspgst">sspgst</A> : </LI>
+      <LI><A HREF="#sspgv">sspgv</A> : </LI>
+      <LI><A HREF="#sspgvd">sspgvd</A> : </LI>
+      <LI><A HREF="#sspgvx">sspgvx</A> : </LI>
+      <LI><A HREF="#ssprfs">ssprfs</A> : </LI>
+      <LI><A HREF="#sspsv">sspsv</A> : </LI>
+      <LI><A HREF="#sspsvx">sspsvx</A> : </LI>
+      <LI><A HREF="#ssptrd">ssptrd</A> : </LI>
+      <LI><A HREF="#ssptrf">ssptrf</A> : </LI>
+      <LI><A HREF="#ssptri">ssptri</A> : </LI>
+      <LI><A HREF="#ssptrs">ssptrs</A> : </LI>
     </UL>
 
   <A NAME="sspcon"></A>
   <H2>sspcon</H2>
-  Estimates the reciprocal of the condition number of areal symmetric indefinitematrix in packed storage, using the factorization computedby SSPTRF.
+  
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.sspcon( uplo, ap, ipiv, anorm)
@@ -94,7 +94,7 @@ FORTRAN MANUAL
 
   <A NAME="sspev"></A>
   <H2>sspev</H2>
-  Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric matrix in packed storage.
+  
   <PRE>
 USAGE:
   w, z, info, ap = NumRu::Lapack.sspev( jobz, uplo, ap)
@@ -172,7 +172,7 @@ FORTRAN MANUAL
 
   <A NAME="sspevd"></A>
   <H2>sspevd</H2>
-  Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric matrix in packed storage.  If eigenvectors are desired,it uses a divide and conquer algorithm.
+  
   <PRE>
 USAGE:
   w, z, work, iwork, info, ap = NumRu::Lapack.sspevd( jobz, uplo, ap, lwork, liwork)
@@ -286,7 +286,7 @@ FORTRAN MANUAL
 
   <A NAME="sspevx"></A>
   <H2>sspevx</H2>
-  Computes selected eigenvalues and eigenvectors of asymmetric matrix in packed storage.
+  
   <PRE>
 USAGE:
   m, w, z, ifail, info, ap = NumRu::Lapack.sspevx( jobz, range, uplo, ap, vl, vu, il, iu, abstol)
@@ -426,7 +426,7 @@ FORTRAN MANUAL
 
   <A NAME="sspgst"></A>
   <H2>sspgst</H2>
-  Reduces a symmetric-definite generalized eigenproblemAx= lambda Bx,  ABx= lambda x,  or BAx= lambda x, to standardform,  where A and B are held in packed storage, and B has beenfactorized by SPPTRF.
+  
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.sspgst( itype, uplo, n, ap, bp)
@@ -496,7 +496,7 @@ FORTRAN MANUAL
 
   <A NAME="sspgv"></A>
   <H2>sspgv</H2>
-  Computes all eigenvalues and eigenvectors of  a generalizedsymmetric-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.
+  
   <PRE>
 USAGE:
   w, z, info, ap, bp = NumRu::Lapack.sspgv( itype, jobz, uplo, ap, bp)
@@ -608,7 +608,7 @@ FORTRAN MANUAL
 
   <A NAME="sspgvd"></A>
   <H2>sspgvd</H2>
-  Computes all eigenvalues and eigenvectors of  a generalizedsymmetric-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.If eigenvectors are desired, it uses a divide and conquer algorithm.
+  
   <PRE>
 USAGE:
   w, z, work, iwork, info, ap, bp = NumRu::Lapack.sspgvd( itype, jobz, uplo, ap, bp, lwork, liwork)
@@ -748,7 +748,7 @@ FORTRAN MANUAL
 
   <A NAME="sspgvx"></A>
   <H2>sspgvx</H2>
-  Computes selected eigenvalues, and optionally, eigenvectors ofa generalized symmetric-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.
+  
   <PRE>
 USAGE:
   m, w, z, ifail, info, ap, bp = NumRu::Lapack.sspgvx( itype, jobz, range, uplo, ap, bp, vl, vu, il, iu, abstol, ldz)
@@ -931,7 +931,7 @@ FORTRAN MANUAL
 
   <A NAME="ssprfs"></A>
   <H2>ssprfs</H2>
-  Improves the computed solution to a realsymmetric indefinite system of linear equationsAX=B, where A is held in packed storage, and provides forwardand backward error bounds for the solution.
+  
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.ssprfs( uplo, ap, afp, ipiv, b, x)
@@ -1034,7 +1034,7 @@ FORTRAN MANUAL
 
   <A NAME="sspsv"></A>
   <H2>sspsv</H2>
-  Solves a real symmetric indefinite system of linear equations AX=B,where A is held in packed storage.
+  
   <PRE>
 USAGE:
   ipiv, info, ap, b = NumRu::Lapack.sspsv( uplo, ap, b)
@@ -1153,7 +1153,7 @@ FORTRAN MANUAL
 
   <A NAME="sspsvx"></A>
   <H2>sspsvx</H2>
-  Solves a real symmetricindefinite system of linear equations AX=B, where A is heldin packed storage, and provides an estimate of the conditionnumber and error bounds on the solution.
+  
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, afp, ipiv = NumRu::Lapack.sspsvx( fact, uplo, ap, afp, ipiv, b)
@@ -1343,7 +1343,7 @@ FORTRAN MANUAL
 
   <A NAME="ssptrd"></A>
   <H2>ssptrd</H2>
-  Reduces a symmetric matrix in packed storage to realsymmetric tridiagonal form by an orthogonal similaritytransformation.
+  
   <PRE>
 USAGE:
   d, e, tau, info, ap = NumRu::Lapack.ssptrd( uplo, ap)
@@ -1444,7 +1444,7 @@ FORTRAN MANUAL
 
   <A NAME="ssptrf"></A>
   <H2>ssptrf</H2>
-  Computes the factorization of a realsymmetric-indefinite matrix in packed storage,using the diagonal pivoting method.
+  
   <PRE>
 USAGE:
   ipiv, info, ap = NumRu::Lapack.ssptrf( uplo, ap)
@@ -1557,7 +1557,7 @@ FORTRAN MANUAL
 
   <A NAME="ssptri"></A>
   <H2>ssptri</H2>
-  Computes the inverse of a real symmetricindefinite matrix in packed storage, using the factorizationcomputed by SSPTRF.
+  
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.ssptri( uplo, ap, ipiv)
@@ -1622,7 +1622,7 @@ FORTRAN MANUAL
 
   <A NAME="ssptrs"></A>
   <H2>ssptrs</H2>
-  Solves a real symmetricindefinite system of linear equations AX=B, where A is heldin packed storage, using the factorization computedby SSPTRF.
+  
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.ssptrs( uplo, ap, ipiv, b)

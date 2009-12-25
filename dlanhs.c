@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID dlanhs_(doublereal *__out__, char *norm, integer *n, doublereal *a, integer *lda, doublereal *work);
 static VALUE
 rb_dlanhs(int argc, VALUE *argv, VALUE self){
   VALUE rb_norm;
@@ -37,7 +36,7 @@ rb_dlanhs(int argc, VALUE *argv, VALUE self){
   lwork = lsame_(&norm,"I") ? n : 0;
   work = ALLOC_N(doublereal, (MAX(1,lwork)));
 
-  dlanhs_(&__out__, &norm, &n, a, &lda, work);
+  __out__ = dlanhs_(&norm, &n, a, &lda, work);
 
   free(work);
   rb___out__ = rb_float_new((double)__out__);

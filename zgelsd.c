@@ -93,7 +93,7 @@ rb_zgelsd(int argc, VALUE *argv, VALUE self){
   b = b_out__;
   c__0 = 0;
   c__9 = 9;
-  smlsiz = ilaenv_(&c__9,"ZGELSD"," ",&c__0,&c__0,&c__0,&c__0,(ftnlen)6,(ftnlen)1);
+  smlsiz = ilaenv_(&c__9,"ZGELSD"," ",&c__0,&c__0,&c__0,&c__0);
   nlvl = MAX(0,(int)(log(1.0*MIN(m,n)/(smlsiz+1))/log(2.0)));
   lrwork = m>=n ? 10*n+2*n*smlsiz+8*n*nlvl+3*smlsiz*nrhs+(smlsiz+1)*(smlsiz+1) : 10*m+2*m*smlsiz+8*m*nlvl+2*smlsiz*nrhs+(smlsiz+1)*(smlsiz+1);
   rwork = ALLOC_N(doublereal, (MAX(1,lrwork)));

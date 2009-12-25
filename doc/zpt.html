@@ -6,19 +6,19 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for symmetric or Hermitian positive definite tridiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#zptcon">zptcon</A> : Computes the reciprocal of the condition number of aHermitian positive definite tridiagonal matrix,using the LDL**H factorization computed by ZPTTRF.</LI>
-      <LI><A HREF="#zpteqr">zpteqr</A> : Computes all eigenvalues and eigenvectors of a complex symmetricpositive definite tridiagonal matrix, by computing the SVD ofits bidiagonal Cholesky factor.</LI>
-      <LI><A HREF="#zptrfs">zptrfs</A> : Improves the computed solution to a Hermitian positivedefinite tridiagonal system of linear equations AX=B, and providesforward and backward error bounds for the solution.</LI>
-      <LI><A HREF="#zptsv">zptsv</A> : Solves a Hermitian positive definite tridiagonal systemof linear equations AX=B.</LI>
-      <LI><A HREF="#zptsvx">zptsvx</A> : Solves a Hermitian positive definite tridiagonalsystem of linear equations AX=B, and provides an estimate ofthe condition number and error bounds on the solution.</LI>
-      <LI><A HREF="#zpttrf">zpttrf</A> : Computes the LDL**H factorization of a Hermitianpositive definite tridiagonal matrix.</LI>
-      <LI><A HREF="#zpttrs">zpttrs</A> : Solves a Hermitian positive definite tridiagonalsystem of linear equations, using the LDL**H factorizationcomputed by ZPTTRF.</LI>
+      <LI><A HREF="#zptcon">zptcon</A> : </LI>
+      <LI><A HREF="#zpteqr">zpteqr</A> : </LI>
+      <LI><A HREF="#zptrfs">zptrfs</A> : </LI>
+      <LI><A HREF="#zptsv">zptsv</A> : </LI>
+      <LI><A HREF="#zptsvx">zptsvx</A> : </LI>
+      <LI><A HREF="#zpttrf">zpttrf</A> : </LI>
+      <LI><A HREF="#zpttrs">zpttrs</A> : </LI>
       <LI><A HREF="#zptts2">zptts2</A> : </LI>
     </UL>
 
   <A NAME="zptcon"></A>
   <H2>zptcon</H2>
-  Computes the reciprocal of the condition number of aHermitian positive definite tridiagonal matrix,using the LDL**H factorization computed by ZPTTRF.
+  
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.zptcon( d, e, anorm)
@@ -87,7 +87,7 @@ FORTRAN MANUAL
 
   <A NAME="zpteqr"></A>
   <H2>zpteqr</H2>
-  Computes all eigenvalues and eigenvectors of a complex symmetricpositive definite tridiagonal matrix, by computing the SVD ofits bidiagonal Cholesky factor.
+  
   <PRE>
 USAGE:
   info, d, e, z = NumRu::Lapack.zpteqr( compz, d, e, z)
@@ -182,7 +182,7 @@ FORTRAN MANUAL
 
   <A NAME="zptrfs"></A>
   <H2>zptrfs</H2>
-  Improves the computed solution to a Hermitian positivedefinite tridiagonal system of linear equations AX=B, and providesforward and backward error bounds for the solution.
+  
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.zptrfs( uplo, d, e, df, ef, b, x)
@@ -285,7 +285,7 @@ FORTRAN MANUAL
 
   <A NAME="zptsv"></A>
   <H2>zptsv</H2>
-  Solves a Hermitian positive definite tridiagonal systemof linear equations AX=B.
+  
   <PRE>
 USAGE:
   info, d, e, b = NumRu::Lapack.zptsv( nrhs, d, e, b)
@@ -360,7 +360,7 @@ FORTRAN MANUAL
 
   <A NAME="zptsvx"></A>
   <H2>zptsvx</H2>
-  Solves a Hermitian positive definite tridiagonalsystem of linear equations AX=B, and provides an estimate ofthe condition number and error bounds on the solution.
+  
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, df, ef = NumRu::Lapack.zptsvx( fact, d, e, df, ef, b)
@@ -509,7 +509,7 @@ FORTRAN MANUAL
 
   <A NAME="zpttrf"></A>
   <H2>zpttrf</H2>
-  Computes the LDL**H factorization of a Hermitianpositive definite tridiagonal matrix.
+  
   <PRE>
 USAGE:
   info, d, e = NumRu::Lapack.zpttrf( d, e)
@@ -564,7 +564,7 @@ FORTRAN MANUAL
 
   <A NAME="zpttrs"></A>
   <H2>zpttrs</H2>
-  Solves a Hermitian positive definite tridiagonalsystem of linear equations, using the LDL**H factorizationcomputed by ZPTTRF.
+  
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.zpttrs( uplo, d, e, b)

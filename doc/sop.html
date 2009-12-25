@@ -6,13 +6,13 @@
     <A NAME="top"></A>
     <H1>REAL routines for (real) orthogonal, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#sopgtr">sopgtr</A> : Generates the orthogonal transformation matrix froma reduction to tridiagonal form determined by SSPTRD.</LI>
-      <LI><A HREF="#sopmtr">sopmtr</A> : Multiplies a general matrix by the orthogonaltransformation matrix from a reduction to tridiagonal formdetermined by SSPTRD.</LI>
+      <LI><A HREF="#sopgtr">sopgtr</A> : </LI>
+      <LI><A HREF="#sopmtr">sopmtr</A> : </LI>
     </UL>
 
   <A NAME="sopgtr"></A>
   <H2>sopgtr</H2>
-  Generates the orthogonal transformation matrix froma reduction to tridiagonal form determined by SSPTRD.
+  
   <PRE>
 USAGE:
   q, info = NumRu::Lapack.sopgtr( uplo, ap, tau)
@@ -77,7 +77,7 @@ FORTRAN MANUAL
 
   <A NAME="sopmtr"></A>
   <H2>sopmtr</H2>
-  Multiplies a general matrix by the orthogonaltransformation matrix from a reduction to tridiagonal formdetermined by SSPTRD.
+  
   <PRE>
 USAGE:
   info, c = NumRu::Lapack.sopmtr( side, uplo, trans, m, ap, tau, c)

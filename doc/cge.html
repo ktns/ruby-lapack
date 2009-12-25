@@ -6,51 +6,54 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for general (i.e., unsymmetric, in some cases rectangular) matrix</H1>
     <UL>
-      <LI><A HREF="#cgebak">cgebak</A> : Transforms eigenvectors of a balanced matrix to those of theoriginal matrix supplied to CGEBAL.</LI>
-      <LI><A HREF="#cgebal">cgebal</A> : Balances a general matrix in order to improve the accuracyof computed eigenvalues.</LI>
+      <LI><A HREF="#cgebak">cgebak</A> : </LI>
+      <LI><A HREF="#cgebal">cgebal</A> : </LI>
       <LI><A HREF="#cgebd2">cgebd2</A> : </LI>
-      <LI><A HREF="#cgebrd">cgebrd</A> : Reduces a general rectangular matrix to real bidiagonal formby an orthogonal/unitary transformation.</LI>
-      <LI><A HREF="#cgecon">cgecon</A> : Estimates the reciprocal of the condition number of a generalmatrix, in either the 1-norm or the infinity-norm, using theLU factorization computed by CGETRF.</LI>
-      <LI><A HREF="#cgeequ">cgeequ</A> : Computes row and column scalings to equilibrate a generalrectangular matrix and reduce its condition number.</LI>
-      <LI><A HREF="#cgees">cgees</A> : Computes the eigenvalues and Schur factorization of a generalmatrix, and orders the factorization so that selected eigenvaluesare at the top left of the Schur form.</LI>
-      <LI><A HREF="#cgeesx">cgeesx</A> : Computes the eigenvalues and Schur factorization of a generalmatrix, orders the factorization so that selected eigenvaluesare at the top left of the Schur form, and computes reciprocalcondition numbers for the average of the selected eigenvalues,and for the associated right invariant subspace.</LI>
-      <LI><A HREF="#cgeev">cgeev</A> : Computes the eigenvalues and left and right eigenvectors ofa general matrix.</LI>
-      <LI><A HREF="#cgeevx">cgeevx</A> : Computes the eigenvalues and left and right eigenvectors ofa general matrix,  with preliminary balancing of the matrix,and computes reciprocal condition numbers for the eigenvaluesand right eigenvectors.</LI>
-      <LI><A HREF="#cgegs">cgegs</A> : Computes the generalized eigenvalues, Schur form, and left and/orright Schur vectors for a pair of nonsymmetric matrices</LI>
-      <LI><A HREF="#cgegv">cgegv</A> : Computes the generalized eigenvalues, and left and/or rightgeneralized eigenvectors for a pair of nonsymmetric matrices</LI>
+      <LI><A HREF="#cgebrd">cgebrd</A> : </LI>
+      <LI><A HREF="#cgecon">cgecon</A> : </LI>
+      <LI><A HREF="#cgeequ">cgeequ</A> : </LI>
+      <LI><A HREF="#cgeequb">cgeequb</A> : </LI>
+      <LI><A HREF="#cgees">cgees</A> : </LI>
+      <LI><A HREF="#cgeesx">cgeesx</A> : </LI>
+      <LI><A HREF="#cgeev">cgeev</A> : </LI>
+      <LI><A HREF="#cgeevx">cgeevx</A> : </LI>
+      <LI><A HREF="#cgegs">cgegs</A> : </LI>
+      <LI><A HREF="#cgegv">cgegv</A> : </LI>
       <LI><A HREF="#cgehd2">cgehd2</A> : </LI>
-      <LI><A HREF="#cgehrd">cgehrd</A> : Reduces a general matrix to upper Hessenberg form by anunitary similarity transformation.</LI>
+      <LI><A HREF="#cgehrd">cgehrd</A> : </LI>
       <LI><A HREF="#cgelq2">cgelq2</A> : </LI>
-      <LI><A HREF="#cgelqf">cgelqf</A> : Computes an LQ factorization of a general rectangular matrix.</LI>
-      <LI><A HREF="#cgels">cgels</A> : Computes the least squares solution to an over-determined systemof linear equations, A X=B or A**H X=B,  or the minimum normsolution of an under-determined system, where A is a generalrectangular matrix of full rank,  using a QR or LQ factorizationof A.</LI>
-      <LI><A HREF="#cgelsd">cgelsd</A> : Computes the least squares solution to an over-determined systemof linear equations, A X=B or A**H X=B,  or the minimum normsolution of an under-determined system, using a divide and conquermethod, where A is a general rectangular matrix of full rank,using a QR or LQ factorization of A.</LI>
-      <LI><A HREF="#cgelss">cgelss</A> : Computes the minimum norm least squares solution to an over-or under-determined system of linear equations A X=B,  usingthe singular value decomposition of A.</LI>
-      <LI><A HREF="#cgelsx">cgelsx</A> : Computes the minimum norm least squares solution to an over-or under-determined system of linear equations A X=B, using acomplete orthogonal factorization of A.</LI>
-      <LI><A HREF="#cgelsy">cgelsy</A> : Computes the minimum norm least squares solution to an over-or under-determined system of linear equations A X=B, using acomplete orthogonal factorization of A.</LI>
+      <LI><A HREF="#cgelqf">cgelqf</A> : </LI>
+      <LI><A HREF="#cgels">cgels</A> : </LI>
+      <LI><A HREF="#cgelsd">cgelsd</A> : </LI>
+      <LI><A HREF="#cgelss">cgelss</A> : </LI>
+      <LI><A HREF="#cgelsx">cgelsx</A> : </LI>
+      <LI><A HREF="#cgelsy">cgelsy</A> : </LI>
       <LI><A HREF="#cgeql2">cgeql2</A> : </LI>
-      <LI><A HREF="#cgeqlf">cgeqlf</A> : Computes a QL factorization of a general rectangular matrix.</LI>
-      <LI><A HREF="#cgeqp3">cgeqp3</A> : Computes a QR factorization with column pivoting of a generalrectangular matrix using Level 3 BLAS.</LI>
-      <LI><A HREF="#cgeqpf">cgeqpf</A> : Computes a QR factorization with column pivoting of a generalrectangular matrix.</LI>
+      <LI><A HREF="#cgeqlf">cgeqlf</A> : </LI>
+      <LI><A HREF="#cgeqp3">cgeqp3</A> : </LI>
+      <LI><A HREF="#cgeqpf">cgeqpf</A> : </LI>
       <LI><A HREF="#cgeqr2">cgeqr2</A> : </LI>
-      <LI><A HREF="#cgeqrf">cgeqrf</A> : Computes a QR factorization of a general rectangular matrix.</LI>
-      <LI><A HREF="#cgerfs">cgerfs</A> : Improves the computed solution to a general system of linearequations AX=B, A**T X=B or A**H X=B, and provides forward andbackward error bounds for the solution.</LI>
+      <LI><A HREF="#cgeqrf">cgeqrf</A> : </LI>
+      <LI><A HREF="#cgerfs">cgerfs</A> : </LI>
+      <LI><A HREF="#cgerfsx">cgerfsx</A> : </LI>
       <LI><A HREF="#cgerq2">cgerq2</A> : </LI>
-      <LI><A HREF="#cgerqf">cgerqf</A> : Computes an RQ factorization of a general rectangular matrix.</LI>
+      <LI><A HREF="#cgerqf">cgerqf</A> : </LI>
       <LI><A HREF="#cgesc2">cgesc2</A> : </LI>
-      <LI><A HREF="#cgesdd">cgesdd</A> : Computes the singular value decomposition (SVD) of a generalrectangular matrix using divide-and-conquer.</LI>
-      <LI><A HREF="#cgesv">cgesv</A> : Solves a general system of linear equations AX=B.</LI>
-      <LI><A HREF="#cgesvd">cgesvd</A> : Computes the singular value decomposition (SVD) of a generalrectangular matrix.</LI>
-      <LI><A HREF="#cgesvx">cgesvx</A> : Solves a general system of linear equations AX=B, A**T X=Bor A**H X=B, and provides an estimate of the condition numberand error bounds on the solution.</LI>
+      <LI><A HREF="#cgesdd">cgesdd</A> : </LI>
+      <LI><A HREF="#cgesv">cgesv</A> : </LI>
+      <LI><A HREF="#cgesvd">cgesvd</A> : </LI>
+      <LI><A HREF="#cgesvx">cgesvx</A> : </LI>
+      <LI><A HREF="#cgesvxx">cgesvxx</A> : </LI>
       <LI><A HREF="#cgetc2">cgetc2</A> : </LI>
       <LI><A HREF="#cgetf2">cgetf2</A> : </LI>
-      <LI><A HREF="#cgetrf">cgetrf</A> : Computes an LU factorization of a general matrix, using partialpivoting with row interchanges.</LI>
-      <LI><A HREF="#cgetri">cgetri</A> : Computes the inverse of a general matrix, using the LU factorizationcomputed by CGETRF.</LI>
-      <LI><A HREF="#cgetrs">cgetrs</A> : Solves a general system of linear equations AX=B, A**T X=Bor A**H X=B, using the LU factorization computed by CGETRF.</LI>
+      <LI><A HREF="#cgetrf">cgetrf</A> : </LI>
+      <LI><A HREF="#cgetri">cgetri</A> : </LI>
+      <LI><A HREF="#cgetrs">cgetrs</A> : </LI>
     </UL>
 
   <A NAME="cgebak"></A>
   <H2>cgebak</H2>
-  Transforms eigenvectors of a balanced matrix to those of theoriginal matrix supplied to CGEBAL.
+  
   <PRE>
 USAGE:
   info, v = NumRu::Lapack.cgebak( job, side, ilo, ihi, scale, v)
@@ -122,7 +125,7 @@ FORTRAN MANUAL
 
   <A NAME="cgebal"></A>
   <H2>cgebal</H2>
-  Balances a general matrix in order to improve the accuracyof computed eigenvalues.
+  
   <PRE>
 USAGE:
   ilo, ihi, scale, info, a = NumRu::Lapack.cgebal( job, a)
@@ -361,7 +364,7 @@ FORTRAN MANUAL
 
   <A NAME="cgebrd"></A>
   <H2>cgebrd</H2>
-  Reduces a general rectangular matrix to real bidiagonal formby an orthogonal/unitary transformation.
+  
   <PRE>
 USAGE:
   d, e, tauq, taup, work, info, a = NumRu::Lapack.cgebrd( m, a, lwork)
@@ -503,7 +506,7 @@ FORTRAN MANUAL
 
   <A NAME="cgecon"></A>
   <H2>cgecon</H2>
-  Estimates the reciprocal of the condition number of a generalmatrix, in either the 1-norm or the infinity-norm, using theLU factorization computed by CGETRF.
+  
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.cgecon( norm, a, anorm)
@@ -571,7 +574,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeequ"></A>
   <H2>cgeequ</H2>
-  Computes row and column scalings to equilibrate a generalrectangular matrix and reduce its condition number.
+  
   <PRE>
 USAGE:
   r, c, rowcnd, colcnd, amax, info = NumRu::Lapack.cgeequ( a)
@@ -651,9 +654,98 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
+  <A NAME="cgeequb"></A>
+  <H2>cgeequb</H2>
+  
+  <PRE>
+USAGE:
+  r, c, rowcnd, colcnd, amax, info = NumRu::Lapack.cgeequb( a)
+    or
+  NumRu::Lapack.cgeequb  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CGEEQUB( M, N, A, LDA, R, C, ROWCND, COLCND, AMAX, INFO )
+
+*  Purpose
+*  =======
+*
+*  CGEEQUB computes row and column scalings intended to equilibrate an
+*  M-by-N matrix A and reduce its condition number.  R returns the row
+*  scale factors and C the column scale factors, chosen to try to make
+*  the largest element in each row and column of the matrix B with
+*  elements B(i,j)=R(i)*A(i,j)*C(j) have an absolute value of at most
+*  the radix.
+*
+*  R(i) and C(j) are restricted to be a power of the radix between
+*  SMLNUM = smallest safe number and BIGNUM = largest safe number.  Use
+*  of these scaling factors is not guaranteed to reduce the condition
+*  number of A but works well in practice.
+*
+*  This routine differs from CGEEQU by restricting the scaling factors
+*  to a power of the radix.  Baring over- and underflow, scaling by
+*  these factors introduces no additional rounding errors.  However, the
+*  scaled entries' magnitured are no longer approximately 1 but lie
+*  between sqrt(radix) and 1/sqrt(radix).
+*
+
+*  Arguments
+*  =========
+*
+*  M       (input) INTEGER
+*          The number of rows of the matrix A.  M >= 0.
+*
+*  N       (input) INTEGER
+*          The number of columns of the matrix A.  N >= 0.
+*
+*  A       (input) COMPLEX array, dimension (LDA,N)
+*          The M-by-N matrix whose equilibration factors are
+*          to be computed.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,M).
+*
+*  R       (output) REAL array, dimension (M)
+*          If INFO = 0 or INFO > M, R contains the row scale factors
+*          for A.
+*
+*  C       (output) REAL array, dimension (N)
+*          If INFO = 0,  C contains the column scale factors for A.
+*
+*  ROWCND  (output) REAL
+*          If INFO = 0 or INFO > M, ROWCND contains the ratio of the
+*          smallest R(i) to the largest R(i).  If ROWCND >= 0.1 and
+*          AMAX is neither too large nor too small, it is not worth
+*          scaling by R.
+*
+*  COLCND  (output) REAL
+*          If INFO = 0, COLCND contains the ratio of the smallest
+*          C(i) to the largest C(i).  If COLCND >= 0.1, it is not
+*          worth scaling by C.
+*
+*  AMAX    (output) REAL
+*          Absolute value of largest matrix element.  If AMAX is very
+*          close to overflow or very close to underflow, the matrix
+*          should be scaled.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i,  and i is
+*                <= M:  the i-th row of A is exactly zero
+*                >  M:  the (i-M)-th column of A is exactly zero
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
   <A NAME="cgees"></A>
   <H2>cgees</H2>
-  Computes the eigenvalues and Schur factorization of a generalmatrix, and orders the factorization so that selected eigenvaluesare at the top left of the Schur form.
+  
   <PRE>
 USAGE:
   sdim, w, vs, work, info, a = NumRu::Lapack.cgees( jobvs, sort, a, lwork){|a| ... }
@@ -772,7 +864,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeesx"></A>
   <H2>cgeesx</H2>
-  Computes the eigenvalues and Schur factorization of a generalmatrix, orders the factorization so that selected eigenvaluesare at the top left of the Schur form, and computes reciprocalcondition numbers for the average of the selected eigenvalues,and for the associated right invariant subspace.
+  
   <PRE>
 USAGE:
   sdim, w, vs, rconde, rcondv, work, info, a = NumRu::Lapack.cgeesx( jobvs, sort, sense, a, lwork){|a| ... }
@@ -921,7 +1013,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeev"></A>
   <H2>cgeev</H2>
-  Computes the eigenvalues and left and right eigenvectors ofa general matrix.
+  
   <PRE>
 USAGE:
   w, vl, vr, work, info, a = NumRu::Lapack.cgeev( jobvl, jobvr, a, lwork)
@@ -1027,7 +1119,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeevx"></A>
   <H2>cgeevx</H2>
-  Computes the eigenvalues and left and right eigenvectors ofa general matrix,  with preliminary balancing of the matrix,and computes reciprocal condition numbers for the eigenvaluesand right eigenvectors.
+  
   <PRE>
 USAGE:
   w, vl, vr, ilo, ihi, scale, abnrm, rconde, rcondv, work, info, a = NumRu::Lapack.cgeevx( balanc, jobvl, jobvr, sense, a, lwork)
@@ -1212,7 +1304,7 @@ FORTRAN MANUAL
 
   <A NAME="cgegs"></A>
   <H2>cgegs</H2>
-  Computes the generalized eigenvalues, Schur form, and left and/orright Schur vectors for a pair of nonsymmetric matrices
+  
   <PRE>
 USAGE:
   alpha, beta, vsl, vsr, work, info, a, b = NumRu::Lapack.cgegs( jobvsl, jobvsr, a, b, lwork)
@@ -1354,7 +1446,7 @@ FORTRAN MANUAL
 
   <A NAME="cgegv"></A>
   <H2>cgegv</H2>
-  Computes the generalized eigenvalues, and left and/or rightgeneralized eigenvectors for a pair of nonsymmetric matrices
+  
   <PRE>
 USAGE:
   alpha, beta, vl, vr, work, rwork, info, a, b = NumRu::Lapack.cgegv( jobvl, jobvr, a, b, lwork)
@@ -1650,7 +1742,7 @@ FORTRAN MANUAL
 
   <A NAME="cgehrd"></A>
   <H2>cgehrd</H2>
-  Reduces a general matrix to upper Hessenberg form by anunitary similarity transformation.
+  
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.cgehrd( ilo, ihi, a, lwork)
@@ -1749,9 +1841,9 @@ FORTRAN MANUAL
 *  modified element of the upper Hessenberg matrix H, and vi denotes an
 *  element of the vector defining H(i).
 *
-*  This file is a slight modification of LAPACK-3.0's CGEHRD
+*  This file is a slight modification of LAPACK-3.0's DGEHRD
 *  subroutine incorporating improvements proposed by Quintana-Orti and
-*  Van de Geijn (2005). 
+*  Van de Geijn (2006). (See DLAHR2.)
 *
 *  =====================================================================
 *
@@ -1835,7 +1927,7 @@ FORTRAN MANUAL
 
   <A NAME="cgelqf"></A>
   <H2>cgelqf</H2>
-  Computes an LQ factorization of a general rectangular matrix.
+  
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.cgelqf( m, a, lwork)
@@ -1934,7 +2026,7 @@ FORTRAN MANUAL
 
   <A NAME="cgels"></A>
   <H2>cgels</H2>
-  Computes the least squares solution to an over-determined systemof linear equations, A X=B or A**H X=B,  or the minimum normsolution of an under-determined system, where A is a generalrectangular matrix of full rank,  using a QR or LQ factorizationof A.
+  
   <PRE>
 USAGE:
   work, info, a, b = NumRu::Lapack.cgels( trans, m, a, b, lwork)
@@ -2056,7 +2148,7 @@ FORTRAN MANUAL
 
   <A NAME="cgelsd"></A>
   <H2>cgelsd</H2>
-  Computes the least squares solution to an over-determined systemof linear equations, A X=B or A**H X=B,  or the minimum normsolution of an under-determined system, using a divide and conquermethod, where A is a general rectangular matrix of full rank,using a QR or LQ factorization of A.
+  
   <PRE>
 USAGE:
   s, rank, work, info, a, b = NumRu::Lapack.cgelsd( m, a, b, rcond, lwork)
@@ -2208,7 +2300,7 @@ FORTRAN MANUAL
 
   <A NAME="cgelss"></A>
   <H2>cgelss</H2>
-  Computes the minimum norm least squares solution to an over-or under-determined system of linear equations A X=B,  usingthe singular value decomposition of A.
+  
   <PRE>
 USAGE:
   s, rank, work, info, a, b = NumRu::Lapack.cgelss( m, a, b, rcond, lwork)
@@ -2316,7 +2408,7 @@ FORTRAN MANUAL
 
   <A NAME="cgelsx"></A>
   <H2>cgelsx</H2>
-  Computes the minimum norm least squares solution to an over-or under-determined system of linear equations A X=B, using acomplete orthogonal factorization of A.
+  
   <PRE>
 USAGE:
   rank, info, a, b, jpvt = NumRu::Lapack.cgelsx( m, a, b, jpvt, rcond)
@@ -2432,7 +2524,7 @@ FORTRAN MANUAL
 
   <A NAME="cgelsy"></A>
   <H2>cgelsy</H2>
-  Computes the minimum norm least squares solution to an over-or under-determined system of linear equations A X=B, using acomplete orthogonal factorization of A.
+  
   <PRE>
 USAGE:
   rank, work, info, a, b, jpvt = NumRu::Lapack.cgelsy( m, a, b, jpvt, rcond, lwork)
@@ -2647,7 +2739,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeqlf"></A>
   <H2>cgeqlf</H2>
-  Computes a QL factorization of a general rectangular matrix.
+  
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.cgeqlf( m, a, lwork)
@@ -2749,7 +2841,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeqp3"></A>
   <H2>cgeqp3</H2>
-  Computes a QR factorization with column pivoting of a generalrectangular matrix using Level 3 BLAS.
+  
   <PRE>
 USAGE:
   tau, work, info, a, jpvt = NumRu::Lapack.cgeqp3( m, a, jpvt, lwork)
@@ -2845,7 +2937,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeqpf"></A>
   <H2>cgeqpf</H2>
-  Computes a QR factorization with column pivoting of a generalrectangular matrix.
+  
   <PRE>
 USAGE:
   tau, info, a, jpvt = NumRu::Lapack.cgeqpf( m, a, jpvt)
@@ -3010,7 +3102,7 @@ FORTRAN MANUAL
 
   <A NAME="cgeqrf"></A>
   <H2>cgeqrf</H2>
-  Computes a QR factorization of a general rectangular matrix.
+  
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.cgeqrf( m, a, lwork)
@@ -3110,7 +3202,7 @@ FORTRAN MANUAL
 
   <A NAME="cgerfs"></A>
   <H2>cgerfs</H2>
-  Improves the computed solution to a general system of linearequations AX=B, A**T X=B or A**H X=B, and provides forward andbackward error bounds for the solution.
+  
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.cgerfs( trans, a, af, ipiv, b, x)
@@ -3211,6 +3303,311 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
+  <A NAME="cgerfsx"></A>
+  <H2>cgerfsx</H2>
+  
+  <PRE>
+USAGE:
+  rcond, berr, err_bnds_norm, err_bnds_comp, info, r, c, x, params = NumRu::Lapack.cgerfsx( trans, equed, a, af, ipiv, r, c, b, x, nparams, params)
+    or
+  NumRu::Lapack.cgerfsx  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CGERFSX( TRANS, EQUED, N, NRHS, A, LDA, AF, LDAF, IPIV, R, C, B, LDB, X, LDX, RCOND, BERR, N_ERR_BNDS, ERR_BNDS_NORM, ERR_BNDS_COMP, NPARAMS, PARAMS, WORK, RWORK, INFO )
+
+*     Purpose
+*     =======
+*
+*     CGERFSX improves the computed solution to a system of linear
+*     equations and provides error bounds and backward error estimates
+*     for the solution.  In addition to normwise error bound, the code
+*     provides maximum componentwise error bound if possible.  See
+*     comments for ERR_BNDS_NORM and ERR_BNDS_COMP for details of the
+*     error bounds.
+*
+*     The original system of linear equations may have been equilibrated
+*     before calling this routine, as described by arguments EQUED, R
+*     and C below. In this case, the solution and error bounds returned
+*     are for the original unequilibrated system.
+*
+
+*     Arguments
+*     =========
+*
+*     Some optional parameters are bundled in the PARAMS array.  These
+*     settings determine how refinement is performed, but often the
+*     defaults are acceptable.  If the defaults are acceptable, users
+*     can pass NPARAMS = 0 which prevents the source code from accessing
+*     the PARAMS argument.
+*
+*     TRANS   (input) CHARACTER*1
+*     Specifies the form of the system of equations:
+*       = 'N':  A * X = B     (No transpose)
+*       = 'T':  A**T * X = B  (Transpose)
+*       = 'C':  A**H * X = B  (Conjugate transpose = Transpose)
+*
+*     EQUED   (input) CHARACTER*1
+*     Specifies the form of equilibration that was done to A
+*     before calling this routine. This is needed to compute
+*     the solution and error bounds correctly.
+*       = 'N':  No equilibration
+*       = 'R':  Row equilibration, i.e., A has been premultiplied by
+*               diag(R).
+*       = 'C':  Column equilibration, i.e., A has been postmultiplied
+*               by diag(C).
+*       = 'B':  Both row and column equilibration, i.e., A has been
+*               replaced by diag(R) * A * diag(C).
+*               The right hand side B has been changed accordingly.
+*
+*     N       (input) INTEGER
+*     The order of the matrix A.  N >= 0.
+*
+*     NRHS    (input) INTEGER
+*     The number of right hand sides, i.e., the number of columns
+*     of the matrices B and X.  NRHS >= 0.
+*
+*     A       (input) COMPLEX array, dimension (LDA,N)
+*     The original N-by-N matrix A.
+*
+*     LDA     (input) INTEGER
+*     The leading dimension of the array A.  LDA >= max(1,N).
+*
+*     AF      (input) COMPLEX array, dimension (LDAF,N)
+*     The factors L and U from the factorization A = P*L*U
+*     as computed by CGETRF.
+*
+*     LDAF    (input) INTEGER
+*     The leading dimension of the array AF.  LDAF >= max(1,N).
+*
+*     IPIV    (input) INTEGER array, dimension (N)
+*     The pivot indices from CGETRF; for 1<=i<=N, row i of the
+*     matrix was interchanged with row IPIV(i).
+*
+*     R       (input or output) REAL array, dimension (N)
+*     The row scale factors for A.  If EQUED = 'R' or 'B', A is
+*     multiplied on the left by diag(R); if EQUED = 'N' or 'C', R
+*     is not accessed.  R is an input argument if FACT = 'F';
+*     otherwise, R is an output argument.  If FACT = 'F' and
+*     EQUED = 'R' or 'B', each element of R must be positive.
+*     If R is output, each element of R is a power of the radix.
+*     If R is input, each element of R should be a power of the radix
+*     to ensure a reliable solution and error estimates. Scaling by
+*     powers of the radix does not cause rounding errors unless the
+*     result underflows or overflows. Rounding errors during scaling
+*     lead to refining with a matrix that is not equivalent to the
+*     input matrix, producing error estimates that may not be
+*     reliable.
+*
+*     C       (input or output) REAL array, dimension (N)
+*     The column scale factors for A.  If EQUED = 'C' or 'B', A is
+*     multiplied on the right by diag(C); if EQUED = 'N' or 'R', C
+*     is not accessed.  C is an input argument if FACT = 'F';
+*     otherwise, C is an output argument.  If FACT = 'F' and
+*     EQUED = 'C' or 'B', each element of C must be positive.
+*     If C is output, each element of C is a power of the radix.
+*     If C is input, each element of C should be a power of the radix
+*     to ensure a reliable solution and error estimates. Scaling by
+*     powers of the radix does not cause rounding errors unless the
+*     result underflows or overflows. Rounding errors during scaling
+*     lead to refining with a matrix that is not equivalent to the
+*     input matrix, producing error estimates that may not be
+*     reliable.
+*
+*     B       (input) COMPLEX array, dimension (LDB,NRHS)
+*     The right hand side matrix B.
+*
+*     LDB     (input) INTEGER
+*     The leading dimension of the array B.  LDB >= max(1,N).
+*
+*     X       (input/output) COMPLEX array, dimension (LDX,NRHS)
+*     On entry, the solution matrix X, as computed by CGETRS.
+*     On exit, the improved solution matrix X.
+*
+*     LDX     (input) INTEGER
+*     The leading dimension of the array X.  LDX >= max(1,N).
+*
+*     RCOND   (output) REAL
+*     Reciprocal scaled condition number.  This is an estimate of the
+*     reciprocal Skeel condition number of the matrix A after
+*     equilibration (if done).  If this is less than the machine
+*     precision (in particular, if it is zero), the matrix is singular
+*     to working precision.  Note that the error may still be small even
+*     if this number is very small and the matrix appears ill-
+*     conditioned.
+*
+*     BERR    (output) REAL array, dimension (NRHS)
+*     Componentwise relative backward error.  This is the
+*     componentwise relative backward error of each solution vector X(j)
+*     (i.e., the smallest relative change in any element of A or B that
+*     makes X(j) an exact solution).
+*
+*     N_ERR_BNDS (input) INTEGER
+*     Number of error bounds to return for each right hand side
+*     and each type (normwise or componentwise).  See ERR_BNDS_NORM and
+*     ERR_BNDS_COMP below.
+*
+*     ERR_BNDS_NORM  (output) REAL array, dimension (NRHS, N_ERR_BNDS)
+*     For each right-hand side, this array contains information about
+*     various error bounds and condition numbers corresponding to the
+*     normwise relative error, which is defined as follows:
+*
+*     Normwise relative error in the ith solution vector:
+*             max_j (abs(XTRUE(j,i) - X(j,i)))
+*            ------------------------------
+*                  max_j abs(X(j,i))
+*
+*     The array is indexed by the type of error information as described
+*     below. There currently are up to three pieces of information
+*     returned.
+*
+*     The first index in ERR_BNDS_NORM(i,:) corresponds to the ith
+*     right-hand side.
+*
+*     The second index in ERR_BNDS_NORM(:,err) contains the following
+*     three fields:
+*     err = 1 "Trust/don't trust" boolean. Trust the answer if the
+*              reciprocal condition number is less than the threshold
+*              sqrt(n) * slamch('Epsilon').
+*
+*     err = 2 "Guaranteed" error bound: The estimated forward error,
+*              almost certainly within a factor of 10 of the true error
+*              so long as the next entry is greater than the threshold
+*              sqrt(n) * slamch('Epsilon'). This error bound should only
+*              be trusted if the previous boolean is true.
+*
+*     err = 3  Reciprocal condition number: Estimated normwise
+*              reciprocal condition number.  Compared with the threshold
+*              sqrt(n) * slamch('Epsilon') to determine if the error
+*              estimate is "guaranteed". These reciprocal condition
+*              numbers are 1 / (norm(Z^{-1},inf) * norm(Z,inf)) for some
+*              appropriately scaled matrix Z.
+*              Let Z = S*A, where S scales each row by a power of the
+*              radix so all absolute row sums of Z are approximately 1.
+*
+*     See Lapack Working Note 165 for further details and extra
+*     cautions.
+*
+*     ERR_BNDS_COMP  (output) REAL array, dimension (NRHS, N_ERR_BNDS)
+*     For each right-hand side, this array contains information about
+*     various error bounds and condition numbers corresponding to the
+*     componentwise relative error, which is defined as follows:
+*
+*     Componentwise relative error in the ith solution vector:
+*                    abs(XTRUE(j,i) - X(j,i))
+*             max_j ----------------------
+*                         abs(X(j,i))
+*
+*     The array is indexed by the right-hand side i (on which the
+*     componentwise relative error depends), and the type of error
+*     information as described below. There currently are up to three
+*     pieces of information returned for each right-hand side. If
+*     componentwise accuracy is not requested (PARAMS(3) = 0.0), then
+*     ERR_BNDS_COMP is not accessed.  If N_ERR_BNDS .LT. 3, then at most
+*     the first (:,N_ERR_BNDS) entries are returned.
+*
+*     The first index in ERR_BNDS_COMP(i,:) corresponds to the ith
+*     right-hand side.
+*
+*     The second index in ERR_BNDS_COMP(:,err) contains the following
+*     three fields:
+*     err = 1 "Trust/don't trust" boolean. Trust the answer if the
+*              reciprocal condition number is less than the threshold
+*              sqrt(n) * slamch('Epsilon').
+*
+*     err = 2 "Guaranteed" error bound: The estimated forward error,
+*              almost certainly within a factor of 10 of the true error
+*              so long as the next entry is greater than the threshold
+*              sqrt(n) * slamch('Epsilon'). This error bound should only
+*              be trusted if the previous boolean is true.
+*
+*     err = 3  Reciprocal condition number: Estimated componentwise
+*              reciprocal condition number.  Compared with the threshold
+*              sqrt(n) * slamch('Epsilon') to determine if the error
+*              estimate is "guaranteed". These reciprocal condition
+*              numbers are 1 / (norm(Z^{-1},inf) * norm(Z,inf)) for some
+*              appropriately scaled matrix Z.
+*              Let Z = S*(A*diag(x)), where x is the solution for the
+*              current right-hand side and S scales each row of
+*              A*diag(x) by a power of the radix so all absolute row
+*              sums of Z are approximately 1.
+*
+*     See Lapack Working Note 165 for further details and extra
+*     cautions.
+*
+*     NPARAMS (input) INTEGER
+*     Specifies the number of parameters set in PARAMS.  If .LE. 0, the
+*     PARAMS array is never referenced and default values are used.
+*
+*     PARAMS  (input / output) REAL array, dimension NPARAMS
+*     Specifies algorithm parameters.  If an entry is .LT. 0.0, then
+*     that entry will be filled with default value used for that
+*     parameter.  Only positions up to NPARAMS are accessed; defaults
+*     are used for higher-numbered parameters.
+*
+*       PARAMS(LA_LINRX_ITREF_I = 1) : Whether to perform iterative
+*            refinement or not.
+*         Default: 1.0
+*            = 0.0 : No refinement is performed, and no error bounds are
+*                    computed.
+*            = 1.0 : Use the double-precision refinement algorithm,
+*                    possibly with doubled-single computations if the
+*                    compilation environment does not support DOUBLE
+*                    PRECISION.
+*              (other values are reserved for future use)
+*
+*       PARAMS(LA_LINRX_ITHRESH_I = 2) : Maximum number of residual
+*            computations allowed for refinement.
+*         Default: 10
+*         Aggressive: Set to 100 to permit convergence using approximate
+*                     factorizations or factorizations other than LU. If
+*                     the factorization uses a technique other than
+*                     Gaussian elimination, the guarantees in
+*                     err_bnds_norm and err_bnds_comp may no longer be
+*                     trustworthy.
+*
+*       PARAMS(LA_LINRX_CWISE_I = 3) : Flag determining if the code
+*            will attempt to find a solution with small componentwise
+*            relative error in the double-precision algorithm.  Positive
+*            is true, 0.0 is false.
+*         Default: 1.0 (attempt componentwise convergence)
+*
+*     WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*     RWORK   (workspace) REAL array, dimension (2*N)
+*
+*     INFO    (output) INTEGER
+*       = 0:  Successful exit. The solution to every right-hand side is
+*         guaranteed.
+*       < 0:  If INFO = -i, the i-th argument had an illegal value
+*       > 0 and <= N:  U(INFO,INFO) is exactly zero.  The factorization
+*         has been completed, but the factor U is exactly singular, so
+*         the solution and error bounds could not be computed. RCOND = 0
+*         is returned.
+*       = N+J: The solution corresponding to the Jth right-hand side is
+*         not guaranteed. The solutions corresponding to other right-
+*         hand sides K with K > J may not be guaranteed as well, but
+*         only the first such right-hand side is reported. If a small
+*         componentwise error is not requested (PARAMS(3) = 0.0) then
+*         the Jth right-hand side is the first with a normwise error
+*         bound that is not guaranteed (the smallest J such
+*         that ERR_BNDS_NORM(J,1) = 0.0). By default (PARAMS(3) = 1.0)
+*         the Jth right-hand side is the first with either a normwise or
+*         componentwise error bound that is not guaranteed (the smallest
+*         J such that either ERR_BNDS_NORM(J,1) = 0.0 or
+*         ERR_BNDS_COMP(J,1) = 0.0). See the definition of
+*         ERR_BNDS_NORM(:,1) and ERR_BNDS_COMP(:,1). To get information
+*         about all of the right-hand sides check ERR_BNDS_NORM or
+*         ERR_BNDS_COMP.
+*
+
+*     ==================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
   <A NAME="cgerq2"></A>
   <H2>cgerq2</H2>
   
@@ -3288,7 +3685,7 @@ FORTRAN MANUAL
 
   <A NAME="cgerqf"></A>
   <H2>cgerqf</H2>
-  Computes an RQ factorization of a general rectangular matrix.
+  
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.cgerqf( m, a, lwork)
@@ -3459,7 +3856,7 @@ FORTRAN MANUAL
 
   <A NAME="cgesdd"></A>
   <H2>cgesdd</H2>
-  Computes the singular value decomposition (SVD) of a generalrectangular matrix using divide-and-conquer.
+  
   <PRE>
 USAGE:
   s, u, vt, work, info, a = NumRu::Lapack.cgesdd( jobz, m, a, lwork)
@@ -3606,7 +4003,7 @@ FORTRAN MANUAL
 
   <A NAME="cgesv"></A>
   <H2>cgesv</H2>
-  Solves a general system of linear equations AX=B.
+  
   <PRE>
 USAGE:
   ipiv, info, a, b = NumRu::Lapack.cgesv( a, b)
@@ -3685,7 +4082,7 @@ FORTRAN MANUAL
 
   <A NAME="cgesvd"></A>
   <H2>cgesvd</H2>
-  Computes the singular value decomposition (SVD) of a generalrectangular matrix.
+  
   <PRE>
 USAGE:
   s, u, vt, work, info, a = NumRu::Lapack.cgesvd( jobu, jobvt, m, a, lwork)
@@ -3825,7 +4222,7 @@ FORTRAN MANUAL
 
   <A NAME="cgesvx"></A>
   <H2>cgesvx</H2>
-  Solves a general system of linear equations AX=B, A**T X=Bor A**H X=B, and provides an estimate of the condition numberand error bounds on the solution.
+  
   <PRE>
 USAGE:
   x, rcond, ferr, berr, rwork, info, a, af, ipiv, equed, r, c, b = NumRu::Lapack.cgesvx( fact, trans, a, af, ipiv, equed, r, c, b)
@@ -4070,6 +4467,423 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
+  <A NAME="cgesvxx"></A>
+  <H2>cgesvxx</H2>
+  
+  <PRE>
+USAGE:
+  x, rcond, rpvgrw, berr, err_bnds_norm, err_bnds_comp, info, a, af, ipiv, equed, r, c, b, params = NumRu::Lapack.cgesvxx( fact, trans, a, af, ipiv, equed, r, c, b, nparams, params)
+    or
+  NumRu::Lapack.cgesvxx  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE CGESVXX( FACT, TRANS, N, NRHS, A, LDA, AF, LDAF, IPIV, EQUED, R, C, B, LDB, X, LDX, RCOND, RPVGRW, BERR, N_ERR_BNDS, ERR_BNDS_NORM, ERR_BNDS_COMP, NPARAMS, PARAMS, WORK, RWORK, INFO )
+
+*     Purpose
+*     =======
+*
+*     CGESVXX uses the LU factorization to compute the solution to a
+*     complex system of linear equations  A * X = B,  where A is an
+*     N-by-N matrix and X and B are N-by-NRHS matrices.
+*
+*     If requested, both normwise and maximum componentwise error bounds
+*     are returned. CGESVXX will return a solution with a tiny
+*     guaranteed error (O(eps) where eps is the working machine
+*     precision) unless the matrix is very ill-conditioned, in which
+*     case a warning is returned. Relevant condition numbers also are
+*     calculated and returned.
+*
+*     CGESVXX accepts user-provided factorizations and equilibration
+*     factors; see the definitions of the FACT and EQUED options.
+*     Solving with refinement and using a factorization from a previous
+*     CGESVXX call will also produce a solution with either O(eps)
+*     errors or warnings, but we cannot make that claim for general
+*     user-provided factorizations and equilibration factors if they
+*     differ from what CGESVXX would itself produce.
+*
+*     Description
+*     ===========
+*
+*     The following steps are performed:
+*
+*     1. If FACT = 'E', real scaling factors are computed to equilibrate
+*     the system:
+*
+*       TRANS = 'N':  diag(R)*A*diag(C)     *inv(diag(C))*X = diag(R)*B
+*       TRANS = 'T': (diag(R)*A*diag(C))**T *inv(diag(R))*X = diag(C)*B
+*       TRANS = 'C': (diag(R)*A*diag(C))**H *inv(diag(R))*X = diag(C)*B
+*
+*     Whether or not the system will be equilibrated depends on the
+*     scaling of the matrix A, but if equilibration is used, A is
+*     overwritten by diag(R)*A*diag(C) and B by diag(R)*B (if TRANS='N')
+*     or diag(C)*B (if TRANS = 'T' or 'C').
+*
+*     2. If FACT = 'N' or 'E', the LU decomposition is used to factor
+*     the matrix A (after equilibration if FACT = 'E') as
+*
+*       A = P * L * U,
+*
+*     where P is a permutation matrix, L is a unit lower triangular
+*     matrix, and U is upper triangular.
+*
+*     3. If some U(i,i)=0, so that U is exactly singular, then the
+*     routine returns with INFO = i. Otherwise, the factored form of A
+*     is used to estimate the condition number of the matrix A (see
+*     argument RCOND). If the reciprocal of the condition number is less
+*     than machine precision, the routine still goes on to solve for X
+*     and compute error bounds as described below.
+*
+*     4. The system of equations is solved for X using the factored form
+*     of A.
+*
+*     5. By default (unless PARAMS(LA_LINRX_ITREF_I) is set to zero),
+*     the routine will use iterative refinement to try to get a small
+*     error and error bounds.  Refinement calculates the residual to at
+*     least twice the working precision.
+*
+*     6. If equilibration was used, the matrix X is premultiplied by
+*     diag(C) (if TRANS = 'N') or diag(R) (if TRANS = 'T' or 'C') so
+*     that it solves the original system before equilibration.
+*
+
+*     Arguments
+*     =========
+*
+*     Some optional parameters are bundled in the PARAMS array.  These
+*     settings determine how refinement is performed, but often the
+*     defaults are acceptable.  If the defaults are acceptable, users
+*     can pass NPARAMS = 0 which prevents the source code from accessing
+*     the PARAMS argument.
+*
+*     FACT    (input) CHARACTER*1
+*     Specifies whether or not the factored form of the matrix A is
+*     supplied on entry, and if not, whether the matrix A should be
+*     equilibrated before it is factored.
+*       = 'F':  On entry, AF and IPIV contain the factored form of A.
+*               If EQUED is not 'N', the matrix A has been
+*               equilibrated with scaling factors given by R and C.
+*               A, AF, and IPIV are not modified.
+*       = 'N':  The matrix A will be copied to AF and factored.
+*       = 'E':  The matrix A will be equilibrated if necessary, then
+*               copied to AF and factored.
+*
+*     TRANS   (input) CHARACTER*1
+*     Specifies the form of the system of equations:
+*       = 'N':  A * X = B     (No transpose)
+*       = 'T':  A**T * X = B  (Transpose)
+*       = 'C':  A**H * X = B  (Conjugate Transpose)
+*
+*     N       (input) INTEGER
+*     The number of linear equations, i.e., the order of the
+*     matrix A.  N >= 0.
+*
+*     NRHS    (input) INTEGER
+*     The number of right hand sides, i.e., the number of columns
+*     of the matrices B and X.  NRHS >= 0.
+*
+*     A       (input/output) COMPLEX array, dimension (LDA,N)
+*     On entry, the N-by-N matrix A.  If FACT = 'F' and EQUED is
+*     not 'N', then A must have been equilibrated by the scaling
+*     factors in R and/or C.  A is not modified if FACT = 'F' or
+*     'N', or if FACT = 'E' and EQUED = 'N' on exit.
+*
+*     On exit, if EQUED .ne. 'N', A is scaled as follows:
+*     EQUED = 'R':  A := diag(R) * A
+*     EQUED = 'C':  A := A * diag(C)
+*     EQUED = 'B':  A := diag(R) * A * diag(C).
+*
+*     LDA     (input) INTEGER
+*     The leading dimension of the array A.  LDA >= max(1,N).
+*
+*     AF      (input or output) COMPLEX array, dimension (LDAF,N)
+*     If FACT = 'F', then AF is an input argument and on entry
+*     contains the factors L and U from the factorization
+*     A = P*L*U as computed by CGETRF.  If EQUED .ne. 'N', then
+*     AF is the factored form of the equilibrated matrix A.
+*
+*     If FACT = 'N', then AF is an output argument and on exit
+*     returns the factors L and U from the factorization A = P*L*U
+*     of the original matrix A.
+*
+*     If FACT = 'E', then AF is an output argument and on exit
+*     returns the factors L and U from the factorization A = P*L*U
+*     of the equilibrated matrix A (see the description of A for
+*     the form of the equilibrated matrix).
+*
+*     LDAF    (input) INTEGER
+*     The leading dimension of the array AF.  LDAF >= max(1,N).
+*
+*     IPIV    (input or output) INTEGER array, dimension (N)
+*     If FACT = 'F', then IPIV is an input argument and on entry
+*     contains the pivot indices from the factorization A = P*L*U
+*     as computed by CGETRF; row i of the matrix was interchanged
+*     with row IPIV(i).
+*
+*     If FACT = 'N', then IPIV is an output argument and on exit
+*     contains the pivot indices from the factorization A = P*L*U
+*     of the original matrix A.
+*
+*     If FACT = 'E', then IPIV is an output argument and on exit
+*     contains the pivot indices from the factorization A = P*L*U
+*     of the equilibrated matrix A.
+*
+*     EQUED   (input or output) CHARACTER*1
+*     Specifies the form of equilibration that was done.
+*       = 'N':  No equilibration (always true if FACT = 'N').
+*       = 'R':  Row equilibration, i.e., A has been premultiplied by
+*               diag(R).
+*       = 'C':  Column equilibration, i.e., A has been postmultiplied
+*               by diag(C).
+*       = 'B':  Both row and column equilibration, i.e., A has been
+*               replaced by diag(R) * A * diag(C).
+*     EQUED is an input argument if FACT = 'F'; otherwise, it is an
+*     output argument.
+*
+*     R       (input or output) REAL array, dimension (N)
+*     The row scale factors for A.  If EQUED = 'R' or 'B', A is
+*     multiplied on the left by diag(R); if EQUED = 'N' or 'C', R
+*     is not accessed.  R is an input argument if FACT = 'F';
+*     otherwise, R is an output argument.  If FACT = 'F' and
+*     EQUED = 'R' or 'B', each element of R must be positive.
+*     If R is output, each element of R is a power of the radix.
+*     If R is input, each element of R should be a power of the radix
+*     to ensure a reliable solution and error estimates. Scaling by
+*     powers of the radix does not cause rounding errors unless the
+*     result underflows or overflows. Rounding errors during scaling
+*     lead to refining with a matrix that is not equivalent to the
+*     input matrix, producing error estimates that may not be
+*     reliable.
+*
+*     C       (input or output) REAL array, dimension (N)
+*     The column scale factors for A.  If EQUED = 'C' or 'B', A is
+*     multiplied on the right by diag(C); if EQUED = 'N' or 'R', C
+*     is not accessed.  C is an input argument if FACT = 'F';
+*     otherwise, C is an output argument.  If FACT = 'F' and
+*     EQUED = 'C' or 'B', each element of C must be positive.
+*     If C is output, each element of C is a power of the radix.
+*     If C is input, each element of C should be a power of the radix
+*     to ensure a reliable solution and error estimates. Scaling by
+*     powers of the radix does not cause rounding errors unless the
+*     result underflows or overflows. Rounding errors during scaling
+*     lead to refining with a matrix that is not equivalent to the
+*     input matrix, producing error estimates that may not be
+*     reliable.
+*
+*     B       (input/output) COMPLEX array, dimension (LDB,NRHS)
+*     On entry, the N-by-NRHS right hand side matrix B.
+*     On exit,
+*     if EQUED = 'N', B is not modified;
+*     if TRANS = 'N' and EQUED = 'R' or 'B', B is overwritten by
+*        diag(R)*B;
+*     if TRANS = 'T' or 'C' and EQUED = 'C' or 'B', B is
+*        overwritten by diag(C)*B.
+*
+*     LDB     (input) INTEGER
+*     The leading dimension of the array B.  LDB >= max(1,N).
+*
+*     X       (output) COMPLEX array, dimension (LDX,NRHS)
+*     If INFO = 0, the N-by-NRHS solution matrix X to the original
+*     system of equations.  Note that A and B are modified on exit
+*     if EQUED .ne. 'N', and the solution to the equilibrated system is
+*     inv(diag(C))*X if TRANS = 'N' and EQUED = 'C' or 'B', or
+*     inv(diag(R))*X if TRANS = 'T' or 'C' and EQUED = 'R' or 'B'.
+*
+*     LDX     (input) INTEGER
+*     The leading dimension of the array X.  LDX >= max(1,N).
+*
+*     RCOND   (output) REAL
+*     Reciprocal scaled condition number.  This is an estimate of the
+*     reciprocal Skeel condition number of the matrix A after
+*     equilibration (if done).  If this is less than the machine
+*     precision (in particular, if it is zero), the matrix is singular
+*     to working precision.  Note that the error may still be small even
+*     if this number is very small and the matrix appears ill-
+*     conditioned.
+*
+*     RPVGRW  (output) REAL
+*     Reciprocal pivot growth.  On exit, this contains the reciprocal
+*     pivot growth factor norm(A)/norm(U). The "max absolute element"
+*     norm is used.  If this is much less than 1, then the stability of
+*     the LU factorization of the (equilibrated) matrix A could be poor.
+*     This also means that the solution X, estimated condition numbers,
+*     and error bounds could be unreliable. If factorization fails with
+*     0<INFO<=N, then this contains the reciprocal pivot growth factor
+*     for the leading INFO columns of A.  In CGESVX, this quantity is
+*     returned in WORK(1).
+*
+*     BERR    (output) REAL array, dimension (NRHS)
+*     Componentwise relative backward error.  This is the
+*     componentwise relative backward error of each solution vector X(j)
+*     (i.e., the smallest relative change in any element of A or B that
+*     makes X(j) an exact solution).
+*
+*     N_ERR_BNDS (input) INTEGER
+*     Number of error bounds to return for each right hand side
+*     and each type (normwise or componentwise).  See ERR_BNDS_NORM and
+*     ERR_BNDS_COMP below.
+*
+*     ERR_BNDS_NORM  (output) REAL array, dimension (NRHS, N_ERR_BNDS)
+*     For each right-hand side, this array contains information about
+*     various error bounds and condition numbers corresponding to the
+*     normwise relative error, which is defined as follows:
+*
+*     Normwise relative error in the ith solution vector:
+*             max_j (abs(XTRUE(j,i) - X(j,i)))
+*            ------------------------------
+*                  max_j abs(X(j,i))
+*
+*     The array is indexed by the type of error information as described
+*     below. There currently are up to three pieces of information
+*     returned.
+*
+*     The first index in ERR_BNDS_NORM(i,:) corresponds to the ith
+*     right-hand side.
+*
+*     The second index in ERR_BNDS_NORM(:,err) contains the following
+*     three fields:
+*     err = 1 "Trust/don't trust" boolean. Trust the answer if the
+*              reciprocal condition number is less than the threshold
+*              sqrt(n) * slamch('Epsilon').
+*
+*     err = 2 "Guaranteed" error bound: The estimated forward error,
+*              almost certainly within a factor of 10 of the true error
+*              so long as the next entry is greater than the threshold
+*              sqrt(n) * slamch('Epsilon'). This error bound should only
+*              be trusted if the previous boolean is true.
+*
+*     err = 3  Reciprocal condition number: Estimated normwise
+*              reciprocal condition number.  Compared with the threshold
+*              sqrt(n) * slamch('Epsilon') to determine if the error
+*              estimate is "guaranteed". These reciprocal condition
+*              numbers are 1 / (norm(Z^{-1},inf) * norm(Z,inf)) for some
+*              appropriately scaled matrix Z.
+*              Let Z = S*A, where S scales each row by a power of the
+*              radix so all absolute row sums of Z are approximately 1.
+*
+*     See Lapack Working Note 165 for further details and extra
+*     cautions.
+*
+*     ERR_BNDS_COMP  (output) REAL array, dimension (NRHS, N_ERR_BNDS)
+*     For each right-hand side, this array contains information about
+*     various error bounds and condition numbers corresponding to the
+*     componentwise relative error, which is defined as follows:
+*
+*     Componentwise relative error in the ith solution vector:
+*                    abs(XTRUE(j,i) - X(j,i))
+*             max_j ----------------------
+*                         abs(X(j,i))
+*
+*     The array is indexed by the right-hand side i (on which the
+*     componentwise relative error depends), and the type of error
+*     information as described below. There currently are up to three
+*     pieces of information returned for each right-hand side. If
+*     componentwise accuracy is not requested (PARAMS(3) = 0.0), then
+*     ERR_BNDS_COMP is not accessed.  If N_ERR_BNDS .LT. 3, then at most
+*     the first (:,N_ERR_BNDS) entries are returned.
+*
+*     The first index in ERR_BNDS_COMP(i,:) corresponds to the ith
+*     right-hand side.
+*
+*     The second index in ERR_BNDS_COMP(:,err) contains the following
+*     three fields:
+*     err = 1 "Trust/don't trust" boolean. Trust the answer if the
+*              reciprocal condition number is less than the threshold
+*              sqrt(n) * slamch('Epsilon').
+*
+*     err = 2 "Guaranteed" error bound: The estimated forward error,
+*              almost certainly within a factor of 10 of the true error
+*              so long as the next entry is greater than the threshold
+*              sqrt(n) * slamch('Epsilon'). This error bound should only
+*              be trusted if the previous boolean is true.
+*
+*     err = 3  Reciprocal condition number: Estimated componentwise
+*              reciprocal condition number.  Compared with the threshold
+*              sqrt(n) * slamch('Epsilon') to determine if the error
+*              estimate is "guaranteed". These reciprocal condition
+*              numbers are 1 / (norm(Z^{-1},inf) * norm(Z,inf)) for some
+*              appropriately scaled matrix Z.
+*              Let Z = S*(A*diag(x)), where x is the solution for the
+*              current right-hand side and S scales each row of
+*              A*diag(x) by a power of the radix so all absolute row
+*              sums of Z are approximately 1.
+*
+*     See Lapack Working Note 165 for further details and extra
+*     cautions.
+*
+*     NPARAMS (input) INTEGER
+*     Specifies the number of parameters set in PARAMS.  If .LE. 0, the
+*     PARAMS array is never referenced and default values are used.
+*
+*     PARAMS  (input / output) REAL array, dimension NPARAMS
+*     Specifies algorithm parameters.  If an entry is .LT. 0.0, then
+*     that entry will be filled with default value used for that
+*     parameter.  Only positions up to NPARAMS are accessed; defaults
+*     are used for higher-numbered parameters.
+*
+*       PARAMS(LA_LINRX_ITREF_I = 1) : Whether to perform iterative
+*            refinement or not.
+*         Default: 1.0
+*            = 0.0 : No refinement is performed, and no error bounds are
+*                    computed.
+*            = 1.0 : Use the double-precision refinement algorithm,
+*                    possibly with doubled-single computations if the
+*                    compilation environment does not support DOUBLE
+*                    PRECISION.
+*              (other values are reserved for future use)
+*
+*       PARAMS(LA_LINRX_ITHRESH_I = 2) : Maximum number of residual
+*            computations allowed for refinement.
+*         Default: 10
+*         Aggressive: Set to 100 to permit convergence using approximate
+*                     factorizations or factorizations other than LU. If
+*                     the factorization uses a technique other than
+*                     Gaussian elimination, the guarantees in
+*                     err_bnds_norm and err_bnds_comp may no longer be
+*                     trustworthy.
+*
+*       PARAMS(LA_LINRX_CWISE_I = 3) : Flag determining if the code
+*            will attempt to find a solution with small componentwise
+*            relative error in the double-precision algorithm.  Positive
+*            is true, 0.0 is false.
+*         Default: 1.0 (attempt componentwise convergence)
+*
+*     WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*     RWORK   (workspace) REAL array, dimension (2*N)
+*
+*     INFO    (output) INTEGER
+*       = 0:  Successful exit. The solution to every right-hand side is
+*         guaranteed.
+*       < 0:  If INFO = -i, the i-th argument had an illegal value
+*       > 0 and <= N:  U(INFO,INFO) is exactly zero.  The factorization
+*         has been completed, but the factor U is exactly singular, so
+*         the solution and error bounds could not be computed. RCOND = 0
+*         is returned.
+*       = N+J: The solution corresponding to the Jth right-hand side is
+*         not guaranteed. The solutions corresponding to other right-
+*         hand sides K with K > J may not be guaranteed as well, but
+*         only the first such right-hand side is reported. If a small
+*         componentwise error is not requested (PARAMS(3) = 0.0) then
+*         the Jth right-hand side is the first with a normwise error
+*         bound that is not guaranteed (the smallest J such
+*         that ERR_BNDS_NORM(J,1) = 0.0). By default (PARAMS(3) = 1.0)
+*         the Jth right-hand side is the first with either a normwise or
+*         componentwise error bound that is not guaranteed (the smallest
+*         J such that either ERR_BNDS_NORM(J,1) = 0.0 or
+*         ERR_BNDS_COMP(J,1) = 0.0). See the definition of
+*         ERR_BNDS_NORM(:,1) and ERR_BNDS_COMP(:,1). To get information
+*         about all of the right-hand sides check ERR_BNDS_NORM or
+*         ERR_BNDS_COMP.
+*
+
+*     ==================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
   <A NAME="cgetc2"></A>
   <H2>cgetc2</H2>
   
@@ -4206,7 +5020,7 @@ FORTRAN MANUAL
 
   <A NAME="cgetrf"></A>
   <H2>cgetrf</H2>
-  Computes an LU factorization of a general matrix, using partialpivoting with row interchanges.
+  
   <PRE>
 USAGE:
   ipiv, info, a = NumRu::Lapack.cgetrf( m, a)
@@ -4271,7 +5085,7 @@ FORTRAN MANUAL
 
   <A NAME="cgetri"></A>
   <H2>cgetri</H2>
-  Computes the inverse of a general matrix, using the LU factorizationcomputed by CGETRF.
+  
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.cgetri( a, ipiv, lwork)
@@ -4339,7 +5153,7 @@ FORTRAN MANUAL
 
   <A NAME="cgetrs"></A>
   <H2>cgetrs</H2>
-  Solves a general system of linear equations AX=B, A**T X=Bor A**H X=B, using the LU factorization computed by CGETRF.
+  
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.cgetrs( trans, a, ipiv, b)

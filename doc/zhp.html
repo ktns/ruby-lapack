@@ -6,26 +6,26 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for (complex) Hermitian, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#zhpcon">zhpcon</A> : Estimates the reciprocal of the condition number of acomplex Hermitian indefinitematrix in packed storage, using the factorization computedby ZHPTRF.</LI>
-      <LI><A HREF="#zhpev">zhpev</A> : Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian matrix in packed storage.</LI>
-      <LI><A HREF="#zhpevd">zhpevd</A> : Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian matrix in packed storage.  If eigenvectors are desired, ituses a divide and conquer algorithm.</LI>
-      <LI><A HREF="#zhpevx">zhpevx</A> : Computes selected eigenvalues and eigenvectors of aHermitian matrix in packed storage.</LI>
-      <LI><A HREF="#zhpgst">zhpgst</A> : Reduces a Hermitian-definite generalized eigenproblemAx= lambda Bx,  ABx= lambda x,  or BAx= lambda x, to standardform,  where A and B are held in packed storage, and B has beenfactorized by ZPPTRF.</LI>
-      <LI><A HREF="#zhpgv">zhpgv</A> : Computes all eigenvalues and eigenvectors of  a generalizedHermitian-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.</LI>
-      <LI><A HREF="#zhpgvd">zhpgvd</A> : Computes all eigenvalues and eigenvectors of  a generalizedHermitian-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.If eigenvectors are desired, it uses a divide and conquer algorithm.</LI>
-      <LI><A HREF="#zhpgvx">zhpgvx</A> : Computes selected eigenvalues, and optionally, the eigenvectors ofa generalized Hermitian-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.</LI>
-      <LI><A HREF="#zhprfs">zhprfs</A> : Improves the computed solution to a complexHermitian indefinite system of linear equationsAX=B, where A is held in packed storage, and provides forwardand backward error bounds for the solution.</LI>
-      <LI><A HREF="#zhpsv">zhpsv</A> : Solves a complex Hermitian indefinite system of linear equations AX=B,where A is held in packed storage.</LI>
-      <LI><A HREF="#zhpsvx">zhpsvx</A> : Solves a complex Hermitianindefinite system of linear equations AX=B, where A is heldin packed storage, and provides an estimate of the conditionnumber and error bounds on the solution.</LI>
-      <LI><A HREF="#zhptrd">zhptrd</A> : Reduces a Hermitian matrix in packed storage to realsymmetric tridiagonal form by a unitary similaritytransformation.</LI>
-      <LI><A HREF="#zhptrf">zhptrf</A> : Computes the factorization of a complexHermitian-indefinite matrix in packed storage,using the diagonal pivoting method.</LI>
-      <LI><A HREF="#zhptri">zhptri</A> : Computes the inverse of a complexHermitian indefinite matrix in packed storage, using the factorizationcomputed by ZHPTRF.</LI>
-      <LI><A HREF="#zhptrs">zhptrs</A> : Solves a complex Hermitianindefinite system of linear equations AX=B, where A is heldin packed storage, using the factorization computedby ZHPTRF.</LI>
+      <LI><A HREF="#zhpcon">zhpcon</A> : </LI>
+      <LI><A HREF="#zhpev">zhpev</A> : </LI>
+      <LI><A HREF="#zhpevd">zhpevd</A> : </LI>
+      <LI><A HREF="#zhpevx">zhpevx</A> : </LI>
+      <LI><A HREF="#zhpgst">zhpgst</A> : </LI>
+      <LI><A HREF="#zhpgv">zhpgv</A> : </LI>
+      <LI><A HREF="#zhpgvd">zhpgvd</A> : </LI>
+      <LI><A HREF="#zhpgvx">zhpgvx</A> : </LI>
+      <LI><A HREF="#zhprfs">zhprfs</A> : </LI>
+      <LI><A HREF="#zhpsv">zhpsv</A> : </LI>
+      <LI><A HREF="#zhpsvx">zhpsvx</A> : </LI>
+      <LI><A HREF="#zhptrd">zhptrd</A> : </LI>
+      <LI><A HREF="#zhptrf">zhptrf</A> : </LI>
+      <LI><A HREF="#zhptri">zhptri</A> : </LI>
+      <LI><A HREF="#zhptrs">zhptrs</A> : </LI>
     </UL>
 
   <A NAME="zhpcon"></A>
   <H2>zhpcon</H2>
-  Estimates the reciprocal of the condition number of acomplex Hermitian indefinitematrix in packed storage, using the factorization computedby ZHPTRF.
+  
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.zhpcon( uplo, ap, ipiv, anorm)
@@ -92,7 +92,7 @@ FORTRAN MANUAL
 
   <A NAME="zhpev"></A>
   <H2>zhpev</H2>
-  Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian matrix in packed storage.
+  
   <PRE>
 USAGE:
   w, z, info, ap = NumRu::Lapack.zhpev( jobz, uplo, ap)
@@ -172,7 +172,7 @@ FORTRAN MANUAL
 
   <A NAME="zhpevd"></A>
   <H2>zhpevd</H2>
-  Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian matrix in packed storage.  If eigenvectors are desired, ituses a divide and conquer algorithm.
+  
   <PRE>
 USAGE:
   w, z, work, rwork, iwork, info, ap = NumRu::Lapack.zhpevd( jobz, uplo, ap, lwork, lrwork, liwork)
@@ -302,7 +302,7 @@ FORTRAN MANUAL
 
   <A NAME="zhpevx"></A>
   <H2>zhpevx</H2>
-  Computes selected eigenvalues and eigenvectors of aHermitian matrix in packed storage.
+  
   <PRE>
 USAGE:
   m, w, z, ifail, info, ap = NumRu::Lapack.zhpevx( jobz, range, uplo, ap, vl, vu, il, iu, abstol)
@@ -444,7 +444,7 @@ FORTRAN MANUAL
 
   <A NAME="zhpgst"></A>
   <H2>zhpgst</H2>
-  Reduces a Hermitian-definite generalized eigenproblemAx= lambda Bx,  ABx= lambda x,  or BAx= lambda x, to standardform,  where A and B are held in packed storage, and B has beenfactorized by ZPPTRF.
+  
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.zhpgst( itype, uplo, n, ap, bp)
@@ -514,7 +514,7 @@ FORTRAN MANUAL
 
   <A NAME="zhpgv"></A>
   <H2>zhpgv</H2>
-  Computes all eigenvalues and eigenvectors of  a generalizedHermitian-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.
+  
   <PRE>
 USAGE:
   w, z, info, ap, bp = NumRu::Lapack.zhpgv( itype, jobz, uplo, ap, bp)
@@ -627,7 +627,7 @@ FORTRAN MANUAL
 
   <A NAME="zhpgvd"></A>
   <H2>zhpgvd</H2>
-  Computes all eigenvalues and eigenvectors of  a generalizedHermitian-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.If eigenvectors are desired, it uses a divide and conquer algorithm.
+  
   <PRE>
 USAGE:
   w, z, iwork, info, ap, bp = NumRu::Lapack.zhpgvd( itype, jobz, uplo, ap, bp, lwork, lrwork, liwork)
@@ -797,7 +797,7 @@ FORTRAN MANUAL
 
   <A NAME="zhpgvx"></A>
   <H2>zhpgvx</H2>
-  Computes selected eigenvalues, and optionally, the eigenvectors ofa generalized Hermitian-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.
+  
   <PRE>
 USAGE:
   m, w, z, ifail, info, ap, bp = NumRu::Lapack.zhpgvx( itype, jobz, range, uplo, ap, bp, vl, vu, il, iu, abstol, ldz)
@@ -982,7 +982,7 @@ FORTRAN MANUAL
 
   <A NAME="zhprfs"></A>
   <H2>zhprfs</H2>
-  Improves the computed solution to a complexHermitian indefinite system of linear equationsAX=B, where A is held in packed storage, and provides forwardand backward error bounds for the solution.
+  
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.zhprfs( uplo, ap, afp, ipiv, b, x)
@@ -1085,7 +1085,7 @@ FORTRAN MANUAL
 
   <A NAME="zhpsv"></A>
   <H2>zhpsv</H2>
-  Solves a complex Hermitian indefinite system of linear equations AX=B,where A is held in packed storage.
+  
   <PRE>
 USAGE:
   ipiv, info, ap, b = NumRu::Lapack.zhpsv( uplo, ap, b)
@@ -1204,7 +1204,7 @@ FORTRAN MANUAL
 
   <A NAME="zhpsvx"></A>
   <H2>zhpsvx</H2>
-  Solves a complex Hermitianindefinite system of linear equations AX=B, where A is heldin packed storage, and provides an estimate of the conditionnumber and error bounds on the solution.
+  
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, afp, ipiv = NumRu::Lapack.zhpsvx( fact, uplo, ap, afp, ipiv, b)
@@ -1393,7 +1393,7 @@ FORTRAN MANUAL
 
   <A NAME="zhptrd"></A>
   <H2>zhptrd</H2>
-  Reduces a Hermitian matrix in packed storage to realsymmetric tridiagonal form by a unitary similaritytransformation.
+  
   <PRE>
 USAGE:
   d, e, tau, info, ap = NumRu::Lapack.zhptrd( uplo, ap)
@@ -1494,7 +1494,7 @@ FORTRAN MANUAL
 
   <A NAME="zhptrf"></A>
   <H2>zhptrf</H2>
-  Computes the factorization of a complexHermitian-indefinite matrix in packed storage,using the diagonal pivoting method.
+  
   <PRE>
 USAGE:
   ipiv, info, ap = NumRu::Lapack.zhptrf( uplo, ap)
@@ -1607,7 +1607,7 @@ FORTRAN MANUAL
 
   <A NAME="zhptri"></A>
   <H2>zhptri</H2>
-  Computes the inverse of a complexHermitian indefinite matrix in packed storage, using the factorizationcomputed by ZHPTRF.
+  
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.zhptri( uplo, ap, ipiv)
@@ -1672,7 +1672,7 @@ FORTRAN MANUAL
 
   <A NAME="zhptrs"></A>
   <H2>zhptrs</H2>
-  Solves a complex Hermitianindefinite system of linear equations AX=B, where A is heldin packed storage, using the factorization computedby ZHPTRF.
+  
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.zhptrs( uplo, ap, ipiv, b)

@@ -6,13 +6,13 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for (complex) unitary, packed storageBDbidiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#zupgtr">zupgtr</A> : Generates the unitary transformation matrix froma reduction to tridiagonal form determined by ZHPTRD.</LI>
-      <LI><A HREF="#zupmtr">zupmtr</A> : Multiplies a general matrix by the unitarytransformation matrix from a reduction to tridiagonal formdetermined by ZHPTRD.</LI>
+      <LI><A HREF="#zupgtr">zupgtr</A> : </LI>
+      <LI><A HREF="#zupmtr">zupmtr</A> : </LI>
     </UL>
 
   <A NAME="zupgtr"></A>
   <H2>zupgtr</H2>
-  Generates the unitary transformation matrix froma reduction to tridiagonal form determined by ZHPTRD.
+  
   <PRE>
 USAGE:
   q, info = NumRu::Lapack.zupgtr( uplo, ap, tau)
@@ -77,7 +77,7 @@ FORTRAN MANUAL
 
   <A NAME="zupmtr"></A>
   <H2>zupmtr</H2>
-  Multiplies a general matrix by the unitarytransformation matrix from a reduction to tridiagonal formdetermined by ZHPTRD.
+  
   <PRE>
 USAGE:
   info, c = NumRu::Lapack.zupmtr( side, uplo, trans, m, ap, tau, c)

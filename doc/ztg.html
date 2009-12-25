@@ -6,19 +6,19 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for triangular matrices, generalized problem (i.e., a pair of triangular matrices) matrix</H1>
     <UL>
-      <LI><A HREF="#ztgevc">ztgevc</A> : Computes some or all of the right and/or left generalized eigenvectorsof a pair of complex upper triangular matrices. </LI>
+      <LI><A HREF="#ztgevc">ztgevc</A> : </LI>
       <LI><A HREF="#ztgex2">ztgex2</A> : </LI>
-      <LI><A HREF="#ztgexc">ztgexc</A> : Reorders the generalized Schur decomposition of a complexmatrix pair (A,B) using a unitary equivalence transformationso that the diagonal block of (A,B) with row index IFST is movedto row ILST.</LI>
-      <LI><A HREF="#ztgsen">ztgsen</A> : Reorders the generalized Schur decomposition of a complexmatrix pair (A, B) so that a selected cluster of eigenvaluesappears in the leading diagonal blocks of the pair (A,B).</LI>
-      <LI><A HREF="#ztgsja">ztgsja</A> : Computes the generalized singular value decomposition of two complexupper triangular (or trapezoidal) matrices as output by ZGGSVP.</LI>
-      <LI><A HREF="#ztgsna">ztgsna</A> : Estimates reciprocal condition numbers for specifiedeigenvalues and/or eigenvectors of a matrix pair (A, B) ingeneralized Schur canonical form, as returned by ZGGES.</LI>
+      <LI><A HREF="#ztgexc">ztgexc</A> : </LI>
+      <LI><A HREF="#ztgsen">ztgsen</A> : </LI>
+      <LI><A HREF="#ztgsja">ztgsja</A> : </LI>
+      <LI><A HREF="#ztgsna">ztgsna</A> : </LI>
       <LI><A HREF="#ztgsy2">ztgsy2</A> : </LI>
-      <LI><A HREF="#ztgsyl">ztgsyl</A> : Solves the generalized Sylvester equation.</LI>
+      <LI><A HREF="#ztgsyl">ztgsyl</A> : </LI>
     </UL>
 
   <A NAME="ztgevc"></A>
   <H2>ztgevc</H2>
-  Computes some or all of the right and/or left generalized eigenvectorsof a pair of complex upper triangular matrices. 
+  
   <PRE>
 USAGE:
   m, info, vl, vr = NumRu::Lapack.ztgevc( side, howmny, select, s, p, vl, vr)
@@ -274,7 +274,7 @@ FORTRAN MANUAL
 
   <A NAME="ztgexc"></A>
   <H2>ztgexc</H2>
-  Reorders the generalized Schur decomposition of a complexmatrix pair (A,B) using a unitary equivalence transformationso that the diagonal block of (A,B) with row index IFST is movedto row ILST.
+  
   <PRE>
 USAGE:
   info, a, b, q, z, ilst = NumRu::Lapack.ztgexc( wantq, wantz, a, b, q, ldq, z, ifst, ilst)
@@ -411,7 +411,7 @@ FORTRAN MANUAL
 
   <A NAME="ztgsen"></A>
   <H2>ztgsen</H2>
-  Reorders the generalized Schur decomposition of a complexmatrix pair (A, B) so that a selected cluster of eigenvaluesappears in the leading diagonal blocks of the pair (A,B).
+  
   <PRE>
 USAGE:
   alpha, beta, m, pl, pr, dif, work, iwork, info, a, b, q, z = NumRu::Lapack.ztgsen( ijob, wantq, wantz, select, a, b, q, z, lwork, liwork)
@@ -731,7 +731,7 @@ FORTRAN MANUAL
 
   <A NAME="ztgsja"></A>
   <H2>ztgsja</H2>
-  Computes the generalized singular value decomposition of two complexupper triangular (or trapezoidal) matrices as output by ZGGSVP.
+  
   <PRE>
 USAGE:
   alpha, beta, ncycle, info, a, b, u, v, q = NumRu::Lapack.ztgsja( jobu, jobv, jobq, k, l, a, b, tola, tolb, u, v, q)
@@ -869,7 +869,7 @@ FORTRAN MANUAL
 *          K and L specify the subblocks in the input matrices A and B:
 *          A23 = A(K+1:MIN(K+L,M),N-L+1:N) and B13 = B(1:L,,N-L+1:N)
 *          of A and B, whose GSVD is going to be computed by ZTGSJA.
-*          See Further details.
+*          See Further Details.
 *
 *  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
 *          On entry, the M-by-N matrix A.
@@ -991,7 +991,7 @@ FORTRAN MANUAL
 
   <A NAME="ztgsna"></A>
   <H2>ztgsna</H2>
-  Estimates reciprocal condition numbers for specifiedeigenvalues and/or eigenvectors of a matrix pair (A, B) ingeneralized Schur canonical form, as returned by ZGGES.
+  
   <PRE>
 USAGE:
   s, dif, m, work, info = NumRu::Lapack.ztgsna( job, howmny, select, a, b, vl, vr, lwork)
@@ -1370,7 +1370,7 @@ FORTRAN MANUAL
 
   <A NAME="ztgsyl"></A>
   <H2>ztgsyl</H2>
-  Solves the generalized Sylvester equation.
+  
   <PRE>
 USAGE:
   scale, dif, work, info, c, f = NumRu::Lapack.ztgsyl( trans, ijob, a, b, c, d, e, f, lwork)

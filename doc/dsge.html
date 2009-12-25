@@ -6,12 +6,12 @@
     <A NAME="top"></A>
     <H1>Data type in double but solving problem using single precision routines for general (i.e., unsymmetric, in some cases rectangular) matrix</H1>
     <UL>
-      <LI><A HREF="#dsgesv">dsgesv</A> : Solves a general system of linear equations AX=B using iterativement refinement.</LI>
+      <LI><A HREF="#dsgesv">dsgesv</A> : </LI>
     </UL>
 
   <A NAME="dsgesv"></A>
   <H2>dsgesv</H2>
-  Solves a general system of linear equations AX=B using iterativement refinement.
+  
   <PRE>
 USAGE:
   ipiv, x, iter, info, a = NumRu::Lapack.dsgesv( a, b)
@@ -20,7 +20,7 @@ USAGE:
 
 
 FORTRAN MANUAL
-      SUBROUTINE DSGESV( N, NRHS, A, LDA, IPIV, B, LDB, X, LDX, WORK, SWORK, ITER, INFO)
+      SUBROUTINE DSGESV( N, NRHS, A, LDA, IPIV, B, LDB, X, LDX, WORK, SWORK, ITER, INFO )
 
 *  Purpose
 *  =======
@@ -29,22 +29,23 @@ FORTRAN MANUAL
 *     A * X = B,
 *  where A is an N-by-N matrix and X and B are N-by-NRHS matrices.
 *
-*  DSGESV first attempts to factorize the matrix in SINGLE PRECISION 
-*  and use this factorization within an iterative refinement procedure to
-*  produce a solution with DOUBLE PRECISION normwise backward error
+*  DSGESV first attempts to factorize the matrix in SINGLE PRECISION
+*  and use this factorization within an iterative refinement procedure
+*  to produce a solution with DOUBLE PRECISION normwise backward error
 *  quality (see below). If the approach fails the method switches to a
 *  DOUBLE PRECISION factorization and solve.
 *
 *  The iterative refinement is not going to be a winning strategy if
-*  the ratio SINGLE PRECISION performance over DOUBLE PRECISION performance
-*  is too small. A reasonable strategy should take the number of right-hand
-*  sides and the size of the matrix into account. This might be done with a 
-*  call to ILAENV in the future. Up to now, we always try iterative refinement.
+*  the ratio SINGLE PRECISION performance over DOUBLE PRECISION
+*  performance is too small. A reasonable strategy should take the
+*  number of right-hand sides and the size of the matrix into account.
+*  This might be done with a call to ILAENV in the future. Up to now, we
+*  always try iterative refinement.
 *
 *  The iterative refinement process is stopped if
 *      ITER > ITERMAX
 *  or for all the RHS we have:
-*      RNRM < SQRT(N)*XNRM*ANRM*EPS*BWDMAX 
+*      RNRM < SQRT(N)*XNRM*ANRM*EPS*BWDMAX
 *  where
 *      o ITER is the number of the current iteration in the iterative
 *        refinement process
@@ -52,7 +53,8 @@ FORTRAN MANUAL
 *      o XNRM is the infinity-norm of the solution
 *      o ANRM is the infinity-operator-norm of the matrix A
 *      o EPS is the machine epsilon returned by DLAMCH('Epsilon')
-*  The value ITERMAX and BWDMAX are fixed to 30 and 1.0D+00 respectively.
+*  The value ITERMAX and BWDMAX are fixed to 30 and 1.0D+00
+*  respectively.
 *
 
 *  Arguments
@@ -82,12 +84,12 @@ FORTRAN MANUAL
 *  IPIV    (output) INTEGER array, dimension (N)
 *          The pivot indices that define the permutation matrix P;
 *          row i of the matrix was interchanged with row IPIV(i).
-*          Corresponds either to the single precision factorization 
-*          (if INFO.EQ.0 and ITER.GE.0) or the double precision 
+*          Corresponds either to the single precision factorization
+*          (if INFO.EQ.0 and ITER.GE.0) or the double precision
 *          factorization (if INFO.EQ.0 and ITER.LT.0).
 *
 *  B       (input) DOUBLE PRECISION array, dimension (LDB,NRHS)
-*          The N-by-NRHS matrix of right hand side matrix B.
+*          The N-by-NRHS right hand side matrix B.
 *
 *  LDB     (input) INTEGER
 *          The leading dimension of the array B.  LDB >= max(1,N).
@@ -102,16 +104,16 @@ FORTRAN MANUAL
 *          This array is used to hold the residual vectors.
 *
 *  SWORK   (workspace) REAL array, dimension (N*(N+NRHS))
-*          This array is used to use the single precision matrix and the 
+*          This array is used to use the single precision matrix and the
 *          right-hand sides or solutions in single precision.
 *
 *  ITER    (output) INTEGER
 *          < 0: iterative refinement has failed, double precision
 *               factorization has been performed
-*               -1 : taking into account machine parameters, N, NRHS, it
-*                    is a priori not worth working in SINGLE PRECISION
-*               -2 : overflow of an entry when moving from double to
-*                    SINGLE PRECISION
+*               -1 : the routine fell back to full precision for
+*                    implementation- or machine-specific reasons
+*               -2 : narrowing the precision induced an overflow,
+*                    the routine fell back to full precision
 *               -3 : failure of SGETRF
 *               -31: stop the iterative refinement after the 30th
 *                    iterations

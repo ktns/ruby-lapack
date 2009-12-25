@@ -6,18 +6,18 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for general tridiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#cgtcon">cgtcon</A> : Estimates the reciprocal of the condition number of a generaltridiagonal matrix, in either the 1-norm or the infinity-norm,using the LU factorization computed by CGTTRF.</LI>
-      <LI><A HREF="#cgtrfs">cgtrfs</A> : Improves the computed solution to a general tridiagonal systemof linear equations AX=B, A**T X=B or A**H X=B, and providesforward and backward error bounds for the solution.</LI>
-      <LI><A HREF="#cgtsv">cgtsv</A> : Solves a general tridiagonal system of linear equations AX=B.</LI>
-      <LI><A HREF="#cgtsvx">cgtsvx</A> : Solves a general tridiagonal system of linear equations AX=B,A**T X=B or A**H X=B, and provides an estimate of the conditionnumber  and error bounds on the solution.</LI>
-      <LI><A HREF="#cgttrf">cgttrf</A> : Computes an LU factorization of a general tridiagonal matrix,using partial pivoting with row interchanges.</LI>
-      <LI><A HREF="#cgttrs">cgttrs</A> : Solves a general tridiagonal system of linear equations AX=B,A**T X=B or A**H X=B, using the LU factorization computed byCGTTRF.</LI>
+      <LI><A HREF="#cgtcon">cgtcon</A> : </LI>
+      <LI><A HREF="#cgtrfs">cgtrfs</A> : </LI>
+      <LI><A HREF="#cgtsv">cgtsv</A> : </LI>
+      <LI><A HREF="#cgtsvx">cgtsvx</A> : </LI>
+      <LI><A HREF="#cgttrf">cgttrf</A> : </LI>
+      <LI><A HREF="#cgttrs">cgttrs</A> : </LI>
       <LI><A HREF="#cgtts2">cgtts2</A> : </LI>
     </UL>
 
   <A NAME="cgtcon"></A>
   <H2>cgtcon</H2>
-  Estimates the reciprocal of the condition number of a generaltridiagonal matrix, in either the 1-norm or the infinity-norm,using the LU factorization computed by CGTTRF.
+  
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.cgtcon( norm, dl, d, du, du2, ipiv, anorm)
@@ -96,7 +96,7 @@ FORTRAN MANUAL
 
   <A NAME="cgtrfs"></A>
   <H2>cgtrfs</H2>
-  Improves the computed solution to a general tridiagonal systemof linear equations AX=B, A**T X=B or A**H X=B, and providesforward and backward error bounds for the solution.
+  
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.cgtrfs( trans, dl, d, du, dlf, df, duf, du2, ipiv, b, x)
@@ -211,7 +211,7 @@ FORTRAN MANUAL
 
   <A NAME="cgtsv"></A>
   <H2>cgtsv</H2>
-  Solves a general tridiagonal system of linear equations AX=B.
+  
   <PRE>
 USAGE:
   info, dl, d, du, b = NumRu::Lapack.cgtsv( dl, d, du, b)
@@ -287,7 +287,7 @@ FORTRAN MANUAL
 
   <A NAME="cgtsvx"></A>
   <H2>cgtsvx</H2>
-  Solves a general tridiagonal system of linear equations AX=B,A**T X=B or A**H X=B, and provides an estimate of the conditionnumber  and error bounds on the solution.
+  
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, dlf, df, duf, du2, ipiv = NumRu::Lapack.cgtsvx( fact, trans, dl, d, du, dlf, df, duf, du2, ipiv, b)
@@ -478,7 +478,7 @@ FORTRAN MANUAL
 
   <A NAME="cgttrf"></A>
   <H2>cgttrf</H2>
-  Computes an LU factorization of a general tridiagonal matrix,using partial pivoting with row interchanges.
+  
   <PRE>
 USAGE:
   du2, ipiv, info, dl, d, du = NumRu::Lapack.cgttrf( dl, d, du)
@@ -556,7 +556,7 @@ FORTRAN MANUAL
 
   <A NAME="cgttrs"></A>
   <H2>cgttrs</H2>
-  Solves a general tridiagonal system of linear equations AX=B,A**T X=B or A**H X=B, using the LU factorization computed byCGTTRF.
+  
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.cgttrs( trans, dl, d, du, du2, ipiv, b)

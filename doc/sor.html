@@ -8,28 +8,28 @@
     <UL>
       <LI><A HREF="#sorg2l">sorg2l</A> : </LI>
       <LI><A HREF="#sorg2r">sorg2r</A> : </LI>
-      <LI><A HREF="#sorgbr">sorgbr</A> : Generates the orthogonal transformation matrices froma reduction to bidiagonal form determined by SGEBRD.</LI>
-      <LI><A HREF="#sorghr">sorghr</A> : Generates the orthogonal transformation matrix froma reduction to Hessenberg form determined by SGEHRD.</LI>
+      <LI><A HREF="#sorgbr">sorgbr</A> : </LI>
+      <LI><A HREF="#sorghr">sorghr</A> : </LI>
       <LI><A HREF="#sorgl2">sorgl2</A> : </LI>
-      <LI><A HREF="#sorglq">sorglq</A> : Generates all or part of the orthogonal matrix Q froman LQ factorization determined by SGELQF.</LI>
-      <LI><A HREF="#sorgql">sorgql</A> : Generates all or part of the orthogonal matrix Q froma QL factorization determined by SGEQLF.</LI>
-      <LI><A HREF="#sorgqr">sorgqr</A> : Generates all or part of the orthogonal matrix Q froma QR factorization determined by SGEQRF.</LI>
+      <LI><A HREF="#sorglq">sorglq</A> : </LI>
+      <LI><A HREF="#sorgql">sorgql</A> : </LI>
+      <LI><A HREF="#sorgqr">sorgqr</A> : </LI>
       <LI><A HREF="#sorgr2">sorgr2</A> : </LI>
-      <LI><A HREF="#sorgrq">sorgrq</A> : Generates all or part of the orthogonal matrix Q froman RQ factorization determined by SGERQF.</LI>
-      <LI><A HREF="#sorgtr">sorgtr</A> : Generates the orthogonal transformation matrix froma reduction to tridiagonal form determined by SSYTRD.</LI>
+      <LI><A HREF="#sorgrq">sorgrq</A> : </LI>
+      <LI><A HREF="#sorgtr">sorgtr</A> : </LI>
       <LI><A HREF="#sorm2l">sorm2l</A> : </LI>
       <LI><A HREF="#sorm2r">sorm2r</A> : </LI>
-      <LI><A HREF="#sormbr">sormbr</A> : Multiplies a general matrix by one of the orthogonaltransformation  matrices from a reduction to bidiagonal formdetermined by SGEBRD.</LI>
-      <LI><A HREF="#sormhr">sormhr</A> : Multiplies a general matrix by the orthogonal transformationmatrix from a reduction to Hessenberg form determined by SGEHRD.</LI>
+      <LI><A HREF="#sormbr">sormbr</A> : </LI>
+      <LI><A HREF="#sormhr">sormhr</A> : </LI>
       <LI><A HREF="#sorml2">sorml2</A> : </LI>
-      <LI><A HREF="#sormlq">sormlq</A> : Multiplies a general matrix by the orthogonal matrixfrom an LQ factorization determined by SGELQF.</LI>
-      <LI><A HREF="#sormql">sormql</A> : Multiplies a general matrix by the orthogonal matrixfrom a QL factorization determined by SGEQLF.</LI>
-      <LI><A HREF="#sormqr">sormqr</A> : Multiplies a general matrix by the orthogonal matrixfrom a QR factorization determined by SGEQRF.</LI>
+      <LI><A HREF="#sormlq">sormlq</A> : </LI>
+      <LI><A HREF="#sormql">sormql</A> : </LI>
+      <LI><A HREF="#sormqr">sormqr</A> : </LI>
       <LI><A HREF="#sormr2">sormr2</A> : </LI>
-      <LI><A HREF="#sormr3">sormr3</A> : Multiples a general matrix by the orthogonal matrixfrom an RZ factorization determined by STZRZF.</LI>
-      <LI><A HREF="#sormrq">sormrq</A> : Multiplies a general matrix by the orthogonal matrixfrom an RQ factorization determined by SGERQF.</LI>
-      <LI><A HREF="#sormrz">sormrz</A> : Multiples a general matrix by the orthogonal matrixfrom an RZ factorization determined by STZRZF.</LI>
-      <LI><A HREF="#sormtr">sormtr</A> : Multiplies a general matrix by the orthogonaltransformation matrix from a reduction to tridiagonal formdetermined by SSYTRD.</LI>
+      <LI><A HREF="#sormr3">sormr3</A> : </LI>
+      <LI><A HREF="#sormrq">sormrq</A> : </LI>
+      <LI><A HREF="#sormrz">sormrz</A> : </LI>
+      <LI><A HREF="#sormtr">sormtr</A> : </LI>
     </UL>
 
   <A NAME="sorg2l"></A>
@@ -166,7 +166,7 @@ FORTRAN MANUAL
 
   <A NAME="sorgbr"></A>
   <H2>sorgbr</H2>
-  Generates the orthogonal transformation matrices froma reduction to bidiagonal form determined by SGEBRD.
+  
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.sorgbr( vect, m, k, a, tau, lwork)
@@ -268,7 +268,7 @@ FORTRAN MANUAL
 
   <A NAME="sorghr"></A>
   <H2>sorghr</H2>
-  Generates the orthogonal transformation matrix froma reduction to Hessenberg form determined by SGEHRD.
+  
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.sorghr( ilo, ihi, a, tau, lwork)
@@ -406,7 +406,7 @@ FORTRAN MANUAL
 
   <A NAME="sorglq"></A>
   <H2>sorglq</H2>
-  Generates all or part of the orthogonal matrix Q froman LQ factorization determined by SGELQF.
+  
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.sorglq( m, a, tau, lwork)
@@ -482,7 +482,7 @@ FORTRAN MANUAL
 
   <A NAME="sorgql"></A>
   <H2>sorgql</H2>
-  Generates all or part of the orthogonal matrix Q froma QL factorization determined by SGEQLF.
+  
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.sorgql( m, a, tau, lwork)
@@ -559,7 +559,7 @@ FORTRAN MANUAL
 
   <A NAME="sorgqr"></A>
   <H2>sorgqr</H2>
-  Generates all or part of the orthogonal matrix Q froma QR factorization determined by SGEQRF.
+  
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.sorgqr( m, a, tau, lwork)
@@ -702,7 +702,7 @@ FORTRAN MANUAL
 
   <A NAME="sorgrq"></A>
   <H2>sorgrq</H2>
-  Generates all or part of the orthogonal matrix Q froman RQ factorization determined by SGERQF.
+  
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.sorgrq( m, a, tau, lwork)
@@ -779,7 +779,7 @@ FORTRAN MANUAL
 
   <A NAME="sorgtr"></A>
   <H2>sorgtr</H2>
-  Generates the orthogonal transformation matrix froma reduction to tridiagonal form determined by SSYTRD.
+  
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.sorgtr( uplo, a, tau, lwork)
@@ -1045,7 +1045,7 @@ FORTRAN MANUAL
 
   <A NAME="sormbr"></A>
   <H2>sormbr</H2>
-  Multiplies a general matrix by one of the orthogonaltransformation  matrices from a reduction to bidiagonal formdetermined by SGEBRD.
+  
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.sormbr( vect, side, trans, m, k, a, tau, c, lwork)
@@ -1187,7 +1187,7 @@ FORTRAN MANUAL
 
   <A NAME="sormhr"></A>
   <H2>sormhr</H2>
-  Multiplies a general matrix by the orthogonal transformationmatrix from a reduction to Hessenberg form determined by SGEHRD.
+  
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.sormhr( side, trans, ilo, ihi, a, tau, c, lwork)
@@ -1405,7 +1405,7 @@ FORTRAN MANUAL
 
   <A NAME="sormlq"></A>
   <H2>sormlq</H2>
-  Multiplies a general matrix by the orthogonal matrixfrom an LQ factorization determined by SGELQF.
+  
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.sormlq( side, trans, a, tau, c, lwork)
@@ -1509,7 +1509,7 @@ FORTRAN MANUAL
 
   <A NAME="sormql"></A>
   <H2>sormql</H2>
-  Multiplies a general matrix by the orthogonal matrixfrom a QL factorization determined by SGEQLF.
+  
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.sormql( side, trans, m, a, tau, c, lwork)
@@ -1613,7 +1613,7 @@ FORTRAN MANUAL
 
   <A NAME="sormqr"></A>
   <H2>sormqr</H2>
-  Multiplies a general matrix by the orthogonal matrixfrom a QR factorization determined by SGEQRF.
+  
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.sormqr( side, trans, m, a, tau, c, lwork)
@@ -1813,7 +1813,7 @@ FORTRAN MANUAL
 
   <A NAME="sormr3"></A>
   <H2>sormr3</H2>
-  Multiples a general matrix by the orthogonal matrixfrom an RZ factorization determined by STZRZF.
+  
   <PRE>
 USAGE:
   info, c = NumRu::Lapack.sormr3( side, trans, l, a, tau, c)
@@ -1934,7 +1934,7 @@ FORTRAN MANUAL
 
   <A NAME="sormrq"></A>
   <H2>sormrq</H2>
-  Multiplies a general matrix by the orthogonal matrixfrom an RQ factorization determined by SGERQF.
+  
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.sormrq( side, trans, a, tau, c, lwork)
@@ -2038,7 +2038,7 @@ FORTRAN MANUAL
 
   <A NAME="sormrz"></A>
   <H2>sormrz</H2>
-  Multiples a general matrix by the orthogonal matrixfrom an RZ factorization determined by STZRZF.
+  
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.sormrz( side, trans, l, a, tau, c, lwork)
@@ -2153,7 +2153,7 @@ FORTRAN MANUAL
 
   <A NAME="sormtr"></A>
   <H2>sormtr</H2>
-  Multiplies a general matrix by the orthogonaltransformation matrix from a reduction to tridiagonal formdetermined by SSYTRD.
+  
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.sormtr( side, uplo, trans, a, tau, c, lwork)

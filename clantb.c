@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID clantb_(real *__out__, char *norm, char *uplo, char *diag, integer *n, integer *k, complex *ab, integer *ldab, real *work);
 static VALUE
 rb_clantb(int argc, VALUE *argv, VALUE self){
   VALUE rb_norm;
@@ -49,7 +48,7 @@ rb_clantb(int argc, VALUE *argv, VALUE self){
   lwork = lsame_(&norm,"I") ? n : 0;
   work = ALLOC_N(real, (MAX(1,lwork)));
 
-  clantb_(&__out__, &norm, &uplo, &diag, &n, &k, ab, &ldab, work);
+  __out__ = clantb_(&norm, &uplo, &diag, &n, &k, ab, &ldab, work);
 
   free(work);
   rb___out__ = rb_float_new((double)__out__);

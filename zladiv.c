@@ -1,5 +1,6 @@
 #include "rb_lapack.h"
 
+extern VOID zladiv_(doublecomplex *__out__, doublecomplex *x, doublecomplex *y);
 static VALUE
 rb_zladiv(int argc, VALUE *argv, VALUE self){
   VALUE rb_x;

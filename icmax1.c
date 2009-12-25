@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID icmax1_(integer *__out__, integer *n, complex *cx, integer *incx);
 static VALUE
 rb_icmax1(int argc, VALUE *argv, VALUE self){
   VALUE rb_cx;
@@ -31,7 +30,7 @@ rb_icmax1(int argc, VALUE *argv, VALUE self){
     rb_cx = na_change_type(rb_cx, NA_SCOMPLEX);
   cx = NA_PTR_TYPE(rb_cx, complex*);
 
-  icmax1_(&__out__, &n, cx, &incx);
+  __out__ = icmax1_(&n, cx, &incx);
 
   rb___out__ = INT2NUM(__out__);
   return rb___out__;

@@ -6,26 +6,27 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for symmetric, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#dspcon">dspcon</A> : Estimates the reciprocal of the condition number of areal symmetric indefinitematrix in packed storage, using the factorization computedby DSPTRF.</LI>
-      <LI><A HREF="#dspev">dspev</A> : Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric matrix in packed storage.</LI>
-      <LI><A HREF="#dspevd">dspevd</A> : Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric matrix in packed storage.  If eigenvectors are desired,it uses a divide and conquer algorithm.</LI>
-      <LI><A HREF="#dspevx">dspevx</A> : Computes selected eigenvalues and eigenvectors of asymmetric matrix in packed storage.</LI>
-      <LI><A HREF="#dspgst">dspgst</A> : Reduces a symmetric-definite generalized eigenproblemAx= lambda Bx,  ABx= lambda x,  or BAx= lambda x, to standardform,  where A and B are held in packed storage, and B has beenfactorized by DPPTRF.</LI>
-      <LI><A HREF="#dspgv">dspgv</A> : Computes all eigenvalues and eigenvectors of  a generalizedsymmetric-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.</LI>
-      <LI><A HREF="#dspgvd">dspgvd</A> : Computes all eigenvalues and eigenvectors of  a generalizedsymmetric-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.If eigenvectors are desired, it uses a divide and conquer algorithm.</LI>
-      <LI><A HREF="#dspgvx">dspgvx</A> : Computes selected eigenvalues, and optionally, eigenvectors ofa generalized symmetric-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.</LI>
-      <LI><A HREF="#dsprfs">dsprfs</A> : Improves the computed solution to a realsymmetric indefinite system of linear equationsAX=B, where A is held in packed storage, and provides forwardand backward error bounds for the solution.</LI>
-      <LI><A HREF="#dspsv">dspsv</A> : Solves a real symmetric indefinite system of linear equations AX=B,where A is held in packed storage.</LI>
-      <LI><A HREF="#dspsvx">dspsvx</A> : Solves a real symmetricindefinite system of linear equations AX=B, where A is heldin packed storage, and provides an estimate of the conditionnumber and error bounds on the solution.</LI>
-      <LI><A HREF="#dsptrd">dsptrd</A> : Reduces a symmetric matrix in packed storage to realsymmetric tridiagonal form by an orthogonal similaritytransformation.</LI>
-      <LI><A HREF="#dsptrf">dsptrf</A> : Computes the factorization of a realsymmetric-indefinite matrix in packed storage,using the diagonal pivoting method.</LI>
-      <LI><A HREF="#dsptri">dsptri</A> : Computes the inverse of a real symmetricindefinite matrix in packed storage, using the factorizationcomputed by DSPTRF.</LI>
-      <LI><A HREF="#dsptrs">dsptrs</A> : Solves a real symmetricindefinite system of linear equations AX=B, where A is heldin packed storage, using the factorization computedby DSPTRF.</LI>
+      <LI><A HREF="#dspcon">dspcon</A> : </LI>
+      <LI><A HREF="#dspev">dspev</A> : </LI>
+      <LI><A HREF="#dspevd">dspevd</A> : </LI>
+      <LI><A HREF="#dspevx">dspevx</A> : </LI>
+      <LI><A HREF="#dspgst">dspgst</A> : </LI>
+      <LI><A HREF="#dspgv">dspgv</A> : </LI>
+      <LI><A HREF="#dspgvd">dspgvd</A> : </LI>
+      <LI><A HREF="#dspgvx">dspgvx</A> : </LI>
+      <LI><A HREF="#dsposv">dsposv</A> : </LI>
+      <LI><A HREF="#dsprfs">dsprfs</A> : </LI>
+      <LI><A HREF="#dspsv">dspsv</A> : </LI>
+      <LI><A HREF="#dspsvx">dspsvx</A> : </LI>
+      <LI><A HREF="#dsptrd">dsptrd</A> : </LI>
+      <LI><A HREF="#dsptrf">dsptrf</A> : </LI>
+      <LI><A HREF="#dsptri">dsptri</A> : </LI>
+      <LI><A HREF="#dsptrs">dsptrs</A> : </LI>
     </UL>
 
   <A NAME="dspcon"></A>
   <H2>dspcon</H2>
-  Estimates the reciprocal of the condition number of areal symmetric indefinitematrix in packed storage, using the factorization computedby DSPTRF.
+  
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.dspcon( uplo, ap, ipiv, anorm)
@@ -94,7 +95,7 @@ FORTRAN MANUAL
 
   <A NAME="dspev"></A>
   <H2>dspev</H2>
-  Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric matrix in packed storage.
+  
   <PRE>
 USAGE:
   w, z, info, ap = NumRu::Lapack.dspev( jobz, uplo, ap)
@@ -172,7 +173,7 @@ FORTRAN MANUAL
 
   <A NAME="dspevd"></A>
   <H2>dspevd</H2>
-  Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric matrix in packed storage.  If eigenvectors are desired,it uses a divide and conquer algorithm.
+  
   <PRE>
 USAGE:
   w, z, work, iwork, info, ap = NumRu::Lapack.dspevd( jobz, uplo, ap, lwork, liwork)
@@ -287,7 +288,7 @@ FORTRAN MANUAL
 
   <A NAME="dspevx"></A>
   <H2>dspevx</H2>
-  Computes selected eigenvalues and eigenvectors of asymmetric matrix in packed storage.
+  
   <PRE>
 USAGE:
   m, w, z, ifail, info, ap = NumRu::Lapack.dspevx( jobz, range, uplo, ap, vl, vu, il, iu, abstol)
@@ -427,7 +428,7 @@ FORTRAN MANUAL
 
   <A NAME="dspgst"></A>
   <H2>dspgst</H2>
-  Reduces a symmetric-definite generalized eigenproblemAx= lambda Bx,  ABx= lambda x,  or BAx= lambda x, to standardform,  where A and B are held in packed storage, and B has beenfactorized by DPPTRF.
+  
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.dspgst( itype, uplo, n, ap, bp)
@@ -497,7 +498,7 @@ FORTRAN MANUAL
 
   <A NAME="dspgv"></A>
   <H2>dspgv</H2>
-  Computes all eigenvalues and eigenvectors of  a generalizedsymmetric-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.
+  
   <PRE>
 USAGE:
   w, z, info, ap, bp = NumRu::Lapack.dspgv( itype, jobz, uplo, ap, bp)
@@ -609,7 +610,7 @@ FORTRAN MANUAL
 
   <A NAME="dspgvd"></A>
   <H2>dspgvd</H2>
-  Computes all eigenvalues and eigenvectors of  a generalizedsymmetric-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.If eigenvectors are desired, it uses a divide and conquer algorithm.
+  
   <PRE>
 USAGE:
   w, z, work, iwork, info, ap, bp = NumRu::Lapack.dspgvd( itype, jobz, uplo, ap, bp, lwork, liwork)
@@ -749,7 +750,7 @@ FORTRAN MANUAL
 
   <A NAME="dspgvx"></A>
   <H2>dspgvx</H2>
-  Computes selected eigenvalues, and optionally, eigenvectors ofa generalized symmetric-definite generalized eigenproblem,  Ax= lambdaBx,  ABx= lambda x,  or BAx= lambda x, where A and B are in packedstorage.
+  
   <PRE>
 USAGE:
   m, w, z, ifail, info, ap, bp = NumRu::Lapack.dspgvx( itype, jobz, range, uplo, ap, bp, vl, vu, il, iu, abstol, ldz)
@@ -930,9 +931,140 @@ FORTRAN MANUAL
     </PRE>
     <A HREF="#top">go to the page top</A>
 
+  <A NAME="dsposv"></A>
+  <H2>dsposv</H2>
+  
+  <PRE>
+USAGE:
+  x, iter, info, a = NumRu::Lapack.dsposv( uplo, a, b)
+    or
+  NumRu::Lapack.dsposv  # print help
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSPOSV( UPLO, N, NRHS, A, LDA, B, LDB, X, LDX, WORK, SWORK, ITER, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSPOSV computes the solution to a real system of linear equations
+*     A * X = B,
+*  where A is an N-by-N symmetric positive definite matrix and X and B
+*  are N-by-NRHS matrices.
+*
+*  DSPOSV first attempts to factorize the matrix in SINGLE PRECISION
+*  and use this factorization within an iterative refinement procedure
+*  to produce a solution with DOUBLE PRECISION normwise backward error
+*  quality (see below). If the approach fails the method switches to a
+*  DOUBLE PRECISION factorization and solve.
+*
+*  The iterative refinement is not going to be a winning strategy if
+*  the ratio SINGLE PRECISION performance over DOUBLE PRECISION
+*  performance is too small. A reasonable strategy should take the
+*  number of right-hand sides and the size of the matrix into account.
+*  This might be done with a call to ILAENV in the future. Up to now, we
+*  always try iterative refinement.
+*
+*  The iterative refinement process is stopped if
+*      ITER > ITERMAX
+*  or for all the RHS we have:
+*      RNRM < SQRT(N)*XNRM*ANRM*EPS*BWDMAX
+*  where
+*      o ITER is the number of the current iteration in the iterative
+*        refinement process
+*      o RNRM is the infinity-norm of the residual
+*      o XNRM is the infinity-norm of the solution
+*      o ANRM is the infinity-operator-norm of the matrix A
+*      o EPS is the machine epsilon returned by DLAMCH('Epsilon')
+*  The value ITERMAX and BWDMAX are fixed to 30 and 1.0D+00
+*  respectively.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The number of linear equations, i.e., the order of the
+*          matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  A       (input or input/ouptut) DOUBLE PRECISION array,
+*          dimension (LDA,N)
+*          On entry, the symmetric matrix A.  If UPLO = 'U', the leading
+*          N-by-N upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading N-by-N lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*          On exit, if iterative refinement has been successfully used
+*          (INFO.EQ.0 and ITER.GE.0, see description below), then A is
+*          unchanged, if double precision factorization has been used
+*          (INFO.EQ.0 and ITER.LT.0, see description below), then the
+*          array A contains the factor U or L from the Cholesky
+*          factorization A = U**T*U or A = L*L**T.
+*
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input) DOUBLE PRECISION array, dimension (LDB,NRHS)
+*          The N-by-NRHS right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (output) DOUBLE PRECISION array, dimension (LDX,NRHS)
+*          If INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (N*NRHS)
+*          This array is used to hold the residual vectors.
+*
+*  SWORK   (workspace) REAL array, dimension (N*(N+NRHS))
+*          This array is used to use the single precision matrix and the
+*          right-hand sides or solutions in single precision.
+*
+*  ITER    (output) INTEGER
+*          < 0: iterative refinement has failed, double precision
+*               factorization has been performed
+*               -1 : the routine fell back to full precision for
+*                    implementation- or machine-specific reasons
+*               -2 : narrowing the precision induced an overflow,
+*                    the routine fell back to full precision
+*               -3 : failure of SPOTRF
+*               -31: stop the iterative refinement after the 30th
+*                    iterations
+*          > 0: iterative refinement has been sucessfully used.
+*               Returns the number of iterations
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the leading minor of order i of (DOUBLE
+*                PRECISION) A is not positive definite, so the
+*                factorization could not be completed, and the solution
+*                has not been computed.
+*
+*  =========
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
   <A NAME="dsprfs"></A>
   <H2>dsprfs</H2>
-  Improves the computed solution to a realsymmetric indefinite system of linear equationsAX=B, where A is held in packed storage, and provides forwardand backward error bounds for the solution.
+  
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.dsprfs( uplo, ap, afp, ipiv, b, x)
@@ -1035,7 +1167,7 @@ FORTRAN MANUAL
 
   <A NAME="dspsv"></A>
   <H2>dspsv</H2>
-  Solves a real symmetric indefinite system of linear equations AX=B,where A is held in packed storage.
+  
   <PRE>
 USAGE:
   ipiv, info, ap, b = NumRu::Lapack.dspsv( uplo, ap, b)
@@ -1154,7 +1286,7 @@ FORTRAN MANUAL
 
   <A NAME="dspsvx"></A>
   <H2>dspsvx</H2>
-  Solves a real symmetricindefinite system of linear equations AX=B, where A is heldin packed storage, and provides an estimate of the conditionnumber and error bounds on the solution.
+  
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, afp, ipiv = NumRu::Lapack.dspsvx( fact, uplo, ap, afp, ipiv, b)
@@ -1344,7 +1476,7 @@ FORTRAN MANUAL
 
   <A NAME="dsptrd"></A>
   <H2>dsptrd</H2>
-  Reduces a symmetric matrix in packed storage to realsymmetric tridiagonal form by an orthogonal similaritytransformation.
+  
   <PRE>
 USAGE:
   d, e, tau, info, ap = NumRu::Lapack.dsptrd( uplo, ap)
@@ -1445,7 +1577,7 @@ FORTRAN MANUAL
 
   <A NAME="dsptrf"></A>
   <H2>dsptrf</H2>
-  Computes the factorization of a realsymmetric-indefinite matrix in packed storage,using the diagonal pivoting method.
+  
   <PRE>
 USAGE:
   ipiv, info, ap = NumRu::Lapack.dsptrf( uplo, ap)
@@ -1558,7 +1690,7 @@ FORTRAN MANUAL
 
   <A NAME="dsptri"></A>
   <H2>dsptri</H2>
-  Computes the inverse of a real symmetricindefinite matrix in packed storage, using the factorizationcomputed by DSPTRF.
+  
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.dsptri( uplo, ap, ipiv)
@@ -1623,7 +1755,7 @@ FORTRAN MANUAL
 
   <A NAME="dsptrs"></A>
   <H2>dsptrs</H2>
-  Solves a real symmetricindefinite system of linear equations AX=B, where A is heldin packed storage, using the factorization computedby DSPTRF.
+  
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.dsptrs( uplo, ap, ipiv, b)

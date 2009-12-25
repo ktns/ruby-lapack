@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID zlantr_(doublereal *__out__, char *norm, char *uplo, char *diag, integer *m, integer *n, doublecomplex *a, integer *lda, doublereal *work);
 static VALUE
 rb_zlantr(int argc, VALUE *argv, VALUE self){
   VALUE rb_norm;
@@ -49,7 +48,7 @@ rb_zlantr(int argc, VALUE *argv, VALUE self){
   lwork = lsame_(&norm,"I") ? m : 0;
   work = ALLOC_N(doublereal, (MAX(1,lwork)));
 
-  zlantr_(&__out__, &norm, &uplo, &diag, &m, &n, a, &lda, work);
+  __out__ = zlantr_(&norm, &uplo, &diag, &m, &n, a, &lda, work);
 
   free(work);
   rb___out__ = rb_float_new((double)__out__);

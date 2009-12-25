@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID slangt_(real *__out__, char *norm, integer *n, real *dl, real *d, real *du);
 static VALUE
 rb_slangt(int argc, VALUE *argv, VALUE self){
   VALUE rb_norm;
@@ -55,7 +54,7 @@ rb_slangt(int argc, VALUE *argv, VALUE self){
     rb_du = na_change_type(rb_du, NA_SFLOAT);
   du = NA_PTR_TYPE(rb_du, real*);
 
-  slangt_(&__out__, &norm, &n, dl, d, du);
+  __out__ = slangt_(&norm, &n, dl, d, du);
 
   rb___out__ = rb_float_new((double)__out__);
   return rb___out__;

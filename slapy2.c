@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID slapy2_(real *__out__, real *x, real *y);
 static VALUE
 rb_slapy2(int argc, VALUE *argv, VALUE self){
   VALUE rb_x;
@@ -23,7 +22,7 @@ rb_slapy2(int argc, VALUE *argv, VALUE self){
   x = (real)NUM2DBL(rb_x);
   y = (real)NUM2DBL(rb_y);
 
-  slapy2_(&__out__, &x, &y);
+  __out__ = slapy2_(&x, &y);
 
   rb___out__ = rb_float_new((double)__out__);
   return rb___out__;

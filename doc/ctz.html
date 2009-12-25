@@ -6,13 +6,13 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for trapezoidal matrix</H1>
     <UL>
-      <LI><A HREF="#ctzrqf">ctzrqf</A> : Computes an RQ factorization of an upper trapezoidal matrix.</LI>
-      <LI><A HREF="#ctzrzf">ctzrzf</A> : Computes an RZ factorization of an upper trapezoidal matrix(blocked version of CTZRQF).</LI>
+      <LI><A HREF="#ctzrqf">ctzrqf</A> : </LI>
+      <LI><A HREF="#ctzrzf">ctzrzf</A> : </LI>
     </UL>
 
   <A NAME="ctzrqf"></A>
   <H2>ctzrqf</H2>
-  Computes an RQ factorization of an upper trapezoidal matrix.
+  
   <PRE>
 USAGE:
   tau, info, a = NumRu::Lapack.ctzrqf( a)
@@ -105,7 +105,7 @@ FORTRAN MANUAL
 
   <A NAME="ctzrzf"></A>
   <H2>ctzrzf</H2>
-  Computes an RZ factorization of an upper trapezoidal matrix(blocked version of CTZRQF).
+  
   <PRE>
 USAGE:
   tau, work, info, a = NumRu::Lapack.ctzrzf( a, lwork)

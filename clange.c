@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID clange_(real *__out__, char *norm, integer *m, integer *n, complex *a, integer *lda, real *work);
 static VALUE
 rb_clange(int argc, VALUE *argv, VALUE self){
   VALUE rb_norm;
@@ -41,7 +40,7 @@ rb_clange(int argc, VALUE *argv, VALUE self){
   lwork = lsame_(&norm,"I") ? m : 0;
   work = ALLOC_N(real, (MAX(1,lwork)));
 
-  clange_(&__out__, &norm, &m, &n, a, &lda, work);
+  __out__ = clange_(&norm, &m, &n, a, &lda, work);
 
   free(work);
   rb___out__ = rb_float_new((double)__out__);

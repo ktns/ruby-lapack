@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID disnan_(logical *__out__, doublereal *din);
 static VALUE
 rb_disnan(int argc, VALUE *argv, VALUE self){
   VALUE rb_din;
@@ -19,7 +18,7 @@ rb_disnan(int argc, VALUE *argv, VALUE self){
 
   din = NUM2DBL(rb_din);
 
-  disnan_(&__out__, &din);
+  __out__ = disnan_(&din);
 
   rb___out__ = __out__ ? Qtrue : Qfalse;
   return rb___out__;

@@ -6,19 +6,19 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for symmetric or Hermitian positive definite, packed storage matrix</H1>
     <UL>
-      <LI><A HREF="#dppcon">dppcon</A> : Estimates the reciprocal of the condition number of asymmetric positive definite matrix in packed storage,using the Cholesky factorization computed by DPPTRF.</LI>
-      <LI><A HREF="#dppequ">dppequ</A> : Computes row and column scalings to equilibrate a symmetricpositive definite matrix in packed storage and reduce its conditionnumber.</LI>
-      <LI><A HREF="#dpprfs">dpprfs</A> : Improves the computed solution to a symmetric positivedefinite system of linear equations AX=B, where A is held inpacked storage, and provides forward and backward error boundsfor the solution.</LI>
-      <LI><A HREF="#dppsv">dppsv</A> : Solves a symmetric positive definite system of linearequations AX=B, where A is held in packed storage.</LI>
-      <LI><A HREF="#dppsvx">dppsvx</A> : Solves a symmetric positive definite system of linearequations AX=B, where A is held in packed storage, and providesan estimate of the condition number and error bounds on thesolution.</LI>
-      <LI><A HREF="#dpptrf">dpptrf</A> : Computes the Cholesky factorization of a symmetricpositive definite matrix in packed storage.</LI>
-      <LI><A HREF="#dpptri">dpptri</A> : Computes the inverse of a symmetric positive definitematrix in packed storage, using the Cholesky factorization computedby DPPTRF.</LI>
-      <LI><A HREF="#dpptrs">dpptrs</A> : Solves a symmetric positive definite system of linearequations AX=B, where A is held in packed storage, using theCholesky factorization computed by DPPTRF.</LI>
+      <LI><A HREF="#dppcon">dppcon</A> : </LI>
+      <LI><A HREF="#dppequ">dppequ</A> : </LI>
+      <LI><A HREF="#dpprfs">dpprfs</A> : </LI>
+      <LI><A HREF="#dppsv">dppsv</A> : </LI>
+      <LI><A HREF="#dppsvx">dppsvx</A> : </LI>
+      <LI><A HREF="#dpptrf">dpptrf</A> : </LI>
+      <LI><A HREF="#dpptri">dpptri</A> : </LI>
+      <LI><A HREF="#dpptrs">dpptrs</A> : </LI>
     </UL>
 
   <A NAME="dppcon"></A>
   <H2>dppcon</H2>
-  Estimates the reciprocal of the condition number of asymmetric positive definite matrix in packed storage,using the Cholesky factorization computed by DPPTRF.
+  
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.dppcon( uplo, ap, anorm)
@@ -85,7 +85,7 @@ FORTRAN MANUAL
 
   <A NAME="dppequ"></A>
   <H2>dppequ</H2>
-  Computes row and column scalings to equilibrate a symmetricpositive definite matrix in packed storage and reduce its conditionnumber.
+  
   <PRE>
 USAGE:
   s, scond, amax, info = NumRu::Lapack.dppequ( uplo, ap)
@@ -154,7 +154,7 @@ FORTRAN MANUAL
 
   <A NAME="dpprfs"></A>
   <H2>dpprfs</H2>
-  Improves the computed solution to a symmetric positivedefinite system of linear equations AX=B, where A is held inpacked storage, and provides forward and backward error boundsfor the solution.
+  
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.dpprfs( uplo, ap, afp, b, x)
@@ -252,7 +252,7 @@ FORTRAN MANUAL
 
   <A NAME="dppsv"></A>
   <H2>dppsv</H2>
-  Solves a symmetric positive definite system of linearequations AX=B, where A is held in packed storage.
+  
   <PRE>
 USAGE:
   info, ap, b = NumRu::Lapack.dppsv( uplo, n, ap, b)
@@ -357,7 +357,7 @@ FORTRAN MANUAL
 
   <A NAME="dppsvx"></A>
   <H2>dppsvx</H2>
-  Solves a symmetric positive definite system of linearequations AX=B, where A is held in packed storage, and providesan estimate of the condition number and error bounds on thesolution.
+  
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, ap, afp, equed, s, b = NumRu::Lapack.dppsvx( fact, uplo, ap, afp, equed, s, b)
@@ -578,7 +578,7 @@ FORTRAN MANUAL
 
   <A NAME="dpptrf"></A>
   <H2>dpptrf</H2>
-  Computes the Cholesky factorization of a symmetricpositive definite matrix in packed storage.
+  
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.dpptrf( uplo, n, ap)
@@ -657,7 +657,7 @@ FORTRAN MANUAL
 
   <A NAME="dpptri"></A>
   <H2>dpptri</H2>
-  Computes the inverse of a symmetric positive definitematrix in packed storage, using the Cholesky factorization computedby DPPTRF.
+  
   <PRE>
 USAGE:
   info, ap = NumRu::Lapack.dpptri( uplo, n, ap)
@@ -713,7 +713,7 @@ FORTRAN MANUAL
 
   <A NAME="dpptrs"></A>
   <H2>dpptrs</H2>
-  Solves a symmetric positive definite system of linearequations AX=B, where A is held in packed storage, using theCholesky factorization computed by DPPTRF.
+  
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.dpptrs( uplo, n, ap, b)

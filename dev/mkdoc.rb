@@ -66,7 +66,7 @@ prefix = "../doc"
 
 path = ARGV[0] || raise("Usage: ruby #$0 path_to_document_html")
 desc = Hash.new
-%w(single double complex complex16).each{|tn|
+%w(s d c z ds zc).each{|tn|
   fname =  File.join(path, tn+".html")
   desc.update parse_html(fname)
 }

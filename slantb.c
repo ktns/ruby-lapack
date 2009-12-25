@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID slantb_(real *__out__, char *norm, char *uplo, char *diag, integer *n, integer *k, real *ab, integer *ldab, real *work);
 static VALUE
 rb_slantb(int argc, VALUE *argv, VALUE self){
   VALUE rb_norm;
@@ -49,7 +48,7 @@ rb_slantb(int argc, VALUE *argv, VALUE self){
   lwork = lsame_(&norm,"I") ? n : 0;
   work = ALLOC_N(real, (MAX(1,lwork)));
 
-  slantb_(&__out__, &norm, &uplo, &diag, &n, &k, ab, &ldab, work);
+  __out__ = slantb_(&norm, &uplo, &diag, &n, &k, ab, &ldab, work);
 
   free(work);
   rb___out__ = rb_float_new((double)__out__);

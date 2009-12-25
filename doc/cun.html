@@ -8,28 +8,28 @@
     <UL>
       <LI><A HREF="#cung2l">cung2l</A> : </LI>
       <LI><A HREF="#cung2r">cung2r</A> : </LI>
-      <LI><A HREF="#cungbr">cungbr</A> : Generates the unitary transformation matrices froma reduction to bidiagonal form determined by CGEBRD.</LI>
-      <LI><A HREF="#cunghr">cunghr</A> : Generates the unitary transformation matrix froma reduction to Hessenberg form determined by CGEHRD.</LI>
+      <LI><A HREF="#cungbr">cungbr</A> : </LI>
+      <LI><A HREF="#cunghr">cunghr</A> : </LI>
       <LI><A HREF="#cungl2">cungl2</A> : </LI>
-      <LI><A HREF="#cunglq">cunglq</A> : Generates all or part of the unitary matrix Q froman LQ factorization determined by CGELQF.</LI>
-      <LI><A HREF="#cungql">cungql</A> : Generates all or part of the unitary matrix Q froma QL factorization determined by CGEQLF.</LI>
-      <LI><A HREF="#cungqr">cungqr</A> : Generates all or part of the unitary matrix Q froma QR factorization determined by CGEQRF.</LI>
+      <LI><A HREF="#cunglq">cunglq</A> : </LI>
+      <LI><A HREF="#cungql">cungql</A> : </LI>
+      <LI><A HREF="#cungqr">cungqr</A> : </LI>
       <LI><A HREF="#cungr2">cungr2</A> : </LI>
-      <LI><A HREF="#cungrq">cungrq</A> : Generates all or part of the unitary matrix Q froman RQ factorization determined by CGERQF.</LI>
-      <LI><A HREF="#cungtr">cungtr</A> : Generates the unitary transformation matrix froma reduction to tridiagonal form determined by CHETRD.</LI>
+      <LI><A HREF="#cungrq">cungrq</A> : </LI>
+      <LI><A HREF="#cungtr">cungtr</A> : </LI>
       <LI><A HREF="#cunm2l">cunm2l</A> : </LI>
       <LI><A HREF="#cunm2r">cunm2r</A> : </LI>
-      <LI><A HREF="#cunmbr">cunmbr</A> : Multiplies a general matrix by one of the unitarytransformation matrices from a reduction to bidiagonal formdetermined by CGEBRD.</LI>
-      <LI><A HREF="#cunmhr">cunmhr</A> : Multiplies a general matrix by the unitary transformationmatrix from a reduction to Hessenberg form determined by CGEHRD.</LI>
+      <LI><A HREF="#cunmbr">cunmbr</A> : </LI>
+      <LI><A HREF="#cunmhr">cunmhr</A> : </LI>
       <LI><A HREF="#cunml2">cunml2</A> : </LI>
-      <LI><A HREF="#cunmlq">cunmlq</A> : Multiplies a general matrix by the unitary matrixfrom an LQ factorization determined by CGELQF.</LI>
-      <LI><A HREF="#cunmql">cunmql</A> : Multiplies a general matrix by the unitary matrixfrom a QL factorization determined by CGEQLF.</LI>
-      <LI><A HREF="#cunmqr">cunmqr</A> : Multiplies a general matrix by the unitary matrixfrom a QR factorization determined by CGEQRF.</LI>
+      <LI><A HREF="#cunmlq">cunmlq</A> : </LI>
+      <LI><A HREF="#cunmql">cunmql</A> : </LI>
+      <LI><A HREF="#cunmqr">cunmqr</A> : </LI>
       <LI><A HREF="#cunmr2">cunmr2</A> : </LI>
-      <LI><A HREF="#cunmr3">cunmr3</A> : Multiples a general matrix by the unitary matrixfrom an RZ factorization determined by CTZRZF.</LI>
-      <LI><A HREF="#cunmrq">cunmrq</A> : Multiplies a general matrix by the unitary matrixfrom an RQ factorization determined by CGERQF.</LI>
-      <LI><A HREF="#cunmrz">cunmrz</A> : Multiples a general matrix by the unitary matrixfrom an RZ factorization determined by CTZRZF.</LI>
-      <LI><A HREF="#cunmtr">cunmtr</A> : Multiplies a general matrix by the unitarytransformation matrix from a reduction to tridiagonal formdetermined by CHETRD.</LI>
+      <LI><A HREF="#cunmr3">cunmr3</A> : </LI>
+      <LI><A HREF="#cunmrq">cunmrq</A> : </LI>
+      <LI><A HREF="#cunmrz">cunmrz</A> : </LI>
+      <LI><A HREF="#cunmtr">cunmtr</A> : </LI>
     </UL>
 
   <A NAME="cung2l"></A>
@@ -166,7 +166,7 @@ FORTRAN MANUAL
 
   <A NAME="cungbr"></A>
   <H2>cungbr</H2>
-  Generates the unitary transformation matrices froma reduction to bidiagonal form determined by CGEBRD.
+  
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.cungbr( vect, m, k, a, tau, lwork)
@@ -268,7 +268,7 @@ FORTRAN MANUAL
 
   <A NAME="cunghr"></A>
   <H2>cunghr</H2>
-  Generates the unitary transformation matrix froma reduction to Hessenberg form determined by CGEHRD.
+  
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.cunghr( ilo, ihi, a, tau, lwork)
@@ -406,7 +406,7 @@ FORTRAN MANUAL
 
   <A NAME="cunglq"></A>
   <H2>cunglq</H2>
-  Generates all or part of the unitary matrix Q froman LQ factorization determined by CGELQF.
+  
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.cunglq( m, a, tau, lwork)
@@ -482,7 +482,7 @@ FORTRAN MANUAL
 
   <A NAME="cungql"></A>
   <H2>cungql</H2>
-  Generates all or part of the unitary matrix Q froma QL factorization determined by CGEQLF.
+  
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.cungql( m, a, tau, lwork)
@@ -559,7 +559,7 @@ FORTRAN MANUAL
 
   <A NAME="cungqr"></A>
   <H2>cungqr</H2>
-  Generates all or part of the unitary matrix Q froma QR factorization determined by CGEQRF.
+  
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.cungqr( m, a, tau, lwork)
@@ -702,7 +702,7 @@ FORTRAN MANUAL
 
   <A NAME="cungrq"></A>
   <H2>cungrq</H2>
-  Generates all or part of the unitary matrix Q froman RQ factorization determined by CGERQF.
+  
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.cungrq( m, a, tau, lwork)
@@ -779,7 +779,7 @@ FORTRAN MANUAL
 
   <A NAME="cungtr"></A>
   <H2>cungtr</H2>
-  Generates the unitary transformation matrix froma reduction to tridiagonal form determined by CHETRD.
+  
   <PRE>
 USAGE:
   work, info, a = NumRu::Lapack.cungtr( uplo, a, tau, lwork)
@@ -1045,7 +1045,7 @@ FORTRAN MANUAL
 
   <A NAME="cunmbr"></A>
   <H2>cunmbr</H2>
-  Multiplies a general matrix by one of the unitarytransformation matrices from a reduction to bidiagonal formdetermined by CGEBRD.
+  
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.cunmbr( vect, side, trans, m, k, a, tau, c, lwork)
@@ -1188,7 +1188,7 @@ FORTRAN MANUAL
 
   <A NAME="cunmhr"></A>
   <H2>cunmhr</H2>
-  Multiplies a general matrix by the unitary transformationmatrix from a reduction to Hessenberg form determined by CGEHRD.
+  
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.cunmhr( side, trans, ilo, ihi, a, tau, c, lwork)
@@ -1406,7 +1406,7 @@ FORTRAN MANUAL
 
   <A NAME="cunmlq"></A>
   <H2>cunmlq</H2>
-  Multiplies a general matrix by the unitary matrixfrom an LQ factorization determined by CGELQF.
+  
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.cunmlq( side, trans, a, tau, c, lwork)
@@ -1510,7 +1510,7 @@ FORTRAN MANUAL
 
   <A NAME="cunmql"></A>
   <H2>cunmql</H2>
-  Multiplies a general matrix by the unitary matrixfrom a QL factorization determined by CGEQLF.
+  
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.cunmql( side, trans, m, a, tau, c, lwork)
@@ -1614,7 +1614,7 @@ FORTRAN MANUAL
 
   <A NAME="cunmqr"></A>
   <H2>cunmqr</H2>
-  Multiplies a general matrix by the unitary matrixfrom a QR factorization determined by CGEQRF.
+  
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.cunmqr( side, trans, m, a, tau, c, lwork)
@@ -1814,7 +1814,7 @@ FORTRAN MANUAL
 
   <A NAME="cunmr3"></A>
   <H2>cunmr3</H2>
-  Multiples a general matrix by the unitary matrixfrom an RZ factorization determined by CTZRZF.
+  
   <PRE>
 USAGE:
   info, c = NumRu::Lapack.cunmr3( side, trans, l, a, tau, c)
@@ -1936,7 +1936,7 @@ FORTRAN MANUAL
 
   <A NAME="cunmrq"></A>
   <H2>cunmrq</H2>
-  Multiplies a general matrix by the unitary matrixfrom an RQ factorization determined by CGERQF.
+  
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.cunmrq( side, trans, a, tau, c, lwork)
@@ -2040,7 +2040,7 @@ FORTRAN MANUAL
 
   <A NAME="cunmrz"></A>
   <H2>cunmrz</H2>
-  Multiples a general matrix by the unitary matrixfrom an RZ factorization determined by CTZRZF.
+  
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.cunmrz( side, trans, l, a, tau, c, lwork)
@@ -2155,7 +2155,7 @@ FORTRAN MANUAL
 
   <A NAME="cunmtr"></A>
   <H2>cunmtr</H2>
-  Multiplies a general matrix by the unitarytransformation matrix from a reduction to tridiagonal formdetermined by CHETRD.
+  
   <PRE>
 USAGE:
   work, info, c = NumRu::Lapack.cunmtr( side, uplo, trans, a, tau, c, lwork)

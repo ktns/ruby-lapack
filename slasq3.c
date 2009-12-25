@@ -16,6 +16,22 @@ rb_slasq3(int argc, VALUE *argv, VALUE self){
   real qmax; 
   VALUE rb_ieee;
   logical ieee; 
+  VALUE rb_ttype;
+  integer ttype; 
+  VALUE rb_dmin1;
+  real dmin1; 
+  VALUE rb_dmin2;
+  real dmin2; 
+  VALUE rb_dn;
+  real dn; 
+  VALUE rb_dn1;
+  real dn1; 
+  VALUE rb_dn2;
+  real dn2; 
+  VALUE rb_g;
+  real g; 
+  VALUE rb_tau;
+  real tau; 
   VALUE rb_dmin;
   real dmin; 
   VALUE rb_sigma;
@@ -29,11 +45,11 @@ rb_slasq3(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  dmin, sigma, nfail, iter, ndiv, desig = NumRu::Lapack.slasq3( i0, n0, z, pp, desig, qmax, ieee)\n    or\n  NumRu::Lapack.slasq3  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SLASQ3( I0, N0, Z, PP, DMIN, SIGMA, DESIG, QMAX, NFAIL, ITER, NDIV, IEEE )\n\n*  Purpose\n*  =======\n*\n*  SLASQ3 checks for deflation, computes a shift (TAU) and calls dqds.\n*  In case of failure it changes shifts, and tries again until output\n*  is positive.\n*\n\n*  Arguments\n*  =========\n*\n*  I0     (input) INTEGER\n*         First index.\n*\n*  N0     (input) INTEGER\n*         Last index.\n*\n*  Z      (input) REAL array, dimension ( 4*N )\n*         Z holds the qd array.\n*\n*  PP     (input) INTEGER\n*         PP=0 for ping, PP=1 for pong.\n*\n*  DMIN   (output) REAL\n*         Minimum value of d.\n*\n*  SIGMA  (output) REAL\n*         Sum of shifts used in current segment.\n*\n*  DESIG  (input/output) REAL\n*         Lower order part of SIGMA\n*\n*  QMAX   (input) REAL\n*         Maximum value of q.\n*\n*  NFAIL  (output) INTEGER\n*         Number of times shift was too big.\n*\n*  ITER   (output) INTEGER\n*         Number of iterations.\n*\n*  NDIV   (output) INTEGER\n*         Number of divisions.\n*\n*  TTYPE  (output) INTEGER\n*         Shift type.\n*\n*  IEEE   (input) LOGICAL\n*         Flag for IEEE or non IEEE arithmetic (passed to SLASQ5).\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  dmin, sigma, nfail, iter, ndiv, pp, desig, ttype, dmin1, dmin2, dn, dn1, dn2, g, tau = NumRu::Lapack.slasq3( i0, n0, z, pp, desig, qmax, ieee, ttype, dmin1, dmin2, dn, dn1, dn2, g, tau)\n    or\n  NumRu::Lapack.slasq3  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SLASQ3( I0, N0, Z, PP, DMIN, SIGMA, DESIG, QMAX, NFAIL, ITER, NDIV, IEEE, TTYPE, DMIN1, DMIN2, DN, DN1, DN2, G, TAU )\n\n*  Purpose\n*  =======\n*\n*  SLASQ3 checks for deflation, computes a shift (TAU) and calls dqds.\n*  In case of failure it changes shifts, and tries again until output\n*  is positive.\n*\n\n*  Arguments\n*  =========\n*\n*  I0     (input) INTEGER\n*         First index.\n*\n*  N0     (input) INTEGER\n*         Last index.\n*\n*  Z      (input) REAL array, dimension ( 4*N )\n*         Z holds the qd array.\n*\n*  PP     (input/output) INTEGER\n*         PP=0 for ping, PP=1 for pong.\n*         PP=2 indicates that flipping was applied to the Z array   \n*         and that the initial tests for deflation should not be \n*         performed.\n*\n*  DMIN   (output) REAL\n*         Minimum value of d.\n*\n*  SIGMA  (output) REAL\n*         Sum of shifts used in current segment.\n*\n*  DESIG  (input/output) REAL\n*         Lower order part of SIGMA\n*\n*  QMAX   (input) REAL\n*         Maximum value of q.\n*\n*  NFAIL  (output) INTEGER\n*         Number of times shift was too big.\n*\n*  ITER   (output) INTEGER\n*         Number of iterations.\n*\n*  NDIV   (output) INTEGER\n*         Number of divisions.\n*\n*  IEEE   (input) LOGICAL\n*         Flag for IEEE or non IEEE arithmetic (passed to SLASQ5).\n*\n*  TTYPE  (input/output) INTEGER\n*         Shift type.\n*\n*  DMIN1, DMIN2, DN, DN1, DN2, G, TAU (input/output) REAL\n*         These are passed as arguments in order to save their values\n*         between calls to SLASQ3.\n*\n\n*  =====================================================================\n*\n\n");
     return Qnil;
   }
-  if (argc != 7)
-    rb_raise(rb_eArgError,"wrong number of arguments (%d for 7)", argc);
+  if (argc != 15)
+    rb_raise(rb_eArgError,"wrong number of arguments (%d for 15)", argc);
   rb_i0 = argv[0];
   rb_n0 = argv[1];
   rb_z = argv[2];
@@ -41,6 +57,14 @@ rb_slasq3(int argc, VALUE *argv, VALUE self){
   rb_desig = argv[4];
   rb_qmax = argv[5];
   rb_ieee = argv[6];
+  rb_ttype = argv[7];
+  rb_dmin1 = argv[8];
+  rb_dmin2 = argv[9];
+  rb_dn = argv[10];
+  rb_dn1 = argv[11];
+  rb_dn2 = argv[12];
+  rb_g = argv[13];
+  rb_tau = argv[14];
 
   i0 = NUM2INT(rb_i0);
   n0 = NUM2INT(rb_n0);
@@ -48,6 +72,14 @@ rb_slasq3(int argc, VALUE *argv, VALUE self){
   desig = (real)NUM2DBL(rb_desig);
   qmax = (real)NUM2DBL(rb_qmax);
   ieee = (rb_ieee == Qtrue);
+  ttype = NUM2INT(rb_ttype);
+  dmin1 = (real)NUM2DBL(rb_dmin1);
+  dmin2 = (real)NUM2DBL(rb_dmin2);
+  dn = (real)NUM2DBL(rb_dn);
+  dn1 = (real)NUM2DBL(rb_dn1);
+  dn2 = (real)NUM2DBL(rb_dn2);
+  g = (real)NUM2DBL(rb_g);
+  tau = (real)NUM2DBL(rb_tau);
   if (!NA_IsNArray(rb_z))
     rb_raise(rb_eArgError, "z (3th argument) must be NArray");
   if (NA_RANK(rb_z) != 1)
@@ -58,15 +90,24 @@ rb_slasq3(int argc, VALUE *argv, VALUE self){
     rb_z = na_change_type(rb_z, NA_SFLOAT);
   z = NA_PTR_TYPE(rb_z, real*);
 
-  slasq3_(&i0, &n0, z, &pp, &dmin, &sigma, &desig, &qmax, &nfail, &iter, &ndiv, &ieee);
+  slasq3_(&i0, &n0, z, &pp, &dmin, &sigma, &desig, &qmax, &nfail, &iter, &ndiv, &ieee, &ttype, &dmin1, &dmin2, &dn, &dn1, &dn2, &g, &tau);
 
   rb_dmin = rb_float_new((double)dmin);
   rb_sigma = rb_float_new((double)sigma);
   rb_nfail = INT2NUM(nfail);
   rb_iter = INT2NUM(iter);
   rb_ndiv = INT2NUM(ndiv);
+  rb_pp = INT2NUM(pp);
   rb_desig = rb_float_new((double)desig);
-  return rb_ary_new3(6, rb_dmin, rb_sigma, rb_nfail, rb_iter, rb_ndiv, rb_desig);
+  rb_ttype = INT2NUM(ttype);
+  rb_dmin1 = rb_float_new((double)dmin1);
+  rb_dmin2 = rb_float_new((double)dmin2);
+  rb_dn = rb_float_new((double)dn);
+  rb_dn1 = rb_float_new((double)dn1);
+  rb_dn2 = rb_float_new((double)dn2);
+  rb_g = rb_float_new((double)g);
+  rb_tau = rb_float_new((double)tau);
+  return rb_ary_new3(15, rb_dmin, rb_sigma, rb_nfail, rb_iter, rb_ndiv, rb_pp, rb_desig, rb_ttype, rb_dmin1, rb_dmin2, rb_dn, rb_dn1, rb_dn2, rb_g, rb_tau);
 }
 
 void

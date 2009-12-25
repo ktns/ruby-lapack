@@ -6,19 +6,19 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for triangular matrices, generalized problem (i.e., a pair of triangular matrices) matrix</H1>
     <UL>
-      <LI><A HREF="#ctgevc">ctgevc</A> : Computes some or all of the right and/or left generalized eigenvectorsof a pair of complex upper triangular matrices. </LI>
+      <LI><A HREF="#ctgevc">ctgevc</A> : </LI>
       <LI><A HREF="#ctgex2">ctgex2</A> : </LI>
-      <LI><A HREF="#ctgexc">ctgexc</A> : Reorders the generalized Schur decomposition of a complexmatrix pair (A,B) using a unitary equivalence transformationso that the diagonal block of (A,B) with row index IFST is movedto row ILST.</LI>
-      <LI><A HREF="#ctgsen">ctgsen</A> : Reorders the generalized Schur decomposition of a complexmatrix pair (A, B) so that a selected cluster of eigenvaluesappears in the leading diagonal blocks of the pair (A,B).</LI>
-      <LI><A HREF="#ctgsja">ctgsja</A> : Computes the generalized singular value decomposition of two complexupper triangular (or trapezoidal) matrices as output by CGGSVP.</LI>
-      <LI><A HREF="#ctgsna">ctgsna</A> : Estimates reciprocal condition numbers for specifiedeigenvalues and/or eigenvectors of a matrix pair (A, B) ingeneralized Schur canonical form, as returned by CGGES.</LI>
+      <LI><A HREF="#ctgexc">ctgexc</A> : </LI>
+      <LI><A HREF="#ctgsen">ctgsen</A> : </LI>
+      <LI><A HREF="#ctgsja">ctgsja</A> : </LI>
+      <LI><A HREF="#ctgsna">ctgsna</A> : </LI>
       <LI><A HREF="#ctgsy2">ctgsy2</A> : </LI>
-      <LI><A HREF="#ctgsyl">ctgsyl</A> : Solves the generalized Sylvester equation.</LI>
+      <LI><A HREF="#ctgsyl">ctgsyl</A> : </LI>
     </UL>
 
   <A NAME="ctgevc"></A>
   <H2>ctgevc</H2>
-  Computes some or all of the right and/or left generalized eigenvectorsof a pair of complex upper triangular matrices. 
+  
   <PRE>
 USAGE:
   m, info, vl, vr = NumRu::Lapack.ctgevc( side, howmny, select, s, p, vl, vr)
@@ -274,7 +274,7 @@ FORTRAN MANUAL
 
   <A NAME="ctgexc"></A>
   <H2>ctgexc</H2>
-  Reorders the generalized Schur decomposition of a complexmatrix pair (A,B) using a unitary equivalence transformationso that the diagonal block of (A,B) with row index IFST is movedto row ILST.
+  
   <PRE>
 USAGE:
   info, a, b, q, z, ilst = NumRu::Lapack.ctgexc( wantq, wantz, a, b, q, ldq, z, ifst, ilst)
@@ -411,7 +411,7 @@ FORTRAN MANUAL
 
   <A NAME="ctgsen"></A>
   <H2>ctgsen</H2>
-  Reorders the generalized Schur decomposition of a complexmatrix pair (A, B) so that a selected cluster of eigenvaluesappears in the leading diagonal blocks of the pair (A,B).
+  
   <PRE>
 USAGE:
   alpha, beta, m, pl, pr, dif, work, iwork, info, a, b, q, z = NumRu::Lapack.ctgsen( ijob, wantq, wantz, select, a, b, q, z, lwork, liwork)
@@ -731,7 +731,7 @@ FORTRAN MANUAL
 
   <A NAME="ctgsja"></A>
   <H2>ctgsja</H2>
-  Computes the generalized singular value decomposition of two complexupper triangular (or trapezoidal) matrices as output by CGGSVP.
+  
   <PRE>
 USAGE:
   alpha, beta, ncycle, info, a, b, u, v, q = NumRu::Lapack.ctgsja( jobu, jobv, jobq, k, l, a, b, tola, tolb, u, v, q)
@@ -869,7 +869,7 @@ FORTRAN MANUAL
 *          K and L specify the subblocks in the input matrices A and B:
 *          A23 = A(K+1:MIN(K+L,M),N-L+1:N) and B13 = B(1:L,,N-L+1:N)
 *          of A and B, whose GSVD is going to be computed by CTGSJA.
-*          See Further details.
+*          See Further Details.
 *
 *  A       (input/output) COMPLEX array, dimension (LDA,N)
 *          On entry, the M-by-N matrix A.
@@ -991,7 +991,7 @@ FORTRAN MANUAL
 
   <A NAME="ctgsna"></A>
   <H2>ctgsna</H2>
-  Estimates reciprocal condition numbers for specifiedeigenvalues and/or eigenvectors of a matrix pair (A, B) ingeneralized Schur canonical form, as returned by CGGES.
+  
   <PRE>
 USAGE:
   s, dif, m, work, info = NumRu::Lapack.ctgsna( job, howmny, select, a, b, vl, vr, lwork)
@@ -1370,7 +1370,7 @@ FORTRAN MANUAL
 
   <A NAME="ctgsyl"></A>
   <H2>ctgsyl</H2>
-  Solves the generalized Sylvester equation.
+  
   <PRE>
 USAGE:
   scale, dif, work, info, c, f = NumRu::Lapack.ctgsyl( trans, ijob, a, b, c, d, e, f, lwork)

@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID dlangt_(doublereal *__out__, char *norm, integer *n, doublereal *dl, doublereal *d, doublereal *du);
 static VALUE
 rb_dlangt(int argc, VALUE *argv, VALUE self){
   VALUE rb_norm;
@@ -55,7 +54,7 @@ rb_dlangt(int argc, VALUE *argv, VALUE self){
     rb_du = na_change_type(rb_du, NA_DFLOAT);
   du = NA_PTR_TYPE(rb_du, doublereal*);
 
-  dlangt_(&__out__, &norm, &n, dl, d, du);
+  __out__ = dlangt_(&norm, &n, dl, d, du);
 
   rb___out__ = rb_float_new((double)__out__);
   return rb___out__;

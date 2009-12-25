@@ -6,19 +6,19 @@
     <A NAME="top"></A>
     <H1>DOUBLE PRECISION routines for symmetric or Hermitian positive definite tridiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#dptcon">dptcon</A> : Computes the reciprocal of the condition number of asymmetric positive definite tridiagonal matrix,using the LDL**H factorization computed by DPTTRF.</LI>
-      <LI><A HREF="#dpteqr">dpteqr</A> : Computes all eigenvalues and eigenvectors of a real symmetricpositive definite tridiagonal matrix, by computing the SVD ofits bidiagonal Cholesky factor.</LI>
-      <LI><A HREF="#dptrfs">dptrfs</A> : Improves the computed solution to a symmetric positivedefinite tridiagonal system of linear equations AX=B, and providesforward and backward error bounds for the solution.</LI>
-      <LI><A HREF="#dptsv">dptsv</A> : Solves a symmetric positive definite tridiagonal systemof linear equations AX=B.</LI>
-      <LI><A HREF="#dptsvx">dptsvx</A> : Solves a symmetric positive definite tridiagonalsystem of linear equations AX=B, and provides an estimate ofthe condition number and error bounds on the solution.</LI>
-      <LI><A HREF="#dpttrf">dpttrf</A> : Computes the LDL**H factorization of a symmetricpositive definite tridiagonal matrix.</LI>
-      <LI><A HREF="#dpttrs">dpttrs</A> : Solves a symmetric positive definite tridiagonalsystem of linear equations, using the LDL**H factorizationcomputed by DPTTRF.</LI>
+      <LI><A HREF="#dptcon">dptcon</A> : </LI>
+      <LI><A HREF="#dpteqr">dpteqr</A> : </LI>
+      <LI><A HREF="#dptrfs">dptrfs</A> : </LI>
+      <LI><A HREF="#dptsv">dptsv</A> : </LI>
+      <LI><A HREF="#dptsvx">dptsvx</A> : </LI>
+      <LI><A HREF="#dpttrf">dpttrf</A> : </LI>
+      <LI><A HREF="#dpttrs">dpttrs</A> : </LI>
       <LI><A HREF="#dptts2">dptts2</A> : </LI>
     </UL>
 
   <A NAME="dptcon"></A>
   <H2>dptcon</H2>
-  Computes the reciprocal of the condition number of asymmetric positive definite tridiagonal matrix,using the LDL**H factorization computed by DPTTRF.
+  
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.dptcon( d, e, anorm)
@@ -87,7 +87,7 @@ FORTRAN MANUAL
 
   <A NAME="dpteqr"></A>
   <H2>dpteqr</H2>
-  Computes all eigenvalues and eigenvectors of a real symmetricpositive definite tridiagonal matrix, by computing the SVD ofits bidiagonal Cholesky factor.
+  
   <PRE>
 USAGE:
   info, d, e, z = NumRu::Lapack.dpteqr( compz, d, e, z)
@@ -183,7 +183,7 @@ FORTRAN MANUAL
 
   <A NAME="dptrfs"></A>
   <H2>dptrfs</H2>
-  Improves the computed solution to a symmetric positivedefinite tridiagonal system of linear equations AX=B, and providesforward and backward error bounds for the solution.
+  
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.dptrfs( d, e, df, ef, b, x)
@@ -274,7 +274,7 @@ FORTRAN MANUAL
 
   <A NAME="dptsv"></A>
   <H2>dptsv</H2>
-  Solves a symmetric positive definite tridiagonal systemof linear equations AX=B.
+  
   <PRE>
 USAGE:
   info, d, e, b = NumRu::Lapack.dptsv( d, e, b)
@@ -349,7 +349,7 @@ FORTRAN MANUAL
 
   <A NAME="dptsvx"></A>
   <H2>dptsvx</H2>
-  Solves a symmetric positive definite tridiagonalsystem of linear equations AX=B, and provides an estimate ofthe condition number and error bounds on the solution.
+  
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, df, ef = NumRu::Lapack.dptsvx( fact, d, e, df, ef, b)
@@ -496,7 +496,7 @@ FORTRAN MANUAL
 
   <A NAME="dpttrf"></A>
   <H2>dpttrf</H2>
-  Computes the LDL**H factorization of a symmetricpositive definite tridiagonal matrix.
+  
   <PRE>
 USAGE:
   info, d, e = NumRu::Lapack.dpttrf( d, e)
@@ -551,7 +551,7 @@ FORTRAN MANUAL
 
   <A NAME="dpttrs"></A>
   <H2>dpttrs</H2>
-  Solves a symmetric positive definite tridiagonalsystem of linear equations, using the LDL**H factorizationcomputed by DPTTRF.
+  
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.dpttrs( d, e, b)

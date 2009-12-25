@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID slanhs_(real *__out__, char *norm, integer *n, real *a, integer *lda, real *work);
 static VALUE
 rb_slanhs(int argc, VALUE *argv, VALUE self){
   VALUE rb_norm;
@@ -37,7 +36,7 @@ rb_slanhs(int argc, VALUE *argv, VALUE self){
   lwork = lsame_(&norm,"I") ? n : 0;
   work = ALLOC_N(real, (MAX(1,lwork)));
 
-  slanhs_(&__out__, &norm, &n, a, &lda, work);
+  __out__ = slanhs_(&norm, &n, a, &lda, work);
 
   free(work);
   rb___out__ = rb_float_new((double)__out__);

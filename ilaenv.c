@@ -42,7 +42,7 @@ rb_ilaenv(int argc, VALUE *argv, VALUE self){
   name = StringValueCStr(rb_name);
   opts = StringValueCStr(rb_opts);
 
-  __out__ = ilaenv_(&ispec, name, opts, &n1, &n2, &n3, &n4, (ftnlen) strlen(name), (ftnlen)1);
+  __out__ = ilaenv_(&ispec, name, opts, &n1, &n2, &n3, &n4);
 
   rb___out__ = INT2NUM(__out__);
   return rb___out__;

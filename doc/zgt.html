@@ -6,18 +6,18 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for general tridiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#zgtcon">zgtcon</A> : Estimates the reciprocal of the condition number of a generaltridiagonal matrix, in either the 1-norm or the infinity-norm,using the LU factorization computed by ZGTTRF.</LI>
-      <LI><A HREF="#zgtrfs">zgtrfs</A> : Improves the computed solution to a general tridiagonal systemof linear equations AX=B, A**T X=B or A**H X=B, and providesforward and backward error bounds for the solution.</LI>
-      <LI><A HREF="#zgtsv">zgtsv</A> : Solves a general tridiagonal system of linear equations AX=B.</LI>
-      <LI><A HREF="#zgtsvx">zgtsvx</A> : Solves a general tridiagonal system of linear equations AX=B,A**T X=B or A**H X=B, and provides an estimate of the conditionnumber  and error bounds on the solution.</LI>
-      <LI><A HREF="#zgttrf">zgttrf</A> : Computes an LU factorization of a general tridiagonal matrix,using partial pivoting with row interchanges.</LI>
-      <LI><A HREF="#zgttrs">zgttrs</A> : Solves a general tridiagonal system of linear equations AX=B,A**T X=B or A**H X=B, using the LU factorization computed byZGTTRF.</LI>
+      <LI><A HREF="#zgtcon">zgtcon</A> : </LI>
+      <LI><A HREF="#zgtrfs">zgtrfs</A> : </LI>
+      <LI><A HREF="#zgtsv">zgtsv</A> : </LI>
+      <LI><A HREF="#zgtsvx">zgtsvx</A> : </LI>
+      <LI><A HREF="#zgttrf">zgttrf</A> : </LI>
+      <LI><A HREF="#zgttrs">zgttrs</A> : </LI>
       <LI><A HREF="#zgtts2">zgtts2</A> : </LI>
     </UL>
 
   <A NAME="zgtcon"></A>
   <H2>zgtcon</H2>
-  Estimates the reciprocal of the condition number of a generaltridiagonal matrix, in either the 1-norm or the infinity-norm,using the LU factorization computed by ZGTTRF.
+  
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.zgtcon( norm, dl, d, du, du2, ipiv, anorm)
@@ -96,7 +96,7 @@ FORTRAN MANUAL
 
   <A NAME="zgtrfs"></A>
   <H2>zgtrfs</H2>
-  Improves the computed solution to a general tridiagonal systemof linear equations AX=B, A**T X=B or A**H X=B, and providesforward and backward error bounds for the solution.
+  
   <PRE>
 USAGE:
   ferr, berr, info, x = NumRu::Lapack.zgtrfs( trans, dl, d, du, dlf, df, duf, du2, ipiv, b, x)
@@ -211,7 +211,7 @@ FORTRAN MANUAL
 
   <A NAME="zgtsv"></A>
   <H2>zgtsv</H2>
-  Solves a general tridiagonal system of linear equations AX=B.
+  
   <PRE>
 USAGE:
   info, dl, d, du, b = NumRu::Lapack.zgtsv( dl, d, du, b)
@@ -287,7 +287,7 @@ FORTRAN MANUAL
 
   <A NAME="zgtsvx"></A>
   <H2>zgtsvx</H2>
-  Solves a general tridiagonal system of linear equations AX=B,A**T X=B or A**H X=B, and provides an estimate of the conditionnumber  and error bounds on the solution.
+  
   <PRE>
 USAGE:
   x, rcond, ferr, berr, info, dlf, df, duf, du2, ipiv = NumRu::Lapack.zgtsvx( fact, trans, dl, d, du, dlf, df, duf, du2, ipiv, b)
@@ -478,7 +478,7 @@ FORTRAN MANUAL
 
   <A NAME="zgttrf"></A>
   <H2>zgttrf</H2>
-  Computes an LU factorization of a general tridiagonal matrix,using partial pivoting with row interchanges.
+  
   <PRE>
 USAGE:
   du2, ipiv, info, dl, d, du = NumRu::Lapack.zgttrf( dl, d, du)
@@ -556,7 +556,7 @@ FORTRAN MANUAL
 
   <A NAME="zgttrs"></A>
   <H2>zgttrs</H2>
-  Solves a general tridiagonal system of linear equations AX=B,A**T X=B or A**H X=B, using the LU factorization computed byZGTTRF.
+  
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.zgttrs( trans, dl, d, du, du2, ipiv, b)

@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID lsamen_(logical *__out__, integer *n, char *ca, char *cb);
 static VALUE
 rb_lsamen(int argc, VALUE *argv, VALUE self){
   VALUE rb_n;
@@ -27,7 +26,7 @@ rb_lsamen(int argc, VALUE *argv, VALUE self){
   ca = StringValueCStr(rb_ca);
   cb = StringValueCStr(rb_cb);
 
-  lsamen_(&__out__, &n, ca, cb);
+  __out__ = lsamen_(&n, ca, cb);
 
   rb___out__ = __out__ ? Qtrue : Qfalse;
   return rb___out__;

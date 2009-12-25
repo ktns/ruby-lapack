@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID zlanhs_(doublereal *__out__, char *norm, integer *n, doublecomplex *a, integer *lda, doublereal *work);
 static VALUE
 rb_zlanhs(int argc, VALUE *argv, VALUE self){
   VALUE rb_norm;
@@ -37,7 +36,7 @@ rb_zlanhs(int argc, VALUE *argv, VALUE self){
   lwork = lsame_(&norm,"I") ? n : 0;
   work = ALLOC_N(doublereal, (MAX(1,lwork)));
 
-  zlanhs_(&__out__, &norm, &n, a, &lda, work);
+  __out__ = zlanhs_(&norm, &n, a, &lda, work);
 
   free(work);
   rb___out__ = rb_float_new((double)__out__);

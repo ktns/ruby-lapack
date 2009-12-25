@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID ieeeck_(integer *__out__, integer *ispec, real *zero, real *one);
 static VALUE
 rb_ieeeck(int argc, VALUE *argv, VALUE self){
   VALUE rb_ispec;
@@ -27,7 +26,7 @@ rb_ieeeck(int argc, VALUE *argv, VALUE self){
   zero = (real)NUM2DBL(rb_zero);
   one = (real)NUM2DBL(rb_one);
 
-  ieeeck_(&__out__, &ispec, &zero, &one);
+  __out__ = ieeeck_(&ispec, &zero, &one);
 
   rb___out__ = INT2NUM(__out__);
   return rb___out__;

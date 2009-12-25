@@ -91,7 +91,7 @@ rb_dgelsd(int argc, VALUE *argv, VALUE self){
   b = b_out__;
   c__0 = 0;
   c__9 = 9;
-  smlsiz = ilaenv_(&c__9,"DGELSD"," ",&c__0,&c__0,&c__0,&c__0,(ftnlen)6,(ftnlen)1);
+  smlsiz = ilaenv_(&c__9,"DGELSD"," ",&c__0,&c__0,&c__0,&c__0);
   nlvl = MAX(0,((int)(log(((double)(MIN(m,n)))/(smlsiz+1))/log(2.0))+1));
   liwork = 3*(MIN(m,n))*nlvl+11*(MIN(m,n));
   iwork = ALLOC_N(integer, (MAX(1,liwork)));

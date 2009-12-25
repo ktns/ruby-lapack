@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID dlapy3_(doublereal *__out__, doublereal *x, doublereal *y, doublereal *z);
 static VALUE
 rb_dlapy3(int argc, VALUE *argv, VALUE self){
   VALUE rb_x;
@@ -27,7 +26,7 @@ rb_dlapy3(int argc, VALUE *argv, VALUE self){
   y = NUM2DBL(rb_y);
   z = NUM2DBL(rb_z);
 
-  dlapy3_(&__out__, &x, &y, &z);
+  __out__ = dlapy3_(&x, &y, &z);
 
   rb___out__ = rb_float_new((double)__out__);
   return rb___out__;

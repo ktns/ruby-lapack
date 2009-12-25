@@ -6,16 +6,16 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for (real) symmetric tridiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#cstedc">cstedc</A> : Computes all eigenvalues and, optionally, eigenvectors of asymmetric tridiagonal matrix using the divide and conquer algorithm.</LI>
-      <LI><A HREF="#cstegr">cstegr</A> : Computes selected eigenvalues and, optionally, eigenvectors of asymmetric tridiagonal matrix.  The eigenvalues are computed by thedqds algorithm, while eigenvectors are computed from various "good"LDL^T representations (also known as Relatively Robust Representations.)</LI>
-      <LI><A HREF="#cstein">cstein</A> : Computes selected eigenvectors of a real symmetric tridiagonalmatrix by inverse iteration.</LI>
+      <LI><A HREF="#cstedc">cstedc</A> : </LI>
+      <LI><A HREF="#cstegr">cstegr</A> : </LI>
+      <LI><A HREF="#cstein">cstein</A> : </LI>
       <LI><A HREF="#cstemr">cstemr</A> : </LI>
-      <LI><A HREF="#csteqr">csteqr</A> : Computes all eigenvalues and eigenvectors of a real symmetrictridiagonal matrix, using the implicit QL or QR algorithm.</LI>
+      <LI><A HREF="#csteqr">csteqr</A> : </LI>
     </UL>
 
   <A NAME="cstedc"></A>
   <H2>cstedc</H2>
-  Computes all eigenvalues and, optionally, eigenvectors of asymmetric tridiagonal matrix using the divide and conquer algorithm.
+  
   <PRE>
 USAGE:
   work, rwork, iwork, info, d, e, z = NumRu::Lapack.cstedc( compz, d, e, z, lwork, lrwork, liwork)
@@ -160,7 +160,7 @@ FORTRAN MANUAL
 
   <A NAME="cstegr"></A>
   <H2>cstegr</H2>
-  Computes selected eigenvalues and, optionally, eigenvectors of asymmetric tridiagonal matrix.  The eigenvalues are computed by thedqds algorithm, while eigenvectors are computed from various "good"LDL^T representations (also known as Relatively Robust Representations.)
+  
   <PRE>
 USAGE:
   m, w, z, isuppz, work, iwork, info, d, e = NumRu::Lapack.cstegr( jobz, range, d, e, vl, vu, il, iu, abstol, lwork, liwork)
@@ -327,7 +327,7 @@ FORTRAN MANUAL
 
   <A NAME="cstein"></A>
   <H2>cstein</H2>
-  Computes selected eigenvectors of a real symmetric tridiagonalmatrix by inverse iteration.
+  
   <PRE>
 USAGE:
   z, ifail, info = NumRu::Lapack.cstein( d, e, w, iblock, isplit)
@@ -498,7 +498,7 @@ FORTRAN MANUAL
 *    Computer Science Division Technical Report No. UCB/CSD-97-971,
 *    UC Berkeley, May 1997.
 *
-*  Notes:
+*  Further Details
 *  1.CSTEMR works only on machines which follow IEEE-754
 *  floating-point standard in their handling of infinities and NaNs.
 *  This permits the use of efficient inner loops avoiding a check for
@@ -670,7 +670,7 @@ FORTRAN MANUAL
 
   <A NAME="csteqr"></A>
   <H2>csteqr</H2>
-  Computes all eigenvalues and eigenvectors of a real symmetrictridiagonal matrix, using the implicit QL or QR algorithm.
+  
   <PRE>
 USAGE:
   info, d, e, z = NumRu::Lapack.csteqr( compz, d, e, z)

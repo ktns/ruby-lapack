@@ -6,22 +6,22 @@
     <A NAME="top"></A>
     <H1>REAL routines for (real) symmetric tridiagonal matrix</H1>
     <UL>
-      <LI><A HREF="#sstebz">sstebz</A> : Computes selected eigenvalues of a real symmetric tridiagonalmatrix by bisection.</LI>
-      <LI><A HREF="#sstedc">sstedc</A> : Computes all eigenvalues and, optionally, eigenvectors of asymmetric tridiagonal matrix using the divide and conquer algorithm.</LI>
-      <LI><A HREF="#sstegr">sstegr</A> : Computes selected eigenvalues and, optionally, eigenvectors of asymmetric tridiagonal matrix.  The eigenvalues are computed by thedqds algorithm, while eigenvectors are computed from various "good"LDL^T representations (also known as Relatively Robust Representations.)</LI>
-      <LI><A HREF="#sstein">sstein</A> : Computes selected eigenvectors of a real symmetric tridiagonalmatrix by inverse iteration.</LI>
+      <LI><A HREF="#sstebz">sstebz</A> : </LI>
+      <LI><A HREF="#sstedc">sstedc</A> : </LI>
+      <LI><A HREF="#sstegr">sstegr</A> : </LI>
+      <LI><A HREF="#sstein">sstein</A> : </LI>
       <LI><A HREF="#sstemr">sstemr</A> : </LI>
-      <LI><A HREF="#ssteqr">ssteqr</A> : Computes all eigenvalues and eigenvectors of a real symmetrictridiagonal matrix, using the implicit QL or QR algorithm.</LI>
-      <LI><A HREF="#ssterf">ssterf</A> : Computes all eigenvalues of a real symmetric tridiagonal matrix,using a root-free variant of the QL or QR algorithm.</LI>
-      <LI><A HREF="#sstev">sstev</A> : Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric tridiagonal matrix.</LI>
-      <LI><A HREF="#sstevd">sstevd</A> : Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric tridiagonal matrix.  If eigenvectors are desired, it usesa divide and conquer algorithm.</LI>
-      <LI><A HREF="#sstevr">sstevr</A> : Computes selected eigenvalues, and optionally, eigenvectors of a realsymmetric tridiagonal matrix.  Eigenvalues are computed by the dqdsalgorithm, and eigenvectors are computed from various "good" LDL^Trepresentations (also known as Relatively Robust Representations).</LI>
-      <LI><A HREF="#sstevx">sstevx</A> : Computes selected eigenvalues and eigenvectors of a realsymmetric tridiagonal matrix.</LI>
+      <LI><A HREF="#ssteqr">ssteqr</A> : </LI>
+      <LI><A HREF="#ssterf">ssterf</A> : </LI>
+      <LI><A HREF="#sstev">sstev</A> : </LI>
+      <LI><A HREF="#sstevd">sstevd</A> : </LI>
+      <LI><A HREF="#sstevr">sstevr</A> : </LI>
+      <LI><A HREF="#sstevx">sstevx</A> : </LI>
     </UL>
 
   <A NAME="sstebz"></A>
   <H2>sstebz</H2>
-  Computes selected eigenvalues of a real symmetric tridiagonalmatrix by bisection.
+  
   <PRE>
 USAGE:
   m, nsplit, w, iblock, isplit, info = NumRu::Lapack.sstebz( range, order, vl, vu, il, iu, abstol, d, e)
@@ -194,7 +194,7 @@ FORTRAN MANUAL
 
   <A NAME="sstedc"></A>
   <H2>sstedc</H2>
-  Computes all eigenvalues and, optionally, eigenvectors of asymmetric tridiagonal matrix using the divide and conquer algorithm.
+  
   <PRE>
 USAGE:
   work, iwork, info, d, e, z = NumRu::Lapack.sstedc( compz, d, e, z, lwork, liwork)
@@ -322,7 +322,7 @@ FORTRAN MANUAL
 
   <A NAME="sstegr"></A>
   <H2>sstegr</H2>
-  Computes selected eigenvalues and, optionally, eigenvectors of asymmetric tridiagonal matrix.  The eigenvalues are computed by thedqds algorithm, while eigenvectors are computed from various "good"LDL^T representations (also known as Relatively Robust Representations.)
+  
   <PRE>
 USAGE:
   m, w, z, isuppz, work, iwork, info, d, e = NumRu::Lapack.sstegr( jobz, range, d, e, vl, vu, il, iu, abstol, lwork, liwork)
@@ -489,7 +489,7 @@ FORTRAN MANUAL
 
   <A NAME="sstein"></A>
   <H2>sstein</H2>
-  Computes selected eigenvectors of a real symmetric tridiagonalmatrix by inverse iteration.
+  
   <PRE>
 USAGE:
   z, ifail, info = NumRu::Lapack.sstein( d, e, w, iblock, isplit)
@@ -653,7 +653,7 @@ FORTRAN MANUAL
 *    Computer Science Division Technical Report No. UCB/CSD-97-971,
 *    UC Berkeley, May 1997.
 *
-*  Notes:
+*  Further Details
 *  1.SSTEMR works only on machines which follow IEEE-754
 *  floating-point standard in their handling of infinities and NaNs.
 *  This permits the use of efficient inner loops avoiding a check for
@@ -808,7 +808,7 @@ FORTRAN MANUAL
 
   <A NAME="ssteqr"></A>
   <H2>ssteqr</H2>
-  Computes all eigenvalues and eigenvectors of a real symmetrictridiagonal matrix, using the implicit QL or QR algorithm.
+  
   <PRE>
 USAGE:
   info, d, e, z = NumRu::Lapack.ssteqr( compz, d, e, z)
@@ -890,7 +890,7 @@ FORTRAN MANUAL
 
   <A NAME="ssterf"></A>
   <H2>ssterf</H2>
-  Computes all eigenvalues of a real symmetric tridiagonal matrix,using a root-free variant of the QL or QR algorithm.
+  
   <PRE>
 USAGE:
   info, d, e = NumRu::Lapack.ssterf( d, e)
@@ -940,7 +940,7 @@ FORTRAN MANUAL
 
   <A NAME="sstev"></A>
   <H2>sstev</H2>
-  Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric tridiagonal matrix.
+  
   <PRE>
 USAGE:
   z, info, d, e = NumRu::Lapack.sstev( jobz, d, e)
@@ -1007,7 +1007,7 @@ FORTRAN MANUAL
 
   <A NAME="sstevd"></A>
   <H2>sstevd</H2>
-  Computes all eigenvalues, and optionally, eigenvectors of a realsymmetric tridiagonal matrix.  If eigenvectors are desired, it usesa divide and conquer algorithm.
+  
   <PRE>
 USAGE:
   z, work, iwork, info, d, e = NumRu::Lapack.sstevd( jobz, d, e, lwork, liwork)
@@ -1109,7 +1109,7 @@ FORTRAN MANUAL
 
   <A NAME="sstevr"></A>
   <H2>sstevr</H2>
-  Computes selected eigenvalues, and optionally, eigenvectors of a realsymmetric tridiagonal matrix.  Eigenvalues are computed by the dqdsalgorithm, and eigenvectors are computed from various "good" LDL^Trepresentations (also known as Relatively Robust Representations).
+  
   <PRE>
 USAGE:
   m, w, z, isuppz, work, iwork, info, d, e = NumRu::Lapack.sstevr( jobz, range, d, e, vl, vu, il, iu, abstol, lwork, liwork)
@@ -1316,7 +1316,7 @@ FORTRAN MANUAL
 
   <A NAME="sstevx"></A>
   <H2>sstevx</H2>
-  Computes selected eigenvalues and eigenvectors of a realsymmetric tridiagonal matrix.
+  
   <PRE>
 USAGE:
   m, w, z, ifail, info, d, e = NumRu::Lapack.sstevx( jobz, range, d, e, vl, vu, il, iu, abstol)

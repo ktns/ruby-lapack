@@ -6,14 +6,14 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for triangular band matrix</H1>
     <UL>
-      <LI><A HREF="#ztbcon">ztbcon</A> : Estimates the reciprocal of the condition number of a triangularband matrix, in either the 1-norm or the infinity-norm.</LI>
-      <LI><A HREF="#ztbrfs">ztbrfs</A> : Provides forward and backward error bounds for the solutionof a triangular banded system of linear equations AX=B,A**T X=B or A**H X=B.</LI>
-      <LI><A HREF="#ztbtrs">ztbtrs</A> : Solves a triangular banded system of linear equations AX=B,A**T X=B or A**H X=B.</LI>
+      <LI><A HREF="#ztbcon">ztbcon</A> : </LI>
+      <LI><A HREF="#ztbrfs">ztbrfs</A> : </LI>
+      <LI><A HREF="#ztbtrs">ztbtrs</A> : </LI>
     </UL>
 
   <A NAME="ztbcon"></A>
   <H2>ztbcon</H2>
-  Estimates the reciprocal of the condition number of a triangularband matrix, in either the 1-norm or the infinity-norm.
+  
   <PRE>
 USAGE:
   rcond, info = NumRu::Lapack.ztbcon( norm, uplo, diag, kd, ab)
@@ -94,7 +94,7 @@ FORTRAN MANUAL
 
   <A NAME="ztbrfs"></A>
   <H2>ztbrfs</H2>
-  Provides forward and backward error bounds for the solutionof a triangular banded system of linear equations AX=B,A**T X=B or A**H X=B.
+  
   <PRE>
 USAGE:
   ferr, berr, info = NumRu::Lapack.ztbrfs( uplo, trans, diag, kd, ab, b, x)
@@ -202,7 +202,7 @@ FORTRAN MANUAL
 
   <A NAME="ztbtrs"></A>
   <H2>ztbtrs</H2>
-  Solves a triangular banded system of linear equations AX=B,A**T X=B or A**H X=B.
+  
   <PRE>
 USAGE:
   info, b = NumRu::Lapack.ztbtrs( uplo, trans, diag, kd, ab, b)

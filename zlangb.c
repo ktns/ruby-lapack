@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID zlangb_(doublereal *__out__, char *norm, integer *n, integer *kl, integer *ku, doublecomplex *ab, integer *ldab, doublereal *work);
 static VALUE
 rb_zlangb(int argc, VALUE *argv, VALUE self){
   VALUE rb_norm;
@@ -45,7 +44,7 @@ rb_zlangb(int argc, VALUE *argv, VALUE self){
   lwork = lsame_(&norm,"I") ? n : 0;
   work = ALLOC_N(doublereal, (MAX(1,lwork)));
 
-  zlangb_(&__out__, &norm, &n, &kl, &ku, ab, &ldab, work);
+  __out__ = zlangb_(&norm, &n, &kl, &ku, ab, &ldab, work);
 
   free(work);
   rb___out__ = rb_float_new((double)__out__);

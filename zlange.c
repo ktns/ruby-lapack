@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID zlange_(doublereal *__out__, char *norm, integer *m, integer *n, doublecomplex *a, integer *lda, doublereal *work);
 static VALUE
 rb_zlange(int argc, VALUE *argv, VALUE self){
   VALUE rb_norm;
@@ -41,7 +40,7 @@ rb_zlange(int argc, VALUE *argv, VALUE self){
   lwork = lsame_(&norm,"I") ? m : 0;
   work = ALLOC_N(doublereal, (MAX(1,lwork)));
 
-  zlange_(&__out__, &norm, &m, &n, a, &lda, work);
+  __out__ = zlange_(&norm, &m, &n, a, &lda, work);
 
   free(work);
   rb___out__ = rb_float_new((double)__out__);

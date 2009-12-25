@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID dlaneg_(integer *__out__, integer *n, doublereal *d, doublereal *lld, doublereal *sigma, doublereal *pivmin, integer *r);
 static VALUE
 rb_dlaneg(int argc, VALUE *argv, VALUE self){
   VALUE rb_d;
@@ -51,7 +50,7 @@ rb_dlaneg(int argc, VALUE *argv, VALUE self){
     rb_lld = na_change_type(rb_lld, NA_DFLOAT);
   lld = NA_PTR_TYPE(rb_lld, doublereal*);
 
-  dlaneg_(&__out__, &n, d, lld, &sigma, &pivmin, &r);
+  __out__ = dlaneg_(&n, d, lld, &sigma, &pivmin, &r);
 
   rb___out__ = INT2NUM(__out__);
   return rb___out__;

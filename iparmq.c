@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID iparmq_(integer *__out__, integer *ispec, char *name, char *opts, integer *n, integer *ilo, integer *ihi, integer *lwork);
 static VALUE
 rb_iparmq(int argc, VALUE *argv, VALUE self){
   VALUE rb_ispec;
@@ -43,7 +42,7 @@ rb_iparmq(int argc, VALUE *argv, VALUE self){
   ihi = NUM2INT(rb_ihi);
   lwork = NUM2INT(rb_lwork);
 
-  iparmq_(&__out__, &ispec, &name, &opts, &n, &ilo, &ihi, &lwork);
+  __out__ = iparmq_(&ispec, &name, &opts, &n, &ilo, &ihi, &lwork);
 
   rb___out__ = INT2NUM(__out__);
   return rb___out__;

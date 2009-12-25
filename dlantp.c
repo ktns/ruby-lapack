@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID dlantp_(doublereal *__out__, char *norm, char *uplo, char *diag, integer *n, doublereal *ap, doublereal *work);
 static VALUE
 rb_dlantp(int argc, VALUE *argv, VALUE self){
   VALUE rb_norm;
@@ -47,7 +46,7 @@ rb_dlantp(int argc, VALUE *argv, VALUE self){
   lwork = lsame_(&norm,"I") ? n : 0;
   work = ALLOC_N(doublereal, (MAX(1,lwork)));
 
-  dlantp_(&__out__, &norm, &uplo, &diag, &n, ap, work);
+  __out__ = dlantp_(&norm, &uplo, &diag, &n, ap, work);
 
   free(work);
   rb___out__ = rb_float_new((double)__out__);

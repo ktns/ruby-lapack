@@ -6,19 +6,19 @@
     <A NAME="top"></A>
     <H1>COMPLEX*16 or DOUBLE COMPLEX routines for (complex) Hermitian band matrix</H1>
     <UL>
-      <LI><A HREF="#zhbev">zhbev</A> : Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian band matrix.</LI>
-      <LI><A HREF="#zhbevd">zhbevd</A> : Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian band matrix.  If eigenvectors are desired, it uses a divideand conquer algorithm.</LI>
-      <LI><A HREF="#zhbevx">zhbevx</A> : Computes selected eigenvalues and eigenvectors of aHermitian band matrix.</LI>
-      <LI><A HREF="#zhbgst">zhbgst</A> : Reduces a complex Hermitian-definite banded generalized eigenproblemA x = lambda B x to standard form, where B has been factorized byZPBSTF (Crawford's algorithm).</LI>
-      <LI><A HREF="#zhbgv">zhbgv</A> : Computes all the eigenvalues, and optionally, the eigenvectorsof a complex generalized Hermitian-definite banded eigenproblem, ofthe form A*x=(lambda)*B*x.  A and B are assumed to be Hermitianand banded, and B is also positive definite.</LI>
-      <LI><A HREF="#zhbgvd">zhbgvd</A> : Computes all the eigenvalues, and optionally, the eigenvectorsof a complex generalized Hermitian-definite banded eigenproblem, ofthe form A*x=(lambda)*B*x.  A and B are assumed to be Hermitianand banded, and B is also positive definite.If eigenvectors are desired, it uses a divide and conquer algorithm.</LI>
-      <LI><A HREF="#zhbgvx">zhbgvx</A> : Computes selected eigenvalues, and optionally, the eigenvectorsof a complex generalized Hermitian-definite banded eigenproblem, ofthe form A*x=(lambda)*B*x.  A and B are assumed to be Hermitianand banded, and B is also positive definite.</LI>
-      <LI><A HREF="#zhbtrd">zhbtrd</A> : Reduces a Hermitian band matrix to real symmetrictridiagonal form by a unitary similarity transformation.</LI>
+      <LI><A HREF="#zhbev">zhbev</A> : </LI>
+      <LI><A HREF="#zhbevd">zhbevd</A> : </LI>
+      <LI><A HREF="#zhbevx">zhbevx</A> : </LI>
+      <LI><A HREF="#zhbgst">zhbgst</A> : </LI>
+      <LI><A HREF="#zhbgv">zhbgv</A> : </LI>
+      <LI><A HREF="#zhbgvd">zhbgvd</A> : </LI>
+      <LI><A HREF="#zhbgvx">zhbgvx</A> : </LI>
+      <LI><A HREF="#zhbtrd">zhbtrd</A> : </LI>
     </UL>
 
   <A NAME="zhbev"></A>
   <H2>zhbev</H2>
-  Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian band matrix.
+  
   <PRE>
 USAGE:
   w, z, info, ab = NumRu::Lapack.zhbev( jobz, uplo, kd, ab)
@@ -106,7 +106,7 @@ FORTRAN MANUAL
 
   <A NAME="zhbevd"></A>
   <H2>zhbevd</H2>
-  Computes all eigenvalues and, optionally, eigenvectors of a complexHermitian band matrix.  If eigenvectors are desired, it uses a divideand conquer algorithm.
+  
   <PRE>
 USAGE:
   w, z, work, rwork, iwork, info, ab = NumRu::Lapack.zhbevd( jobz, uplo, kd, ab, lwork, lrwork, liwork)
@@ -244,7 +244,7 @@ FORTRAN MANUAL
 
   <A NAME="zhbevx"></A>
   <H2>zhbevx</H2>
-  Computes selected eigenvalues and eigenvectors of aHermitian band matrix.
+  
   <PRE>
 USAGE:
   q, m, w, z, ifail, info, ab = NumRu::Lapack.zhbevx( jobz, range, uplo, kd, ab, vl, vu, il, iu, abstol)
@@ -400,7 +400,7 @@ FORTRAN MANUAL
 
   <A NAME="zhbgst"></A>
   <H2>zhbgst</H2>
-  Reduces a complex Hermitian-definite banded generalized eigenproblemA x = lambda B x to standard form, where B has been factorized byZPBSTF (Crawford's algorithm).
+  
   <PRE>
 USAGE:
   x, info, ab = NumRu::Lapack.zhbgst( vect, uplo, ka, kb, ab, bb)
@@ -494,7 +494,7 @@ FORTRAN MANUAL
 
   <A NAME="zhbgv"></A>
   <H2>zhbgv</H2>
-  Computes all the eigenvalues, and optionally, the eigenvectorsof a complex generalized Hermitian-definite banded eigenproblem, ofthe form A*x=(lambda)*B*x.  A and B are assumed to be Hermitianand banded, and B is also positive definite.
+  
   <PRE>
 USAGE:
   w, z, info, ab, bb = NumRu::Lapack.zhbgv( jobz, uplo, ka, kb, ab, bb)
@@ -615,7 +615,7 @@ FORTRAN MANUAL
 
   <A NAME="zhbgvd"></A>
   <H2>zhbgvd</H2>
-  Computes all the eigenvalues, and optionally, the eigenvectorsof a complex generalized Hermitian-definite banded eigenproblem, ofthe form A*x=(lambda)*B*x.  A and B are assumed to be Hermitianand banded, and B is also positive definite.If eigenvectors are desired, it uses a divide and conquer algorithm.
+  
   <PRE>
 USAGE:
   w, z, work, rwork, iwork, info, ab, bb = NumRu::Lapack.zhbgvd( jobz, uplo, ka, kb, ab, bb, lwork, lrwork, liwork)
@@ -778,7 +778,7 @@ FORTRAN MANUAL
 
   <A NAME="zhbgvx"></A>
   <H2>zhbgvx</H2>
-  Computes selected eigenvalues, and optionally, the eigenvectorsof a complex generalized Hermitian-definite banded eigenproblem, ofthe form A*x=(lambda)*B*x.  A and B are assumed to be Hermitianand banded, and B is also positive definite.
+  
   <PRE>
 USAGE:
   q, m, w, z, ifail, info, ab, bb = NumRu::Lapack.zhbgvx( jobz, range, uplo, ka, kb, ab, bb, vl, vu, il, iu, abstol)
@@ -954,7 +954,7 @@ FORTRAN MANUAL
 
   <A NAME="zhbtrd"></A>
   <H2>zhbtrd</H2>
-  Reduces a Hermitian band matrix to real symmetrictridiagonal form by a unitary similarity transformation.
+  
   <PRE>
 USAGE:
   d, e, info, ab, q = NumRu::Lapack.zhbtrd( vect, uplo, kd, ab, q)

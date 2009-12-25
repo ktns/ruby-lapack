@@ -6,13 +6,13 @@
     <A NAME="top"></A>
     <H1>COMPLEX routines for upper Hessenberg matrix</H1>
     <UL>
-      <LI><A HREF="#chsein">chsein</A> : Computes specified right and/or left eigenvectors of an upperHessenberg matrix by inverse iteration.</LI>
-      <LI><A HREF="#chseqr">chseqr</A> : Computes the eigenvalues and Schur factorization of an upperHessenberg matrix, using the multishift QR algorithm.</LI>
+      <LI><A HREF="#chsein">chsein</A> : </LI>
+      <LI><A HREF="#chseqr">chseqr</A> : </LI>
     </UL>
 
   <A NAME="chsein"></A>
   <H2>chsein</H2>
-  Computes specified right and/or left eigenvectors of an upperHessenberg matrix by inverse iteration.
+  
   <PRE>
 USAGE:
   m, ifaill, ifailr, info, w, vl, vr = NumRu::Lapack.chsein( side, eigsrc, initv, select, h, w, vl, vr)
@@ -163,7 +163,7 @@ FORTRAN MANUAL
 
   <A NAME="chseqr"></A>
   <H2>chseqr</H2>
-  Computes the eigenvalues and Schur factorization of an upperHessenberg matrix, using the multishift QR algorithm.
+  
   <PRE>
 USAGE:
   w, work, info, h, z = NumRu::Lapack.chseqr( job, compz, ilo, ihi, h, z, ldz, lwork)
@@ -258,9 +258,11 @@ FORTRAN MANUAL
 *
 *     LWORK (input) INTEGER
 *           The dimension of the array WORK.  LWORK .GE. max(1,N)
-*           is sufficient, but LWORK typically as large as 6*N may
-*           be required for optimal performance.  A workspace query
-*           to determine the optimal workspace size is recommended.
+*           is sufficient and delivers very good and sometimes
+*           optimal performance.  However, LWORK as large as 11*N
+*           may be required for optimal performance.  A workspace
+*           query is recommended to determine the optimal workspace
+*           size.
 *
 *           If LWORK = -1, then CHSEQR does a workspace query.
 *           In this case, CHSEQR checks the input parameters and
@@ -316,46 +318,50 @@ FORTRAN MANUAL
 *             to attain best performance in each particular
 *             computational environment.
 *
-*            ISPEC=1:  The CLAHQR vs CLAQR0 crossover point.
+*            ISPEC=12: The CLAHQR vs CLAQR0 crossover point.
 *                      Default: 75. (Must be at least 11.)
 *
-*            ISPEC=2:  Recommended deflation window size.
+*            ISPEC=13: Recommended deflation window size.
 *                      This depends on ILO, IHI and NS.  NS is the
 *                      number of simultaneous shifts returned
-*                      by ILAENV(ISPEC=4).  (See ISPEC=4 below.)
+*                      by ILAENV(ISPEC=15).  (See ISPEC=15 below.)
 *                      The default for (IHI-ILO+1).LE.500 is NS.
 *                      The default for (IHI-ILO+1).GT.500 is 3*NS/2.
 *
-*            ISPEC=3:  Nibble crossover point. (See ILAENV for
+*            ISPEC=14: Nibble crossover point. (See IPARMQ for
 *                      details.)  Default: 14% of deflation window
 *                      size.
 *
-*            ISPEC=4:  Number of simultaneous shifts, NS, in
-*                      a multi-shift QR iteration.
+*            ISPEC=15: Number of simultaneous shifts in a multishift
+*                      QR iteration.
 *
 *                      If IHI-ILO+1 is ...
 *
 *                      greater than      ...but less    ... the
 *                      or equal to ...      than        default is
 *
-*                           1               30          NS -   2(+)
-*                          30               60          NS -   4(+)
+*                           1               30          NS =   2(+)
+*                          30               60          NS =   4(+)
 *                          60              150          NS =  10(+)
 *                         150              590          NS =  **
 *                         590             3000          NS =  64
 *                        3000             6000          NS = 128
 *                        6000             infinity      NS = 256
 *
-*                  (+)  By default some or all matrices of this order 
+*                  (+)  By default some or all matrices of this order
 *                       are passed to the implicit double shift routine
-*                       CLAHQR and NS is ignored.  See ISPEC=1 above 
-*                       and comments in IPARM for details.
+*                       CLAHQR and this parameter is ignored.  See
+*                       ISPEC=12 above and comments in IPARMQ for
+*                       details.
 *
-*                       The asterisks (**) indicate an ad-hoc
+*                 (**)  The asterisks (**) indicate an ad-hoc
 *                       function of N increasing from 10 to 64.
 *
-*            ISPEC=5:  Select structured matrix multiply.
-*                      (See ILAENV for details.) Default: 3.
+*            ISPEC=16: Select structured matrix multiply.
+*                      If the number of simultaneous shifts (specified
+*                      by ISPEC=15) is less than 14, then the default
+*                      for ISPEC=16 is 0.  Otherwise the default for
+*                      ISPEC=16 is 2.
 *
 *     ================================================================
 *     Based on contributions by

@@ -1,6 +1,5 @@
 #include "rb_lapack.h"
 
-extern VOID dlanst_(doublereal *__out__, char *norm, integer *n, doublereal *d, doublereal *e);
 static VALUE
 rb_dlanst(int argc, VALUE *argv, VALUE self){
   VALUE rb_norm;
@@ -43,7 +42,7 @@ rb_dlanst(int argc, VALUE *argv, VALUE self){
     rb_e = na_change_type(rb_e, NA_DFLOAT);
   e = NA_PTR_TYPE(rb_e, doublereal*);
 
-  dlanst_(&__out__, &norm, &n, d, e);
+  __out__ = dlanst_(&norm, &n, d, e);
 
   rb___out__ = rb_float_new((double)__out__);
   return rb___out__;
