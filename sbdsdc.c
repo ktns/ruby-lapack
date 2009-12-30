@@ -102,7 +102,7 @@ rb_sbdsdc(int argc, VALUE *argv, VALUE self){
   ldiq = lsame_(&compq,"P") ? n*(3+3*(int)(log(((double)n)/(smlsiz+1))/log(2.0))) : 0;
   {
     int shape[1];
-    shape[0] = lsame_(&compq,"I") ? ldiq : 0;
+    shape[0] = DIM_LEN(lsame_(&compq,"I") ? ldiq : 0);
     rb_iq = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   iq = NA_PTR_TYPE(rb_iq, integer*);

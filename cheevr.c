@@ -105,7 +105,7 @@ rb_cheevr(int argc, VALUE *argv, VALUE self){
   z = NA_PTR_TYPE(rb_z, complex*);
   {
     int shape[1];
-    shape[0] = 2*MAX(1,m);
+    shape[0] = DIM_LEN(2*MAX(1,m));
     rb_isuppz = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   isuppz = NA_PTR_TYPE(rb_isuppz, integer*);
@@ -123,7 +123,7 @@ rb_cheevr(int argc, VALUE *argv, VALUE self){
   rwork = NA_PTR_TYPE(rb_rwork, real*);
   {
     int shape[1];
-    shape[0] = MAX(1,liwork);
+    shape[0] = DIM_LEN(MAX(1,liwork));
     rb_iwork = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   iwork = NA_PTR_TYPE(rb_iwork, integer*);

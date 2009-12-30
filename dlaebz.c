@@ -143,7 +143,7 @@ rb_dlaebz(int argc, VALUE *argv, VALUE self){
   nab = NA_PTR_TYPE(rb_nab, integer*);
   {
     int shape[1];
-    shape[0] = (ijob==1||ijob==2) ? 0 : ijob==3 ? minp : 0;
+    shape[0] = DIM_LEN((ijob==1||ijob==2) ? 0 : ijob==3 ? minp : 0);
     rb_nval_out__ = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   nval_out__ = NA_PTR_TYPE(rb_nval_out__, integer*);
@@ -171,8 +171,8 @@ rb_dlaebz(int argc, VALUE *argv, VALUE self){
   c = c_out__;
   {
     int shape[2];
-    shape[0] = mmax;
-    shape[1] = 2;
+    shape[0] = DIM_LEN(mmax);
+    shape[1] = DIM_LEN(2);
     rb_nab_out__ = na_make_object(NA_LINT, 2, shape, cNArray);
   }
   nab_out__ = NA_PTR_TYPE(rb_nab_out__, integer*);

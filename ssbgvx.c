@@ -131,14 +131,14 @@ rb_ssbgvx(int argc, VALUE *argv, VALUE self){
   work = NA_PTR_TYPE(rb_work, real*);
   {
     int shape[1];
-    shape[0] = 5*n;
+    shape[0] = DIM_LEN(5*n);
     rb_iwork = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   iwork = NA_PTR_TYPE(rb_iwork, integer*);
   m = lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0;
   {
     int shape[1];
-    shape[0] = m;
+    shape[0] = DIM_LEN(m);
     rb_ifail = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   ifail = NA_PTR_TYPE(rb_ifail, integer*);

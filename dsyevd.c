@@ -65,7 +65,7 @@ rb_dsyevd(int argc, VALUE *argv, VALUE self){
   work = NA_PTR_TYPE(rb_work, doublereal*);
   {
     int shape[1];
-    shape[0] = MAX(1,liwork);
+    shape[0] = DIM_LEN(MAX(1,liwork));
     rb_iwork = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   iwork = NA_PTR_TYPE(rb_iwork, integer*);

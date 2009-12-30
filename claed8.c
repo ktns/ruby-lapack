@@ -120,14 +120,14 @@ rb_claed8(int argc, VALUE *argv, VALUE self){
   w = NA_PTR_TYPE(rb_w, real*);
   {
     int shape[1];
-    shape[0] = n;
+    shape[0] = DIM_LEN(n);
     rb_perm = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   perm = NA_PTR_TYPE(rb_perm, integer*);
   {
     int shape[2];
-    shape[0] = 2;
-    shape[1] = n;
+    shape[0] = DIM_LEN(2);
+    shape[1] = DIM_LEN(n);
     rb_givcol = na_make_object(NA_LINT, 2, shape, cNArray);
   }
   givcol = NA_PTR_TYPE(rb_givcol, integer*);

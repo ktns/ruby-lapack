@@ -139,13 +139,13 @@ rb_dlarrd(int argc, VALUE *argv, VALUE self){
   werr = NA_PTR_TYPE(rb_werr, doublereal*);
   {
     int shape[1];
-    shape[0] = n;
+    shape[0] = DIM_LEN(n);
     rb_iblock = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   iblock = NA_PTR_TYPE(rb_iblock, integer*);
   {
     int shape[1];
-    shape[0] = n;
+    shape[0] = DIM_LEN(n);
     rb_indexw = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   indexw = NA_PTR_TYPE(rb_indexw, integer*);

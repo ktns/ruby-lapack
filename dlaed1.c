@@ -88,7 +88,7 @@ rb_dlaed1(int argc, VALUE *argv, VALUE self){
   q = q_out__;
   {
     int shape[1];
-    shape[0] = n;
+    shape[0] = DIM_LEN(n);
     rb_indxq_out__ = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   indxq_out__ = NA_PTR_TYPE(rb_indxq_out__, integer*);

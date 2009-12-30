@@ -67,7 +67,7 @@ rb_slarra(int argc, VALUE *argv, VALUE self){
   e2 = NA_PTR_TYPE(rb_e2, real*);
   {
     int shape[1];
-    shape[0] = n;
+    shape[0] = DIM_LEN(n);
     rb_isplit = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   isplit = NA_PTR_TYPE(rb_isplit, integer*);

@@ -47,7 +47,7 @@ rb_dpstf2(int argc, VALUE *argv, VALUE self){
   a = NA_PTR_TYPE(rb_a, doublereal*);
   {
     int shape[1];
-    shape[0] = n;
+    shape[0] = DIM_LEN(n);
     rb_piv = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   piv = NA_PTR_TYPE(rb_piv, integer*);

@@ -141,13 +141,13 @@ rb_slasd2(int argc, VALUE *argv, VALUE self){
   vt2 = NA_PTR_TYPE(rb_vt2, real*);
   {
     int shape[1];
-    shape[0] = n;
+    shape[0] = DIM_LEN(n);
     rb_idxc = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   idxc = NA_PTR_TYPE(rb_idxc, integer*);
   {
     int shape[1];
-    shape[0] = n;
+    shape[0] = DIM_LEN(n);
     rb_coltyp = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   coltyp = NA_PTR_TYPE(rb_coltyp, integer*);
@@ -182,7 +182,7 @@ rb_slasd2(int argc, VALUE *argv, VALUE self){
   vt = vt_out__;
   {
     int shape[1];
-    shape[0] = n;
+    shape[0] = DIM_LEN(n);
     rb_idxq_out__ = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   idxq_out__ = NA_PTR_TYPE(rb_idxq_out__, integer*);

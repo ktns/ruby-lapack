@@ -45,7 +45,7 @@ rb_dgbtf2(int argc, VALUE *argv, VALUE self){
   ab = NA_PTR_TYPE(rb_ab, doublereal*);
   {
     int shape[1];
-    shape[0] = MIN(m,n);
+    shape[0] = DIM_LEN(MIN(m,n));
     rb_ipiv = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   ipiv = NA_PTR_TYPE(rb_ipiv, integer*);

@@ -89,7 +89,7 @@ rb_dlasd1(int argc, VALUE *argv, VALUE self){
   vt = NA_PTR_TYPE(rb_vt, doublereal*);
   {
     int shape[1];
-    shape[0] = n;
+    shape[0] = DIM_LEN(n);
     rb_idxq = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   idxq = NA_PTR_TYPE(rb_idxq, integer*);

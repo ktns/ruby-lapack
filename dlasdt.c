@@ -31,19 +31,19 @@ rb_dlasdt(int argc, VALUE *argv, VALUE self){
   msub = NUM2INT(rb_msub);
   {
     int shape[1];
-    shape[0] = MAX(1,n);
+    shape[0] = DIM_LEN(MAX(1,n));
     rb_inode = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   inode = NA_PTR_TYPE(rb_inode, integer*);
   {
     int shape[1];
-    shape[0] = MAX(1,n);
+    shape[0] = DIM_LEN(MAX(1,n));
     rb_ndiml = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   ndiml = NA_PTR_TYPE(rb_ndiml, integer*);
   {
     int shape[1];
-    shape[0] = MAX(1,n);
+    shape[0] = DIM_LEN(MAX(1,n));
     rb_ndimr = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   ndimr = NA_PTR_TYPE(rb_ndimr, integer*);

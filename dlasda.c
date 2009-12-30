@@ -102,7 +102,7 @@ rb_dlasda(int argc, VALUE *argv, VALUE self){
   vt = NA_PTR_TYPE(rb_vt, doublereal*);
   {
     int shape[1];
-    shape[0] = icompq == 1 ? n : icompq == 0 ? 1 : 0;
+    shape[0] = DIM_LEN(icompq == 1 ? n : icompq == 0 ? 1 : 0);
     rb_k = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   k = NA_PTR_TYPE(rb_k, integer*);
@@ -137,22 +137,22 @@ rb_dlasda(int argc, VALUE *argv, VALUE self){
   poles = NA_PTR_TYPE(rb_poles, doublereal*);
   {
     int shape[1];
-    shape[0] = n;
+    shape[0] = DIM_LEN(n);
     rb_givptr = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   givptr = NA_PTR_TYPE(rb_givptr, integer*);
   ldgcol = n;
   {
     int shape[2];
-    shape[0] = ldgcol;
-    shape[1] = 2 * nlvl;
+    shape[0] = DIM_LEN(ldgcol);
+    shape[1] = DIM_LEN(2 * nlvl);
     rb_givcol = na_make_object(NA_LINT, 2, shape, cNArray);
   }
   givcol = NA_PTR_TYPE(rb_givcol, integer*);
   {
     int shape[2];
-    shape[0] = ldgcol;
-    shape[1] = nlvl;
+    shape[0] = DIM_LEN(ldgcol);
+    shape[1] = DIM_LEN(nlvl);
     rb_perm = na_make_object(NA_LINT, 2, shape, cNArray);
   }
   perm = NA_PTR_TYPE(rb_perm, integer*);

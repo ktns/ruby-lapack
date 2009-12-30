@@ -120,13 +120,13 @@ rb_dhsein(int argc, VALUE *argv, VALUE self){
   vr = NA_PTR_TYPE(rb_vr, doublereal*);
   {
     int shape[1];
-    shape[0] = mm;
+    shape[0] = DIM_LEN(mm);
     rb_ifaill = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   ifaill = NA_PTR_TYPE(rb_ifaill, integer*);
   {
     int shape[1];
-    shape[0] = mm;
+    shape[0] = DIM_LEN(mm);
     rb_ifailr = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   ifailr = NA_PTR_TYPE(rb_ifailr, integer*);

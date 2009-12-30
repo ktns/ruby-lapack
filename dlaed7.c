@@ -169,7 +169,7 @@ rb_dlaed7(int argc, VALUE *argv, VALUE self){
   givnum = NA_PTR_TYPE(rb_givnum, doublereal*);
   {
     int shape[1];
-    shape[0] = n;
+    shape[0] = DIM_LEN(n);
     rb_indxq = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   indxq = NA_PTR_TYPE(rb_indxq, integer*);
@@ -203,7 +203,7 @@ rb_dlaed7(int argc, VALUE *argv, VALUE self){
   qstore = qstore_out__;
   {
     int shape[1];
-    shape[0] = n+2;
+    shape[0] = DIM_LEN(n+2);
     rb_qptr_out__ = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   qptr_out__ = NA_PTR_TYPE(rb_qptr_out__, integer*);

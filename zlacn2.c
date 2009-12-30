@@ -59,7 +59,7 @@ rb_zlacn2(int argc, VALUE *argv, VALUE self){
   x = x_out__;
   {
     int shape[1];
-    shape[0] = 3;
+    shape[0] = DIM_LEN(3);
     rb_isave_out__ = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   isave_out__ = NA_PTR_TYPE(rb_isave_out__, integer*);

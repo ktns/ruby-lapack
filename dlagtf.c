@@ -75,7 +75,7 @@ rb_dlagtf(int argc, VALUE *argv, VALUE self){
   d = NA_PTR_TYPE(rb_d, doublereal*);
   {
     int shape[1];
-    shape[0] = n;
+    shape[0] = DIM_LEN(n);
     rb_in = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   in = NA_PTR_TYPE(rb_in, integer*);

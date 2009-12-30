@@ -43,7 +43,7 @@ rb_slamrg(int argc, VALUE *argv, VALUE self){
   a = NA_PTR_TYPE(rb_a, real*);
   {
     int shape[1];
-    shape[0] = n1+n2;
+    shape[0] = DIM_LEN(n1+n2);
     rb_index = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   index = NA_PTR_TYPE(rb_index, integer*);

@@ -80,7 +80,7 @@ rb_cgeqp3(int argc, VALUE *argv, VALUE self){
   a = a_out__;
   {
     int shape[1];
-    shape[0] = n;
+    shape[0] = DIM_LEN(n);
     rb_jpvt_out__ = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   jpvt_out__ = NA_PTR_TYPE(rb_jpvt_out__, integer*);

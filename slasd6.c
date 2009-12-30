@@ -113,21 +113,21 @@ rb_slasd6(int argc, VALUE *argv, VALUE self){
   vl = NA_PTR_TYPE(rb_vl, real*);
   {
     int shape[1];
-    shape[0] = n;
+    shape[0] = DIM_LEN(n);
     rb_idxq = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   idxq = NA_PTR_TYPE(rb_idxq, integer*);
   {
     int shape[1];
-    shape[0] = n;
+    shape[0] = DIM_LEN(n);
     rb_perm = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   perm = NA_PTR_TYPE(rb_perm, integer*);
   ldgcol = n;
   {
     int shape[2];
-    shape[0] = ldgcol;
-    shape[1] = 2;
+    shape[0] = DIM_LEN(ldgcol);
+    shape[1] = DIM_LEN(2);
     rb_givcol = na_make_object(NA_LINT, 2, shape, cNArray);
   }
   givcol = NA_PTR_TYPE(rb_givcol, integer*);

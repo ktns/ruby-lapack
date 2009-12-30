@@ -92,7 +92,7 @@ rb_cstein(int argc, VALUE *argv, VALUE self){
   z = NA_PTR_TYPE(rb_z, complex*);
   {
     int shape[1];
-    shape[0] = m;
+    shape[0] = DIM_LEN(m);
     rb_ifail = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   ifail = NA_PTR_TYPE(rb_ifail, integer*);

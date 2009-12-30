@@ -119,7 +119,7 @@ rb_dggsvd(int argc, VALUE *argv, VALUE self){
   q = NA_PTR_TYPE(rb_q, doublereal*);
   {
     int shape[1];
-    shape[0] = n;
+    shape[0] = DIM_LEN(n);
     rb_iwork = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   iwork = NA_PTR_TYPE(rb_iwork, integer*);

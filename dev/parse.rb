@@ -2969,7 +2969,11 @@ EOF
             raise "undefined #{d}  #{name} #{sub_name}"
           end
         }
-        code << "    shape[#{k}] = #{dim};\n"
+        if type == "integer"
+          code << "    shape[#{k}] = DIM_LEN(#{dim});\n"
+        else
+          code << "    shape[#{k}] = #{dim};\n"
+        end
       }
       code +=<<"EOF"
     #{RBPREFIX}#{name} = na_make_object(#{NATYPES[type]}, #{dims.length}, shape, cNArray);
@@ -2993,7 +2997,11 @@ EOF
             raise "undefined #{d}  #{name} #{sub_name}"
           end
         }
-        code << "    shape[#{k}] = #{dim};\n"
+        if type == "integer"
+          code << "    shape[#{k}] = DIM_LEN(#{dim});\n"
+        else
+          code << "    shape[#{k}] = #{dim};\n"
+        end
       }
       code +=<<"EOF"
     #{RBPREFIX}#{name}_out__ = na_make_object(#{NATYPES[type]}, #{dims.length}, shape, cNArray);
@@ -3157,9 +3165,15 @@ def generate_code(fnames)
 #include "f2c.h"
 #include "clapack.h"
 
-#define MAX(a,b) a > b ? a : b
-#define MIN(a,b) a < b ? a : b
-#define LG(n) (int)ceil(log((double)n)/log(2.0))
+#define MAX(a,b) (a > b ? a : b)
+#define MIN(a,b) (a < b ? a : b)
+#define LG(n) ((int)ceil(log((double)n)/log(2.0)))
+
+#if SIZEOF_LONG == 8
+# define DIM_LEN(i) ((i)*2)
+#else
+# define DIM_LEN(i) (i)
+#endif
 
 extern logical lsame_(char *ca, char *cb);
 extern int cunmtr_(char *side, char *uplo, char *trans, integer *m, integer *n, complex *a, integer *lda, complex *tau, complex *c__, integer *ldc, complex *work, integer *lwork, integer *info);
@@ -3203,7 +3217,7 @@ end
 
 @@debug = ARGV.delete("--debug")
 
-dname = ARGV[0]
+dname = ARGV[0] || raise("Usage: ruby #$0 path_to_lapack_src")
 if File.directory?(dname)
 #  fnames = %w(sgees dgees cgees zgees sgeesx dgeesx cgeesx zgeesx sgges dgges cgges zgges sggesx dggesx cggesx zggesx).collect{|n| File.join("../lapack-3.1.1/SRC",n)+".f"}
 #  fnames = Dir[ File.join(dname,"*.f") ][0..10]

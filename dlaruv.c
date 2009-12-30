@@ -39,7 +39,7 @@ rb_dlaruv(int argc, VALUE *argv, VALUE self){
   x = NA_PTR_TYPE(rb_x, doublereal*);
   {
     int shape[1];
-    shape[0] = 4;
+    shape[0] = DIM_LEN(4);
     rb_iseed_out__ = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   iseed_out__ = NA_PTR_TYPE(rb_iseed_out__, integer*);

@@ -118,7 +118,7 @@ rb_zlar1v(int argc, VALUE *argv, VALUE self){
   z = NA_PTR_TYPE(rb_z, doublecomplex*);
   {
     int shape[1];
-    shape[0] = 2;
+    shape[0] = DIM_LEN(2);
     rb_isuppz = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   isuppz = NA_PTR_TYPE(rb_isuppz, integer*);

@@ -159,7 +159,7 @@ rb_stgsen(int argc, VALUE *argv, VALUE self){
   work = NA_PTR_TYPE(rb_work, real*);
   {
     int shape[1];
-    shape[0] = ijob==0 ? 0 : MAX(1,liwork);
+    shape[0] = DIM_LEN(ijob==0 ? 0 : MAX(1,liwork));
     rb_iwork = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   iwork = NA_PTR_TYPE(rb_iwork, integer*);

@@ -67,7 +67,7 @@ rb_sgttrf(int argc, VALUE *argv, VALUE self){
   du2 = NA_PTR_TYPE(rb_du2, real*);
   {
     int shape[1];
-    shape[0] = n;
+    shape[0] = DIM_LEN(n);
     rb_ipiv = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   ipiv = NA_PTR_TYPE(rb_ipiv, integer*);
