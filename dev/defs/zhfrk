@@ -1,0 +1,135 @@
+--- 
+:name: zhfrk
+:md5sum: f710d76bdfec0a51ef55bb6978763909
+:category: :subroutine
+:arguments: 
+- transr: 
+    :type: char
+    :intent: input
+- uplo: 
+    :type: char
+    :intent: input
+- trans: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- k: 
+    :type: integer
+    :intent: input
+- alpha: 
+    :type: doublereal
+    :intent: input
+- a: 
+    :type: doublecomplex
+    :intent: input
+    :dims:
+    - lda
+    - "lsame_(&trans,\"N\") ? k : n"
+- lda: 
+    :type: integer
+    :intent: input
+- beta: 
+    :type: doublereal
+    :intent: input
+- c: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - n*(n+1)/2
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE ZHFRK( TRANSR, UPLO, TRANS, N, K, ALPHA, A, LDA, BETA, C )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  Level 3 BLAS like routine for C in RFP Format.\n\
+  *\n\
+  *  ZHFRK performs one of the Hermitian rank--k operations\n\
+  *\n\
+  *     C := alpha*A*conjg( A' ) + beta*C,\n\
+  *\n\
+  *  or\n\
+  *\n\
+  *     C := alpha*conjg( A' )*A + beta*C,\n\
+  *\n\
+  *  where alpha and beta are real scalars, C is an n--by--n Hermitian\n\
+  *  matrix and A is an n--by--k matrix in the first case and a k--by--n\n\
+  *  matrix in the second case.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  ==========\n\
+  *\n\
+  *  TRANSR  (input) CHARACTER*1\n\
+  *          = 'N':  The Normal Form of RFP A is stored;\n\
+  *          = 'C':  The Conjugate-transpose Form of RFP A is stored.\n\
+  *\n\
+  *  UPLO    (input) CHARACTER*1\n\
+  *           On  entry,   UPLO  specifies  whether  the  upper  or  lower\n\
+  *           triangular  part  of the  array  C  is to be  referenced  as\n\
+  *           follows:\n\
+  *\n\
+  *              UPLO = 'U' or 'u'   Only the  upper triangular part of  C\n\
+  *                                  is to be referenced.\n\
+  *\n\
+  *              UPLO = 'L' or 'l'   Only the  lower triangular part of  C\n\
+  *                                  is to be referenced.\n\
+  *\n\
+  *           Unchanged on exit.\n\
+  *\n\
+  *  TRANS   (input) CHARACTER*1\n\
+  *           On entry,  TRANS  specifies the operation to be performed as\n\
+  *           follows:\n\
+  *\n\
+  *              TRANS = 'N' or 'n'   C := alpha*A*conjg( A' ) + beta*C.\n\
+  *\n\
+  *              TRANS = 'C' or 'c'   C := alpha*conjg( A' )*A + beta*C.\n\
+  *\n\
+  *           Unchanged on exit.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *           On entry,  N specifies the order of the matrix C.  N must be\n\
+  *           at least zero.\n\
+  *           Unchanged on exit.\n\
+  *\n\
+  *  K       (input) INTEGER\n\
+  *           On entry with  TRANS = 'N' or 'n',  K  specifies  the number\n\
+  *           of  columns   of  the   matrix   A,   and  on   entry   with\n\
+  *           TRANS = 'C' or 'c',  K  specifies  the number of rows of the\n\
+  *           matrix A.  K must be at least zero.\n\
+  *           Unchanged on exit.\n\
+  *\n\
+  *  ALPHA   (input) DOUBLE PRECISION\n\
+  *           On entry, ALPHA specifies the scalar alpha.\n\
+  *           Unchanged on exit.\n\
+  *\n\
+  *  A       (input) COMPLEX*16 array of DIMENSION (LDA,ka)\n\
+  *           where KA\n\
+  *           is K  when TRANS = 'N' or 'n', and is N otherwise. Before\n\
+  *           entry with TRANS = 'N' or 'n', the leading N--by--K part of\n\
+  *           the array A must contain the matrix A, otherwise the leading\n\
+  *           K--by--N part of the array A must contain the matrix A.\n\
+  *           Unchanged on exit.\n\
+  *\n\
+  *  LDA     (input) INTEGER\n\
+  *           On entry, LDA specifies the first dimension of A as declared\n\
+  *           in  the  calling  (sub)  program.   When  TRANS = 'N' or 'n'\n\
+  *           then  LDA must be at least  max( 1, n ), otherwise  LDA must\n\
+  *           be at least  max( 1, k ).\n\
+  *           Unchanged on exit.\n\
+  *\n\
+  *  BETA    (input) DOUBLE PRECISION\n\
+  *           On entry, BETA specifies the scalar beta.\n\
+  *           Unchanged on exit.\n\
+  *\n\
+  *  C       (input/output) COMPLEX*16 array, dimension (N*(N+1)/2)\n\
+  *           On entry, the matrix A in RFP Format. RFP Format is\n\
+  *           described by TRANSR, UPLO and N. Note that the imaginary\n\
+  *           parts of the diagonal elements need not be set, they are\n\
+  *           assumed to be zero, and on exit they are set to zero.\n\
+  *\n\
+  *  Arguments\n\
+  *  ==========\n\
+  *\n\
+  *     ..\n"

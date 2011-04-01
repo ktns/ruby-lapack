@@ -1,0 +1,77 @@
+--- 
+:name: zlanhs
+:md5sum: 0d7a937484d67bc8e510f66da14bec2f
+:type: doublereal
+:arguments: 
+- norm: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- work: 
+    :type: doublereal
+    :intent: workspace
+    :dims: 
+    - MAX(1,lwork)
+:substitutions: 
+  lwork: "lsame_(&norm,\"I\") ? n : 0"
+:fortran_help: "      DOUBLE PRECISION FUNCTION ZLANHS( NORM, N, A, LDA, WORK )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  ZLANHS  returns the value of the one norm,  or the Frobenius norm, or\n\
+  *  the  infinity norm,  or the  element of  largest absolute value  of a\n\
+  *  Hessenberg matrix A.\n\
+  *\n\
+  *  Description\n\
+  *  ===========\n\
+  *\n\
+  *  ZLANHS returns the value\n\
+  *\n\
+  *     ZLANHS = ( max(abs(A(i,j))), NORM = 'M' or 'm'\n\
+  *              (\n\
+  *              ( norm1(A),         NORM = '1', 'O' or 'o'\n\
+  *              (\n\
+  *              ( normI(A),         NORM = 'I' or 'i'\n\
+  *              (\n\
+  *              ( normF(A),         NORM = 'F', 'f', 'E' or 'e'\n\
+  *\n\
+  *  where  norm1  denotes the  one norm of a matrix (maximum column sum),\n\
+  *  normI  denotes the  infinity norm  of a matrix  (maximum row sum) and\n\
+  *  normF  denotes the  Frobenius norm of a matrix (square root of sum of\n\
+  *  squares).  Note that  max(abs(A(i,j)))  is not a consistent matrix norm.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  NORM    (input) CHARACTER*1\n\
+  *          Specifies the value to be returned in ZLANHS as described\n\
+  *          above.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix A.  N >= 0.  When N = 0, ZLANHS is\n\
+  *          set to zero.\n\
+  *\n\
+  *  A       (input) COMPLEX*16 array, dimension (LDA,N)\n\
+  *          The n by n upper Hessenberg matrix A; the part of A below the\n\
+  *          first sub-diagonal is not referenced.\n\
+  *\n\
+  *  LDA     (input) INTEGER\n\
+  *          The leading dimension of the array A.  LDA >= max(N,1).\n\
+  *\n\
+  *  WORK    (workspace) DOUBLE PRECISION array, dimension (MAX(1,LWORK)),\n\
+  *          where LWORK >= N when NORM = 'I'; otherwise, WORK is not\n\
+  *          referenced.\n\
+  *\n\n\
+  * =====================================================================\n\
+  *\n"

@@ -1,0 +1,88 @@
+--- 
+:name: clar2v
+:md5sum: 7ed20259419e6c0e94185c5273a1f5b6
+:category: :subroutine
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- x: 
+    :type: complex
+    :intent: input/output
+    :dims: 
+    - 1+(n-1)*incx
+- y: 
+    :type: complex
+    :intent: input/output
+    :dims: 
+    - 1+(n-1)*incx
+- z: 
+    :type: complex
+    :intent: input/output
+    :dims: 
+    - 1+(n-1)*incx
+- incx: 
+    :type: integer
+    :intent: input
+- c: 
+    :type: real
+    :intent: input
+    :dims: 
+    - 1+(n-1)*incc
+- s: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - 1+(n-1)*incc
+- incc: 
+    :type: integer
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE CLAR2V( N, X, Y, Z, INCX, C, S, INCC )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  CLAR2V applies a vector of complex plane rotations with real cosines\n\
+  *  from both sides to a sequence of 2-by-2 complex Hermitian matrices,\n\
+  *  defined by the elements of the vectors x, y and z. For i = 1,2,...,n\n\
+  *\n\
+  *     (       x(i)  z(i) ) :=\n\
+  *     ( conjg(z(i)) y(i) )\n\
+  *\n\
+  *       (  c(i) conjg(s(i)) ) (       x(i)  z(i) ) ( c(i) -conjg(s(i)) )\n\
+  *       ( -s(i)       c(i)  ) ( conjg(z(i)) y(i) ) ( s(i)        c(i)  )\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of plane rotations to be applied.\n\
+  *\n\
+  *  X       (input/output) COMPLEX array, dimension (1+(N-1)*INCX)\n\
+  *          The vector x; the elements of x are assumed to be real.\n\
+  *\n\
+  *  Y       (input/output) COMPLEX array, dimension (1+(N-1)*INCX)\n\
+  *          The vector y; the elements of y are assumed to be real.\n\
+  *\n\
+  *  Z       (input/output) COMPLEX array, dimension (1+(N-1)*INCX)\n\
+  *          The vector z.\n\
+  *\n\
+  *  INCX    (input) INTEGER\n\
+  *          The increment between elements of X, Y and Z. INCX > 0.\n\
+  *\n\
+  *  C       (input) REAL array, dimension (1+(N-1)*INCC)\n\
+  *          The cosines of the plane rotations.\n\
+  *\n\
+  *  S       (input) COMPLEX array, dimension (1+(N-1)*INCC)\n\
+  *          The sines of the plane rotations.\n\
+  *\n\
+  *  INCC    (input) INTEGER\n\
+  *          The increment between elements of C and S. INCC > 0.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            I, IC, IX\n      REAL               CI, SII, SIR, T1I, T1R, T5, T6, XI, YI, ZII,\n     $                   ZIR\n      COMPLEX            SI, T2, T3, T4, ZI\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          AIMAG, CMPLX, CONJG, REAL\n\
+  *     ..\n"

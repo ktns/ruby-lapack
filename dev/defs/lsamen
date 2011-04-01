@@ -1,0 +1,49 @@
+--- 
+:name: lsamen
+:md5sum: 436b27be921ef85dfbabbd827f65a5f1
+:type: logical
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- ca: 
+    :type: char
+    :intent: input
+    :dims: 
+    - "*"
+- cb: 
+    :type: char
+    :intent: input
+    :dims: 
+    - "*"
+:substitutions: {}
+
+:fortran_help: "      LOGICAL          FUNCTION LSAMEN( N, CA, CB )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  LSAMEN  tests if the first N letters of CA are the same as the\n\
+  *  first N letters of CB, regardless of case.\n\
+  *  LSAMEN returns .TRUE. if CA and CB are equivalent except for case\n\
+  *  and .FALSE. otherwise.  LSAMEN also returns .FALSE. if LEN( CA )\n\
+  *  or LEN( CB ) is less than N.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of characters in CA and CB to be compared.\n\
+  *\n\
+  *  CA      (input) CHARACTER*(*)\n\
+  *  CB      (input) CHARACTER*(*)\n\
+  *          CA and CB specify two character strings of length at least N.\n\
+  *          Only the first N characters of each string will be accessed.\n\
+  *\n\n\
+  * =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            I\n\
+  *     ..\n\
+  *     .. External Functions ..\n      LOGICAL            LSAME\n      EXTERNAL           LSAME\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          LEN\n\
+  *     ..\n"

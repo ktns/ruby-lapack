@@ -1,0 +1,109 @@
+--- 
+:name: zla_porcond_x
+:md5sum: 0fa4ca3979f7fa847286e416f8ffbeda
+:type: doublereal
+:arguments: 
+- uplo: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- af: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - ldaf
+    - n
+- ldaf: 
+    :type: integer
+    :intent: input
+- x: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - n
+- info: 
+    :type: integer
+    :intent: output
+- work: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - 2*n
+- rwork: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - n
+:substitutions: {}
+
+:fortran_help: "      DOUBLE PRECISION FUNCTION ZLA_PORCOND_X( UPLO, N, A, LDA, AF, LDAF, X, INFO, WORK, RWORK )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *     ZLA_PORCOND_X Computes the infinity norm condition number of\n\
+  *     op(A) * diag(X) where X is a COMPLEX*16 vector.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *     UPLO    (input) CHARACTER*1\n\
+  *       = 'U':  Upper triangle of A is stored;\n\
+  *       = 'L':  Lower triangle of A is stored.\n\
+  *\n\
+  *     N       (input) INTEGER\n\
+  *     The number of linear equations, i.e., the order of the\n\
+  *     matrix A.  N >= 0.\n\
+  *\n\
+  *     A       (input) COMPLEX*16 array, dimension (LDA,N)\n\
+  *     On entry, the N-by-N matrix A.\n\
+  *\n\
+  *     LDA     (input) INTEGER\n\
+  *     The leading dimension of the array A.  LDA >= max(1,N).\n\
+  *\n\
+  *     AF      (input) COMPLEX*16 array, dimension (LDAF,N)\n\
+  *     The triangular factor U or L from the Cholesky factorization\n\
+  *     A = U**T*U or A = L*L**T, as computed by ZPOTRF.\n\
+  *\n\
+  *     LDAF    (input) INTEGER\n\
+  *     The leading dimension of the array AF.  LDAF >= max(1,N).\n\
+  *\n\
+  *     X       (input) COMPLEX*16 array, dimension (N)\n\
+  *     The vector X in the formula op(A) * diag(X).\n\
+  *\n\
+  *     INFO    (output) INTEGER\n\
+  *       = 0:  Successful exit.\n\
+  *     i > 0:  The ith argument is invalid.\n\
+  *\n\
+  *     WORK    (input) COMPLEX*16 array, dimension (2*N).\n\
+  *     Workspace.\n\
+  *\n\
+  *     RWORK   (input) DOUBLE PRECISION array, dimension (N).\n\
+  *     Workspace.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            KASE, I, J\n      DOUBLE PRECISION   AINVNM, ANORM, TMP\n      LOGICAL            UP\n      COMPLEX*16         ZDUM\n\
+  *     ..\n\
+  *     .. Local Arrays ..\n      INTEGER            ISAVE( 3 )\n\
+  *     ..\n\
+  *     .. External Functions ..\n      LOGICAL            LSAME\n      EXTERNAL           LSAME\n\
+  *     ..\n\
+  *     .. External Subroutines ..\n      EXTERNAL           ZLACN2, ZPOTRS, XERBLA\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          ABS, MAX, REAL, DIMAG\n\
+  *     ..\n\
+  *     .. Statement Functions ..\n      DOUBLE PRECISION CABS1\n\
+  *     ..\n\
+  *     .. Statement Function Definitions ..\n      CABS1( ZDUM ) = ABS( DBLE( ZDUM ) ) + ABS( DIMAG( ZDUM ) )\n\
+  *     ..\n"

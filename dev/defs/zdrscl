@@ -1,0 +1,49 @@
+--- 
+:name: zdrscl
+:md5sum: e7cb13451d543134640cbced3e3cc991
+:category: :subroutine
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- sa: 
+    :type: doublereal
+    :intent: input
+- sx: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - 1+(n-1)*abs(incx)
+- incx: 
+    :type: integer
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE ZDRSCL( N, SA, SX, INCX )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  ZDRSCL multiplies an n-element complex vector x by the real scalar\n\
+  *  1/a.  This is done without overflow or underflow as long as\n\
+  *  the final result x/a does not overflow or underflow.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of components of the vector x.\n\
+  *\n\
+  *  SA      (input) DOUBLE PRECISION\n\
+  *          The scalar a which is used to divide each component of x.\n\
+  *          SA must be >= 0, or the subroutine will divide by zero.\n\
+  *\n\
+  *  SX      (input/output) COMPLEX*16 array, dimension\n\
+  *                         (1+(N-1)*abs(INCX))\n\
+  *          The n-element vector x.\n\
+  *\n\
+  *  INCX    (input) INTEGER\n\
+  *          The increment between successive values of the vector SX.\n\
+  *          > 0:  SX(1) = X(1) and SX(1+(i-1)*INCX) = x(i),     1< i<= n\n\
+  *\n\n\
+  * =====================================================================\n\
+  *\n"

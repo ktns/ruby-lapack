@@ -1,0 +1,54 @@
+--- 
+:name: izmax1
+:md5sum: 9594df1850d6464cd15f4e4b7161a5fa
+:type: integer
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- cx: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - n
+- incx: 
+    :type: integer
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      INTEGER          FUNCTION IZMAX1( N, CX, INCX )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  IZMAX1 finds the index of the element whose real part has maximum\n\
+  *  absolute value.\n\
+  *\n\
+  *  Based on IZAMAX from Level 1 BLAS.\n\
+  *  The change is to use the 'genuine' absolute value.\n\
+  *\n\
+  *  Contributed by Nick Higham for use with ZLACON.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of elements in the vector CX.\n\
+  *\n\
+  *  CX      (input) COMPLEX*16 array, dimension (N)\n\
+  *          The vector whose elements will be summed.\n\
+  *\n\
+  *  INCX    (input) INTEGER\n\
+  *          The spacing between successive values of CX.  INCX >= 1.\n\
+  *\n\n\
+  * =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            I, IX\n      DOUBLE PRECISION   SMAX\n      COMPLEX*16         ZDUM\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          ABS\n\
+  *     ..\n\
+  *     .. Statement Functions ..\n      DOUBLE PRECISION   CABS1\n\
+  *     ..\n\
+  *     .. Statement Function definitions ..\n\
+  *\n\
+  *     NEXT LINE IS THE ONLY MODIFICATION.\n      CABS1( ZDUM ) = ABS( ZDUM )\n\
+  *     ..\n"

@@ -1,0 +1,88 @@
+--- 
+:name: slasd5
+:md5sum: a7b9ae7360e5f962ed9cb997a7a2fa1d
+:category: :subroutine
+:arguments: 
+- i: 
+    :type: integer
+    :intent: input
+- d: 
+    :type: real
+    :intent: input
+    :dims: 
+    - "2"
+- z: 
+    :type: real
+    :intent: input
+    :dims: 
+    - "2"
+- delta: 
+    :type: real
+    :intent: output
+    :dims: 
+    - "2"
+- rho: 
+    :type: real
+    :intent: input
+- dsigma: 
+    :type: real
+    :intent: output
+- work: 
+    :type: real
+    :intent: workspace
+    :dims: 
+    - "2"
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE SLASD5( I, D, Z, DELTA, RHO, DSIGMA, WORK )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  This subroutine computes the square root of the I-th eigenvalue\n\
+  *  of a positive symmetric rank-one modification of a 2-by-2 diagonal\n\
+  *  matrix\n\
+  *\n\
+  *             diag( D ) * diag( D ) +  RHO *  Z * transpose(Z) .\n\
+  *\n\
+  *  The diagonal entries in the array D are assumed to satisfy\n\
+  *\n\
+  *             0 <= D(i) < D(j)  for  i < j .\n\
+  *\n\
+  *  We also assume RHO > 0 and that the Euclidean norm of the vector\n\
+  *  Z is one.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  I      (input) INTEGER\n\
+  *         The index of the eigenvalue to be computed.  I = 1 or I = 2.\n\
+  *\n\
+  *  D      (input) REAL array, dimension (2)\n\
+  *         The original eigenvalues.  We assume 0 <= D(1) < D(2).\n\
+  *\n\
+  *  Z      (input) REAL array, dimension (2)\n\
+  *         The components of the updating vector.\n\
+  *\n\
+  *  DELTA  (output) REAL array, dimension (2)\n\
+  *         Contains (D(j) - sigma_I) in its  j-th component.\n\
+  *         The vector DELTA contains the information necessary\n\
+  *         to construct the eigenvectors.\n\
+  *\n\
+  *  RHO    (input) REAL\n\
+  *         The scalar in the symmetric updating formula.\n\
+  *\n\
+  *  DSIGMA (output) REAL\n\
+  *         The computed sigma_I, the I-th updated eigenvalue.\n\
+  *\n\
+  *  WORK   (workspace) REAL array, dimension (2)\n\
+  *         WORK contains (D(j) + sigma_I) in its  j-th component.\n\
+  *\n\n\
+  *  Further Details\n\
+  *  ===============\n\
+  *\n\
+  *  Based on contributions by\n\
+  *     Ren-Cang Li, Computer Science Division, University of California\n\
+  *     at Berkeley, USA\n\
+  *\n\
+  *  =====================================================================\n\
+  *\n"

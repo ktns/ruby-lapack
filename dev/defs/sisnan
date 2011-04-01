@@ -1,0 +1,28 @@
+--- 
+:name: sisnan
+:md5sum: 59f568b95ecad80e459328f43736527e
+:type: logical
+:arguments: 
+- sin: 
+    :type: real
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      LOGICAL FUNCTION SISNAN( SIN )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  SISNAN returns .TRUE. if its argument is NaN, and .FALSE.\n\
+  *  otherwise.  To be replaced by the Fortran 2003 intrinsic in the\n\
+  *  future.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  SIN     (input) REAL\n\
+  *          Input to test for NaN.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *  .. External Functions ..\n      LOGICAL SLAISNAN\n      EXTERNAL SLAISNAN\n\
+  *  ..\n"

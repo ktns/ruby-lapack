@@ -1,0 +1,73 @@
+--- 
+:name: zlacrt
+:md5sum: 604f79f577cce40b1cf8d8abaa65ee99
+:category: :subroutine
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- cx: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - n
+- incx: 
+    :type: integer
+    :intent: input
+- cy: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - n
+- incy: 
+    :type: integer
+    :intent: input
+- c: 
+    :type: doublecomplex
+    :intent: input
+- s: 
+    :type: doublecomplex
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE ZLACRT( N, CX, INCX, CY, INCY, C, S )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  ZLACRT performs the operation\n\
+  *\n\
+  *     (  c  s )( x )  ==> ( x )\n\
+  *     ( -s  c )( y )      ( y )\n\
+  *\n\
+  *  where c and s are complex and the vectors x and y are complex.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of elements in the vectors CX and CY.\n\
+  *\n\
+  *  CX      (input/output) COMPLEX*16 array, dimension (N)\n\
+  *          On input, the vector x.\n\
+  *          On output, CX is overwritten with c*x + s*y.\n\
+  *\n\
+  *  INCX    (input) INTEGER\n\
+  *          The increment between successive values of CX.  INCX <> 0.\n\
+  *\n\
+  *  CY      (input/output) COMPLEX*16 array, dimension (N)\n\
+  *          On input, the vector y.\n\
+  *          On output, CY is overwritten with -s*x + c*y.\n\
+  *\n\
+  *  INCY    (input) INTEGER\n\
+  *          The increment between successive values of CY.  INCY <> 0.\n\
+  *\n\
+  *  C       (input) COMPLEX*16\n\
+  *  S       (input) COMPLEX*16\n\
+  *          C and S define the matrix\n\
+  *             [  C   S  ].\n\
+  *             [ -S   C  ]\n\
+  *\n\n\
+  * =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            I, IX, IY\n      COMPLEX*16         CTEMP\n\
+  *     ..\n"

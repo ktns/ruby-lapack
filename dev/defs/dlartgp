@@ -1,0 +1,62 @@
+--- 
+:name: dlartgp
+:md5sum: bed8b61858c5189bd7a27d2f840c6ce8
+:category: :subroutine
+:arguments: 
+- f: 
+    :type: doublereal
+    :intent: input
+- g: 
+    :type: doublereal
+    :intent: input
+- cs: 
+    :type: doublereal
+    :intent: output
+- sn: 
+    :type: doublereal
+    :intent: output
+- r: 
+    :type: doublereal
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE DLARTGP( F, G, CS, SN, R )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DLARTGP generates a plane rotation so that\n\
+  *\n\
+  *     [  CS  SN  ]  .  [ F ]  =  [ R ]   where CS**2 + SN**2 = 1.\n\
+  *     [ -SN  CS  ]     [ G ]     [ 0 ]\n\
+  *\n\
+  *  This is a slower, more accurate version of the Level 1 BLAS routine DROTG,\n\
+  *  with the following other differences:\n\
+  *     F and G are unchanged on return.\n\
+  *     If G=0, then CS=(+/-)1 and SN=0.\n\
+  *     If F=0 and (G .ne. 0), then CS=0 and SN=(+/-)1.\n\
+  *\n\
+  *  The sign is chosen so that R >= 0.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  F       (input) DOUBLE PRECISION\n\
+  *          The first component of vector to be rotated.\n\
+  *\n\
+  *  G       (input) DOUBLE PRECISION\n\
+  *          The second component of vector to be rotated.\n\
+  *\n\
+  *  CS      (output) DOUBLE PRECISION\n\
+  *          The cosine of the rotation.\n\
+  *\n\
+  *  SN      (output) DOUBLE PRECISION\n\
+  *          The sine of the rotation.\n\
+  *\n\
+  *  R       (output) DOUBLE PRECISION\n\
+  *          The nonzero component of the rotated vector.\n\
+  *\n\
+  *  This version has a few statements commented out for thread safety\n\
+  *  (machine parameters are computed on each entry). 10 feb 03, SJH.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

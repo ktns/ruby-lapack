@@ -1,0 +1,108 @@
+--- 
+:name: slags2
+:md5sum: 33da975bfa8208d409d3b33a3fa68c1d
+:category: :subroutine
+:arguments: 
+- upper: 
+    :type: logical
+    :intent: input
+- a1: 
+    :type: real
+    :intent: input
+- a2: 
+    :type: real
+    :intent: input
+- a3: 
+    :type: real
+    :intent: input
+- b1: 
+    :type: real
+    :intent: input
+- b2: 
+    :type: real
+    :intent: input
+- b3: 
+    :type: real
+    :intent: input
+- csu: 
+    :type: real
+    :intent: output
+- snu: 
+    :type: real
+    :intent: output
+- csv: 
+    :type: real
+    :intent: output
+- snv: 
+    :type: real
+    :intent: output
+- csq: 
+    :type: real
+    :intent: output
+- snq: 
+    :type: real
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE SLAGS2( UPPER, A1, A2, A3, B1, B2, B3, CSU, SNU, CSV, SNV, CSQ, SNQ )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  SLAGS2 computes 2-by-2 orthogonal matrices U, V and Q, such\n\
+  *  that if ( UPPER ) then\n\
+  *\n\
+  *            U'*A*Q = U'*( A1 A2 )*Q = ( x  0  )\n\
+  *                        ( 0  A3 )     ( x  x  )\n\
+  *  and\n\
+  *            V'*B*Q = V'*( B1 B2 )*Q = ( x  0  )\n\
+  *                        ( 0  B3 )     ( x  x  )\n\
+  *\n\
+  *  or if ( .NOT.UPPER ) then\n\
+  *\n\
+  *            U'*A*Q = U'*( A1 0  )*Q = ( x  x  )\n\
+  *                        ( A2 A3 )     ( 0  x  )\n\
+  *  and\n\
+  *            V'*B*Q = V'*( B1 0  )*Q = ( x  x  )\n\
+  *                        ( B2 B3 )     ( 0  x  )\n\
+  *\n\
+  *  The rows of the transformed A and B are parallel, where\n\
+  *\n\
+  *    U = (  CSU  SNU ), V = (  CSV SNV ), Q = (  CSQ   SNQ )\n\
+  *        ( -SNU  CSU )      ( -SNV CSV )      ( -SNQ   CSQ )\n\
+  *\n\
+  *  Z' denotes the transpose of Z.\n\
+  *\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  UPPER   (input) LOGICAL\n\
+  *          = .TRUE.: the input matrices A and B are upper triangular.\n\
+  *          = .FALSE.: the input matrices A and B are lower triangular.\n\
+  *\n\
+  *  A1      (input) REAL\n\
+  *  A2      (input) REAL\n\
+  *  A3      (input) REAL\n\
+  *          On entry, A1, A2 and A3 are elements of the input 2-by-2\n\
+  *          upper (lower) triangular matrix A.\n\
+  *\n\
+  *  B1      (input) REAL\n\
+  *  B2      (input) REAL\n\
+  *  B3      (input) REAL\n\
+  *          On entry, B1, B2 and B3 are elements of the input 2-by-2\n\
+  *          upper (lower) triangular matrix B.\n\
+  *\n\
+  *  CSU     (output) REAL\n\
+  *  SNU     (output) REAL\n\
+  *          The desired orthogonal matrix U.\n\
+  *\n\
+  *  CSV     (output) REAL\n\
+  *  SNV     (output) REAL\n\
+  *          The desired orthogonal matrix V.\n\
+  *\n\
+  *  CSQ     (output) REAL\n\
+  *  SNQ     (output) REAL\n\
+  *          The desired orthogonal matrix Q.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

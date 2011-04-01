@@ -1,0 +1,29 @@
+--- 
+:name: disnan
+:md5sum: 6226d5dde19479c96fbf22f35fdf0c6c
+:category: :function
+:type: logical
+:arguments: 
+- din: 
+    :type: doublereal
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      LOGICAL FUNCTION DISNAN( DIN )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DISNAN returns .TRUE. if its argument is NaN, and .FALSE.\n\
+  *  otherwise.  To be replaced by the Fortran 2003 intrinsic in the\n\
+  *  future.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  DIN     (input) DOUBLE PRECISION\n\
+  *          Input to test for NaN.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *  .. External Functions ..\n      LOGICAL DLAISNAN\n      EXTERNAL DLAISNAN\n\
+  *  ..\n"

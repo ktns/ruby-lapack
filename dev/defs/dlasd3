@@ -1,0 +1,213 @@
+--- 
+:name: dlasd3
+:md5sum: eea845f53351b22e245c27f4d81cd078
+:category: :subroutine
+:arguments: 
+- nl: 
+    :type: integer
+    :intent: input
+- nr: 
+    :type: integer
+    :intent: input
+- sqre: 
+    :type: integer
+    :intent: input
+- k: 
+    :type: integer
+    :intent: input
+- d: 
+    :type: doublereal
+    :intent: output
+    :dims: 
+    - k
+- q: 
+    :type: doublereal
+    :intent: workspace
+    :dims: 
+    - ldq
+    - k
+- ldq: 
+    :type: integer
+    :intent: input
+- dsigma: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - k
+- u: 
+    :type: doublereal
+    :intent: output
+    :dims: 
+    - ldu
+    - n
+- ldu: 
+    :type: integer
+    :intent: input
+- u2: 
+    :type: doublereal
+    :intent: input/output
+    :dims: 
+    - ldu2
+    - n
+- ldu2: 
+    :type: integer
+    :intent: input
+- vt: 
+    :type: doublereal
+    :intent: output
+    :dims: 
+    - ldvt
+    - m
+- ldvt: 
+    :type: integer
+    :intent: input
+- vt2: 
+    :type: doublereal
+    :intent: input/output
+    :dims: 
+    - ldvt2
+    - n
+- ldvt2: 
+    :type: integer
+    :intent: input
+- idxc: 
+    :type: integer
+    :intent: input
+    :dims: 
+    - n
+- ctot: 
+    :type: integer
+    :intent: input
+    :dims: 
+    - "4"
+- z: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - k
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: 
+  m: n + sqre
+  ldq: k
+  n: nl + nr + 1
+  ldu2: n
+  ldvt: n
+  ldvt2: n
+  ldu: n
+:fortran_help: "      SUBROUTINE DLASD3( NL, NR, SQRE, K, D, Q, LDQ, DSIGMA, U, LDU, U2, LDU2, VT, LDVT, VT2, LDVT2, IDXC, CTOT, Z, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DLASD3 finds all the square roots of the roots of the secular\n\
+  *  equation, as defined by the values in D and Z.  It makes the\n\
+  *  appropriate calls to DLASD4 and then updates the singular\n\
+  *  vectors by matrix multiplication.\n\
+  *\n\
+  *  This code makes very mild assumptions about floating point\n\
+  *  arithmetic. It will work on machines with a guard digit in\n\
+  *  add/subtract, or on those binary machines without guard digits\n\
+  *  which subtract like the Cray XMP, Cray YMP, Cray C 90, or Cray 2.\n\
+  *  It could conceivably fail on hexadecimal or decimal machines\n\
+  *  without guard digits, but we know of none.\n\
+  *\n\
+  *  DLASD3 is called from DLASD1.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  NL     (input) INTEGER\n\
+  *         The row dimension of the upper block.  NL >= 1.\n\
+  *\n\
+  *  NR     (input) INTEGER\n\
+  *         The row dimension of the lower block.  NR >= 1.\n\
+  *\n\
+  *  SQRE   (input) INTEGER\n\
+  *         = 0: the lower block is an NR-by-NR square matrix.\n\
+  *         = 1: the lower block is an NR-by-(NR+1) rectangular matrix.\n\
+  *\n\
+  *         The bidiagonal matrix has N = NL + NR + 1 rows and\n\
+  *         M = N + SQRE >= N columns.\n\
+  *\n\
+  *  K      (input) INTEGER\n\
+  *         The size of the secular equation, 1 =< K = < N.\n\
+  *\n\
+  *  D      (output) DOUBLE PRECISION array, dimension(K)\n\
+  *         On exit the square roots of the roots of the secular equation,\n\
+  *         in ascending order.\n\
+  *\n\
+  *  Q      (workspace) DOUBLE PRECISION array,\n\
+  *                     dimension at least (LDQ,K).\n\
+  *\n\
+  *  LDQ    (input) INTEGER\n\
+  *         The leading dimension of the array Q.  LDQ >= K.\n\
+  *\n\
+  *  DSIGMA (input) DOUBLE PRECISION array, dimension(K)\n\
+  *         The first K elements of this array contain the old roots\n\
+  *         of the deflated updating problem.  These are the poles\n\
+  *         of the secular equation.\n\
+  *\n\
+  *  U      (output) DOUBLE PRECISION array, dimension (LDU, N)\n\
+  *         The last N - K columns of this matrix contain the deflated\n\
+  *         left singular vectors.\n\
+  *\n\
+  *  LDU    (input) INTEGER\n\
+  *         The leading dimension of the array U.  LDU >= N.\n\
+  *\n\
+  *  U2     (input/output) DOUBLE PRECISION array, dimension (LDU2, N)\n\
+  *         The first K columns of this matrix contain the non-deflated\n\
+  *         left singular vectors for the split problem.\n\
+  *\n\
+  *  LDU2   (input) INTEGER\n\
+  *         The leading dimension of the array U2.  LDU2 >= N.\n\
+  *\n\
+  *  VT     (output) DOUBLE PRECISION array, dimension (LDVT, M)\n\
+  *         The last M - K columns of VT' contain the deflated\n\
+  *         right singular vectors.\n\
+  *\n\
+  *  LDVT   (input) INTEGER\n\
+  *         The leading dimension of the array VT.  LDVT >= N.\n\
+  *\n\
+  *  VT2    (input/output) DOUBLE PRECISION array, dimension (LDVT2, N)\n\
+  *         The first K columns of VT2' contain the non-deflated\n\
+  *         right singular vectors for the split problem.\n\
+  *\n\
+  *  LDVT2  (input) INTEGER\n\
+  *         The leading dimension of the array VT2.  LDVT2 >= N.\n\
+  *\n\
+  *  IDXC   (input) INTEGER array, dimension ( N )\n\
+  *         The permutation used to arrange the columns of U (and rows of\n\
+  *         VT) into three groups:  the first group contains non-zero\n\
+  *         entries only at and above (or before) NL +1; the second\n\
+  *         contains non-zero entries only at and below (or after) NL+2;\n\
+  *         and the third is dense. The first column of U and the row of\n\
+  *         VT are treated separately, however.\n\
+  *\n\
+  *         The rows of the singular vectors found by DLASD4\n\
+  *         must be likewise permuted before the matrix multiplies can\n\
+  *         take place.\n\
+  *\n\
+  *  CTOT   (input) INTEGER array, dimension ( 4 )\n\
+  *         A count of the total number of the various types of columns\n\
+  *         in U (or rows in VT), as described in IDXC. The fourth column\n\
+  *         type is any column which has been deflated.\n\
+  *\n\
+  *  Z      (input) DOUBLE PRECISION array, dimension (K)\n\
+  *         The first K elements of this array contain the components\n\
+  *         of the deflation-adjusted updating row vector.\n\
+  *\n\
+  *  INFO   (output) INTEGER\n\
+  *         = 0:  successful exit.\n\
+  *         < 0:  if INFO = -i, the i-th argument had an illegal value.\n\
+  *         > 0:  if INFO = 1, a singular value did not converge\n\
+  *\n\n\
+  *  Further Details\n\
+  *  ===============\n\
+  *\n\
+  *  Based on contributions by\n\
+  *     Ming Gu and Huan Ren, Computer Science Division, University of\n\
+  *     California at Berkeley, USA\n\
+  *\n\
+  *  =====================================================================\n\
+  *\n"

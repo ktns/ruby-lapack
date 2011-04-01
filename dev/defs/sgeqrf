@@ -1,0 +1,112 @@
+--- 
+:name: sgeqrf
+:md5sum: a14be5141cf6a70a428306a636c55c81
+:category: :subroutine
+:arguments: 
+- m: 
+    :type: integer
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: real
+    :intent: input/output
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- tau: 
+    :type: real
+    :intent: output
+    :dims: 
+    - MIN(m,n)
+- work: 
+    :type: real
+    :intent: output
+    :dims: 
+    - MAX(1,lwork)
+- lwork: 
+    :type: integer
+    :intent: input
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE SGEQRF( M, N, A, LDA, TAU, WORK, LWORK, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  SGEQRF computes a QR factorization of a real M-by-N matrix A:\n\
+  *  A = Q * R.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  M       (input) INTEGER\n\
+  *          The number of rows of the matrix A.  M >= 0.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of columns of the matrix A.  N >= 0.\n\
+  *\n\
+  *  A       (input/output) REAL array, dimension (LDA,N)\n\
+  *          On entry, the M-by-N matrix A.\n\
+  *          On exit, the elements on and above the diagonal of the array\n\
+  *          contain the min(M,N)-by-N upper trapezoidal matrix R (R is\n\
+  *          upper triangular if m >= n); the elements below the diagonal,\n\
+  *          with the array TAU, represent the orthogonal matrix Q as a\n\
+  *          product of min(m,n) elementary reflectors (see Further\n\
+  *          Details).\n\
+  *\n\
+  *  LDA     (input) INTEGER\n\
+  *          The leading dimension of the array A.  LDA >= max(1,M).\n\
+  *\n\
+  *  TAU     (output) REAL array, dimension (min(M,N))\n\
+  *          The scalar factors of the elementary reflectors (see Further\n\
+  *          Details).\n\
+  *\n\
+  *  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))\n\
+  *          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.\n\
+  *\n\
+  *  LWORK   (input) INTEGER\n\
+  *          The dimension of the array WORK.  LWORK >= max(1,N).\n\
+  *          For optimum performance LWORK >= N*NB, where NB is \n\
+  *          the optimal blocksize.\n\
+  *\n\
+  *          If LWORK = -1, then a workspace query is assumed; the routine\n\
+  *          only calculates the optimal size of the WORK array, returns\n\
+  *          this value as the first entry of the WORK array, and no error\n\
+  *          message related to LWORK is issued by XERBLA.\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value\n\
+  *\n\n\
+  *  Further Details\n\
+  *  ===============\n\
+  *\n\
+  *  The matrix Q is represented as a product of elementary reflectors\n\
+  *\n\
+  *     Q = H(1) H(2) . . . H(k), where k = min(m,n).\n\
+  *\n\
+  *  Each H(i) has the form\n\
+  *\n\
+  *     H(i) = I - tau * v * v'\n\
+  *\n\
+  *  where tau is a real scalar, and v is a real vector with\n\
+  *  v(1:i-1) = 0 and v(i) = 1; v(i+1:m) is stored on exit in A(i+1:m,i),\n\
+  *  and tau in TAU(i).\n\
+  *\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      LOGICAL            LQUERY\n      INTEGER            I, IB, IINFO, IWS, K, LDWORK, LWKOPT, NB,\n     $                   NBMIN, NX\n\
+  *     ..\n\
+  *     .. External Subroutines ..\n      EXTERNAL           SGEQR2, SLARFB, SLARFT, XERBLA\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          MAX, MIN\n\
+  *     ..\n\
+  *     .. External Functions ..\n      INTEGER            ILAENV\n      EXTERNAL           ILAENV\n\
+  *     ..\n"

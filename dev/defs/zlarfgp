@@ -1,0 +1,69 @@
+--- 
+:name: zlarfgp
+:md5sum: 8380298bf6ea2a06c5eba285dbcf2805
+:category: :subroutine
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- alpha: 
+    :type: doublecomplex
+    :intent: input/output
+- x: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - 1+(n-2)*abs(incx)
+- incx: 
+    :type: integer
+    :intent: input
+- tau: 
+    :type: doublecomplex
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE ZLARFGP( N, ALPHA, X, INCX, TAU )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  ZLARFGP generates a complex elementary reflector H of order n, such\n\
+  *  that\n\
+  *\n\
+  *        H' * ( alpha ) = ( beta ),   H' * H = I.\n\
+  *             (   x   )   (   0  )\n\
+  *\n\
+  *  where alpha and beta are scalars, beta is real and non-negative, and\n\
+  *  x is an (n-1)-element complex vector.  H is represented in the form\n\
+  *\n\
+  *        H = I - tau * ( 1 ) * ( 1 v' ) ,\n\
+  *                      ( v )\n\
+  *\n\
+  *  where tau is a complex scalar and v is a complex (n-1)-element\n\
+  *  vector. Note that H is not hermitian.\n\
+  *\n\
+  *  If the elements of x are all zero and alpha is real, then tau = 0\n\
+  *  and H is taken to be the unit matrix.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the elementary reflector.\n\
+  *\n\
+  *  ALPHA   (input/output) COMPLEX*16\n\
+  *          On entry, the value alpha.\n\
+  *          On exit, it is overwritten with the value beta.\n\
+  *\n\
+  *  X       (input/output) COMPLEX*16 array, dimension\n\
+  *                         (1+(N-2)*abs(INCX))\n\
+  *          On entry, the vector x.\n\
+  *          On exit, it is overwritten with the vector v.\n\
+  *\n\
+  *  INCX    (input) INTEGER\n\
+  *          The increment between elements of X. INCX > 0.\n\
+  *\n\
+  *  TAU     (output) COMPLEX*16\n\
+  *          The value tau.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

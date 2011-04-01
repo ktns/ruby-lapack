@@ -1,0 +1,73 @@
+--- 
+:name: clapmr
+:md5sum: 4d207b45c2fb96e99248c500f5cadba8
+:category: :subroutine
+:arguments: 
+- forwrd: 
+    :type: logical
+    :intent: input
+- m: 
+    :type: integer
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- x: 
+    :type: complex
+    :intent: input/output
+    :dims: 
+    - ldx
+    - n
+- ldx: 
+    :type: integer
+    :intent: input
+- k: 
+    :type: integer
+    :intent: input/output
+    :dims: 
+    - m
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE CLAPMR( FORWRD, M, N, X, LDX, K )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  CLAPMR rearranges the rows of the M by N matrix X as specified\n\
+  *  by the permutation K(1),K(2),...,K(M) of the integers 1,...,M.\n\
+  *  If FORWRD = .TRUE.,  forward permutation:\n\
+  *\n\
+  *       X(K(I),*) is moved X(I,*) for I = 1,2,...,M.\n\
+  *\n\
+  *  If FORWRD = .FALSE., backward permutation:\n\
+  *\n\
+  *       X(I,*) is moved to X(K(I),*) for I = 1,2,...,M.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  FORWRD  (input) LOGICAL\n\
+  *          = .TRUE., forward permutation\n\
+  *          = .FALSE., backward permutation\n\
+  *\n\
+  *  M       (input) INTEGER\n\
+  *          The number of rows of the matrix X. M >= 0.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of columns of the matrix X. N >= 0.\n\
+  *\n\
+  *  X       (input/output) COMPLEX array, dimension (LDX,N)\n\
+  *          On entry, the M by N matrix X.\n\
+  *          On exit, X contains the permuted matrix X.\n\
+  *\n\
+  *  LDX     (input) INTEGER\n\
+  *          The leading dimension of the array X, LDX >= MAX(1,M).\n\
+  *\n\
+  *  K       (input/output) INTEGER array, dimension (M)\n\
+  *          On entry, K contains the permutation vector. K is used as\n\
+  *          internal workspace, but reset to its original value on\n\
+  *          output.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            I, IN, J, JJ\n      COMPLEX            TEMP\n\
+  *     ..\n"

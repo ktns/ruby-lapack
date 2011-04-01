@@ -1,0 +1,71 @@
+--- 
+:name: dla_rpvgrw
+:md5sum: f34d9e53195025ba4075345e34febe49
+:type: doublereal
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- ncols: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- af: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - ldaf
+    - n
+- ldaf: 
+    :type: integer
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      DOUBLE PRECISION FUNCTION DLA_RPVGRW( N, NCOLS, A, LDA, AF, LDAF )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  * \n\
+  *  DLA_RPVGRW computes the reciprocal pivot growth factor\n\
+  *  norm(A)/norm(U). The \"max absolute element\" norm is used. If this is\n\
+  *  much less than 1, the stability of the LU factorization of the\n\
+  *  (equilibrated) matrix A could be poor. This also means that the\n\
+  *  solution X, estimated condition numbers, and error bounds could be\n\
+  *  unreliable.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *     N       (input) INTEGER\n\
+  *     The number of linear equations, i.e., the order of the\n\
+  *     matrix A.  N >= 0.\n\
+  *\n\
+  *     NCOLS   (input) INTEGER\n\
+  *     The number of columns of the matrix A. NCOLS >= 0.\n\
+  *\n\
+  *     A       (input) DOUBLE PRECISION array, dimension (LDA,N)\n\
+  *     On entry, the N-by-N matrix A.\n\
+  *\n\
+  *     LDA     (input) INTEGER\n\
+  *     The leading dimension of the array A.  LDA >= max(1,N).\n\
+  *\n\
+  *     AF      (input) DOUBLE PRECISION array, dimension (LDAF,N)\n\
+  *     The factors L and U from the factorization\n\
+  *     A = P*L*U as computed by DGETRF.\n\
+  *\n\
+  *     LDAF    (input) INTEGER\n\
+  *     The leading dimension of the array AF.  LDAF >= max(1,N).\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            I, J\n      DOUBLE PRECISION   AMAX, UMAX, RPVGRW\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          ABS, MAX, MIN\n\
+  *     ..\n"

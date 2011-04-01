@@ -1,0 +1,68 @@
+--- 
+:name: dlassq
+:md5sum: 3c1c556bdf9d5d6e44e32c35fd990d30
+:category: :subroutine
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- x: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - n
+- incx: 
+    :type: integer
+    :intent: input
+- scale: 
+    :type: doublereal
+    :intent: input/output
+- sumsq: 
+    :type: doublereal
+    :intent: input/output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE DLASSQ( N, X, INCX, SCALE, SUMSQ )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DLASSQ  returns the values  scl  and  smsq  such that\n\
+  *\n\
+  *     ( scl**2 )*smsq = x( 1 )**2 +...+ x( n )**2 + ( scale**2 )*sumsq,\n\
+  *\n\
+  *  where  x( i ) = X( 1 + ( i - 1 )*INCX ). The value of  sumsq  is\n\
+  *  assumed to be non-negative and  scl  returns the value\n\
+  *\n\
+  *     scl = max( scale, abs( x( i ) ) ).\n\
+  *\n\
+  *  scale and sumsq must be supplied in SCALE and SUMSQ and\n\
+  *  scl and smsq are overwritten on SCALE and SUMSQ respectively.\n\
+  *\n\
+  *  The routine makes only one pass through the vector x.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of elements to be used from the vector X.\n\
+  *\n\
+  *  X       (input) DOUBLE PRECISION array, dimension (N)\n\
+  *          The vector for which a scaled sum of squares is computed.\n\
+  *             x( i )  = X( 1 + ( i - 1 )*INCX ), 1 <= i <= n.\n\
+  *\n\
+  *  INCX    (input) INTEGER\n\
+  *          The increment between successive values of the vector X.\n\
+  *          INCX > 0.\n\
+  *\n\
+  *  SCALE   (input/output) DOUBLE PRECISION\n\
+  *          On entry, the value  scale  in the equation above.\n\
+  *          On exit, SCALE is overwritten with  scl , the scaling factor\n\
+  *          for the sum of squares.\n\
+  *\n\
+  *  SUMSQ   (input/output) DOUBLE PRECISION\n\
+  *          On entry, the value  sumsq  in the equation above.\n\
+  *          On exit, SUMSQ is overwritten with  smsq , the basic sum of\n\
+  *          squares from which  scl  has been factored out.\n\
+  *\n\n\
+  * =====================================================================\n\
+  *\n"

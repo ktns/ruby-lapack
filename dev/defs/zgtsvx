@@ -1,0 +1,275 @@
+--- 
+:name: zgtsvx
+:md5sum: 898a2cdb954f54175f3ed1880fdf619e
+:category: :subroutine
+:arguments: 
+- fact: 
+    :type: char
+    :intent: input
+- trans: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- nrhs: 
+    :type: integer
+    :intent: input
+- dl: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - n-1
+- d: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - n
+- du: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - n-1
+- dlf: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - n-1
+- df: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - n
+- duf: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - n-1
+- du2: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - n-2
+- ipiv: 
+    :type: integer
+    :intent: input/output
+    :dims: 
+    - n
+- b: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - ldb
+    - nrhs
+- ldb: 
+    :type: integer
+    :intent: input
+- x: 
+    :type: doublecomplex
+    :intent: output
+    :dims: 
+    - ldx
+    - nrhs
+- ldx: 
+    :type: integer
+    :intent: input
+- rcond: 
+    :type: doublereal
+    :intent: output
+- ferr: 
+    :type: doublereal
+    :intent: output
+    :dims: 
+    - nrhs
+- berr: 
+    :type: doublereal
+    :intent: output
+    :dims: 
+    - nrhs
+- work: 
+    :type: doublecomplex
+    :intent: workspace
+    :dims: 
+    - 2*n
+- rwork: 
+    :type: doublereal
+    :intent: workspace
+    :dims: 
+    - n
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: 
+  ldx: MAX(1,n)
+:fortran_help: "      SUBROUTINE ZGTSVX( FACT, TRANS, N, NRHS, DL, D, DU, DLF, DF, DUF, DU2, IPIV, B, LDB, X, LDX, RCOND, FERR, BERR, WORK, RWORK, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  ZGTSVX uses the LU factorization to compute the solution to a complex\n\
+  *  system of linear equations A * X = B, A**T * X = B, or A**H * X = B,\n\
+  *  where A is a tridiagonal matrix of order N and X and B are N-by-NRHS\n\
+  *  matrices.\n\
+  *\n\
+  *  Error bounds on the solution and a condition estimate are also\n\
+  *  provided.\n\
+  *\n\
+  *  Description\n\
+  *  ===========\n\
+  *\n\
+  *  The following steps are performed:\n\
+  *\n\
+  *  1. If FACT = 'N', the LU decomposition is used to factor the matrix A\n\
+  *     as A = L * U, where L is a product of permutation and unit lower\n\
+  *     bidiagonal matrices and U is upper triangular with nonzeros in\n\
+  *     only the main diagonal and first two superdiagonals.\n\
+  *\n\
+  *  2. If some U(i,i)=0, so that U is exactly singular, then the routine\n\
+  *     returns with INFO = i. Otherwise, the factored form of A is used\n\
+  *     to estimate the condition number of the matrix A.  If the\n\
+  *     reciprocal of the condition number is less than machine precision,\n\
+  *     INFO = N+1 is returned as a warning, but the routine still goes on\n\
+  *     to solve for X and compute error bounds as described below.\n\
+  *\n\
+  *  3. The system of equations is solved for X using the factored form\n\
+  *     of A.\n\
+  *\n\
+  *  4. Iterative refinement is applied to improve the computed solution\n\
+  *     matrix and calculate error bounds and backward error estimates\n\
+  *     for it.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  FACT    (input) CHARACTER*1\n\
+  *          Specifies whether or not the factored form of A has been\n\
+  *          supplied on entry.\n\
+  *          = 'F':  DLF, DF, DUF, DU2, and IPIV contain the factored form\n\
+  *                  of A; DL, D, DU, DLF, DF, DUF, DU2 and IPIV will not\n\
+  *                  be modified.\n\
+  *          = 'N':  The matrix will be copied to DLF, DF, and DUF\n\
+  *                  and factored.\n\
+  *\n\
+  *  TRANS   (input) CHARACTER*1\n\
+  *          Specifies the form of the system of equations:\n\
+  *          = 'N':  A * X = B     (No transpose)\n\
+  *          = 'T':  A**T * X = B  (Transpose)\n\
+  *          = 'C':  A**H * X = B  (Conjugate transpose)\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix A.  N >= 0.\n\
+  *\n\
+  *  NRHS    (input) INTEGER\n\
+  *          The number of right hand sides, i.e., the number of columns\n\
+  *          of the matrix B.  NRHS >= 0.\n\
+  *\n\
+  *  DL      (input) COMPLEX*16 array, dimension (N-1)\n\
+  *          The (n-1) subdiagonal elements of A.\n\
+  *\n\
+  *  D       (input) COMPLEX*16 array, dimension (N)\n\
+  *          The n diagonal elements of A.\n\
+  *\n\
+  *  DU      (input) COMPLEX*16 array, dimension (N-1)\n\
+  *          The (n-1) superdiagonal elements of A.\n\
+  *\n\
+  *  DLF     (input or output) COMPLEX*16 array, dimension (N-1)\n\
+  *          If FACT = 'F', then DLF is an input argument and on entry\n\
+  *          contains the (n-1) multipliers that define the matrix L from\n\
+  *          the LU factorization of A as computed by ZGTTRF.\n\
+  *\n\
+  *          If FACT = 'N', then DLF is an output argument and on exit\n\
+  *          contains the (n-1) multipliers that define the matrix L from\n\
+  *          the LU factorization of A.\n\
+  *\n\
+  *  DF      (input or output) COMPLEX*16 array, dimension (N)\n\
+  *          If FACT = 'F', then DF is an input argument and on entry\n\
+  *          contains the n diagonal elements of the upper triangular\n\
+  *          matrix U from the LU factorization of A.\n\
+  *\n\
+  *          If FACT = 'N', then DF is an output argument and on exit\n\
+  *          contains the n diagonal elements of the upper triangular\n\
+  *          matrix U from the LU factorization of A.\n\
+  *\n\
+  *  DUF     (input or output) COMPLEX*16 array, dimension (N-1)\n\
+  *          If FACT = 'F', then DUF is an input argument and on entry\n\
+  *          contains the (n-1) elements of the first superdiagonal of U.\n\
+  *\n\
+  *          If FACT = 'N', then DUF is an output argument and on exit\n\
+  *          contains the (n-1) elements of the first superdiagonal of U.\n\
+  *\n\
+  *  DU2     (input or output) COMPLEX*16 array, dimension (N-2)\n\
+  *          If FACT = 'F', then DU2 is an input argument and on entry\n\
+  *          contains the (n-2) elements of the second superdiagonal of\n\
+  *          U.\n\
+  *\n\
+  *          If FACT = 'N', then DU2 is an output argument and on exit\n\
+  *          contains the (n-2) elements of the second superdiagonal of\n\
+  *          U.\n\
+  *\n\
+  *  IPIV    (input or output) INTEGER array, dimension (N)\n\
+  *          If FACT = 'F', then IPIV is an input argument and on entry\n\
+  *          contains the pivot indices from the LU factorization of A as\n\
+  *          computed by ZGTTRF.\n\
+  *\n\
+  *          If FACT = 'N', then IPIV is an output argument and on exit\n\
+  *          contains the pivot indices from the LU factorization of A;\n\
+  *          row i of the matrix was interchanged with row IPIV(i).\n\
+  *          IPIV(i) will always be either i or i+1; IPIV(i) = i indicates\n\
+  *          a row interchange was not required.\n\
+  *\n\
+  *  B       (input) COMPLEX*16 array, dimension (LDB,NRHS)\n\
+  *          The N-by-NRHS right hand side matrix B.\n\
+  *\n\
+  *  LDB     (input) INTEGER\n\
+  *          The leading dimension of the array B.  LDB >= max(1,N).\n\
+  *\n\
+  *  X       (output) COMPLEX*16 array, dimension (LDX,NRHS)\n\
+  *          If INFO = 0 or INFO = N+1, the N-by-NRHS solution matrix X.\n\
+  *\n\
+  *  LDX     (input) INTEGER\n\
+  *          The leading dimension of the array X.  LDX >= max(1,N).\n\
+  *\n\
+  *  RCOND   (output) DOUBLE PRECISION\n\
+  *          The estimate of the reciprocal condition number of the matrix\n\
+  *          A.  If RCOND is less than the machine precision (in\n\
+  *          particular, if RCOND = 0), the matrix is singular to working\n\
+  *          precision.  This condition is indicated by a return code of\n\
+  *          INFO > 0.\n\
+  *\n\
+  *  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)\n\
+  *          The estimated forward error bound for each solution vector\n\
+  *          X(j) (the j-th column of the solution matrix X).\n\
+  *          If XTRUE is the true solution corresponding to X(j), FERR(j)\n\
+  *          is an estimated upper bound for the magnitude of the largest\n\
+  *          element in (X(j) - XTRUE) divided by the magnitude of the\n\
+  *          largest element in X(j).  The estimate is as reliable as\n\
+  *          the estimate for RCOND, and is almost always a slight\n\
+  *          overestimate of the true error.\n\
+  *\n\
+  *  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)\n\
+  *          The componentwise relative backward error of each solution\n\
+  *          vector X(j) (i.e., the smallest relative change in\n\
+  *          any element of A or B that makes X(j) an exact solution).\n\
+  *\n\
+  *  WORK    (workspace) COMPLEX*16 array, dimension (2*N)\n\
+  *\n\
+  *  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value\n\
+  *          > 0:  if INFO = i, and i is\n\
+  *                <= N:  U(i,i) is exactly zero.  The factorization\n\
+  *                       has not been completed unless i = N, but the\n\
+  *                       factor U is exactly singular, so the solution\n\
+  *                       and error bounds could not be computed.\n\
+  *                       RCOND = 0 is returned.\n\
+  *                = N+1: U is nonsingular, but RCOND is less than machine\n\
+  *                       precision, meaning that the matrix is singular\n\
+  *                       to working precision.  Nevertheless, the\n\
+  *                       solution and error bounds are computed because\n\
+  *                       there are a number of situations where the\n\
+  *                       computed solution can be more accurate than the\n\
+  *                       value of RCOND would suggest.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

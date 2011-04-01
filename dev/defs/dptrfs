@@ -1,0 +1,141 @@
+--- 
+:name: dptrfs
+:md5sum: 39ea43178ed941789a2071e466d3b8b6
+:category: :subroutine
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- nrhs: 
+    :type: integer
+    :intent: input
+- d: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - n
+- e: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - n-1
+- df: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - n
+- ef: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - n-1
+- b: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - ldb
+    - nrhs
+- ldb: 
+    :type: integer
+    :intent: input
+- x: 
+    :type: doublereal
+    :intent: input/output
+    :dims: 
+    - ldx
+    - nrhs
+- ldx: 
+    :type: integer
+    :intent: input
+- ferr: 
+    :type: doublereal
+    :intent: output
+    :dims: 
+    - nrhs
+- berr: 
+    :type: doublereal
+    :intent: output
+    :dims: 
+    - nrhs
+- work: 
+    :type: doublereal
+    :intent: workspace
+    :dims: 
+    - 2*n
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE DPTRFS( N, NRHS, D, E, DF, EF, B, LDB, X, LDX, FERR, BERR, WORK, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DPTRFS improves the computed solution to a system of linear\n\
+  *  equations when the coefficient matrix is symmetric positive definite\n\
+  *  and tridiagonal, and provides error bounds and backward error\n\
+  *  estimates for the solution.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix A.  N >= 0.\n\
+  *\n\
+  *  NRHS    (input) INTEGER\n\
+  *          The number of right hand sides, i.e., the number of columns\n\
+  *          of the matrix B.  NRHS >= 0.\n\
+  *\n\
+  *  D       (input) DOUBLE PRECISION array, dimension (N)\n\
+  *          The n diagonal elements of the tridiagonal matrix A.\n\
+  *\n\
+  *  E       (input) DOUBLE PRECISION array, dimension (N-1)\n\
+  *          The (n-1) subdiagonal elements of the tridiagonal matrix A.\n\
+  *\n\
+  *  DF      (input) DOUBLE PRECISION array, dimension (N)\n\
+  *          The n diagonal elements of the diagonal matrix D from the\n\
+  *          factorization computed by DPTTRF.\n\
+  *\n\
+  *  EF      (input) DOUBLE PRECISION array, dimension (N-1)\n\
+  *          The (n-1) subdiagonal elements of the unit bidiagonal factor\n\
+  *          L from the factorization computed by DPTTRF.\n\
+  *\n\
+  *  B       (input) DOUBLE PRECISION array, dimension (LDB,NRHS)\n\
+  *          The right hand side matrix B.\n\
+  *\n\
+  *  LDB     (input) INTEGER\n\
+  *          The leading dimension of the array B.  LDB >= max(1,N).\n\
+  *\n\
+  *  X       (input/output) DOUBLE PRECISION array, dimension (LDX,NRHS)\n\
+  *          On entry, the solution matrix X, as computed by DPTTRS.\n\
+  *          On exit, the improved solution matrix X.\n\
+  *\n\
+  *  LDX     (input) INTEGER\n\
+  *          The leading dimension of the array X.  LDX >= max(1,N).\n\
+  *\n\
+  *  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)\n\
+  *          The forward error bound for each solution vector\n\
+  *          X(j) (the j-th column of the solution matrix X).\n\
+  *          If XTRUE is the true solution corresponding to X(j), FERR(j)\n\
+  *          is an estimated upper bound for the magnitude of the largest\n\
+  *          element in (X(j) - XTRUE) divided by the magnitude of the\n\
+  *          largest element in X(j).\n\
+  *\n\
+  *  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)\n\
+  *          The componentwise relative backward error of each solution\n\
+  *          vector X(j) (i.e., the smallest relative change in\n\
+  *          any element of A or B that makes X(j) an exact solution).\n\
+  *\n\
+  *  WORK    (workspace) DOUBLE PRECISION array, dimension (2*N)\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value\n\
+  *\n\
+  *  Internal Parameters\n\
+  *  ===================\n\
+  *\n\
+  *  ITMAX is the maximum number of steps of iterative refinement.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

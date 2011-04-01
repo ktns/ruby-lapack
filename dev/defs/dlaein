@@ -1,0 +1,141 @@
+--- 
+:name: dlaein
+:md5sum: 8991c91a48bac18d81e2639cd6de073f
+:category: :subroutine
+:arguments: 
+- rightv: 
+    :type: logical
+    :intent: input
+- noinit: 
+    :type: logical
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- h: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - ldh
+    - n
+- ldh: 
+    :type: integer
+    :intent: input
+- wr: 
+    :type: doublereal
+    :intent: input
+- wi: 
+    :type: doublereal
+    :intent: input
+- vr: 
+    :type: doublereal
+    :intent: input/output
+    :dims: 
+    - n
+- vi: 
+    :type: doublereal
+    :intent: input/output
+    :dims: 
+    - n
+- b: 
+    :type: doublereal
+    :intent: workspace
+    :dims: 
+    - ldb
+    - n
+- ldb: 
+    :type: integer
+    :intent: input
+- work: 
+    :type: doublereal
+    :intent: workspace
+    :dims: 
+    - n
+- eps3: 
+    :type: doublereal
+    :intent: input
+- smlnum: 
+    :type: doublereal
+    :intent: input
+- bignum: 
+    :type: doublereal
+    :intent: input
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: 
+  ldb: n+1
+:fortran_help: "      SUBROUTINE DLAEIN( RIGHTV, NOINIT, N, H, LDH, WR, WI, VR, VI, B, LDB, WORK, EPS3, SMLNUM, BIGNUM, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DLAEIN uses inverse iteration to find a right or left eigenvector\n\
+  *  corresponding to the eigenvalue (WR,WI) of a real upper Hessenberg\n\
+  *  matrix H.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  RIGHTV  (input) LOGICAL\n\
+  *          = .TRUE. : compute right eigenvector;\n\
+  *          = .FALSE.: compute left eigenvector.\n\
+  *\n\
+  *  NOINIT  (input) LOGICAL\n\
+  *          = .TRUE. : no initial vector supplied in (VR,VI).\n\
+  *          = .FALSE.: initial vector supplied in (VR,VI).\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix H.  N >= 0.\n\
+  *\n\
+  *  H       (input) DOUBLE PRECISION array, dimension (LDH,N)\n\
+  *          The upper Hessenberg matrix H.\n\
+  *\n\
+  *  LDH     (input) INTEGER\n\
+  *          The leading dimension of the array H.  LDH >= max(1,N).\n\
+  *\n\
+  *  WR      (input) DOUBLE PRECISION\n\
+  *  WI      (input) DOUBLE PRECISION\n\
+  *          The real and imaginary parts of the eigenvalue of H whose\n\
+  *          corresponding right or left eigenvector is to be computed.\n\
+  *\n\
+  *  VR      (input/output) DOUBLE PRECISION array, dimension (N)\n\
+  *  VI      (input/output) DOUBLE PRECISION array, dimension (N)\n\
+  *          On entry, if NOINIT = .FALSE. and WI = 0.0, VR must contain\n\
+  *          a real starting vector for inverse iteration using the real\n\
+  *          eigenvalue WR; if NOINIT = .FALSE. and WI.ne.0.0, VR and VI\n\
+  *          must contain the real and imaginary parts of a complex\n\
+  *          starting vector for inverse iteration using the complex\n\
+  *          eigenvalue (WR,WI); otherwise VR and VI need not be set.\n\
+  *          On exit, if WI = 0.0 (real eigenvalue), VR contains the\n\
+  *          computed real eigenvector; if WI.ne.0.0 (complex eigenvalue),\n\
+  *          VR and VI contain the real and imaginary parts of the\n\
+  *          computed complex eigenvector. The eigenvector is normalized\n\
+  *          so that the component of largest magnitude has magnitude 1;\n\
+  *          here the magnitude of a complex number (x,y) is taken to be\n\
+  *          |x| + |y|.\n\
+  *          VI is not referenced if WI = 0.0.\n\
+  *\n\
+  *  B       (workspace) DOUBLE PRECISION array, dimension (LDB,N)\n\
+  *\n\
+  *  LDB     (input) INTEGER\n\
+  *          The leading dimension of the array B.  LDB >= N+1.\n\
+  *\n\
+  *  WORK    (workspace) DOUBLE PRECISION array, dimension (N)\n\
+  *\n\
+  *  EPS3    (input) DOUBLE PRECISION\n\
+  *          A small machine-dependent value which is used to perturb\n\
+  *          close eigenvalues, and to replace zero pivots.\n\
+  *\n\
+  *  SMLNUM  (input) DOUBLE PRECISION\n\
+  *          A machine-dependent value close to the underflow threshold.\n\
+  *\n\
+  *  BIGNUM  (input) DOUBLE PRECISION\n\
+  *          A machine-dependent value close to the overflow threshold.\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          = 1:  inverse iteration did not converge; VR is set to the\n\
+  *                last iterate, and so is VI if WI.ne.0.0.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

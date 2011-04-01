@@ -1,0 +1,40 @@
+--- 
+:name: xerbla
+:md5sum: 8669c67841523ada1fea62672f940583
+:category: :subroutine
+:arguments: 
+- srname: 
+    :type: char
+    :intent: input
+    :dims: 
+    - "*"
+- info: 
+    :type: integer
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE XERBLA( SRNAME, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  XERBLA  is an error handler for the LAPACK routines.\n\
+  *  It is called by an LAPACK routine if an input parameter has an\n\
+  *  invalid value.  A message is printed and execution stops.\n\
+  *\n\
+  *  Installers may consider modifying the STOP statement in order to\n\
+  *  call system-specific exception-handling facilities.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  SRNAME  (input) CHARACTER*(*)\n\
+  *          The name of the routine which called XERBLA.\n\
+  *\n\
+  *  INFO    (input) INTEGER\n\
+  *          The position of the invalid parameter in the parameter list\n\
+  *          of the calling routine.\n\
+  *\n\n\
+  * =====================================================================\n\
+  *\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          LEN_TRIM\n\
+  *     ..\n"

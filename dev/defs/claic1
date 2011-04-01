@@ -1,0 +1,101 @@
+--- 
+:name: claic1
+:md5sum: 22926ad0c8db95eafc17cf2632e11865
+:category: :subroutine
+:arguments: 
+- job: 
+    :type: integer
+    :intent: input
+- j: 
+    :type: integer
+    :intent: input
+- x: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - j
+- sest: 
+    :type: real
+    :intent: input
+- w: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - j
+- gamma: 
+    :type: complex
+    :intent: input
+- sestpr: 
+    :type: real
+    :intent: output
+- s: 
+    :type: complex
+    :intent: output
+- c: 
+    :type: complex
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE CLAIC1( JOB, J, X, SEST, W, GAMMA, SESTPR, S, C )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  CLAIC1 applies one step of incremental condition estimation in\n\
+  *  its simplest version:\n\
+  *\n\
+  *  Let x, twonorm(x) = 1, be an approximate singular vector of an j-by-j\n\
+  *  lower triangular matrix L, such that\n\
+  *           twonorm(L*x) = sest\n\
+  *  Then CLAIC1 computes sestpr, s, c such that\n\
+  *  the vector\n\
+  *                  [ s*x ]\n\
+  *           xhat = [  c  ]\n\
+  *  is an approximate singular vector of\n\
+  *                  [ L     0  ]\n\
+  *           Lhat = [ w' gamma ]\n\
+  *  in the sense that\n\
+  *           twonorm(Lhat*xhat) = sestpr.\n\
+  *\n\
+  *  Depending on JOB, an estimate for the largest or smallest singular\n\
+  *  value is computed.\n\
+  *\n\
+  *  Note that [s c]' and sestpr**2 is an eigenpair of the system\n\
+  *\n\
+  *      diag(sest*sest, 0) + [alpha  gamma] * [ conjg(alpha) ]\n\
+  *                                            [ conjg(gamma) ]\n\
+  *\n\
+  *  where  alpha =  conjg(x)'*w.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  JOB     (input) INTEGER\n\
+  *          = 1: an estimate for the largest singular value is computed.\n\
+  *          = 2: an estimate for the smallest singular value is computed.\n\
+  *\n\
+  *  J       (input) INTEGER\n\
+  *          Length of X and W\n\
+  *\n\
+  *  X       (input) COMPLEX array, dimension (J)\n\
+  *          The j-vector x.\n\
+  *\n\
+  *  SEST    (input) REAL\n\
+  *          Estimated singular value of j by j matrix L\n\
+  *\n\
+  *  W       (input) COMPLEX array, dimension (J)\n\
+  *          The j-vector w.\n\
+  *\n\
+  *  GAMMA   (input) COMPLEX\n\
+  *          The diagonal element gamma.\n\
+  *\n\
+  *  SESTPR  (output) REAL\n\
+  *          Estimated singular value of (j+1) by (j+1) matrix Lhat.\n\
+  *\n\
+  *  S       (output) COMPLEX\n\
+  *          Sine needed in forming xhat.\n\
+  *\n\
+  *  C       (output) COMPLEX\n\
+  *          Cosine needed in forming xhat.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

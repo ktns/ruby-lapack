@@ -1,0 +1,49 @@
+--- 
+:name: srscl
+:md5sum: 45d3ebae0bf847fdef2d0c541c71e3e8
+:category: :subroutine
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- sa: 
+    :type: real
+    :intent: input
+- sx: 
+    :type: real
+    :intent: input/output
+    :dims: 
+    - 1+(n-1)*abs(incx)
+- incx: 
+    :type: integer
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE SRSCL( N, SA, SX, INCX )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  SRSCL multiplies an n-element real vector x by the real scalar 1/a.\n\
+  *  This is done without overflow or underflow as long as\n\
+  *  the final result x/a does not overflow or underflow.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of components of the vector x.\n\
+  *\n\
+  *  SA      (input) REAL\n\
+  *          The scalar a which is used to divide each component of x.\n\
+  *          SA must be >= 0, or the subroutine will divide by zero.\n\
+  *\n\
+  *  SX      (input/output) REAL array, dimension\n\
+  *                         (1+(N-1)*abs(INCX))\n\
+  *          The n-element vector x.\n\
+  *\n\
+  *  INCX    (input) INTEGER\n\
+  *          The increment between successive values of the vector SX.\n\
+  *          > 0:  SX(1) = X(1) and SX(1+(i-1)*INCX) = x(i),     1< i<= n\n\
+  *\n\n\
+  * =====================================================================\n\
+  *\n"

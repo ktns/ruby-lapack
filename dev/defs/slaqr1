@@ -1,0 +1,79 @@
+--- 
+:name: slaqr1
+:md5sum: 9268bfacaf3cde6691ba9220ca02f6e0
+:category: :subroutine
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- h: 
+    :type: real
+    :intent: input
+    :dims: 
+    - ldh
+    - n
+- ldh: 
+    :type: integer
+    :intent: input
+- sr1: 
+    :type: real
+    :intent: input
+- si1: 
+    :type: real
+    :intent: input
+- sr2: 
+    :type: real
+    :intent: input
+- si2: 
+    :type: real
+    :intent: input
+- v: 
+    :type: real
+    :intent: output
+    :dims: 
+    - n
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE SLAQR1( N, H, LDH, SR1, SI1, SR2, SI2, V )\n\n\
+  *       Given a 2-by-2 or 3-by-3 matrix H, SLAQR1 sets v to a\n\
+  *       scalar multiple of the first column of the product\n\
+  *\n\
+  *       (*)  K = (H - (sr1 + i*si1)*I)*(H - (sr2 + i*si2)*I)\n\
+  *\n\
+  *       scaling to avoid overflows and most underflows. It\n\
+  *       is assumed that either\n\
+  *\n\
+  *               1) sr1 = sr2 and si1 = -si2\n\
+  *           or\n\
+  *               2) si1 = si2 = 0.\n\
+  *\n\
+  *       This is useful for starting double implicit shift bulges\n\
+  *       in the QR algorithm.\n\
+  *\n\
+  *\n\n\
+  *       N      (input) integer\n\
+  *              Order of the matrix H. N must be either 2 or 3.\n\
+  *\n\
+  *       H      (input) REAL array of dimension (LDH,N)\n\
+  *              The 2-by-2 or 3-by-3 matrix H in (*).\n\
+  *\n\
+  *       LDH    (input) integer\n\
+  *              The leading dimension of H as declared in\n\
+  *              the calling procedure.  LDH.GE.N\n\
+  *\n\
+  *       SR1    (input) REAL\n\
+  *       SI1    The shifts in (*).\n\
+  *       SR2\n\
+  *       SI2\n\
+  *\n\
+  *       V      (output) REAL array of dimension N\n\
+  *              A scalar multiple of the first column of the\n\
+  *              matrix K in (*).\n\
+  *\n\n\
+  *     ================================================================\n\
+  *     Based on contributions by\n\
+  *        Karen Braman and Ralph Byers, Department of Mathematics,\n\
+  *        University of Kansas, USA\n\
+  *\n\
+  *     ================================================================\n\
+  *\n"

@@ -1,0 +1,117 @@
+--- 
+:name: claein
+:md5sum: 10958c9e44d2ecd0dada6eee846d037a
+:category: :subroutine
+:arguments: 
+- rightv: 
+    :type: logical
+    :intent: input
+- noinit: 
+    :type: logical
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- h: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - ldh
+    - n
+- ldh: 
+    :type: integer
+    :intent: input
+- w: 
+    :type: complex
+    :intent: input
+- v: 
+    :type: complex
+    :intent: input/output
+    :dims: 
+    - n
+- b: 
+    :type: complex
+    :intent: workspace
+    :dims: 
+    - ldb
+    - n
+- ldb: 
+    :type: integer
+    :intent: input
+- rwork: 
+    :type: real
+    :intent: workspace
+    :dims: 
+    - n
+- eps3: 
+    :type: real
+    :intent: input
+- smlnum: 
+    :type: real
+    :intent: input
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: 
+  ldb: MAX(1,n)
+:fortran_help: "      SUBROUTINE CLAEIN( RIGHTV, NOINIT, N, H, LDH, W, V, B, LDB, RWORK, EPS3, SMLNUM, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  CLAEIN uses inverse iteration to find a right or left eigenvector\n\
+  *  corresponding to the eigenvalue W of a complex upper Hessenberg\n\
+  *  matrix H.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  RIGHTV   (input) LOGICAL\n\
+  *          = .TRUE. : compute right eigenvector;\n\
+  *          = .FALSE.: compute left eigenvector.\n\
+  *\n\
+  *  NOINIT   (input) LOGICAL\n\
+  *          = .TRUE. : no initial vector supplied in V\n\
+  *          = .FALSE.: initial vector supplied in V.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix H.  N >= 0.\n\
+  *\n\
+  *  H       (input) COMPLEX array, dimension (LDH,N)\n\
+  *          The upper Hessenberg matrix H.\n\
+  *\n\
+  *  LDH     (input) INTEGER\n\
+  *          The leading dimension of the array H.  LDH >= max(1,N).\n\
+  *\n\
+  *  W       (input) COMPLEX\n\
+  *          The eigenvalue of H whose corresponding right or left\n\
+  *          eigenvector is to be computed.\n\
+  *\n\
+  *  V       (input/output) COMPLEX array, dimension (N)\n\
+  *          On entry, if NOINIT = .FALSE., V must contain a starting\n\
+  *          vector for inverse iteration; otherwise V need not be set.\n\
+  *          On exit, V contains the computed eigenvector, normalized so\n\
+  *          that the component of largest magnitude has magnitude 1; here\n\
+  *          the magnitude of a complex number (x,y) is taken to be\n\
+  *          |x| + |y|.\n\
+  *\n\
+  *  B       (workspace) COMPLEX array, dimension (LDB,N)\n\
+  *\n\
+  *  LDB     (input) INTEGER\n\
+  *          The leading dimension of the array B.  LDB >= max(1,N).\n\
+  *\n\
+  *  RWORK   (workspace) REAL array, dimension (N)\n\
+  *\n\
+  *  EPS3    (input) REAL\n\
+  *          A small machine-dependent value which is used to perturb\n\
+  *          close eigenvalues, and to replace zero pivots.\n\
+  *\n\
+  *  SMLNUM  (input) REAL\n\
+  *          A machine-dependent value close to the underflow threshold.\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          = 1:  inverse iteration did not converge; V is set to the\n\
+  *                last iterate.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

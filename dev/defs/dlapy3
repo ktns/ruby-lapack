@@ -1,0 +1,33 @@
+--- 
+:name: dlapy3
+:md5sum: c296e214a3a458bf2d8aca2d8a9f6f10
+:type: doublereal
+:arguments: 
+- x: 
+    :type: doublereal
+    :intent: input
+- y: 
+    :type: doublereal
+    :intent: input
+- z: 
+    :type: doublereal
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      DOUBLE PRECISION FUNCTION DLAPY3( X, Y, Z )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DLAPY3 returns sqrt(x**2+y**2+z**2), taking care not to cause\n\
+  *  unnecessary overflow.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  X       (input) DOUBLE PRECISION\n\
+  *  Y       (input) DOUBLE PRECISION\n\
+  *  Z       (input) DOUBLE PRECISION\n\
+  *          X, Y and Z specify the values x, y and z.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

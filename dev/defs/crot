@@ -1,0 +1,72 @@
+--- 
+:name: crot
+:md5sum: 5c7ea320d6a9412ddf95fc7a6f674517
+:category: :subroutine
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- cx: 
+    :type: complex
+    :intent: input/output
+    :dims: 
+    - n
+- incx: 
+    :type: integer
+    :intent: input
+- cy: 
+    :type: complex
+    :intent: input/output
+    :dims: 
+    - n
+- incy: 
+    :type: integer
+    :intent: input
+- c: 
+    :type: real
+    :intent: input
+- s: 
+    :type: complex
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE CROT( N, CX, INCX, CY, INCY, C, S )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  CROT   applies a plane rotation, where the cos (C) is real and the\n\
+  *  sin (S) is complex, and the vectors CX and CY are complex.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of elements in the vectors CX and CY.\n\
+  *\n\
+  *  CX      (input/output) COMPLEX array, dimension (N)\n\
+  *          On input, the vector X.\n\
+  *          On output, CX is overwritten with C*X + S*Y.\n\
+  *\n\
+  *  INCX    (input) INTEGER\n\
+  *          The increment between successive values of CY.  INCX <> 0.\n\
+  *\n\
+  *  CY      (input/output) COMPLEX array, dimension (N)\n\
+  *          On input, the vector Y.\n\
+  *          On output, CY is overwritten with -CONJG(S)*X + C*Y.\n\
+  *\n\
+  *  INCY    (input) INTEGER\n\
+  *          The increment between successive values of CY.  INCX <> 0.\n\
+  *\n\
+  *  C       (input) REAL\n\
+  *  S       (input) COMPLEX\n\
+  *          C and S define a rotation\n\
+  *             [  C          S  ]\n\
+  *             [ -conjg(S)   C  ]\n\
+  *          where C*C + S*CONJG(S) = 1.0.\n\
+  *\n\n\
+  * =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            I, IX, IY\n      COMPLEX            STEMP\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          CONJG\n\
+  *     ..\n"

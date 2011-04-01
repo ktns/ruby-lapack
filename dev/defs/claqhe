@@ -1,0 +1,98 @@
+--- 
+:name: claqhe
+:md5sum: 85061ecb19020970fc9555db00b1b596
+:category: :subroutine
+:arguments: 
+- uplo: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: complex
+    :intent: input/output
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- s: 
+    :type: real
+    :intent: input
+    :dims: 
+    - n
+- scond: 
+    :type: real
+    :intent: input
+- amax: 
+    :type: real
+    :intent: input
+- equed: 
+    :type: char
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE CLAQHE( UPLO, N, A, LDA, S, SCOND, AMAX, EQUED )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  CLAQHE equilibrates a Hermitian matrix A using the scaling factors\n\
+  *  in the vector S.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  UPLO    (input) CHARACTER*1\n\
+  *          Specifies whether the upper or lower triangular part of the\n\
+  *          Hermitian matrix A is stored.\n\
+  *          = 'U':  Upper triangular\n\
+  *          = 'L':  Lower triangular\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix A.  N >= 0.\n\
+  *\n\
+  *  A       (input/output) COMPLEX array, dimension (LDA,N)\n\
+  *          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading\n\
+  *          n by n upper triangular part of A contains the upper\n\
+  *          triangular part of the matrix A, and the strictly lower\n\
+  *          triangular part of A is not referenced.  If UPLO = 'L', the\n\
+  *          leading n by n lower triangular part of A contains the lower\n\
+  *          triangular part of the matrix A, and the strictly upper\n\
+  *          triangular part of A is not referenced.\n\
+  *\n\
+  *          On exit, if EQUED = 'Y', the equilibrated matrix:\n\
+  *          diag(S) * A * diag(S).\n\
+  *\n\
+  *  LDA     (input) INTEGER\n\
+  *          The leading dimension of the array A.  LDA >= max(N,1).\n\
+  *\n\
+  *  S       (input) REAL array, dimension (N)\n\
+  *          The scale factors for A.\n\
+  *\n\
+  *  SCOND   (input) REAL\n\
+  *          Ratio of the smallest S(i) to the largest S(i).\n\
+  *\n\
+  *  AMAX    (input) REAL\n\
+  *          Absolute value of largest matrix entry.\n\
+  *\n\
+  *  EQUED   (output) CHARACTER*1\n\
+  *          Specifies whether or not equilibration was done.\n\
+  *          = 'N':  No equilibration.\n\
+  *          = 'Y':  Equilibration was done, i.e., A has been replaced by\n\
+  *                  diag(S) * A * diag(S).\n\
+  *\n\
+  *  Internal Parameters\n\
+  *  ===================\n\
+  *\n\
+  *  THRESH is a threshold value used to decide if scaling should be done\n\
+  *  based on the ratio of the scaling factors.  If SCOND < THRESH,\n\
+  *  scaling is done.\n\
+  *\n\
+  *  LARGE and SMALL are threshold values used to decide if scaling should\n\
+  *  be done based on the absolute size of the largest matrix element.\n\
+  *  If AMAX > LARGE or AMAX < SMALL, scaling is done.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

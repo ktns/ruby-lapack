@@ -1,0 +1,90 @@
+--- 
+:name: dlasq6
+:md5sum: 51937f03f827ecc2ba8f5b8564d50417
+:category: :subroutine
+:arguments: 
+- i0: 
+    :type: integer
+    :intent: input
+- n0: 
+    :type: integer
+    :intent: input
+- z: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - 4*n0
+- pp: 
+    :type: integer
+    :intent: input
+- dmin: 
+    :type: doublereal
+    :intent: output
+- dmin1: 
+    :type: doublereal
+    :intent: output
+- dmin2: 
+    :type: doublereal
+    :intent: output
+- dn: 
+    :type: doublereal
+    :intent: output
+- dnm1: 
+    :type: doublereal
+    :intent: output
+- dnm2: 
+    :type: doublereal
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE DLASQ6( I0, N0, Z, PP, DMIN, DMIN1, DMIN2, DN, DNM1, DNM2 )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DLASQ6 computes one dqd (shift equal to zero) transform in\n\
+  *  ping-pong form, with protection against underflow and overflow.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  I0    (input) INTEGER\n\
+  *        First index.\n\
+  *\n\
+  *  N0    (input) INTEGER\n\
+  *        Last index.\n\
+  *\n\
+  *  Z     (input) DOUBLE PRECISION array, dimension ( 4*N )\n\
+  *        Z holds the qd array. EMIN is stored in Z(4*N0) to avoid\n\
+  *        an extra argument.\n\
+  *\n\
+  *  PP    (input) INTEGER\n\
+  *        PP=0 for ping, PP=1 for pong.\n\
+  *\n\
+  *  DMIN  (output) DOUBLE PRECISION\n\
+  *        Minimum value of d.\n\
+  *\n\
+  *  DMIN1 (output) DOUBLE PRECISION\n\
+  *        Minimum value of d, excluding D( N0 ).\n\
+  *\n\
+  *  DMIN2 (output) DOUBLE PRECISION\n\
+  *        Minimum value of d, excluding D( N0 ) and D( N0-1 ).\n\
+  *\n\
+  *  DN    (output) DOUBLE PRECISION\n\
+  *        d(N0), the last value of d.\n\
+  *\n\
+  *  DNM1  (output) DOUBLE PRECISION\n\
+  *        d(N0-1).\n\
+  *\n\
+  *  DNM2  (output) DOUBLE PRECISION\n\
+  *        d(N0-2).\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Parameter ..\n      DOUBLE PRECISION   ZERO\n      PARAMETER          ( ZERO = 0.0D0 )\n\
+  *     ..\n\
+  *     .. Local Scalars ..\n      INTEGER            J4, J4P2\n      DOUBLE PRECISION   D, EMIN, SAFMIN, TEMP\n\
+  *     ..\n\
+  *     .. External Function ..\n      DOUBLE PRECISION   DLAMCH\n      EXTERNAL           DLAMCH\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          MIN\n\
+  *     ..\n"

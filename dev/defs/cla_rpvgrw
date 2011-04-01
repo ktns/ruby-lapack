@@ -1,0 +1,75 @@
+--- 
+:name: cla_rpvgrw
+:md5sum: 6ea05cda1b7eeeb5b354576bf4a33b68
+:type: real
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- ncols: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- af: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - ldaf
+    - n
+- ldaf: 
+    :type: integer
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      REAL FUNCTION CLA_RPVGRW( N, NCOLS, A, LDA, AF, LDAF )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  * \n\
+  *  CLA_RPVGRW computes the reciprocal pivot growth factor\n\
+  *  norm(A)/norm(U). The \"max absolute element\" norm is used. If this is\n\
+  *  much less than 1, the stability of the LU factorization of the\n\
+  *  (equilibrated) matrix A could be poor. This also means that the\n\
+  *  solution X, estimated condition numbers, and error bounds could be\n\
+  *  unreliable.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *     N       (input) INTEGER\n\
+  *     The number of linear equations, i.e., the order of the\n\
+  *     matrix A.  N >= 0.\n\
+  *\n\
+  *     NCOLS   (input) INTEGER\n\
+  *     The number of columns of the matrix A. NCOLS >= 0.\n\
+  *\n\
+  *     A       (input) COMPLEX array, dimension (LDA,N)\n\
+  *     On entry, the N-by-N matrix A.\n\
+  *\n\
+  *     LDA     (input) INTEGER\n\
+  *     The leading dimension of the array A.  LDA >= max(1,N).\n\
+  *\n\
+  *     AF      (input) COMPLEX array, dimension (LDAF,N)\n\
+  *     The factors L and U from the factorization\n\
+  *     A = P*L*U as computed by CGETRF.\n\
+  *\n\
+  *     LDAF    (input) INTEGER\n\
+  *     The leading dimension of the array AF.  LDAF >= max(1,N).\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            I, J\n      REAL               AMAX, UMAX, RPVGRW\n      COMPLEX            ZDUM\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          MAX, MIN, ABS, REAL, AIMAG\n\
+  *     ..\n\
+  *     .. Statement Functions ..\n      REAL               CABS1\n\
+  *     ..\n\
+  *     .. Statement Function Definitions ..\n      CABS1( ZDUM ) = ABS( REAL( ZDUM ) ) + ABS( AIMAG( ZDUM ) )\n\
+  *     ..\n"

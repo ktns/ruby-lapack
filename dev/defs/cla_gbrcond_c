@@ -1,0 +1,145 @@
+--- 
+:name: cla_gbrcond_c
+:md5sum: 67b30cebe554e4047e0ef184e9efd72e
+:type: real
+:arguments: 
+- trans: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- kl: 
+    :type: integer
+    :intent: input
+- ku: 
+    :type: integer
+    :intent: input
+- ab: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - ldab
+    - n
+- ldab: 
+    :type: integer
+    :intent: input
+- afb: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - ldafb
+    - n
+- ldafb: 
+    :type: integer
+    :intent: input
+- ipiv: 
+    :type: integer
+    :intent: input
+    :dims: 
+    - n
+- c: 
+    :type: real
+    :intent: input
+    :dims: 
+    - n
+- capply: 
+    :type: logical
+    :intent: input
+- info: 
+    :type: integer
+    :intent: output
+- work: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - 2*n
+- rwork: 
+    :type: real
+    :intent: input
+    :dims: 
+    - n
+:substitutions: {}
+
+:fortran_help: "      REAL FUNCTION CLA_GBRCOND_C( TRANS, N, KL, KU, AB, LDAB, AFB, LDAFB, IPIV, C, CAPPLY, INFO, WORK, RWORK )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *     CLA_GBRCOND_C Computes the infinity norm condition number of\n\
+  *     op(A) * inv(diag(C)) where C is a REAL vector.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *     TRANS   (input) CHARACTER*1\n\
+  *     Specifies the form of the system of equations:\n\
+  *       = 'N':  A * X = B     (No transpose)\n\
+  *       = 'T':  A**T * X = B  (Transpose)\n\
+  *       = 'C':  A**H * X = B  (Conjugate Transpose = Transpose)\n\
+  *\n\
+  *     N       (input) INTEGER\n\
+  *     The number of linear equations, i.e., the order of the\n\
+  *     matrix A.  N >= 0.\n\
+  *\n\
+  *     KL      (input) INTEGER\n\
+  *     The number of subdiagonals within the band of A.  KL >= 0.\n\
+  *\n\
+  *     KU      (input) INTEGER\n\
+  *     The number of superdiagonals within the band of A.  KU >= 0.\n\
+  *\n\
+  *     AB      (input) COMPLEX array, dimension (LDAB,N)\n\
+  *     On entry, the matrix A in band storage, in rows 1 to KL+KU+1.\n\
+  *     The j-th column of A is stored in the j-th column of the\n\
+  *     array AB as follows:\n\
+  *     AB(KU+1+i-j,j) = A(i,j) for max(1,j-KU)<=i<=min(N,j+kl)\n\
+  *\n\
+  *     LDAB    (input) INTEGER\n\
+  *     The leading dimension of the array AB.  LDAB >= KL+KU+1.\n\
+  *\n\
+  *     AFB     (input) COMPLEX array, dimension (LDAFB,N)\n\
+  *     Details of the LU factorization of the band matrix A, as\n\
+  *     computed by CGBTRF.  U is stored as an upper triangular\n\
+  *     band matrix with KL+KU superdiagonals in rows 1 to KL+KU+1,\n\
+  *     and the multipliers used during the factorization are stored\n\
+  *     in rows KL+KU+2 to 2*KL+KU+1.\n\
+  *\n\
+  *     LDAFB   (input) INTEGER\n\
+  *     The leading dimension of the array AFB.  LDAFB >= 2*KL+KU+1.\n\
+  *\n\
+  *     IPIV    (input) INTEGER array, dimension (N)\n\
+  *     The pivot indices from the factorization A = P*L*U\n\
+  *     as computed by CGBTRF; row i of the matrix was interchanged\n\
+  *     with row IPIV(i).\n\
+  *\n\
+  *     C       (input) REAL array, dimension (N)\n\
+  *     The vector C in the formula op(A) * inv(diag(C)).\n\
+  *\n\
+  *     CAPPLY  (input) LOGICAL\n\
+  *     If .TRUE. then access the vector C in the formula above.\n\
+  *\n\
+  *     INFO    (output) INTEGER\n\
+  *       = 0:  Successful exit.\n\
+  *     i > 0:  The ith argument is invalid.\n\
+  *\n\
+  *     WORK    (input) COMPLEX array, dimension (2*N).\n\
+  *     Workspace.\n\
+  *\n\
+  *     RWORK   (input) REAL array, dimension (N).\n\
+  *     Workspace.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      LOGICAL            NOTRANS\n      INTEGER            KASE, I, J\n      REAL               AINVNM, ANORM, TMP\n      COMPLEX            ZDUM\n\
+  *     ..\n\
+  *     .. Local Arrays ..\n      INTEGER            ISAVE( 3 )\n\
+  *     ..\n\
+  *     .. External Functions ..\n      LOGICAL            LSAME\n      EXTERNAL           LSAME\n\
+  *     ..\n\
+  *     .. External Subroutines ..\n      EXTERNAL           CLACN2, CGBTRS, XERBLA\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          ABS, MAX\n\
+  *     ..\n\
+  *     .. Statement Functions ..\n      REAL               CABS1\n\
+  *     ..\n\
+  *     .. Statement Function Definitions ..\n      CABS1( ZDUM ) = ABS( REAL( ZDUM ) ) + ABS( AIMAG( ZDUM ) )\n\
+  *     ..\n"

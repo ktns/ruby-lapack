@@ -1,0 +1,37 @@
+--- 
+:name: cladiv
+:md5sum: 3c908b32d86634d06c097310466421b6
+:category: :function
+:type: complex
+:arguments: 
+- x: 
+    :type: complex
+    :intent: input
+- y: 
+    :type: complex
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      COMPLEX FUNCTION CLADIV( X, Y )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  CLADIV := X / Y, where X and Y are complex.  The computation of X / Y\n\
+  *  will not overflow on an intermediary step unless the results\n\
+  *  overflows.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  X       (input) COMPLEX\n\
+  *  Y       (input) COMPLEX\n\
+  *          The complex scalars X and Y.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      REAL               ZI, ZR\n\
+  *     ..\n\
+  *     .. External Subroutines ..\n      EXTERNAL           SLADIV\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          AIMAG, CMPLX, REAL\n\
+  *     ..\n"

@@ -1,0 +1,115 @@
+--- 
+:name: sgehd2
+:md5sum: 63d6daed935852377ebae7aa7ad348d6
+:category: :subroutine
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- ilo: 
+    :type: integer
+    :intent: input
+- ihi: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: real
+    :intent: input/output
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- tau: 
+    :type: real
+    :intent: output
+    :dims: 
+    - n-1
+- work: 
+    :type: real
+    :intent: workspace
+    :dims: 
+    - n
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE SGEHD2( N, ILO, IHI, A, LDA, TAU, WORK, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  SGEHD2 reduces a real general matrix A to upper Hessenberg form H by\n\
+  *  an orthogonal similarity transformation:  Q' * A * Q = H .\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix A.  N >= 0.\n\
+  *\n\
+  *  ILO     (input) INTEGER\n\
+  *  IHI     (input) INTEGER\n\
+  *          It is assumed that A is already upper triangular in rows\n\
+  *          and columns 1:ILO-1 and IHI+1:N. ILO and IHI are normally\n\
+  *          set by a previous call to SGEBAL; otherwise they should be\n\
+  *          set to 1 and N respectively. See Further Details.\n\
+  *          1 <= ILO <= IHI <= max(1,N).\n\
+  *\n\
+  *  A       (input/output) REAL array, dimension (LDA,N)\n\
+  *          On entry, the n by n general matrix to be reduced.\n\
+  *          On exit, the upper triangle and the first subdiagonal of A\n\
+  *          are overwritten with the upper Hessenberg matrix H, and the\n\
+  *          elements below the first subdiagonal, with the array TAU,\n\
+  *          represent the orthogonal matrix Q as a product of elementary\n\
+  *          reflectors. See Further Details.\n\
+  *\n\
+  *  LDA     (input) INTEGER\n\
+  *          The leading dimension of the array A.  LDA >= max(1,N).\n\
+  *\n\
+  *  TAU     (output) REAL array, dimension (N-1)\n\
+  *          The scalar factors of the elementary reflectors (see Further\n\
+  *          Details).\n\
+  *\n\
+  *  WORK    (workspace) REAL array, dimension (N)\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit.\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value.\n\
+  *\n\n\
+  *  Further Details\n\
+  *  ===============\n\
+  *\n\
+  *  The matrix Q is represented as a product of (ihi-ilo) elementary\n\
+  *  reflectors\n\
+  *\n\
+  *     Q = H(ilo) H(ilo+1) . . . H(ihi-1).\n\
+  *\n\
+  *  Each H(i) has the form\n\
+  *\n\
+  *     H(i) = I - tau * v * v'\n\
+  *\n\
+  *  where tau is a real scalar, and v is a real vector with\n\
+  *  v(1:i) = 0, v(i+1) = 1 and v(ihi+1:n) = 0; v(i+2:ihi) is stored on\n\
+  *  exit in A(i+2:ihi,i), and tau in TAU(i).\n\
+  *\n\
+  *  The contents of A are illustrated by the following example, with\n\
+  *  n = 7, ilo = 2 and ihi = 6:\n\
+  *\n\
+  *  on entry,                        on exit,\n\
+  *\n\
+  *  ( a   a   a   a   a   a   a )    (  a   a   h   h   h   h   a )\n\
+  *  (     a   a   a   a   a   a )    (      a   h   h   h   h   a )\n\
+  *  (     a   a   a   a   a   a )    (      h   h   h   h   h   h )\n\
+  *  (     a   a   a   a   a   a )    (      v2  h   h   h   h   h )\n\
+  *  (     a   a   a   a   a   a )    (      v2  v3  h   h   h   h )\n\
+  *  (     a   a   a   a   a   a )    (      v2  v3  v4  h   h   h )\n\
+  *  (                         a )    (                          a )\n\
+  *\n\
+  *  where a denotes an element of the original matrix A, h denotes a\n\
+  *  modified element of the upper Hessenberg matrix H, and vi denotes an\n\
+  *  element of the vector defining H(i).\n\
+  *\n\
+  *  =====================================================================\n\
+  *\n"

@@ -1,0 +1,87 @@
+--- 
+:name: zgesc2
+:md5sum: 7c06097df40e16822688433d8198c64a
+:category: :subroutine
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- rhs: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - n
+- ipiv: 
+    :type: integer
+    :intent: input
+    :dims: 
+    - n
+- jpiv: 
+    :type: integer
+    :intent: input
+    :dims: 
+    - n
+- scale: 
+    :type: doublereal
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE ZGESC2( N, A, LDA, RHS, IPIV, JPIV, SCALE )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  ZGESC2 solves a system of linear equations\n\
+  *\n\
+  *            A * X = scale* RHS\n\
+  *\n\
+  *  with a general N-by-N matrix A using the LU factorization with\n\
+  *  complete pivoting computed by ZGETC2.\n\
+  *\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of columns of the matrix A.\n\
+  *\n\
+  *  A       (input) COMPLEX*16 array, dimension (LDA, N)\n\
+  *          On entry, the  LU part of the factorization of the n-by-n\n\
+  *          matrix A computed by ZGETC2:  A = P * L * U * Q\n\
+  *\n\
+  *  LDA     (input) INTEGER\n\
+  *          The leading dimension of the array A.  LDA >= max(1, N).\n\
+  *\n\
+  *  RHS     (input/output) COMPLEX*16 array, dimension N.\n\
+  *          On entry, the right hand side vector b.\n\
+  *          On exit, the solution vector X.\n\
+  *\n\
+  *  IPIV    (input) INTEGER array, dimension (N).\n\
+  *          The pivot indices; for 1 <= i <= N, row i of the\n\
+  *          matrix has been interchanged with row IPIV(i).\n\
+  *\n\
+  *  JPIV    (input) INTEGER array, dimension (N).\n\
+  *          The pivot indices; for 1 <= j <= N, column j of the\n\
+  *          matrix has been interchanged with column JPIV(j).\n\
+  *\n\
+  *  SCALE    (output) DOUBLE PRECISION\n\
+  *           On exit, SCALE contains the scale factor. SCALE is chosen\n\
+  *           0 <= SCALE <= 1 to prevent owerflow in the solution.\n\
+  *\n\n\
+  *  Further Details\n\
+  *  ===============\n\
+  *\n\
+  *  Based on contributions by\n\
+  *     Bo Kagstrom and Peter Poromaa, Department of Computing Science,\n\
+  *     Umea University, S-901 87 Umea, Sweden.\n\
+  *\n\
+  *  =====================================================================\n\
+  *\n"

@@ -1,6 +1,9 @@
-require "pp"
+$:.unshift File.dirname(__FILE__)
 
-RBPREFIX = "rb_"
+require "yaml"
+require "digest/md5"
+require "pp"
+require "common"
 
 CTYPES = {
   "INTEGER" => "integer",
@@ -9,18 +12,9 @@ CTYPES = {
   "DOUBLE PRECISION" => "doublereal",
   "COMPLEX" => "complex",
   "COMPLEX*16" => "doublecomplex",
+  "DOUBLE COMPLEX" => "doublecomplex",
   "LOGICAL" => "logical"
 }
-NATYPES = {
-  "integer" => "NA_LINT",
-  "real" => "NA_SFLOAT",
-  "doublereal" => "NA_DFLOAT",
-  "complex" => "NA_SCOMPLEX",
-  "doublecomplex" => "NA_DCOMPLEX",
-  "logical" => "NA_LINT",
-}
-
-FUNCS = %w(slapy2 dlapy2 slapy3 dlapy3 sisnan disnan scsum1 dzsum1 icmax1 ieeeck ilaclc ilaclr iladiag iladlc iladlr ilaprec ilaslc ilaslr ilatrans ilauplo ilazlc ilazlr iparmq izmax1 lsamen smaxloc ilaenv)
 
 ARGS = {
   "csyequb" => {
@@ -905,819 +899,45 @@ TYPES = {
 
 
 
-SUBSTS = {
-  "dlasd1" => {
-    "d" => {"n" => "nl+nr+1"}
-  },
-  "sgbbrd" => {
-    "d" => {"m" => "ldab"}
-  },
-  "dgbbrd" => {
-    "d" => {"m" => "ldab"}
-  },
-  "cgbbrd" => {
-    "d" => {"m" => "ldab"}
-  },
-  "zgbbrd" => {
-    "d" => {"m" => "ldab"}
-  },
-  "slaeda" => {
-    "givptr" => {"n" => "ldqptr-2"}
-  },
-  "dlaeda" => {
-    "givptr" => {"n" => "ldqptr-2"}
-  },
-  "sggsvp" => {
-    "u" => {"m" => "lda"}
-  },
-  "dggsvp" => {
-    "u" => {"m" => "lda"}
-  },
-  "cggsvp" => {
-    "u" => {"m" => "lda"}
-  },
-  "zggsvp" => {
-    "u" => {"m" => "lda"}
-  },
-  "sgeequ" => {
-    "r" => {"m" => "lda"}
-  },
-  "dgeequ" => {
-    "r" => {"m" => "lda"}
-  },
-  "cgeequ" => {
-    "r" => {"m" => "lda"}
-  },
-  "zgeequ" => {
-    "r" => {"m" => "lda"}
-  },
-  "cungr2" => {
-    "work" => {"m" => "lda"}
-  },
-  "zungr2" => {
-    "work" => {"m" => "lda"}
-  },
-  "cungl2" => {
-    "work" => {"m" => "lda"}
-  },
-  "zungl2" => {
-    "work" => {"m" => "lda"}
-  },
-  "sorgr2" => {
-    "work" => {"m" => "lda"}
-  },
-  "dorgr2" => {
-    "work" => {"m" => "lda"}
-  },
-  "sorgl2" => {
-    "work" => {"m" => "lda"}
-  },
-  "dorgl2" => {
-    "work" => {"m" => "lda"}
-  },
-  "stzrqf" => {
-    "tau" => {"m" => "lda"}
-  },
-  "dtzrqf" => {
-    "tau" => {"m" => "lda"}
-  },
-  "ctzrqf" => {
-    "tau" => {"m" => "lda"}
-  },
-  "ztzrqf" => {
-    "tau" => {"m" => "lda"}
-  },
-  "stzrzf" => {
-    "tau" => {"m" => "lda"}
-  },
-  "dtzrzf" => {
-    "tau" => {"m" => "lda"}
-  },
-  "ctzrzf" => {
-    "tau" => {"m" => "lda"}
-  },
-  "ztzrzf" => {
-    "tau" => {"m" => "lda"}
-  },
-  "sgerq2" => {
-    "tau" => {"m" => "lda"}
-  },
-  "dgerq2" => {
-    "tau" => {"m" => "lda"}
-  },
-  "cgerq2" => {
-    "tau" => {"m" => "lda"}
-  },
-  "zgerq2" => {
-    "tau" => {"m" => "lda"}
-  },
-  "sgelq2" => {
-    "tau" => {"m" => "lda"}
-  },
-  "dgelq2" => {
-    "tau" => {"m" => "lda"}
-  },
-  "cgelq2" => {
-    "tau" => {"m" => "lda"}
-  },
-  "zgelq2" => {
-    "tau" => {"m" => "lda"}
-  },
-  "slatrz" => {
-    "tau" => {"m" => "lda"}
-  },
-  "dlatrz" => {
-    "tau" => {"m" => "lda"}
-  },
-  "clatrz" => {
-    "tau" => {"m" => "lda"}
-  },
-  "zlatrz" => {
-    "tau" => {"m" => "lda"}
-  },
-  "slaqps" => {
-    "tau" => {"kb" => "nb"}
-  },
-  "dlaqps" => {
-    "tau" => {"kb" => "nb"}
-  },
-  "claqps" => {
-    "tau" => {"kb" => "nb"}
-  },
-  "zlaqps" => {
-    "tau" => {"kb" => "nb"}
-  },
-  "sstevx" => {
-    "z" => {"m" => "n"}
-  },
-  "dstevx" => {
-    "z" => {"m" => "n"}
-  },
-  "sstein" => {
-    "z" => {"m" => "n"}
-  },
-  "dstein" => {
-    "z" => {"m" => "n"}
-  },
-  "cstein" => {
-    "z" => {"m" => "n"}
-  },
-  "zstein" => {
-    "z" => {"m" => "n"}
-  },
-  "sopgtr" => {
-    "ap" => {"n" => "ldtau+1"},
-  },
-  "dopgtr" => {
-    "ap" => {"n" => "ldtau+1"},
-  },
-  "cupgtr" => {
-    "ap" => {"n" => "ldtau+1"},
-  },
-  "zupgtr" => {
-    "ap" => {"n" => "ldtau+1"},
-  },
-  "stgsna" => {
-    "s" => {"mm" => "m"}
-  },
-  "dtgsna" => {
-    "s" => {"mm" => "m"}
-  },
-  "ctgsna" => {
-    "s" => {"mm" => "m"}
-  },
-  "ztgsna" => {
-    "s" => {"mm" => "m"}
-  },
-  "strsna" => {
-    "s" => {"mm" => "m"}
-  },
-  "dtrsna" => {
-    "s" => {"mm" => "m"}
-  },
-  "ctrsna" => {
-    "s" => {"mm" => "m"}
-  },
-  "ztrsna" => {
-    "s" => {"mm" => "m"}
-  },
-  "sggsvd" => {
-    "u" => {"m" => "lda"},
-    "v" => {"p" => "ldb"},
-  },
-  "dggsvd" => {
-    "u" => {"m" => "lda"},
-    "v" => {"p" => "ldb"},
-  },
-  "cggsvd" => {
-    "u" => {"m" => "lda"},
-    "v" => {"p" => "ldb"},
-  },
-  "zggsvd" => {
-    "u" => {"m" => "lda"},
-    "v" => {"p" => "ldb"},
-  },
-  "dlansp" => {
-    "work" => {"lwork" => '(lsame_(&norm,"I") || lsame_(&norm,"1") || lsame_(&norm,"0")) ? n : 0'}
-  },
-  "ssptrd" => {
-    "d" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "dsptrd" => {
-    "d" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "chptrd" => {
-    "d" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "zhptrd" => {
-    "d" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "sppequ" => {
-    "s" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "dppequ" => {
-    "s" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "cppequ" => {
-    "s" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "zppequ" => {
-    "s" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "chpevd" => {
-    "w" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "zhpevd" => {
-    "w" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "sspev" => {
-    "w" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "dspev" => {
-    "w" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "sspevd" => {
-    "w" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "dspevd" => {
-    "w" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "chpev" => {
-    "w" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'}
-  },
-  "zhpev" => {
-    "w" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'}
-  },
-  "sspgv" => {
-    "bp" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "chpgvx" => {
-    "bp" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "zhpgvx" => {
-    "bp" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "dspgv" => {
-    "bp" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "sspgvd" => {
-    "bp" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "dspgvd" => {
-    "bp" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "chpgv" => {
-    "bp" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "zhpgv" => {
-    "bp" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "chpgvd" => {
-    "bp" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "zhpgvd" => {
-    "bp" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "chptrf" => {
-    "ipiv" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'}
-  },
-  "zhptrf" => {
-    "ipiv" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'}
-  },
-  "ssptrf" => {
-    "ipiv" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'}
-  },
-  "dsptrf" => {
-    "ipiv" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'}
-  },
-  "csptrf" => {
-    "ipiv" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'}
-  },
-  "zsptrf" => {
-    "ipiv" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'}
-  },
-  "stpcon" => {
-    "work" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "dtpcon" => {
-    "work" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "ctpcon" => {
-    "work" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "ztpcon" => {
-    "work" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-  },
-  "sppcon" => {
-    "work" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'}
-  },
-  "dppcon" => {
-    "work" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'}
-  },
-  "cppcon" => {
-    "work" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'}
-  },
-  "zppcon" => {
-    "work" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'}
-  },
-  "sspgvx" => {
-    "bp" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "dspgvx" => {
-    "bp" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "sspevx" => {
-    "w" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "dspevx" => {
-    "w" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "chpevx" => {
-    "w" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "zhpevx" => {
-    "w" => {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'},
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "sstevr" => {
-    "z" => {"m" => 'lsame_(&range,"I") ? iu-il+1 : n'}
-  },
-  "dstevr" => {
-    "z" => {"m" => 'lsame_(&range,"I") ? iu-il+1 : n'}
-  },
-  "ssyevr" => {
-    "z" => {"m" => 'lsame_(&range,"I") ? iu-il+1 : n'}
-  },
-  "dsyevr" => {
-    "z" => {"m" => 'lsame_(&range,"I") ? iu-il+1 : n'}
-  },
-  "dsyevx" => {
-    "z" => {"m" => 'lsame_(&range,"I") ? iu-il+1 : n'}
-  },
-  "ssyevx" => {
-    "z" => {"m" => 'lsame_(&range,"I") ? iu-il+1 : n'}
-  },
-  "ssygvx" => {
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "dsygvx" => {
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "cheevr" => {
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "zheevr" => {
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "chbevx" => {
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "zhbevx" => {
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "sstemr" => {
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "dstemr" => {
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "cstemr" => {
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "zstemr" => {
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "sstegr" => {
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "dstegr" => {
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "cstegr" => {
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "zstegr" => {
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "ssbevx" => {
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "dsbevx" => {
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "cheevx" => {
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "zheevx" => {
-    "z" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "chegvx" => {
-    "w" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "zhegvx" => {
-    "w" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "ssbgvx" => {
-    "ifail" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "dsbgvx" => {
-    "ifail" => {
-      "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'
-    }
-  },
-  "stgex2" => {
-    "work" => {"lwork" => 'MAX(1,(MAX(n*(n2+n1),(n2+n1)*(n2+n1)*2)))'}
-  },
-  "dtgex2" => {
-    "work" => {"lwork" => 'MAX(1,(MAX(n*(n2+n1),(n2+n1)*(n2+n1)*2)))'}
-  },
-  "zlange" => {
-    "work" => {"lwork" => 'lsame_(&norm,"I") ? m : 0'}
-  },
-  "zlanhs" => {
-    "work" => {"lwork" => 'lsame_(&norm,"I") ? n : 0'}
-  },
-  "spprfs" => {
-    "ap" => {"n" => "ldb"}
-  },
-  "dpprfs" => {
-    "ap" => {"n" => "ldb"}
-  },
-  "cpprfs" => {
-    "ap" => {"n" => "ldb"}
-  },
-  "zpprfs" => {
-    "ap" => {"n" => "ldb"}
-  },
-  "chpsv" => {
-    "ap" => {"n" => "ldb"}
-  },
-  "zhpsv" => {
-    "ap" => {"n" => "ldb"}
-  },
-  "sspsv" => {
-    "ap" => {"n" => 'ldb'}
-  },
-  "dspsv" => {
-    "ap" => {"n" => 'ldb'}
-  },
-  "cspsv" => {
-    "ap" => {"n" => 'ldb'}
-  },
-  "zspsv" => {
-    "ap" => {"n" => 'ldb'}
-  },
-  "stprfs" => {
-    "ap" => {"n" => 'ldb'}
-  },
-  "dtprfs" => {
-    "ap" => {"n" => 'ldb'}
-  },
-  "ctprfs" => {
-    "ap" => {"n" => 'ldb'}
-  },
-  "ztprfs" => {
-    "ap" => {"n" => 'ldb'}
-  },
-  "slasd0" => {
-    "e" => {
-      "m" => "sqre == 0 ? n : sqre == 1 ? n+1 : 0",
-      "ldu" => "n"
-    },
-    "vt" => {"ldvt" => "m"}
-  },
-  "dlasd0" => {
-    "e" => {"m" => "sqre == 0 ? n : sqre == 1 ? n+1 : 0", "ldu" => "n"},
-    "u" => {"ldu" => "n"},
-    "vt" => {"ldvt" => "n"}
-  },
-  "slasd3" => {
-    "u2" => {"ldu2" => "n", "n" => "nl + nr + 1"},
-    "vt2" => {"ldvt2" => "n"},
-    "vt" => {"m" => "n+sqre"},
-    :order => {
-      "u2" => ["n", "ldu2"]
-    }
-  },
-  "dlasd3" => {
-    "u2" => {"ldu2" => "n", "n" => "nl + nr + 1"},
-    "vt2" => {"ldvt2" => "n"},
-    "vt" => {"m" => "n + sqre"},
-    :order => {
-      "u2" => ["n", "ldu2"]
-    }
-  },
-  "slasda" => {
-    "e" => {"m" => "sqre == 0 ? n : sqre == 1 ? n+1 : 0", "ldu" => "n"}
-  },
-  "dlasda" => {
-    "e" => {"m" => "sqre == 0 ? n : sqre == 1 ? n+1 : 0", "ldu" => "n"}
-  },
-  "slals0" => {
-    "bx" => {"ldbx" => "n"},
-  },
-  "dlals0" => {
-    "bx" => {"ldbx" => "n"},
-  },
-  "clals0" => {
-    "bx" => {"ldbx" => "n"}
-  },
-  "zlals0" => {
-    "bx" => {"ldbx" => "n"}
-  },
-  "slalsa" => {
-    "bx" => {"ldbx" => "n"},
-  },
-  "dlalsa" => {
-    "bx" => {"ldbx" => "n"},
-  },
-  "clalsa" => {
-    "bx" => {"ldbx" => "n"},
-  },
-  "zlalsa" => {
-    "bx" => {"ldbx" => "n"},
-  },
-  "slasd2" => {
-    "u2" => {"ldu2" => "n"},
-    "vt2" => {"ldvt2" => "m"}
-  },
-  "dlasd2" => {
-    "u2" => {"ldu2" => "n"},
-    "vt2" => {"ldvt2" => "m"}
-  },
-  "slasd6" => {
-    "vf" => {"m" => "n + sqre", "n" => "nl + nr + 1"},
-    :order => {"vf" => ["n", "m"]}
-  },
-  "dlasd6" => {
-    "vf" => {"m" => "n + sqre", "n" => "nl + nr + 1"},
-    :order => {"vf" => ["n", "m"]}
-  },
-  "dgesdd" => {
-    "vt" => {"ldvt" => '(lsame_(&jobz,"A")||(lsame_(&jobz,"O")&&(m>=n))) ? n : lsame_(&jobz,"S") ? MIN(m,n) : 0'}
-  },
-  "zlaqr4" => {
-    "z" => {"ldz" => 'wantz ? MAX(1,ihiz) : 1'}
-  },
-  "slaqr5" => {
-    "z" => {"ldz" => 'n'}
-  },
-  "dlaqr5" => {
-    "z" => {"ldz" => 'n'}
-  },
-  "sgelsd" => {
-    "iwork" => {
-      "c__0" => "0",
-      "c__9" => "9",
-      "smlsiz" => 'ilaenv_(&c__9,"DGELSD"," ",&c__0,&c__0,&c__0,&c__0)',
-      "nlvl" => 'MAX(0,((int)(log(((double)(MIN(m,n)))/(smlsiz+1))/log(2.0))+1))',
-      "liwork" => '3*(MIN(m,n))*nlvl+11*(MIN(m,n))',
-    },
-    :order => {
-      "iwork" => ["c__0", "c__9", "smlsiz", "nlvl", "liwork"]
-    }
-  },
-  "dgelsd" => {
-    "iwork" => {
-      "c__0" => "0",
-      "c__9" => "9",
-      "smlsiz" => 'ilaenv_(&c__9,"DGELSD"," ",&c__0,&c__0,&c__0,&c__0)',
-      "nlvl" => 'MAX(0,((int)(log(((double)(MIN(m,n)))/(smlsiz+1))/log(2.0))+1))',
-      "liwork" => '3*(MIN(m,n))*nlvl+11*(MIN(m,n))',
-    },
-    :order => {
-      "iwork" => ["c__0", "c__9", "smlsiz", "nlvl", "liwork"]
-    }
-  },
-  "cgelsd" => {
-    "rwork" => {
-      "c__0" => "0",
-      "c__9" => "9",
-      "smlsiz" => 'ilaenv_(&c__9,"CGELSD"," ",&c__0,&c__0,&c__0,&c__0)',
-      "nlvl" => 'MAX(0,(int)(log(1.0*MIN(m,n)/(smlsiz+1))/log(2.0)))',
-      "lrwork" => 'm>=n ? 10*n+2*n*smlsiz+8*n*nlvl+3*smlsiz*nrhs+(smlsiz+1)*(smlsiz+1) : 10*m+2*m*smlsiz+8*m*nlvl+2*smlsiz*nrhs+(smlsiz+1)*(smlsiz+1)',
-    },
-    "iwork" => {
-      "liwork" => 'MAX(1,3*(MIN(m,n))*nlvl+11*(MIN(m,n)))'
-    },
-    :order => {
-      "rwork" => ["c__0","c__9","smlsiz","nlvl","lrwork"]
-    }
-  },
-  "zgelsd" => {
-    "rwork" => {
-      "c__9" => "9",
-      "c__0" => "0",
-      "smlsiz" => 'ilaenv_(&c__9,"ZGELSD"," ",&c__0,&c__0,&c__0,&c__0)',
-      "nlvl" => 'MAX(0,(int)(log(1.0*MIN(m,n)/(smlsiz+1))/log(2.0)))',
-      "lrwork" => 'm>=n ? 10*n+2*n*smlsiz+8*n*nlvl+3*smlsiz*nrhs+(smlsiz+1)*(smlsiz+1) : 10*m+2*m*smlsiz+8*m*nlvl+2*smlsiz*nrhs+(smlsiz+1)*(smlsiz+1)',
-    },
-    "iwork" => {
-      "liwork" => 'MAX(1,3*(MIN(m,n))*nlvl+11*(MIN(m,n)))'
-    },
-    :order => {
-      "rwork" => ["c__0","c__9","smlsiz","nlvl","lrwork"]
-    }
-  },
-  "sormbr" => {
-    "a" => {"nq" => 'lsame_(&side,"L") ? m : lsame_(&side,"R") ? n : 0'}
-  },
-  "dormbr" => {
-    "a" => {"nq" => 'lsame_(&side,"L") ? m : lsame_(&side,"R") ? n : 0'}
-  },
-  "cunmbr" => {
-    "a" => {"nq" => 'lsame_(&side,"L") ? m : lsame_(&side,"R") ? n : 0'}
-  },
-  "zunmbr" => {
-    "a" => {"nq" => 'lsame_(&side,"L") ? m : lsame_(&side,"R") ? n : 0'}
-  },
-  "sbdsdc" => {
-    "q" => {
-      "c__0" => "0",
-      "c__9" => "9",
-      "smlsiz" => 'ilaenv_(&c__9, "SBDSDC", " ", &c__0, &c__0, &c__0, &c__0)',
-      "ldq" => 'lsame_(&compq,"P") ? n*(11+2*smlsiz+8*(int)(log(((double)n)/(smlsiz+1))/log(2.0))) : 0'
-    },
-    "iq" => {
-      "ldiq" => 'lsame_(&compq,"P") ? n*(3+3*(int)(log(((double)n)/(smlsiz+1))/log(2.0))) : 0'
-    },
-    "work" => {"lwork" => 'lsame_(&compq,"N") ? 4*n : lsame_(&compq,"P") ? 6*n : lsame_(&compq,"I") ? 3*n*n+4*n : 0'},
-    :order => {
-      "q" => ["c__0","c__9","smlsiz","ldq"]
-    }
-  },
-  "dbdsdc" => {
-    "q" => {
-      "c__0" => "0",
-      "c__9" => "9",
-      "smlsiz" => 'ilaenv_(&c__9, "DBDSDC", " ", &c__0, &c__0, &c__0, &c__0)',
-      "ldq" => 'lsame_(&compq,"P") ? n*(11+2*smlsiz+8*(int)(log(((double)n)/(smlsiz+1))/log(2.0))) : 0'
-    },
-    "iq" => {
-      "ldiq" => 'lsame_(&compq,"P") ? n*(3+3*(int)(log(((double)n)/(smlsiz+1))/log(2.0))) : 0'
-    },
-    "work" => {"lwork" => 'lsame_(&compq,"N") ? 4*n : lsame_(&compq,"P") ? 6*n : lsame_(&compq,"I") ? 3*n*n+4*n : 0'},
-    :order => {
-      "q" => ["c__0","c__9","smlsiz","ldq"]
-    }
-  },
-  "clalsd" => {
-    "rwork" => {
-      "nlvl" => '( (int)( log(((double)n)/(smlsiz+1))/log(2.0) ) ) + 1'
-    },
-  },
-  "zlalsd" => {
-    "rwork" => {
-      "nlvl" => '( (int)( log(((double)n)/(smlsiz+1))/log(2.0) ) ) + 1'
-    },
-  },
-  "claed8" => {
-    "q2" => {"ldq2" => "n"}
-  },
-  "zlaed8" => {
-    "q2" => {"ldq2" => "n"}
-  }
-}
+SUBSTS = Hash.new
+SUBSTS["dlasd1"] = {"n" => "nl+nr+1"}
+%w(slaeda dlaeda).each{|n| SUBSTS[n] = {"n" => "ldqptr-2"}}
+%w(sgbbrd dgbbrd cgbbrd zgbbrd).each{|n| SUBSTS[n] = {"m" => "ldab"}}
+%w(sggsvp dggsvp cggsvp zggsvp sgeequ dgeequ cgeequ zgeequ cungr2 zungr2 cungl2 zungl2 sorgr2 dorgr2 sorgl2 dorgl2 stzrqf dtzrqf ctzrqf ztzrqf stzrzf dtzrzf ctzrzf ztzrzf sgerq2 dgerq2 cgerq2 zgerq2 sgelq2 dgelq2 cgelq2 zgelq2 slatrz dlatrz clatrz zlatrz).each{|n| SUBSTS[n] = {"m" => "lda"}}
+%w(slaqps dlaqps claqps zlaqps).each{|n| SUBSTS[n] = {"kb" => "nb"}}
+%w(sstevx dstevx sstein dstein cstein zstein).each{|n| SUBSTS[n] = {"m" => "n"}}
+%w(sopgtr dopgtr cupgtr zupgtr).each{|n| SUBSTS[n] = {"n" => "ldtau+1"}}
+%w(stgsna dtgsna ctgsna ztgsna strsna dtrsna ctrsna ztrsna).each{|n| SUBSTS[n] = {"mm" => "m"}}
+%w(sggsvd dggsvd cggsvd zggsvd).each{|n| SUBSTS[n] = {"m" => "lda", "p" => "ldb"}}
+SUBSTS["dlansp"] = {"lwork" => '(lsame_(&norm,"I") || lsame_(&norm,"1") || lsame_(&norm,"0")) ? n : 0'}
+%w(ssptrd dsptrd chptrd zhptrd sppequ dppequ cppequ zppequ chpevd zhpevd sspev dspev sspevd dspevd chpev zhpev sspgv chpgvx zhpgvx dspgv sspgvd dspgvd chpgv zhpgv chpgvd zhpgvd chptrf zhptrf ssptrf dsptrf csptrf zsptrf stpcon dtpcon ctpcon ztpcon sppcon dppcon cppcon zppcon).each{|n| SUBSTS[n]  = {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'}}
+%w(sspgvx dspgvx sspevx dspevx chpevx zhpevx).each{|n| SUBSTS[n] = {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2', "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'}}
+%w(sstevr dstevr ssyevr dsyevr dsyevx ssyevx).each{|n| SUBSTS[n] = {"m" => 'lsame_(&range,"I") ? iu-il+1 : n'}}
+%w(ssygvx dsygvx cheevr zheevr chbevx zhbevx sstemr dstemr cstemr zstemr sstegr dstegr cstegr zstegr ssbevx dsbevx cheevx zheevx chegvx zhegvx ssbgvx dsbgvx).each{|n| SUBSTS[n] = {"m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'}}
+%w(stgex2 dtgex2).each{|n| SUBSTS[n] = {"lwork" => 'MAX(1,(MAX(n*(n2+n1),(n2+n1)*(n2+n1)*2)))'}}
+%w(zlange zlanhs).each{|n| SUBSTS[n] = {"lwork" => 'lsame_(&norm,"I") ? n : 0'}}
+%w(spprfs dpprfs cpprfs zpprfs chpsv zhpsv sspsv dspsv cspsv zspsv stprfs dtprfs ctprfs ztprfs).each{|n| SUBSTS[n] = {"n" => 'ldb'}}
+SUBSTS["slasd0"] = {"m" => "sqre == 0 ? n : sqre == 1 ? n+1 : 0", "ldu" => "n", "ldvt" => "m"}
+SUBSTS["dlasd0"] = {"m" => "sqre == 0 ? n : sqre == 1 ? n+1 : 0", "ldu" => "n", "ldu" => "n", "ldvt" => "n"}
+SUBSTS["slasd3"] = {"ldu2" => "n", "n" => "nl + nr + 1", "ldvt2" => "n", "m" => "n+sqre"}
+SUBSTS["dlasd3"] = {"ldu2" => "n", "n" => "nl + nr + 1", "ldvt2" => "n", "m" => "n + sqre"}
+%w(slasda dlasda).each{|n| SUBSTS[n] = {"m" => "sqre == 0 ? n : sqre == 1 ? n+1 : 0", "ldu" => "n"}}
+%w(slals0 dlals0 clals0 zlals0 slalsa dlalsa clalsa zlalsa).each{|n| SUBSTS[n] = {"ldbx" => "n"}}
+%w(slasd2 dlasd2).each{|n| SUBSTS[n] = {"ldu2" => "n", "ldvt2" => "m"}}
+%w(slasd6 dlasd6).each{|n| SUBSTS[n] = {"m" => "n + sqre", "n" => "nl + nr + 1"}}
+SUBSTS["dgesdd"] = {"ldvt" => '(lsame_(&jobz,"A")||(lsame_(&jobz,"O")&&(m>=n))) ? n : lsame_(&jobz,"S") ? MIN(m,n) : 0'}
+SUBSTS["zlaqr4"] = {"ldz" => 'wantz ? MAX(1,ihiz) : 1'}
+%w(slaqr5 dlaqr5).each{|n| SUBSTS[n] = {"ldz" => 'n'}}
+%w(sgelsd dgelsd).each{|n| SUBSTS[n] = {"c__0" => "0", "c__9" => "9", "smlsiz" => 'ilaenv_(&c__9,"'+n.upcase+'"," ",&c__0,&c__0,&c__0,&c__0)', "nlvl" => 'MAX(0,((int)(log(((double)(MIN(m,n)))/(smlsiz+1))/log(2.0))+1))', "liwork" => '3*(MIN(m,n))*nlvl+11*(MIN(m,n))'}}
+%w(cgelsd zgelsd).each{|n| SUBSTS[n] = {"c__9" => "9", "c__0" => "0", "smlsiz" => 'ilaenv_(&c__9,"'+n.upcase+'"," ",&c__0,&c__0,&c__0,&c__0)', "nlvl" => 'MAX(0,(int)(log(1.0*MIN(m,n)/(smlsiz+1))/log(2.0)))', "lrwork" => 'm>=n ? 10*n+2*n*smlsiz+8*n*nlvl+3*smlsiz*nrhs+(smlsiz+1)*(smlsiz+1) : 10*m+2*m*smlsiz+8*m*nlvl+2*smlsiz*nrhs+(smlsiz+1)*(smlsiz+1)', "liwork" => 'MAX(1,3*(MIN(m,n))*nlvl+11*(MIN(m,n)))'}}
+%w(sormbr dormbr cunmbr zunmbr).each{|n| SUBSTS[n] = {"nq" => 'lsame_(&side,"L") ? m : lsame_(&side,"R") ? n : 0'}}
+%w(sbdsdc dbdsdc).each{|n| SUBSTS[n] = {"c__0" => "0", "c__9" => "9", "smlsiz" => 'ilaenv_(&c__9, "'+n.upcase+'", " ", &c__0, &c__0, &c__0, &c__0)', "ldq" => 'lsame_(&compq,"P") ? n*(11+2*smlsiz+8*(int)(log(((double)n)/(smlsiz+1))/log(2.0))) : 0', "ldiq" => 'lsame_(&compq,"P") ? n*(3+3*(int)(log(((double)n)/(smlsiz+1))/log(2.0))) : 0', "lwork" => 'lsame_(&compq,"N") ? 4*n : lsame_(&compq,"P") ? 6*n : lsame_(&compq,"I") ? 3*n*n+4*n : 0'}}
+%w(clalsd zlalsd).each{|n| SUBSTS[n] = {"nlvl" => '( (int)( log(((double)n)/(smlsiz+1))/log(2.0) ) ) + 1'}}
+%w(claed8 zlaed8).each{|n| SUBSTS[n] = {"ldq2" => "n"}}
 
 
 
-IGNORE = %w(sla_gbrfsx_extended cla_gbrfsx_extended zla_gbrfsx_extended dla_gerfsx_extended cla_gerfsx_extended zla_gerfsx_extended dla_gbrfsx_extended zla_porfsx_extended sla_geamv dla_geamv cla_geamv zla_geamv sla_syamv dla_syamv cla_syamv zla_syamv sgsvj0 dgsvj0 sgsvj1 dgsvj1 sggsvp dggsvp cggsvp zggsvp sgbequb dgbequb cgbequb zgbequb dpftrf cpftri zpftrf stfsm dtfsm ctfsm ztfsm slarrf dlarrf cla_heamv zla_heamv clanhf zlanhf sla_gbamv dla_gbamv cla_gbamv zla_gbamv chfrk ctftri slansf dlansf ztftri zpftri cla_lin_berr zla_lin_berr sgejsv dgejsv dlat2s zlat2c)
 
-
-def get_cobj(name, type)
-  case type
-  when "integer"
-    return "  #{name} = NUM2INT(#{RBPREFIX}#{name});\n"
-    dimdefs[name] = true
-  when "real"
-    return "  #{name} = (real)NUM2DBL(#{RBPREFIX}#{name});\n"
-  when "doublereal"
-    return "  #{name} = NUM2DBL(#{RBPREFIX}#{name});\n"
-  when "complex"
-    code =<<"EOF"
-  #{name}.r = (real)NUM2DBL(rb_funcall(#{RBPREFIX}#{name}, rb_intern("real"), 0));
-  #{name}.i = (real)NUM2DBL(rb_funcall(#{RBPREFIX}#{name}, rb_intern("imag"), 0));
-EOF
-    return code
-  when "doublecomplex"
-    code =<<"EOF"
-  #{name}.r = NUM2DBL(rb_funcall(#{RBPREFIX}#{name}, rb_intern("real"), 0));
-  #{name}.i = NUM2DBL(rb_funcall(#{RBPREFIX}#{name}, rb_intern("imag"), 0));
-EOF
-    return code
-  when "char"
-    return "  #{name} = StringValueCStr(#{RBPREFIX}#{name})[0];\n"
-  when "logical"
-    return "  #{name} = (#{RBPREFIX}#{name} == Qtrue);\n"
-  else
-    raise "type (#{type}) is not defined in #{name}"
-  end
-end
-
-def get_robj(name, type, flag=false)
-  case type
-  when "integer"
-    cname =  flag ? "(*#{name})" : name
-    return "  #{RBPREFIX}#{name} = INT2NUM(#{cname});\n"
-  when "real", "doublereal"
-    cname =  flag ? "(*#{name})" : name
-    return "  #{RBPREFIX}#{name} = rb_float_new((double)#{cname});\n"
-  when "complex", "doublecomplex"
-    if flag
-      r = "(#{name}->r)"
-      i = "(#{name}->i)"
-    else
-      r = "(#{name}.r)"
-      i = "(#{name}.i)"
-    end
-    return "  #{RBPREFIX}#{name} = rb_funcall(rb_gv_get(\"Complex\"), rb_intern(\"new\"), 2, rb_float_new((double)#{r}), rb_float_new((double)#{i}));\n"
-  when "char"
-    return "  #{RBPREFIX}#{name} = rb_str_new(&#{name},1);\n"
-  when "logical"
-    return "  #{RBPREFIX}#{name} = #{name} ? Qtrue : Qfalse;\n"
-  else
-    raise "type (#{type}) is not defined in #{name}"
-  end
-end
 
 def pow(str)
   str = str.gsub(/([A-Z\d]+?)\*\*([A-Z\d]+)/, 'pow(\\1,\\2)')
@@ -1761,7 +981,13 @@ def get_dims(str)
   else
     dims = str.split(",").collect{|dim| dim.sub(/\.$/,"")}
   end
-  dims.collect{|dim| get_vname(dim)}
+  dims.collect do |dim|
+    dim.sub!(/;\Z/,"")
+    if /\A\((.+)\)\Z/ =~ dim
+      dim = $1
+    end
+    get_vname(dim)
+  end
 end
 
 AO = {"and"=>"&&","or"=>"||"}
@@ -1799,20 +1025,8 @@ def get_cond(cond,v=nil)
 end
 
 
-def get_vars(dim)
-  ary = Array.new
-  dim.gsub(/MAX\(/,",").gsub(/MIN\(/,",").gsub(/log\(/,",").gsub(/abs\(/,",").gsub(/sqrt\(/,",").gsub(/pow\(/,",").gsub(/LG\(/,",").gsub(/lsame_\(\&[^,]+/,",").gsub(/[\(\)\+\-\*\/:\?=\&\|]+/,",").split(",").each{|d|
-    d.strip!
-    next if (d == "") || (/^\d+$/ =~ d) || /^\"[^\"]+\"$/ =~ d
-    ary.push d
-  }
-  ary
-end
 
-
-
-
-def parse_file(fname)
+def read_file(fname)
   flag_sub = false
   subr = nil
   sub_type = nil
@@ -1842,6 +1056,10 @@ def parse_file(fname)
       subr = line.chomp
       flag_sub = true
       next
+    elsif /^      RECURSIVE SUBROUTINE/ =~ line
+      subr = line.chomp
+      flag_sub = true
+      next
     elsif /^      ([A-Z\s\d\*]+)\s+FUNCTION/ =~ line
       subr = line.chomp
       flag_sub = true
@@ -1858,6 +1076,13 @@ def parse_file(fname)
         next
       else
         case File.basename(fname)
+        when /^[cz]la_lin_berr/
+          if /^\*     N       \(input\) INTEGER$/ =~ line
+            flag_pur = false
+            args = line
+            flag_arg = true
+            next
+          end
         when /^[sdcz]laqr1/
           if /^\*       N      \(input\) integer$/ =~ line
             flag_pur = false
@@ -1950,15 +1175,25 @@ def parse_file(fname)
   help = subr + "\n\n" + purpose + "\n" + args
   help << "\n" + fd if fd
 
-  if /^      SUBROUTINE\s+([A-Z\d_]+)\s*\(([^\)]+)\)/ =~ subr
+  return {:subr => subr, :purpose => purpose, :args => args, :help => help}
+end
+
+def parse_file(fname)
+  hash = read_file(fname)
+  subr = hash[:subr]
+  purpose = hash[:purpose]
+  args = hash[:args]
+  help = hash[:help]
+
+  if /^      (?:RECURSIVE )?SUBROUTINE\s+([A-Z\d_]+)\s*\(([^\)]+)\)/ =~ subr
     sub_name = $1.downcase
     arg_names = $2
-    sub_type = :sub
+    sub_type = :subroutine
   elsif /^      ([A-Z\s\*\d]+[A-Z\d])\s+FUNCTION\s+([A-Z\d_]+)\s*\(([^\)]+)\)/ =~ subr
     f_type = $1.strip
     sub_name = $2.downcase
     arg_names = $3
-    sub_type = :func
+    sub_type = :function
     if f_type == "CHARACTER*1"
       f_type = "CHARACTER"
     end
@@ -1969,7 +1204,7 @@ def parse_file(fname)
   elsif /^      FUNCTION\s+([A-Z\d]+)\(([^\)]+)\)/ =~ subr
     sub_name = $1.downcase
     arg_names = $2
-    sub_type = :func
+    sub_type = :function
     case File.basename(fname)
     when /^[sd]laneg/
       func_type = "integer"
@@ -2059,6 +1294,7 @@ def parse_file(fname)
   end
 
   args = Hash.new
+  subst = SUBSTS[sub_name] || Hash.new
   ary.each{|line|
     line.strip!
     /^\*\s+([A-Z\d_,\s]+)\s+\(([^\)]+)\)\s*(.*)$/ =~ line
@@ -2082,7 +1318,6 @@ def parse_file(fname)
       end
     end
     hash[:intent] =  intent
-    subst = Hash.new
     if /^l.*work/ =~ name && (/The (dimension|length)? of (the )?(array|work|WORK)/ =~ type || /The amount of workspace available/ =~ type)
       if (/^(.*?) The (?:dimension|length)? of (?:the )?array\s+(?:WORK\.\s*)?(.+)/ =~ type) || (/^(.*?) The (?:dimension|length)? of (?:the )?(?:array|work|WORK)\.?\s+(.+)/ =~ type)
         type = $1.strip
@@ -2101,7 +1336,7 @@ def parse_file(fname)
         fff = true
       elsif str
         unless /^[sd]tgex2$/ =~ sub_name && name == "lwork"
-          raise "invalid #{str} #{name} #{sub_name}"
+          warn "invalid #{str} #{name} #{sub_name}"
         end
       end
       if fff
@@ -2168,7 +1403,7 @@ def parse_file(fname)
         end
       }
       unless ff0
-        raise "arg not found [#{anames.join(",")}], #{name}, #{sub_name}"
+        warn "arg not found [#{anames.join(",")}], #{name}, #{sub_name}"
       end
       if ff1 && str != ""
         if anames.length == 1
@@ -2279,19 +1514,13 @@ def parse_file(fname)
           begin
             str = get_vname(str)
           rescue
-            raise "error #{str}, #{name}, #{sub_name}"
+            warn "error #{str}, #{name}, #{sub_name}"
           end
         end
         if /^[sdcz]larrv$/ =~ sub_name && name == "ldz"
           str = "n"
         end
         subst[name] = str
-        sss = (SUBSTS[sub_name] ||= Hash.new)
-        ss = (sss[aname] ||= Hash.new)
-        ss.update subst
-        if (so = sss[:order]) && (soa = so[aname])
-          soa += subst.keys
-        end
       end
     elsif /^(.*?) array of size (.*)$/ =~ type || /^(.*?) arrays?,?(.*)$/i =~ type
       type = $1.strip
@@ -2376,7 +1605,11 @@ def parse_file(fname)
                 p 4
               end
               str = nil
-            elsif /^\((.*?)\)\s+otherwise$/ =~ str && (dim = $1.strip) && (/ if / !~ dim)
+            elsif /\A\((.*)\) when (.*) and/ =~ str
+              dim = $1
+              cond = $2
+              str = $'
+            elsif /^(.*?)\s+otherwise$/ =~ str && (dim = $1.strip) && (/ if / !~ dim)
               if @@debug
                 p 5
               end
@@ -2518,15 +1751,21 @@ def parse_file(fname)
                 c11 = $6.downcase
                 cond1 = $7
               else
-                raise "error '#{str}' in #{name} (#{fname})"
+#                raise "error '#{str}' in #{name} (#{fname})"
+                 warn "'#{str}' in #{name} (#{fname})"
+                 dim = "dummy_" + str
               end
-              dims = get_dims(dim)
-              cond0 = get_cond(cond0)
-              cond1 = get_cond(cond1)
-              if c00 == c10
-                subst[get_vname(c00)] = "#{cond0} ? #{get_vname(c01)} : #{cond1} ? #{get_vname(c11)} : 0"
+              if /dummy_/ =~ dim
+                dims = dim
               else
-                raise "error #{name} #{sub_name}"
+                dims = get_dims(dim)
+                cond0 = get_cond(cond0)
+                cond1 = get_cond(cond1)
+                if c00 == c10
+                  subst[get_vname(c00)] = "#{cond0} ? #{get_vname(c01)} : #{cond1} ? #{get_vname(c11)} : 0"
+                else
+                  raise "error #{name} #{sub_name}"
+                end
               end
               flag = false
               break
@@ -2573,14 +1812,8 @@ def parse_file(fname)
           end
         }
       end
-      sss = (SUBSTS[sub_name] ||= Hash.new)
-      ss = (sss[name] ||= Hash.new)
-      ss.update subst
-      if (so = sss[:order]) && (soa = so[name])
-        soa += subst.keys
-      end
       if /^[sd]lasda$/ =~ sub_name  && name == "difl"
-        ss["nlvl"].sub!(/\)$/,"")
+        subst["nlvl"].sub!(/\)$/,"")
       end
       hash[:dims] = dims
     elsif (/^(.+) work array$/ =~ type) || (/^(.+) array$/ =~ type)
@@ -2613,7 +1846,10 @@ def parse_file(fname)
         hash[:block_arg_num] = {"one"=>1,"two"=>2,"three"=>3}[$2] || raise("error #{$2}")
         hash[:block_arg_type] = CTYPES[$3] || raise("error block arg type is invalid #{$3} #{name} #{sub_name}")
       else
-        hash[:type] = CTYPES[type.upcase] || raise("type (#{type}) is not defined in #{name} (#{fname})")
+        hash[:type] = CTYPES[type.upcase]
+        unless hash[:type]
+          warn("type (#{type}) is not defined in #{name} (#{fname})")
+        end
       end
     end
     if /,/ =~ name
@@ -2633,26 +1869,31 @@ def parse_file(fname)
     pp args
   end
 
-  return  {:sub_name => sub_name, :sub_type => sub_type, :func_type => func_type, :arg_names => arg_names, :args => args, :help => help}
+  return  {:name => sub_name, :category => sub_type, :type => func_type, :argument_names => arg_names, :arguments => args, :fortran_help => help, :md5sum => get_md5sum(help), :substitutions => subst}
+
+
 end
 
 
-def create_code(fname)
-  if IGNORE.include?( File.basename(fname).sub(/\.\w+$/,"") )
-    warn "skip #{fname}"
-    return nil
-  end
+def create_hash(fname)
   hash = parse_file(fname)
   if hash.nil?
     warn "skip #{fname}"
     return nil
   end
-  sub_name = hash[:sub_name]
-  sub_type = hash[:sub_type]
-  func_type = hash[:func_type]
-  arg_names = hash[:arg_names]
-  args = hash[:args]
-  help = hash[:help]
+  sub_name = hash[:name]
+  arg_names = hash.delete(:argument_names)
+  args = hash.delete(:arguments)
+
+  args.each do |k,v|
+    case v[:intent]
+    when "input or output", "input or input/output", "input / output", "input/workspace/output", "input/workspace"
+      v[:intent] = "input/output"
+    when "workspace/output"
+      v[:intent] = "output"
+    end
+  end
+
 
   unless sub_name
     warn "this has no subroutine (#{fname})"
@@ -2665,481 +1906,9 @@ def create_code(fname)
     raise "no args (#{fname})"
   end
 
-  if ss = SUBSTS[sub_name]
-    so = ss[:order]
-    if so
-      so.each{|k,v|
-        args[k][:subst_order] = v
-      }
-    end
-  end
-  args.each{|name,arg|
-    arg[:subst] = (ss && ss[name]) || Hash.new
-  }
+  hash[:arguments] = arg_names.map{|name| {name => args[name]} }
 
-
-
-  inputs = Array.new
-  outputs = Array.new
-  inouts = Array.new
-  workspaces = Array.new
-  block = nil
-  arg_names.each{|name|
-    arg = args[name]
-    unless arg
-      if ARGS[sub_name] && arg = ARGS[sub_name][name]
-        args[name] = arg
-      else
-        raise "arg #{name} is not defined (#{sub_name} in #{fname})"
-      end
-    end
-    case arg[:intent]
-    when "input"
-      inputs.push name
-    when "output"
-      outputs.push name
-    when "input/output", "input or output", "input or input/output", "input / output", "input/workspace/output"
-      inputs.push name
-      inouts.push name
-    when "workspace"
-      workspaces.push name
-    when "workspace/output"
-      outputs.push name
-    when "external procedure"
-      if block
-        raise "only one block is supported"
-      end
-      block = name
-    else
-      raise "intent (#{arg[:intent]}) is invalid (#{name}) #{sub_name}"
-    end
-  }
-  args.each{|key,arg|
-    dims = arg[:dims]
-    next unless dims
-    dims.each{|dim|
-      inputs.delete(dim)
-    }
-  }
-
-  if @@debug
-    p "inputs"
-    p inputs
-    p "outputs"
-    p outputs
-    p "inouts"
-    p inouts
-    p "workspaces"
-    p workspaces
-    p "block"
-    p block
-  end
-
-  code = ""
-
-  if sub_type == :func
-    outputs.push "__out__"
-    args["__out__"] = {:type => func_type}
-    unless FUNCS.include?(sub_name) || /\A[sdcz]lan[eghts]/ =~ sub_name
-      code += "extern VOID #{sub_name}_(#{func_type} *__out__, #{arg_names.collect{|an|t = args[an][:type];t+' *'+an}.join(', ')});\n"
-    end
-  end
-
-  code +=<<"EOF"
-static VALUE
-#{RBPREFIX}#{sub_name}(int argc, VALUE *argv, VALUE self){
-EOF
-
-  dimdefs = Array.new
-
-  (inputs+outputs).each{|name|
-    arg = args[name]
-    type = arg[:type]
-    dims = arg[:dims]
-    code +=<<"EOF"
-  VALUE #{RBPREFIX}#{name};
-  #{type} #{dims ? "*" : ""}#{name}; 
-EOF
-    dimdefs.push name
-  }
-  inouts.each{|name|
-    arg = args[name]
-    dims = arg[:dims]
-    if dims
-      type = arg[:type]
-      code +=<<"EOF"
-  VALUE #{RBPREFIX}#{name}_out__;
-  #{type} *#{name}_out__;
-EOF
-    end
-  }
-
-  workspaces.each{|name|
-    arg = args[name]
-    type = arg[:type]
-    dims = arg[:dims]
-    code << "  #{type} #{dims ? "*" : ""}#{name};\n"
-  }
-  debug_dims = Array.new
-  code << "\n"
-  (inputs+outputs+workspaces).each{|name|
-    arg = args[name]
-    if dims = arg[:dims]
-      dims.each{|dim|
-        if /^[a-z][a-z_\d]*$/ !~ dim
-          next
-        end
-        unless dimdefs.include?(dim)
-          code << "  integer #{dim};\n"
-          dimdefs.push dim
-        end
-      }
-    end
-    if ss = arg[:subst]
-      ss.each{|k,v|
-        unless dimdefs.include?(k)
-          code << "  integer #{k};\n"
-          dimdefs.push k
-        end
-      }
-    end
-  }
-
-
-  code << "\n"
-
-  if block
-    block_help = "{|" + ['a','b','c'][0...args[block][:block_arg_num]].join(",") + "| ... }"
-  else
-    block_help = ""
-  end
-
-  help =<<"EOF"
-USAGE:
-  #{(outputs+inouts).join(", ")} = NumRu::Lapack.#{sub_name}( #{inputs.join(", ")})#{block_help}
-    or
-  NumRu::Lapack.#{sub_name}  # print help
-
-
-FORTRAN MANUAL
-#{help}
-EOF
-  ilen = inputs.length
-  code +=<<"EOF"
-  if (argc == 0) {
-    printf("%s\\n", "#{help.gsub(/\\/,'\\\\\\').gsub(/\n/,'\n').gsub(/"/,'\"')}");
-    return Qnil;
-  }
-  if (argc != #{ilen})
-    rb_raise(rb_eArgError,"wrong number of arguments (%d for #{ilen})", argc);
-EOF
-  inputs.each_with_index{|arg,i|
-    code << "  #{RBPREFIX}#{arg} = argv[#{i}];\n"
-  }
-  code << "\n"
-
-  case sub_name
-  when /^[scdz]latzm$/
-    inputs.sort!{|a,b| a=="c1" ? 1 : -1}
-  when /^[sdcz]spsv$/, /^[cz]tprfs$/, /^[cz]hpsv$/
-    inputs.sort!{|a,b| (a=="ap" && b=="b") ? 1 : -1}
-  when /^[cz]upgtr$/, /^[sd]opgtr$/
-    inputs.sort!{|a,b| (a=="ap" && b=="tau") ? 1 : -1}
-  when /^[sdcz]latps$/
-    inputs.sort!{|a,b| (a=="ap" && b=="x") ? 1 : -1}
-  when /^[sdcz]ppsvx$/, /^[sdcz]laqsp$/, /^[cz]laqhp$/
-    inputs.sort!{|a,b| ((a=="ap"||a=="afp") && b=="s") ? 1 : -1}
-  when /^[sdcz]sprfs$/, /^[sdcz]sptrs$/, /^[cz]hpcon$/, /^[cz]hptri$/, /^[sdcz]spcon$/, /^[cz]hpsvx$/, /^[sdcz]sptri$/, /^[sdcz]spsvx$/, /^[cz]hptrs$/, /^[cz]hprfs$/
-    inputs.sort!{|a,b| ((a=="ap"||a=="afp") && b=="ipiv") ? 1 : -1}
-  when /^[sdcz]pprfs$/
-    inputs.sort!{|a,b| ((a=="ap"||a=="afp") && b=="b") ? 1 : -1}
-  when /^[sdcz]gtcon$/, /^[sdcz]gttrf$/, /^[sdcz]gtts2$/, /^[sdcz]gttrs$/, /^[sdcz]gtsvx$/, /^[sdcz]gtsv$/, /^[sdcz]gtrfs$/, /^[sdcz]lagtm$/, /^[sdcz]langt$/
-    inputs.sort!{|a,b| (a=="dl" && b=="d") ? 1 : -1}
-  when /^[sdcz]larzt$/, /^[sdcz]larft$/
-    inputs.sort!{|a,b| (a=="v" && (b=="tau"||b=="n")) ? 1 : -1}
-  when /^[sd]laeda$/
-    inputs.sort!{|a,b| a=="qptr" ? -1 : 1}
-  when /^[sd]larrd$/
-    inputs.sort!{|a,b| a=="d" ? -1 : 1}
-  when /^[cz]syr$/
-    inputs.sort!{|a,b| (a=="x" && b=="a") ? 1 : -1}
-  end
-
-  dimdefs = Hash.new
-  substs = Array.new
-  inputs.each_with_index{|name,i|
-    arg = args[name]
-    type = arg[:type]
-    dims = arg[:dims]
-    subst = arg[:subst]
-    next if dims
-    code << get_cobj(name, type);
-  }
-  inputs.each_with_index{|name,i|
-    arg = args[name]
-    type = arg[:type]
-    dims = arg[:dims]
-    subst = arg[:subst]
-    next unless dims
-    if type == "char"
-      code << "  #{name} = StringValueCStr(#{RBPREFIX}#{name});\n"
-      next
-    end
-    code +=<<"EOF"
-  if (!NA_IsNArray(#{RBPREFIX}#{name}))
-    rb_raise(rb_eArgError, "#{name} (#{i+1}th argument) must be NArray");
-  if (NA_RANK(#{RBPREFIX}#{name}) != #{dims.length})
-    rb_raise(rb_eArgError, "rank of #{name} (#{i+1}th argument) must be %d", #{dims.length});
-EOF
-    if sa = arg[:subst_order]
-      sa.each{|k|
-        v = subst[k]
-        code << "  #{k} = #{v};\n"
-        substs.push k
-      }
-    else
-      subst.each{|k,v|
-        code << "  #{k} = #{v};\n"
-        substs.push k
-      }
-    end
-
-    dims.each_with_index{|dim,j|
-      raise "bug: NA_SHAPE? cannot use {#{dim} in #{name}: #{sub_name}" if j>2
-      if substs.include?(dim) || dimdefs[dim] == true
-        code += <<"EOF"
-  if (NA_SHAPE#{j}(#{RBPREFIX}#{name}) != #{dim})
-    rb_raise(rb_eRuntimeError, "shape #{j} of #{name} must be #{dim}");
-EOF
-      elsif (dimdef = dimdefs[dim])
-        code += <<"EOF"
-  if (NA_SHAPE#{j}(#{RBPREFIX}#{name}) != #{dim})
-    rb_raise(rb_eRuntimeError, "shape #{j} of #{name} must be the same as shape #{dimdef[:index]} of #{dimdef[:name]}");
-EOF
-      elsif /^[a-z][a-z_\d]*$/ !~ dim
-        get_vars(dim).each{|d|
-#          unless dimdefs[d] || substs.include?(d) || ((inputs.include?(d)) && (ar = args[d]) && (ar[:type]=="integer"||ar[:type]=="logical"))
-          unless dimdefs[d] || substs.include?(d) || ((ar = args[d]) && (ar[:type]=="integer"||ar[:type]=="logical"))
-            raise "undefined #{d}  #{name} #{sub_name}"
-          end
-        }
-        code += <<"EOF"
-  if (NA_SHAPE#{j}(#{RBPREFIX}#{name}) != (#{dim}))
-    rb_raise(rb_eRuntimeError, "shape #{j} of #{name} must be %d", #{dim});
-EOF
-      else
-        code << "  #{dim} = NA_SHAPE#{j}(#{RBPREFIX}#{name});\n"
-        dimdefs[dim] = {:name => name, :index => j}
-      end
-    }
-    natype =  NATYPES[type] || raise("na type is not deifned (#{type})")
-    code +=<<"EOF"
-  if (NA_TYPE(#{RBPREFIX}#{name}) != #{natype})
-    #{RBPREFIX}#{name} = na_change_type(#{RBPREFIX}#{name}, #{natype});
-  #{name} = NA_PTR_TYPE(#{RBPREFIX}#{name}, #{type}*);
-EOF
-  }
-
-  outputs.each{|name|
-    arg = args[name]
-    type = arg[:type]
-    if dims = arg[:dims]
-      if ss = arg[:subst]
-        if sa = arg[:subst_order]
-          sa.each{|k|
-            v = ss[k]
-            code << "  #{k} = #{v};\n"
-            substs.push k
-          }
-        else
-          ss.each{|k,v|
-            code << "  #{k} = #{v};\n"
-            substs.push k
-          }
-        end
-      end
-      code +=<<"EOF"
-  {
-    int shape[#{dims.length}];
-EOF
-      dims.each_with_index{|dim,k|
-        get_vars(dim).each{|d|
-#          unless dimdefs[d] || substs.include?(d) || ((inputs.include?(d)) && (ar = args[d]) && (ar[:type]=="integer"||ar[:type]=="logical"))
-          unless dimdefs[d] || substs.include?(d) || ( (ar = args[d]) && (ar[:type]=="integer"||ar[:type]=="logical"))
-            raise "undefined #{d}  #{name} #{sub_name}"
-          end
-        }
-        if type == "integer"
-          code << "    shape[#{k}] = DIM_LEN(#{dim});\n"
-        else
-          code << "    shape[#{k}] = #{dim};\n"
-        end
-      }
-      code +=<<"EOF"
-    #{RBPREFIX}#{name} = na_make_object(#{NATYPES[type]}, #{dims.length}, shape, cNArray);
-  }
-  #{name} = NA_PTR_TYPE(#{RBPREFIX}#{name}, #{type}*);
-EOF
-    end
-  }
-
-  inouts.each{|name|
-    arg = args[name]
-    type = arg[:type]
-    if dims = arg[:dims]
-      code +=<<"EOF"
-  {
-    int shape[#{dims.length}];
-EOF
-      dims.each_with_index{|dim,k|
-        get_vars(dim).each{|d|
-          unless dimdefs[d] || substs.include?(d) || ((inputs.include?(d)) && (ar = args[d]) && (ar[:type]=="integer"||ar[:type]=="logical"))
-            raise "undefined #{d}  #{name} #{sub_name}"
-          end
-        }
-        if type == "integer"
-          code << "    shape[#{k}] = DIM_LEN(#{dim});\n"
-        else
-          code << "    shape[#{k}] = #{dim};\n"
-        end
-      }
-      code +=<<"EOF"
-    #{RBPREFIX}#{name}_out__ = na_make_object(#{NATYPES[type]}, #{dims.length}, shape, cNArray);
-  }
-  #{name}_out__ = NA_PTR_TYPE(#{RBPREFIX}#{name}_out__, #{type}*);
-  MEMCPY(#{name}_out__, #{name}, #{type}, NA_TOTAL(#{RBPREFIX}#{name}));
-  #{RBPREFIX}#{name} = #{RBPREFIX}#{name}_out__;
-  #{name} = #{name}_out__;
-EOF
-    end
-  }
-
-  workspaces.each{|name|
-    arg = args[name]
-    if dims = arg[:dims]
-      type = arg[:type]
-      if ss = arg[:subst]
-        if sa = arg[:subst_order]
-          sa.each{|k|
-            v = ss[k]
-            code << "  #{k} = #{v};\n"
-            substs.push k
-          }
-        else
-          ss.each{|k,v|
-            code << "  #{k} = #{v};\n"
-            substs.push k
-          }
-        end
-      end
-      dims.each{|dim|
-        get_vars(dim).each{|d|
-          unless dimdefs[d] || substs.include?(d) || ((inputs.include?(d)) && (ar = args[d]) && (ar[:type]=="integer"))
-            raise "undefined #{d}  #{name} #{sub_name}"
-          end
-        }
-      }
-      len = dims.collect{|dim| "(#{dim})"}.join("*")
-      code << "  #{name} = ALLOC_N(#{type}, #{len});\n"
-    end
-  }
-  code << "\n"
-
-
-  cargs = arg_names.collect{|name|
-    block== name ? RBPREFIX+name : args[name][:dims] ? name : "&"+name
-  }
-  if FUNCS.include?(sub_name) || /\A[sdcz]lan[eghts]/ =~ sub_name
-    code << "  __out__ = #{sub_name}_(#{cargs.join(", ")});\n\n"
-  else
-    code << "  #{sub_name}_(#{sub_type==:func ? "&__out__, " : ""}#{cargs.join(", ")});\n\n"
-  end
-
-  workspaces.each{|name|
-    arg = args[name]
-    if dims = arg[:dims]
-      type = arg[:type]
-      len = dims.collect{|dim| "(#{dim})"}.join("*")
-      code << "  free(#{name});\n"
-    end
-  }
-
-  out = outputs + inouts
-
-  out.each{|name|
-    arg = args[name]
-    if arg[:dims]
-      if arg[:type] == "char"
-        code << "  #{RBPREFIX}#{name} = rb_str_new2(&#{name});\n"
-      end
-    else
-      code << get_robj(name, arg[:type])
-    end
-  }
-
-  case out.length
-  when 0
-    result = "Qnil"
-  when 1
-    result = RBPREFIX+out[0];
-  else
-    result = "rb_ary_new3(#{out.length}, #{out.collect{|op| RBPREFIX+op}.join(", ")})"
-  end
-
-  code +=<<"EOF"
-  return #{result};
-}
-
-EOF
-
-  code +=<<"EOF"
-void
-init_lapack_#{sub_name}(VALUE mLapack){
-  rb_define_module_function(mLapack, \"#{sub_name}\", #{RBPREFIX}#{sub_name}, -1);
-}
-EOF
-
-  code_all = "#include \"#{RBPREFIX}lapack.h\"\n\n"
-
-  if block
-    arg = args[block]
-    type = arg[:block_type]
-    atype = arg[:block_arg_type]
-    anum = arg[:block_arg_num]
-    cas = Array.new
-    ras = Array.new
-    anum.times{|n|
-      cas.push "#{atype} *arg#{n}"
-      ras.push "#{RBPREFIX}arg#{n}"
-    }
-    code_all += <<EOF
-static #{type}
-#{RBPREFIX}#{block}(#{cas.join(", ")}){
-  VALUE #{ras.join(", ")};
-
-  VALUE #{RBPREFIX}ret;
-  #{type} ret;
-
-EOF
-    anum.times{|n|
-      code_all << get_robj("arg#{n}", atype, true)
-    }
-    code_all += <<EOF
-
-  rb_ret = rb_yield_values(#{anum}, #{ras.join(", ")});
-
-EOF
-    code_all << get_cobj("ret", type)
-    code_all += <<EOF
-  return ret;
-}
-
-EOF
-  end
-
-  code_all += code
-
-  return [code_all, sub_name]
+  return hash
 end
 
 def generate_code(fnames)
@@ -3147,68 +1916,40 @@ def generate_code(fnames)
   sub_names = Array.new
   fnames.each_with_index{|fname,i|
     print "#{i+1}/#{nfnames}\n" if (i+1)%100==0
-    code, sub_name = create_code(fname)
-    if code
-      sub_names.push sub_name
-      File.open(sub_name+".c","w"){|file|
-        file.print code
-      }
+    hash = read_file(fname)
+    next if hash.nil?
+    help = hash[:help]
+    basename = File.basename(fname, ".f")
+    def_dir = File.join(File.dirname(__FILE__), "defs")
+    def_fname = File.join(def_dir, basename)
+    if File.exists?(def_fname)
+      hash = nil
+      File.open(def_fname){|file| hash = YAML.load(file.read) }
+      md5sum = hash[:md5sum]
+      next if get_md5sum(help) == md5sum && !@@force
+    end
+
+    hash = create_hash(fname)
+    def hash.each
+      [:name, :md5sum, :category].each do |k|
+        yield(k, self[k])
+      end
+      if self[:category] == :function
+        yield(:type, self[k])
+      end
+      [:arguments, :substitutions, :fortran_help].each do |k|
+        yield(k, self[k])
+      end
+    end
+    p "write #{hash[:name]}" if @@debug
+    File.open(def_fname, "w") do |file|
+      file.write hash.to_yaml
     end
   }
+end
 
-  File.open("#{RBPREFIX}lapack.h","w"){|file|
-    file.print <<"EOF"
-#include <string.h>
-#include <math.h>
-#include "ruby.h"
-#include "narray.h"
-#include "f2c.h"
-#include "clapack.h"
-
-#define MAX(a,b) (a > b ? a : b)
-#define MIN(a,b) (a < b ? a : b)
-#define LG(n) ((int)ceil(log((double)n)/log(2.0)))
-
-#if SIZEOF_LONG == 8
-# define DIM_LEN(i) ((i)*2)
-#else
-# define DIM_LEN(i) (i)
-#endif
-
-extern logical lsame_(char *ca, char *cb);
-extern int cunmtr_(char *side, char *uplo, char *trans, integer *m, integer *n, complex *a, integer *lda, complex *tau, complex *c__, integer *ldc, complex *work, integer *lwork, integer *info);
-extern int cunmrz_(char *side, char *trans, integer *m, integer *n, integer *k, integer *l, complex *a, integer *lda, complex *tau, complex *c__, integer *ldc, complex *work, integer *lwork, integer *info);
-EOF
-  }
-
-
-  File.open("rb_lapack.c","w"){|file|
-    file.print <<"EOF"
-#include "ruby.h"
-
-EOF
-
-    sub_names.each{|sname|
-      file.print "extern void init_lapack_#{sname}(VALUE mLapack);\n"
-    }
-
-    file.print <<"EOF"
-
-void Init_lapack(){
-  VALUE mNumRu;
-  VALUE mLapack;
-
-  rb_require("narray");
-
-  mNumRu = rb_define_module("NumRu");
-  mLapack = rb_define_module_under(mNumRu, "Lapack");
-
-EOF
-    sub_names.each{|sname|
-      file.print "  init_lapack_#{sname}(mLapack);\n"
-    }
-    file.print "}\n"
-  }
+def get_md5sum(src)
+  Digest::MD5.hexdigest(src.sub(/LAPACK routine \(version \d.\d\) --/,""))
 end
 
 
@@ -3216,15 +1957,14 @@ end
 
 
 @@debug = ARGV.delete("--debug")
+@@force = ARGV.delete("--force")
 
 dname = ARGV[0] || raise("Usage: ruby #$0 path_to_lapack_src")
 if File.directory?(dname)
-#  fnames = %w(sgees dgees cgees zgees sgeesx dgeesx cgeesx zgeesx sgges dgges cgges zgges sggesx dggesx cggesx zggesx).collect{|n| File.join("../lapack-3.1.1/SRC",n)+".f"}
-#  fnames = Dir[ File.join(dname,"*.f") ][0..10]
   fnames = Dir[ File.join(dname,"*.f") ]
 elsif File.file?(dname)
   fnames = [dname]
-  @@debug = true
+#  @@debug = true
 end
 
 generate_code(fnames)

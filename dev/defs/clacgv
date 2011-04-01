@@ -1,0 +1,44 @@
+--- 
+:name: clacgv
+:md5sum: b798c93b96a1a5b91fa73ba3dcd76a1b
+:category: :subroutine
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- x: 
+    :type: complex
+    :intent: input/output
+    :dims: 
+    - 1+(n-1)*abs(incx)
+- incx: 
+    :type: integer
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE CLACGV( N, X, INCX )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  CLACGV conjugates a complex vector of length N.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The length of the vector X.  N >= 0.\n\
+  *\n\
+  *  X       (input/output) COMPLEX array, dimension\n\
+  *                         (1+(N-1)*abs(INCX))\n\
+  *          On entry, the vector of length N to be conjugated.\n\
+  *          On exit, X is overwritten with conjg(X).\n\
+  *\n\
+  *  INCX    (input) INTEGER\n\
+  *          The spacing between successive elements of X.\n\
+  *\n\n\
+  * =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            I, IOFF\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          CONJG\n\
+  *     ..\n"

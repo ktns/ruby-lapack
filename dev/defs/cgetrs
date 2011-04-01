@@ -1,0 +1,91 @@
+--- 
+:name: cgetrs
+:md5sum: 3baee94e1ac511afdeae03d88c6f52a6
+:category: :subroutine
+:arguments: 
+- trans: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- nrhs: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- ipiv: 
+    :type: integer
+    :intent: input
+    :dims: 
+    - n
+- b: 
+    :type: complex
+    :intent: input/output
+    :dims: 
+    - ldb
+    - nrhs
+- ldb: 
+    :type: integer
+    :intent: input
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE CGETRS( TRANS, N, NRHS, A, LDA, IPIV, B, LDB, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  CGETRS solves a system of linear equations\n\
+  *     A * X = B,  A**T * X = B,  or  A**H * X = B\n\
+  *  with a general N-by-N matrix A using the LU factorization computed\n\
+  *  by CGETRF.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  TRANS   (input) CHARACTER*1\n\
+  *          Specifies the form of the system of equations:\n\
+  *          = 'N':  A * X = B     (No transpose)\n\
+  *          = 'T':  A**T * X = B  (Transpose)\n\
+  *          = 'C':  A**H * X = B  (Conjugate transpose)\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix A.  N >= 0.\n\
+  *\n\
+  *  NRHS    (input) INTEGER\n\
+  *          The number of right hand sides, i.e., the number of columns\n\
+  *          of the matrix B.  NRHS >= 0.\n\
+  *\n\
+  *  A       (input) COMPLEX array, dimension (LDA,N)\n\
+  *          The factors L and U from the factorization A = P*L*U\n\
+  *          as computed by CGETRF.\n\
+  *\n\
+  *  LDA     (input) INTEGER\n\
+  *          The leading dimension of the array A.  LDA >= max(1,N).\n\
+  *\n\
+  *  IPIV    (input) INTEGER array, dimension (N)\n\
+  *          The pivot indices from CGETRF; for 1<=i<=N, row i of the\n\
+  *          matrix was interchanged with row IPIV(i).\n\
+  *\n\
+  *  B       (input/output) COMPLEX array, dimension (LDB,NRHS)\n\
+  *          On entry, the right hand side matrix B.\n\
+  *          On exit, the solution matrix X.\n\
+  *\n\
+  *  LDB     (input) INTEGER\n\
+  *          The leading dimension of the array B.  LDB >= max(1,N).\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

@@ -1,0 +1,77 @@
+--- 
+:name: claset
+:md5sum: 064dfdfbe3ff9686c339a8059099f40d
+:category: :subroutine
+:arguments: 
+- uplo: 
+    :type: char
+    :intent: input
+- m: 
+    :type: integer
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- alpha: 
+    :type: complex
+    :intent: input
+- beta: 
+    :type: complex
+    :intent: input
+- a: 
+    :type: complex
+    :intent: input/output
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE CLASET( UPLO, M, N, ALPHA, BETA, A, LDA )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  CLASET initializes a 2-D array A to BETA on the diagonal and\n\
+  *  ALPHA on the offdiagonals.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  UPLO    (input) CHARACTER*1\n\
+  *          Specifies the part of the matrix A to be set.\n\
+  *          = 'U':      Upper triangular part is set. The lower triangle\n\
+  *                      is unchanged.\n\
+  *          = 'L':      Lower triangular part is set. The upper triangle\n\
+  *                      is unchanged.\n\
+  *          Otherwise:  All of the matrix A is set.\n\
+  *\n\
+  *  M       (input) INTEGER\n\
+  *          On entry, M specifies the number of rows of A.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          On entry, N specifies the number of columns of A.\n\
+  *\n\
+  *  ALPHA   (input) COMPLEX\n\
+  *          All the offdiagonal array elements are set to ALPHA.\n\
+  *\n\
+  *  BETA    (input) COMPLEX\n\
+  *          All the diagonal array elements are set to BETA.\n\
+  *\n\
+  *  A       (input/output) COMPLEX array, dimension (LDA,N)\n\
+  *          On entry, the m by n matrix A.\n\
+  *          On exit, A(i,j) = ALPHA, 1 <= i <= m, 1 <= j <= n, i.ne.j;\n\
+  *                   A(i,i) = BETA , 1 <= i <= min(m,n)\n\
+  *\n\
+  *  LDA     (input) INTEGER\n\
+  *          The leading dimension of the array A.  LDA >= max(1,M).\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            I, J\n\
+  *     ..\n\
+  *     .. External Functions ..\n      LOGICAL            LSAME\n      EXTERNAL           LSAME\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          MIN\n\
+  *     ..\n"

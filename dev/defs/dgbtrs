@@ -1,0 +1,106 @@
+--- 
+:name: dgbtrs
+:md5sum: a4125cfc65d3f9c498b42c6cbaaedb91
+:category: :subroutine
+:arguments: 
+- trans: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- kl: 
+    :type: integer
+    :intent: input
+- ku: 
+    :type: integer
+    :intent: input
+- nrhs: 
+    :type: integer
+    :intent: input
+- ab: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - ldab
+    - n
+- ldab: 
+    :type: integer
+    :intent: input
+- ipiv: 
+    :type: integer
+    :intent: input
+    :dims: 
+    - n
+- b: 
+    :type: doublereal
+    :intent: input/output
+    :dims: 
+    - ldb
+    - nrhs
+- ldb: 
+    :type: integer
+    :intent: input
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE DGBTRS( TRANS, N, KL, KU, NRHS, AB, LDAB, IPIV, B, LDB, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DGBTRS solves a system of linear equations\n\
+  *     A * X = B  or  A' * X = B\n\
+  *  with a general band matrix A using the LU factorization computed\n\
+  *  by DGBTRF.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  TRANS   (input) CHARACTER*1\n\
+  *          Specifies the form of the system of equations.\n\
+  *          = 'N':  A * X = B  (No transpose)\n\
+  *          = 'T':  A'* X = B  (Transpose)\n\
+  *          = 'C':  A'* X = B  (Conjugate transpose = Transpose)\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix A.  N >= 0.\n\
+  *\n\
+  *  KL      (input) INTEGER\n\
+  *          The number of subdiagonals within the band of A.  KL >= 0.\n\
+  *\n\
+  *  KU      (input) INTEGER\n\
+  *          The number of superdiagonals within the band of A.  KU >= 0.\n\
+  *\n\
+  *  NRHS    (input) INTEGER\n\
+  *          The number of right hand sides, i.e., the number of columns\n\
+  *          of the matrix B.  NRHS >= 0.\n\
+  *\n\
+  *  AB      (input) DOUBLE PRECISION array, dimension (LDAB,N)\n\
+  *          Details of the LU factorization of the band matrix A, as\n\
+  *          computed by DGBTRF.  U is stored as an upper triangular band\n\
+  *          matrix with KL+KU superdiagonals in rows 1 to KL+KU+1, and\n\
+  *          the multipliers used during the factorization are stored in\n\
+  *          rows KL+KU+2 to 2*KL+KU+1.\n\
+  *\n\
+  *  LDAB    (input) INTEGER\n\
+  *          The leading dimension of the array AB.  LDAB >= 2*KL+KU+1.\n\
+  *\n\
+  *  IPIV    (input) INTEGER array, dimension (N)\n\
+  *          The pivot indices; for 1 <= i <= N, row i of the matrix was\n\
+  *          interchanged with row IPIV(i).\n\
+  *\n\
+  *  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)\n\
+  *          On entry, the right hand side matrix B.\n\
+  *          On exit, the solution matrix X.\n\
+  *\n\
+  *  LDB     (input) INTEGER\n\
+  *          The leading dimension of the array B.  LDB >= max(1,N).\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0: if INFO = -i, the i-th argument had an illegal value\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

@@ -1,0 +1,87 @@
+--- 
+:name: dopgtr
+:md5sum: 3be95896182d344b40b94e108282b151
+:category: :subroutine
+:arguments: 
+- uplo: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- ap: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - ldap
+- tau: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - ldtau
+- q: 
+    :type: doublereal
+    :intent: output
+    :dims: 
+    - ldq
+    - n
+- ldq: 
+    :type: integer
+    :intent: input
+- work: 
+    :type: doublereal
+    :intent: workspace
+    :dims: 
+    - n-1
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: 
+  ldq: MAX(1,n)
+  n: ldtau+1
+:fortran_help: "      SUBROUTINE DOPGTR( UPLO, N, AP, TAU, Q, LDQ, WORK, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DOPGTR generates a real orthogonal matrix Q which is defined as the\n\
+  *  product of n-1 elementary reflectors H(i) of order n, as returned by\n\
+  *  DSPTRD using packed storage:\n\
+  *\n\
+  *  if UPLO = 'U', Q = H(n-1) . . . H(2) H(1),\n\
+  *\n\
+  *  if UPLO = 'L', Q = H(1) H(2) . . . H(n-1).\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  UPLO    (input) CHARACTER*1\n\
+  *          = 'U': Upper triangular packed storage used in previous\n\
+  *                 call to DSPTRD;\n\
+  *          = 'L': Lower triangular packed storage used in previous\n\
+  *                 call to DSPTRD.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix Q. N >= 0.\n\
+  *\n\
+  *  AP      (input) DOUBLE PRECISION array, dimension (N*(N+1)/2)\n\
+  *          The vectors which define the elementary reflectors, as\n\
+  *          returned by DSPTRD.\n\
+  *\n\
+  *  TAU     (input) DOUBLE PRECISION array, dimension (N-1)\n\
+  *          TAU(i) must contain the scalar factor of the elementary\n\
+  *          reflector H(i), as returned by DSPTRD.\n\
+  *\n\
+  *  Q       (output) DOUBLE PRECISION array, dimension (LDQ,N)\n\
+  *          The N-by-N orthogonal matrix Q.\n\
+  *\n\
+  *  LDQ     (input) INTEGER\n\
+  *          The leading dimension of the array Q. LDQ >= max(1,N).\n\
+  *\n\
+  *  WORK    (workspace) DOUBLE PRECISION array, dimension (N-1)\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

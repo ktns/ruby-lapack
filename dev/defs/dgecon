@@ -1,0 +1,90 @@
+--- 
+:name: dgecon
+:md5sum: ce08c3cbca5bd107bc2e0dac5059f801
+:category: :subroutine
+:arguments: 
+- norm: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- anorm: 
+    :type: doublereal
+    :intent: input
+- rcond: 
+    :type: doublereal
+    :intent: output
+- work: 
+    :type: doublereal
+    :intent: workspace
+    :dims: 
+    - 4*n
+- iwork: 
+    :type: integer
+    :intent: workspace
+    :dims: 
+    - n
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE DGECON( NORM, N, A, LDA, ANORM, RCOND, WORK, IWORK, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DGECON estimates the reciprocal of the condition number of a general\n\
+  *  real matrix A, in either the 1-norm or the infinity-norm, using\n\
+  *  the LU factorization computed by DGETRF.\n\
+  *\n\
+  *  An estimate is obtained for norm(inv(A)), and the reciprocal of the\n\
+  *  condition number is computed as\n\
+  *     RCOND = 1 / ( norm(A) * norm(inv(A)) ).\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  NORM    (input) CHARACTER*1\n\
+  *          Specifies whether the 1-norm condition number or the\n\
+  *          infinity-norm condition number is required:\n\
+  *          = '1' or 'O':  1-norm;\n\
+  *          = 'I':         Infinity-norm.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix A.  N >= 0.\n\
+  *\n\
+  *  A       (input) DOUBLE PRECISION array, dimension (LDA,N)\n\
+  *          The factors L and U from the factorization A = P*L*U\n\
+  *          as computed by DGETRF.\n\
+  *\n\
+  *  LDA     (input) INTEGER\n\
+  *          The leading dimension of the array A.  LDA >= max(1,N).\n\
+  *\n\
+  *  ANORM   (input) DOUBLE PRECISION\n\
+  *          If NORM = '1' or 'O', the 1-norm of the original matrix A.\n\
+  *          If NORM = 'I', the infinity-norm of the original matrix A.\n\
+  *\n\
+  *  RCOND   (output) DOUBLE PRECISION\n\
+  *          The reciprocal of the condition number of the matrix A,\n\
+  *          computed as RCOND = 1/(norm(A) * norm(inv(A))).\n\
+  *\n\
+  *  WORK    (workspace) DOUBLE PRECISION array, dimension (4*N)\n\
+  *\n\
+  *  IWORK   (workspace) INTEGER array, dimension (N)\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

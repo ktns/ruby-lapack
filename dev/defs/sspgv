@@ -1,0 +1,139 @@
+--- 
+:name: sspgv
+:md5sum: b3c519ead837e7b587434eb8d06cec29
+:category: :subroutine
+:arguments: 
+- itype: 
+    :type: integer
+    :intent: input
+- jobz: 
+    :type: char
+    :intent: input
+- uplo: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- ap: 
+    :type: real
+    :intent: input/output
+    :dims: 
+    - ldap
+- bp: 
+    :type: real
+    :intent: input/output
+    :dims: 
+    - n*(n+1)/2
+- w: 
+    :type: real
+    :intent: output
+    :dims: 
+    - n
+- z: 
+    :type: real
+    :intent: output
+    :dims: 
+    - ldz
+    - n
+- ldz: 
+    :type: integer
+    :intent: input
+- work: 
+    :type: real
+    :intent: workspace
+    :dims: 
+    - 3*n
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: 
+  ldz: "lsame_(&jobz,\"V\") ? MAX(1,n) : 1"
+  n: (int)(sqrt((double)8*ldap+1)-1)/2
+:fortran_help: "      SUBROUTINE SSPGV( ITYPE, JOBZ, UPLO, N, AP, BP, W, Z, LDZ, WORK, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  SSPGV computes all the eigenvalues and, optionally, the eigenvectors\n\
+  *  of a real generalized symmetric-definite eigenproblem, of the form\n\
+  *  A*x=(lambda)*B*x,  A*Bx=(lambda)*x,  or B*A*x=(lambda)*x.\n\
+  *  Here A and B are assumed to be symmetric, stored in packed format,\n\
+  *  and B is also positive definite.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  ITYPE   (input) INTEGER\n\
+  *          Specifies the problem type to be solved:\n\
+  *          = 1:  A*x = (lambda)*B*x\n\
+  *          = 2:  A*B*x = (lambda)*x\n\
+  *          = 3:  B*A*x = (lambda)*x\n\
+  *\n\
+  *  JOBZ    (input) CHARACTER*1\n\
+  *          = 'N':  Compute eigenvalues only;\n\
+  *          = 'V':  Compute eigenvalues and eigenvectors.\n\
+  *\n\
+  *  UPLO    (input) CHARACTER*1\n\
+  *          = 'U':  Upper triangles of A and B are stored;\n\
+  *          = 'L':  Lower triangles of A and B are stored.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrices A and B.  N >= 0.\n\
+  *\n\
+  *  AP      (input/output) REAL array, dimension\n\
+  *                            (N*(N+1)/2)\n\
+  *          On entry, the upper or lower triangle of the symmetric matrix\n\
+  *          A, packed columnwise in a linear array.  The j-th column of A\n\
+  *          is stored in the array AP as follows:\n\
+  *          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;\n\
+  *          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.\n\
+  *\n\
+  *          On exit, the contents of AP are destroyed.\n\
+  *\n\
+  *  BP      (input/output) REAL array, dimension (N*(N+1)/2)\n\
+  *          On entry, the upper or lower triangle of the symmetric matrix\n\
+  *          B, packed columnwise in a linear array.  The j-th column of B\n\
+  *          is stored in the array BP as follows:\n\
+  *          if UPLO = 'U', BP(i + (j-1)*j/2) = B(i,j) for 1<=i<=j;\n\
+  *          if UPLO = 'L', BP(i + (j-1)*(2*n-j)/2) = B(i,j) for j<=i<=n.\n\
+  *\n\
+  *          On exit, the triangular factor U or L from the Cholesky\n\
+  *          factorization B = U**T*U or B = L*L**T, in the same storage\n\
+  *          format as B.\n\
+  *\n\
+  *  W       (output) REAL array, dimension (N)\n\
+  *          If INFO = 0, the eigenvalues in ascending order.\n\
+  *\n\
+  *  Z       (output) REAL array, dimension (LDZ, N)\n\
+  *          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of\n\
+  *          eigenvectors.  The eigenvectors are normalized as follows:\n\
+  *          if ITYPE = 1 or 2, Z**T*B*Z = I;\n\
+  *          if ITYPE = 3, Z**T*inv(B)*Z = I.\n\
+  *          If JOBZ = 'N', then Z is not referenced.\n\
+  *\n\
+  *  LDZ     (input) INTEGER\n\
+  *          The leading dimension of the array Z.  LDZ >= 1, and if\n\
+  *          JOBZ = 'V', LDZ >= max(1,N).\n\
+  *\n\
+  *  WORK    (workspace) REAL array, dimension (3*N)\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value\n\
+  *          > 0:  SPPTRF or SSPEV returned an error code:\n\
+  *             <= N:  if INFO = i, SSPEV failed to converge;\n\
+  *                    i off-diagonal elements of an intermediate\n\
+  *                    tridiagonal form did not converge to zero.\n\
+  *             > N:   if INFO = n + i, for 1 <= i <= n, then the leading\n\
+  *                    minor of order i of B is not positive definite.\n\
+  *                    The factorization of B could not be completed and\n\
+  *                    no eigenvalues or eigenvectors were computed.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      LOGICAL            UPPER, WANTZ\n      CHARACTER          TRANS\n      INTEGER            J, NEIG\n\
+  *     ..\n\
+  *     .. External Functions ..\n      LOGICAL            LSAME\n      EXTERNAL           LSAME\n\
+  *     ..\n\
+  *     .. External Subroutines ..\n      EXTERNAL           SPPTRF, SSPEV, SSPGST, STPMV, STPSV, XERBLA\n\
+  *     ..\n"

@@ -1,0 +1,121 @@
+--- 
+:name: dla_porcond
+:md5sum: ad89241edd2e8e4f14c40b59471af634
+:type: doublereal
+:arguments: 
+- uplo: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- af: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - ldaf
+    - n
+- ldaf: 
+    :type: integer
+    :intent: input
+- cmode: 
+    :type: integer
+    :intent: input
+- c: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - n
+- info: 
+    :type: integer
+    :intent: output
+- work: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - 3*n
+- iwork: 
+    :type: integer
+    :intent: input
+    :dims: 
+    - n
+:substitutions: {}
+
+:fortran_help: "      DOUBLE PRECISION FUNCTION DLA_PORCOND( UPLO, N, A, LDA, AF, LDAF, CMODE, C, INFO, WORK, IWORK )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *     DLA_PORCOND Estimates the Skeel condition number of  op(A) * op2(C)\n\
+  *     where op2 is determined by CMODE as follows\n\
+  *     CMODE =  1    op2(C) = C\n\
+  *     CMODE =  0    op2(C) = I\n\
+  *     CMODE = -1    op2(C) = inv(C)\n\
+  *     The Skeel condition number  cond(A) = norminf( |inv(A)||A| )\n\
+  *     is computed by computing scaling factors R such that\n\
+  *     diag(R)*A*op2(C) is row equilibrated and computing the standard\n\
+  *     infinity-norm condition number.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  ==========\n\
+  *\n\
+  *     UPLO    (input) CHARACTER*1\n\
+  *       = 'U':  Upper triangle of A is stored;\n\
+  *       = 'L':  Lower triangle of A is stored.\n\
+  *\n\
+  *     N       (input) INTEGER\n\
+  *     The number of linear equations, i.e., the order of the\n\
+  *     matrix A.  N >= 0.\n\
+  *\n\
+  *     A       (input) DOUBLE PRECISION array, dimension (LDA,N)\n\
+  *     On entry, the N-by-N matrix A.\n\
+  *\n\
+  *     LDA     (input) INTEGER\n\
+  *     The leading dimension of the array A.  LDA >= max(1,N).\n\
+  *\n\
+  *     AF      (input) DOUBLE PRECISION array, dimension (LDAF,N)\n\
+  *     The triangular factor U or L from the Cholesky factorization\n\
+  *     A = U**T*U or A = L*L**T, as computed by DPOTRF.\n\
+  *\n\
+  *     LDAF    (input) INTEGER\n\
+  *     The leading dimension of the array AF.  LDAF >= max(1,N).\n\
+  *\n\
+  *     CMODE   (input) INTEGER\n\
+  *     Determines op2(C) in the formula op(A) * op2(C) as follows:\n\
+  *     CMODE =  1    op2(C) = C\n\
+  *     CMODE =  0    op2(C) = I\n\
+  *     CMODE = -1    op2(C) = inv(C)\n\
+  *\n\
+  *     C       (input) DOUBLE PRECISION array, dimension (N)\n\
+  *     The vector C in the formula op(A) * op2(C).\n\
+  *\n\
+  *     INFO    (output) INTEGER\n\
+  *       = 0:  Successful exit.\n\
+  *     i > 0:  The ith argument is invalid.\n\
+  *\n\
+  *     WORK    (input) DOUBLE PRECISION array, dimension (3*N).\n\
+  *     Workspace.\n\
+  *\n\
+  *     IWORK   (input) INTEGER array, dimension (N).\n\
+  *     Workspace.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            KASE, I, J\n      DOUBLE PRECISION   AINVNM, TMP\n      LOGICAL            UP\n\
+  *     ..\n\
+  *     .. Array Arguments ..\n      INTEGER            ISAVE( 3 )\n\
+  *     ..\n\
+  *     .. External Functions ..\n      LOGICAL            LSAME\n      INTEGER            IDAMAX\n      EXTERNAL           LSAME, IDAMAX\n\
+  *     ..\n\
+  *     .. External Subroutines ..\n      EXTERNAL           DLACN2, DPOTRS, XERBLA\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          ABS, MAX\n\
+  *     ..\n"

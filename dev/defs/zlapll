@@ -1,0 +1,67 @@
+--- 
+:name: zlapll
+:md5sum: f38274c6caef49904c71c30719914830
+:category: :subroutine
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- x: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - 1+(n-1)*incx
+- incx: 
+    :type: integer
+    :intent: input
+- y: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - 1+(n-1)*incy
+- incy: 
+    :type: integer
+    :intent: input
+- ssmin: 
+    :type: doublereal
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE ZLAPLL( N, X, INCX, Y, INCY, SSMIN )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  Given two column vectors X and Y, let\n\
+  *\n\
+  *                       A = ( X Y ).\n\
+  *\n\
+  *  The subroutine first computes the QR factorization of A = Q*R,\n\
+  *  and then computes the SVD of the 2-by-2 upper triangular matrix R.\n\
+  *  The smaller singular value of R is returned in SSMIN, which is used\n\
+  *  as the measurement of the linear dependency of the vectors X and Y.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The length of the vectors X and Y.\n\
+  *\n\
+  *  X       (input/output) COMPLEX*16 array, dimension (1+(N-1)*INCX)\n\
+  *          On entry, X contains the N-vector X.\n\
+  *          On exit, X is overwritten.\n\
+  *\n\
+  *  INCX    (input) INTEGER\n\
+  *          The increment between successive elements of X. INCX > 0.\n\
+  *\n\
+  *  Y       (input/output) COMPLEX*16 array, dimension (1+(N-1)*INCY)\n\
+  *          On entry, Y contains the N-vector Y.\n\
+  *          On exit, Y is overwritten.\n\
+  *\n\
+  *  INCY    (input) INTEGER\n\
+  *          The increment between successive elements of Y. INCY > 0.\n\
+  *\n\
+  *  SSMIN   (output) DOUBLE PRECISION\n\
+  *          The smallest singular value of the N-by-2 matrix A = ( X Y ).\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

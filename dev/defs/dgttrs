@@ -1,0 +1,119 @@
+--- 
+:name: dgttrs
+:md5sum: b93484e4a60657d1a7d75fd2575b68f7
+:category: :subroutine
+:arguments: 
+- trans: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- nrhs: 
+    :type: integer
+    :intent: input
+- dl: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - n-1
+- d: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - n
+- du: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - n-1
+- du2: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - n-2
+- ipiv: 
+    :type: integer
+    :intent: input
+    :dims: 
+    - n
+- b: 
+    :type: doublereal
+    :intent: input/output
+    :dims: 
+    - ldb
+    - nrhs
+- ldb: 
+    :type: integer
+    :intent: input
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE DGTTRS( TRANS, N, NRHS, DL, D, DU, DU2, IPIV, B, LDB, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DGTTRS solves one of the systems of equations\n\
+  *     A*X = B  or  A'*X = B,\n\
+  *  with a tridiagonal matrix A using the LU factorization computed\n\
+  *  by DGTTRF.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  TRANS   (input) CHARACTER*1\n\
+  *          Specifies the form of the system of equations.\n\
+  *          = 'N':  A * X = B  (No transpose)\n\
+  *          = 'T':  A'* X = B  (Transpose)\n\
+  *          = 'C':  A'* X = B  (Conjugate transpose = Transpose)\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix A.\n\
+  *\n\
+  *  NRHS    (input) INTEGER\n\
+  *          The number of right hand sides, i.e., the number of columns\n\
+  *          of the matrix B.  NRHS >= 0.\n\
+  *\n\
+  *  DL      (input) DOUBLE PRECISION array, dimension (N-1)\n\
+  *          The (n-1) multipliers that define the matrix L from the\n\
+  *          LU factorization of A.\n\
+  *\n\
+  *  D       (input) DOUBLE PRECISION array, dimension (N)\n\
+  *          The n diagonal elements of the upper triangular matrix U from\n\
+  *          the LU factorization of A.\n\
+  *\n\
+  *  DU      (input) DOUBLE PRECISION array, dimension (N-1)\n\
+  *          The (n-1) elements of the first super-diagonal of U.\n\
+  *\n\
+  *  DU2     (input) DOUBLE PRECISION array, dimension (N-2)\n\
+  *          The (n-2) elements of the second super-diagonal of U.\n\
+  *\n\
+  *  IPIV    (input) INTEGER array, dimension (N)\n\
+  *          The pivot indices; for 1 <= i <= n, row i of the matrix was\n\
+  *          interchanged with row IPIV(i).  IPIV(i) will always be either\n\
+  *          i or i+1; IPIV(i) = i indicates a row interchange was not\n\
+  *          required.\n\
+  *\n\
+  *  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)\n\
+  *          On entry, the matrix of right hand side vectors B.\n\
+  *          On exit, B is overwritten by the solution vectors X.\n\
+  *\n\
+  *  LDB     (input) INTEGER\n\
+  *          The leading dimension of the array B.  LDB >= max(1,N).\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      LOGICAL            NOTRAN\n      INTEGER            ITRANS, J, JB, NB\n\
+  *     ..\n\
+  *     .. External Functions ..\n      INTEGER            ILAENV\n      EXTERNAL           ILAENV\n\
+  *     ..\n\
+  *     .. External Subroutines ..\n      EXTERNAL           DGTTS2, XERBLA\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          MAX, MIN\n\
+  *     ..\n"

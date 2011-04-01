@@ -1,0 +1,85 @@
+--- 
+:name: cppcon
+:md5sum: c3caf11aabcf2b12028393d086f0a544
+:category: :subroutine
+:arguments: 
+- uplo: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- ap: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - ldap
+- anorm: 
+    :type: real
+    :intent: input
+- rcond: 
+    :type: real
+    :intent: output
+- work: 
+    :type: complex
+    :intent: workspace
+    :dims: 
+    - 2*n
+- rwork: 
+    :type: real
+    :intent: workspace
+    :dims: 
+    - n
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: 
+  n: (int)(sqrt((double)8*ldap+1)-1)/2
+:fortran_help: "      SUBROUTINE CPPCON( UPLO, N, AP, ANORM, RCOND, WORK, RWORK, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  CPPCON estimates the reciprocal of the condition number (in the \n\
+  *  1-norm) of a complex Hermitian positive definite packed matrix using\n\
+  *  the Cholesky factorization A = U**H*U or A = L*L**H computed by\n\
+  *  CPPTRF.\n\
+  *\n\
+  *  An estimate is obtained for norm(inv(A)), and the reciprocal of the\n\
+  *  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  UPLO    (input) CHARACTER*1\n\
+  *          = 'U':  Upper triangle of A is stored;\n\
+  *          = 'L':  Lower triangle of A is stored.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix A.  N >= 0.\n\
+  *\n\
+  *  AP      (input) COMPLEX array, dimension (N*(N+1)/2)\n\
+  *          The triangular factor U or L from the Cholesky factorization\n\
+  *          A = U**H*U or A = L*L**H, packed columnwise in a linear\n\
+  *          array.  The j-th column of U or L is stored in the array AP\n\
+  *          as follows:\n\
+  *          if UPLO = 'U', AP(i + (j-1)*j/2) = U(i,j) for 1<=i<=j;\n\
+  *          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = L(i,j) for j<=i<=n.\n\
+  *\n\
+  *  ANORM   (input) REAL\n\
+  *          The 1-norm (or infinity-norm) of the Hermitian matrix A.\n\
+  *\n\
+  *  RCOND   (output) REAL\n\
+  *          The reciprocal of the condition number of the matrix A,\n\
+  *          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an\n\
+  *          estimate of the 1-norm of inv(A) computed in this routine.\n\
+  *\n\
+  *  WORK    (workspace) COMPLEX array, dimension (2*N)\n\
+  *\n\
+  *  RWORK   (workspace) REAL array, dimension (N)\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

@@ -1,0 +1,182 @@
+--- 
+:name: zcposv
+:md5sum: f63123d92c2b19650e7f886a8530407f
+:category: :subroutine
+:arguments: 
+- uplo: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- nrhs: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- b: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - ldb
+    - nrhs
+- ldb: 
+    :type: integer
+    :intent: input
+- x: 
+    :type: doublecomplex
+    :intent: output
+    :dims: 
+    - ldx
+    - nrhs
+- ldx: 
+    :type: integer
+    :intent: input
+- work: 
+    :type: doublecomplex
+    :intent: workspace
+    :dims: 
+    - n*nrhs
+- swork: 
+    :type: complex
+    :intent: workspace
+    :dims: 
+    - n*(n+nrhs)
+- rwork: 
+    :type: doublereal
+    :intent: workspace
+    :dims: 
+    - n
+- iter: 
+    :type: integer
+    :intent: output
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: 
+  ldx: MAX(1,n)
+:fortran_help: "      SUBROUTINE ZCPOSV( UPLO, N, NRHS, A, LDA, B, LDB, X, LDX, WORK, SWORK, RWORK, ITER, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  ZCPOSV computes the solution to a complex system of linear equations\n\
+  *     A * X = B,\n\
+  *  where A is an N-by-N Hermitian positive definite matrix and X and B\n\
+  *  are N-by-NRHS matrices.\n\
+  *\n\
+  *  ZCPOSV first attempts to factorize the matrix in COMPLEX and use this\n\
+  *  factorization within an iterative refinement procedure to produce a\n\
+  *  solution with COMPLEX*16 normwise backward error quality (see below).\n\
+  *  If the approach fails the method switches to a COMPLEX*16\n\
+  *  factorization and solve.\n\
+  *\n\
+  *  The iterative refinement is not going to be a winning strategy if\n\
+  *  the ratio COMPLEX performance over COMPLEX*16 performance is too\n\
+  *  small. A reasonable strategy should take the number of right-hand\n\
+  *  sides and the size of the matrix into account. This might be done\n\
+  *  with a call to ILAENV in the future. Up to now, we always try\n\
+  *  iterative refinement.\n\
+  *\n\
+  *  The iterative refinement process is stopped if\n\
+  *      ITER > ITERMAX\n\
+  *  or for all the RHS we have:\n\
+  *      RNRM < SQRT(N)*XNRM*ANRM*EPS*BWDMAX\n\
+  *  where\n\
+  *      o ITER is the number of the current iteration in the iterative\n\
+  *        refinement process\n\
+  *      o RNRM is the infinity-norm of the residual\n\
+  *      o XNRM is the infinity-norm of the solution\n\
+  *      o ANRM is the infinity-operator-norm of the matrix A\n\
+  *      o EPS is the machine epsilon returned by DLAMCH('Epsilon')\n\
+  *  The value ITERMAX and BWDMAX are fixed to 30 and 1.0D+00\n\
+  *  respectively.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  UPLO    (input) CHARACTER*1\n\
+  *          = 'U':  Upper triangle of A is stored;\n\
+  *          = 'L':  Lower triangle of A is stored.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of linear equations, i.e., the order of the\n\
+  *          matrix A.  N >= 0.\n\
+  *\n\
+  *  NRHS    (input) INTEGER\n\
+  *          The number of right hand sides, i.e., the number of columns\n\
+  *          of the matrix B.  NRHS >= 0.\n\
+  *\n\
+  *  A       (input/output) COMPLEX*16 array,\n\
+  *          dimension (LDA,N)\n\
+  *          On entry, the Hermitian matrix A. If UPLO = 'U', the leading\n\
+  *          N-by-N upper triangular part of A contains the upper\n\
+  *          triangular part of the matrix A, and the strictly lower\n\
+  *          triangular part of A is not referenced.  If UPLO = 'L', the\n\
+  *          leading N-by-N lower triangular part of A contains the lower\n\
+  *          triangular part of the matrix A, and the strictly upper\n\
+  *          triangular part of A is not referenced.\n\
+  *\n\
+  *          Note that the imaginary parts of the diagonal\n\
+  *          elements need not be set and are assumed to be zero.\n\
+  *\n\
+  *          On exit, if iterative refinement has been successfully used\n\
+  *          (INFO.EQ.0 and ITER.GE.0, see description below), then A is\n\
+  *          unchanged, if double precision factorization has been used\n\
+  *          (INFO.EQ.0 and ITER.LT.0, see description below), then the\n\
+  *          array A contains the factor U or L from the Cholesky\n\
+  *          factorization A = U**H*U or A = L*L**H.\n\
+  *\n\
+  *  LDA     (input) INTEGER\n\
+  *          The leading dimension of the array A.  LDA >= max(1,N).\n\
+  *\n\
+  *  B       (input) COMPLEX*16 array, dimension (LDB,NRHS)\n\
+  *          The N-by-NRHS right hand side matrix B.\n\
+  *\n\
+  *  LDB     (input) INTEGER\n\
+  *          The leading dimension of the array B.  LDB >= max(1,N).\n\
+  *\n\
+  *  X       (output) COMPLEX*16 array, dimension (LDX,NRHS)\n\
+  *          If INFO = 0, the N-by-NRHS solution matrix X.\n\
+  *\n\
+  *  LDX     (input) INTEGER\n\
+  *          The leading dimension of the array X.  LDX >= max(1,N).\n\
+  *\n\
+  *  WORK    (workspace) COMPLEX*16 array, dimension (N*NRHS)\n\
+  *          This array is used to hold the residual vectors.\n\
+  *\n\
+  *  SWORK   (workspace) COMPLEX array, dimension (N*(N+NRHS))\n\
+  *          This array is used to use the single precision matrix and the\n\
+  *          right-hand sides or solutions in single precision.\n\
+  *\n\
+  *  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)\n\
+  *\n\
+  *  ITER    (output) INTEGER\n\
+  *          < 0: iterative refinement has failed, COMPLEX*16\n\
+  *               factorization has been performed\n\
+  *               -1 : the routine fell back to full precision for\n\
+  *                    implementation- or machine-specific reasons\n\
+  *               -2 : narrowing the precision induced an overflow,\n\
+  *                    the routine fell back to full precision\n\
+  *               -3 : failure of CPOTRF\n\
+  *               -31: stop the iterative refinement after the 30th\n\
+  *                    iterations\n\
+  *          > 0: iterative refinement has been sucessfully used.\n\
+  *               Returns the number of iterations\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value\n\
+  *          > 0:  if INFO = i, the leading minor of order i of\n\
+  *                (COMPLEX*16) A is not positive definite, so the\n\
+  *                factorization could not be completed, and the solution\n\
+  *                has not been computed.\n\
+  *\n\
+  *  =========\n\
+  *\n"

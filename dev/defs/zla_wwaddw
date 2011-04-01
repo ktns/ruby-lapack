@@ -1,0 +1,53 @@
+--- 
+:name: zla_wwaddw
+:md5sum: e64523786b99132b6bdedbd2c060e7e5
+:category: :subroutine
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- x: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - n
+- y: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - n
+- w: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - n
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE ZLA_WWADDW( N, X, Y, W )\n\n\
+  *     Purpose\n\
+  *     =======\n\
+  *\n\
+  *     ZLA_WWADDW adds a vector W into a doubled-single vector (X, Y).\n\
+  *\n\
+  *     This works for all extant IBM's hex and binary floating point\n\
+  *     arithmetics, but not for decimal.\n\
+  *\n\n\
+  *     Arguments\n\
+  *     =========\n\
+  *\n\
+  *     N      (input) INTEGER\n\
+  *            The length of vectors X, Y, and W.\n\
+  *\n\
+  *     X      (input/output) COMPLEX*16 array, dimension (N)\n\
+  *            The first part of the doubled-single accumulation vector.\n\
+  *\n\
+  *     Y      (input/output) COMPLEX*16 array, dimension (N)\n\
+  *            The second part of the doubled-single accumulation vector.\n\
+  *\n\
+  *     W      (input) COMPLEX*16 array, dimension (N)\n\
+  *            The vector to be added.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      COMPLEX*16         S\n      INTEGER            I\n\
+  *     ..\n"

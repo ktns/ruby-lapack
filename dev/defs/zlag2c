@@ -1,0 +1,82 @@
+--- 
+:name: zlag2c
+:md5sum: 74fe0ffefcc616f52a172abaa7fccf0d
+:category: :subroutine
+:arguments: 
+- m: 
+    :type: integer
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- sa: 
+    :type: complex
+    :intent: output
+    :dims: 
+    - ldsa
+    - n
+- ldsa: 
+    :type: integer
+    :intent: input
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: 
+  ldsa: MAX(1,m)
+:fortran_help: "      SUBROUTINE ZLAG2C( M, N, A, LDA, SA, LDSA, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  ZLAG2C converts a COMPLEX*16 matrix, SA, to a COMPLEX matrix, A.\n\
+  *\n\
+  *  RMAX is the overflow for the SINGLE PRECISION arithmetic\n\
+  *  ZLAG2C checks that all the entries of A are between -RMAX and\n\
+  *  RMAX. If not the convertion is aborted and a flag is raised.\n\
+  *\n\
+  *  This is an auxiliary routine so there is no argument checking.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  M       (input) INTEGER\n\
+  *          The number of lines of the matrix A.  M >= 0.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of columns of the matrix A.  N >= 0.\n\
+  *\n\
+  *  A       (input) COMPLEX*16 array, dimension (LDA,N)\n\
+  *          On entry, the M-by-N coefficient matrix A.\n\
+  *\n\
+  *  LDA     (input) INTEGER\n\
+  *          The leading dimension of the array A.  LDA >= max(1,M).\n\
+  *\n\
+  *  SA      (output) COMPLEX array, dimension (LDSA,N)\n\
+  *          On exit, if INFO=0, the M-by-N coefficient matrix SA; if\n\
+  *          INFO>0, the content of SA is unspecified.\n\
+  *\n\
+  *  LDSA    (input) INTEGER\n\
+  *          The leading dimension of the array SA.  LDSA >= max(1,M).\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit.\n\
+  *          = 1:  an entry of the matrix A is greater than the SINGLE\n\
+  *                PRECISION overflow threshold, in this case, the content\n\
+  *                of SA in exit is unspecified.\n\
+  *\n\
+  *  =========\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            I, J\n      DOUBLE PRECISION   RMAX\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          DBLE, DIMAG\n\
+  *     ..\n\
+  *     .. External Functions ..\n      REAL               SLAMCH\n      EXTERNAL           SLAMCH\n\
+  *     ..\n"

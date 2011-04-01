@@ -1,0 +1,107 @@
+--- 
+:name: dlasq4
+:md5sum: 6d8b1df65fc2a9a01be27c77f4c07567
+:category: :subroutine
+:arguments: 
+- i0: 
+    :type: integer
+    :intent: input
+- n0: 
+    :type: integer
+    :intent: input
+- z: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - 4*n0
+- pp: 
+    :type: integer
+    :intent: input
+- n0in: 
+    :type: integer
+    :intent: input
+- dmin: 
+    :type: doublereal
+    :intent: input
+- dmin1: 
+    :type: doublereal
+    :intent: input
+- dmin2: 
+    :type: doublereal
+    :intent: input
+- dn: 
+    :type: doublereal
+    :intent: input
+- dn1: 
+    :type: doublereal
+    :intent: input
+- dn2: 
+    :type: doublereal
+    :intent: input
+- tau: 
+    :type: doublereal
+    :intent: output
+- ttype: 
+    :type: integer
+    :intent: output
+- g: 
+    :type: real
+    :intent: input/output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE DLASQ4( I0, N0, Z, PP, N0IN, DMIN, DMIN1, DMIN2, DN, DN1, DN2, TAU, TTYPE, G )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DLASQ4 computes an approximation TAU to the smallest eigenvalue\n\
+  *  using values of d from the previous transform.\n\
+  *\n\n\
+  *  I0    (input) INTEGER\n\
+  *        First index.\n\
+  *\n\
+  *  N0    (input) INTEGER\n\
+  *        Last index.\n\
+  *\n\
+  *  Z     (input) DOUBLE PRECISION array, dimension ( 4*N )\n\
+  *        Z holds the qd array.\n\
+  *\n\
+  *  PP    (input) INTEGER\n\
+  *        PP=0 for ping, PP=1 for pong.\n\
+  *\n\
+  *  NOIN  (input) INTEGER\n\
+  *        The value of N0 at start of EIGTEST.\n\
+  *\n\
+  *  DMIN  (input) DOUBLE PRECISION\n\
+  *        Minimum value of d.\n\
+  *\n\
+  *  DMIN1 (input) DOUBLE PRECISION\n\
+  *        Minimum value of d, excluding D( N0 ).\n\
+  *\n\
+  *  DMIN2 (input) DOUBLE PRECISION\n\
+  *        Minimum value of d, excluding D( N0 ) and D( N0-1 ).\n\
+  *\n\
+  *  DN    (input) DOUBLE PRECISION\n\
+  *        d(N)\n\
+  *\n\
+  *  DN1   (input) DOUBLE PRECISION\n\
+  *        d(N-1)\n\
+  *\n\
+  *  DN2   (input) DOUBLE PRECISION\n\
+  *        d(N-2)\n\
+  *\n\
+  *  TAU   (output) DOUBLE PRECISION\n\
+  *        This is the shift.\n\
+  *\n\
+  *  TTYPE (output) INTEGER\n\
+  *        Shift type.\n\
+  *\n\
+  *  G     (input/output) REAL\n\
+  *        G is passed as an argument in order to save its value between\n\
+  *        calls to DLASQ4.\n\
+  *\n\n\
+  *  Further Details\n\
+  *  ===============\n\
+  *  CNST1 = 9/16\n\
+  *\n\
+  *  =====================================================================\n\
+  *\n"

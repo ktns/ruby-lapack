@@ -1,0 +1,87 @@
+--- 
+:name: spocon
+:md5sum: a8e596611b25d484e9d2cf8ee1b2f6c1
+:category: :subroutine
+:arguments: 
+- uplo: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: real
+    :intent: input
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- anorm: 
+    :type: real
+    :intent: input
+- rcond: 
+    :type: real
+    :intent: output
+- work: 
+    :type: real
+    :intent: workspace
+    :dims: 
+    - 3*n
+- iwork: 
+    :type: integer
+    :intent: workspace
+    :dims: 
+    - n
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE SPOCON( UPLO, N, A, LDA, ANORM, RCOND, WORK, IWORK, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  SPOCON estimates the reciprocal of the condition number (in the \n\
+  *  1-norm) of a real symmetric positive definite matrix using the\n\
+  *  Cholesky factorization A = U**T*U or A = L*L**T computed by SPOTRF.\n\
+  *\n\
+  *  An estimate is obtained for norm(inv(A)), and the reciprocal of the\n\
+  *  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  UPLO    (input) CHARACTER*1\n\
+  *          = 'U':  Upper triangle of A is stored;\n\
+  *          = 'L':  Lower triangle of A is stored.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix A.  N >= 0.\n\
+  *\n\
+  *  A       (input) REAL array, dimension (LDA,N)\n\
+  *          The triangular factor U or L from the Cholesky factorization\n\
+  *          A = U**T*U or A = L*L**T, as computed by SPOTRF.\n\
+  *\n\
+  *  LDA     (input) INTEGER\n\
+  *          The leading dimension of the array A.  LDA >= max(1,N).\n\
+  *\n\
+  *  ANORM   (input) REAL\n\
+  *          The 1-norm (or infinity-norm) of the symmetric matrix A.\n\
+  *\n\
+  *  RCOND   (output) REAL\n\
+  *          The reciprocal of the condition number of the matrix A,\n\
+  *          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an\n\
+  *          estimate of the 1-norm of inv(A) computed in this routine.\n\
+  *\n\
+  *  WORK    (workspace) REAL array, dimension (3*N)\n\
+  *\n\
+  *  IWORK   (workspace) INTEGER array, dimension (N)\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

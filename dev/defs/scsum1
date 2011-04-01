@@ -1,0 +1,49 @@
+--- 
+:name: scsum1
+:md5sum: 9056190314a2a56645696ef9574ef9d4
+:category: :function
+:type: real
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- cx: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - n
+- incx: 
+    :type: integer
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      REAL             FUNCTION SCSUM1( N, CX, INCX )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  SCSUM1 takes the sum of the absolute values of a complex\n\
+  *  vector and returns a single precision result.\n\
+  *\n\
+  *  Based on SCASUM from the Level 1 BLAS.\n\
+  *  The change is to use the 'genuine' absolute value.\n\
+  *\n\
+  *  Contributed by Nick Higham for use with CLACON.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of elements in the vector CX.\n\
+  *\n\
+  *  CX      (input) COMPLEX array, dimension (N)\n\
+  *          The vector whose elements will be summed.\n\
+  *\n\
+  *  INCX    (input) INTEGER\n\
+  *          The spacing between successive values of CX.  INCX > 0.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            I, NINCX\n      REAL               STEMP\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          ABS\n\
+  *     ..\n"

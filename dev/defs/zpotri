@@ -1,0 +1,67 @@
+--- 
+:name: zpotri
+:md5sum: d9cbd3d8000d34f9dbd5b622fb106900
+:category: :subroutine
+:arguments: 
+- uplo: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE ZPOTRI( UPLO, N, A, LDA, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  ZPOTRI computes the inverse of a complex Hermitian positive definite\n\
+  *  matrix A using the Cholesky factorization A = U**H*U or A = L*L**H\n\
+  *  computed by ZPOTRF.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  UPLO    (input) CHARACTER*1\n\
+  *          = 'U':  Upper triangle of A is stored;\n\
+  *          = 'L':  Lower triangle of A is stored.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix A.  N >= 0.\n\
+  *\n\
+  *  A       (input/output) COMPLEX*16 array, dimension (LDA,N)\n\
+  *          On entry, the triangular factor U or L from the Cholesky\n\
+  *          factorization A = U**H*U or A = L*L**H, as computed by\n\
+  *          ZPOTRF.\n\
+  *          On exit, the upper or lower triangle of the (Hermitian)\n\
+  *          inverse of A, overwriting the input factor U or L.\n\
+  *\n\
+  *  LDA     (input) INTEGER\n\
+  *          The leading dimension of the array A.  LDA >= max(1,N).\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value\n\
+  *          > 0:  if INFO = i, the (i,i) element of the factor U or L is\n\
+  *                zero, and the inverse could not be computed.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. External Functions ..\n      LOGICAL            LSAME\n      EXTERNAL           LSAME\n\
+  *     ..\n\
+  *     .. External Subroutines ..\n      EXTERNAL           XERBLA, ZLAUUM, ZTRTRI\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          MAX\n\
+  *     ..\n"

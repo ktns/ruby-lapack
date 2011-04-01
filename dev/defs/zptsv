@@ -1,0 +1,89 @@
+--- 
+:name: zptsv
+:md5sum: 616f9ce474fe61d89341347d5adc59a9
+:category: :subroutine
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- nrhs: 
+    :type: integer
+    :intent: input
+- d: 
+    :type: doublereal
+    :intent: input/output
+    :dims: 
+    - n
+- e: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - n-1
+- b: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - ldb
+    - n
+- ldb: 
+    :type: integer
+    :intent: input
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE ZPTSV( N, NRHS, D, E, B, LDB, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  ZPTSV computes the solution to a complex system of linear equations\n\
+  *  A*X = B, where A is an N-by-N Hermitian positive definite tridiagonal\n\
+  *  matrix, and X and B are N-by-NRHS matrices.\n\
+  *\n\
+  *  A is factored as A = L*D*L**H, and the factored form of A is then\n\
+  *  used to solve the system of equations.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix A.  N >= 0.\n\
+  *\n\
+  *  NRHS    (input) INTEGER\n\
+  *          The number of right hand sides, i.e., the number of columns\n\
+  *          of the matrix B.  NRHS >= 0.\n\
+  *\n\
+  *  D       (input/output) DOUBLE PRECISION array, dimension (N)\n\
+  *          On entry, the n diagonal elements of the tridiagonal matrix\n\
+  *          A.  On exit, the n diagonal elements of the diagonal matrix\n\
+  *          D from the factorization A = L*D*L**H.\n\
+  *\n\
+  *  E       (input/output) COMPLEX*16 array, dimension (N-1)\n\
+  *          On entry, the (n-1) subdiagonal elements of the tridiagonal\n\
+  *          matrix A.  On exit, the (n-1) subdiagonal elements of the\n\
+  *          unit bidiagonal factor L from the L*D*L**H factorization of\n\
+  *          A.  E can also be regarded as the superdiagonal of the unit\n\
+  *          bidiagonal factor U from the U**H*D*U factorization of A.\n\
+  *\n\
+  *  B       (input/output) COMPLEX*16 array, dimension (LDB,N)\n\
+  *          On entry, the N-by-NRHS right hand side matrix B.\n\
+  *          On exit, if INFO = 0, the N-by-NRHS solution matrix X.\n\
+  *\n\
+  *  LDB     (input) INTEGER\n\
+  *          The leading dimension of the array B.  LDB >= max(1,N).\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value\n\
+  *          > 0:  if INFO = i, the leading minor of order i is not\n\
+  *                positive definite, and the solution has not been\n\
+  *                computed.  The factorization has not been completed\n\
+  *                unless i = N.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. External Subroutines ..\n      EXTERNAL           XERBLA, ZPTTRF, ZPTTRS\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          MAX\n\
+  *     ..\n"

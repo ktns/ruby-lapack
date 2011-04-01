@@ -1,0 +1,141 @@
+--- 
+:name: dlasq3
+:md5sum: 0e9fda6509d5400632d45ebec7f96a65
+:category: :subroutine
+:arguments: 
+- i0: 
+    :type: integer
+    :intent: input
+- n0: 
+    :type: integer
+    :intent: input/output
+- z: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - 4*n0
+- pp: 
+    :type: integer
+    :intent: input/output
+- dmin: 
+    :type: doublereal
+    :intent: output
+- sigma: 
+    :type: doublereal
+    :intent: output
+- desig: 
+    :type: doublereal
+    :intent: input/output
+- qmax: 
+    :type: doublereal
+    :intent: input
+- nfail: 
+    :type: integer
+    :intent: output
+- iter: 
+    :type: integer
+    :intent: output
+- ndiv: 
+    :type: integer
+    :intent: output
+- ieee: 
+    :type: logical
+    :intent: input
+- ttype: 
+    :type: integer
+    :intent: input/output
+- dmin1: 
+    :type: doublereal
+    :intent: input/output
+- dmin2: 
+    :type: doublereal
+    :intent: input/output
+- dn: 
+    :type: doublereal
+    :intent: input/output
+- dn1: 
+    :type: doublereal
+    :intent: input/output
+- dn2: 
+    :type: doublereal
+    :intent: input/output
+- g: 
+    :type: doublereal
+    :intent: input/output
+- tau: 
+    :type: doublereal
+    :intent: input/output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE DLASQ3( I0, N0, Z, PP, DMIN, SIGMA, DESIG, QMAX, NFAIL, ITER, NDIV, IEEE, TTYPE, DMIN1, DMIN2, DN, DN1, DN2, G, TAU )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DLASQ3 checks for deflation, computes a shift (TAU) and calls dqds.\n\
+  *  In case of failure it changes shifts, and tries again until output\n\
+  *  is positive.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  I0     (input) INTEGER\n\
+  *         First index.\n\
+  *\n\
+  *  N0     (input/output) INTEGER\n\
+  *         Last index.\n\
+  *\n\
+  *  Z      (input) DOUBLE PRECISION array, dimension ( 4*N )\n\
+  *         Z holds the qd array.\n\
+  *\n\
+  *  PP     (input/output) INTEGER\n\
+  *         PP=0 for ping, PP=1 for pong.\n\
+  *         PP=2 indicates that flipping was applied to the Z array   \n\
+  *         and that the initial tests for deflation should not be \n\
+  *         performed.\n\
+  *\n\
+  *  DMIN   (output) DOUBLE PRECISION\n\
+  *         Minimum value of d.\n\
+  *\n\
+  *  SIGMA  (output) DOUBLE PRECISION\n\
+  *         Sum of shifts used in current segment.\n\
+  *\n\
+  *  DESIG  (input/output) DOUBLE PRECISION\n\
+  *         Lower order part of SIGMA\n\
+  *\n\
+  *  QMAX   (input) DOUBLE PRECISION\n\
+  *         Maximum value of q.\n\
+  *\n\
+  *  NFAIL  (output) INTEGER\n\
+  *         Number of times shift was too big.\n\
+  *\n\
+  *  ITER   (output) INTEGER\n\
+  *         Number of iterations.\n\
+  *\n\
+  *  NDIV   (output) INTEGER\n\
+  *         Number of divisions.\n\
+  *\n\
+  *  IEEE   (input) LOGICAL\n\
+  *         Flag for IEEE or non IEEE arithmetic (passed to DLASQ5).\n\
+  *\n\
+  *  TTYPE  (input/output) INTEGER\n\
+  *         Shift type.\n\
+  *\n\
+  *  DMIN1  (input/output) DOUBLE PRECISION\n\
+  *\n\
+  *  DMIN2  (input/output) DOUBLE PRECISION\n\
+  *\n\
+  *  DN     (input/output) DOUBLE PRECISION\n\
+  *\n\
+  *  DN1    (input/output) DOUBLE PRECISION\n\
+  *\n\
+  *  DN2    (input/output) DOUBLE PRECISION\n\
+  *\n\
+  *  G      (input/output) DOUBLE PRECISION\n\
+  *\n\
+  *  TAU    (input/output) DOUBLE PRECISION\n\
+  *\n\
+  *         These are passed as arguments in order to save their values\n\
+  *         between calls to DLASQ3.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

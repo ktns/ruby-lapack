@@ -1,0 +1,199 @@
+--- 
+:name: slar1v
+:md5sum: 1fc0a916850c2048501bd4c9f734d5d1
+:category: :subroutine
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- b1: 
+    :type: integer
+    :intent: input
+- bn: 
+    :type: integer
+    :intent: input
+- lambda: 
+    :type: real
+    :intent: input
+- d: 
+    :type: real
+    :intent: input
+    :dims: 
+    - n
+- l: 
+    :type: real
+    :intent: input
+    :dims: 
+    - n-1
+- ld: 
+    :type: real
+    :intent: input
+    :dims: 
+    - n-1
+- lld: 
+    :type: real
+    :intent: input
+    :dims: 
+    - n-1
+- pivmin: 
+    :type: real
+    :intent: input
+- gaptol: 
+    :type: real
+    :intent: input
+- z: 
+    :type: real
+    :intent: input/output
+    :dims: 
+    - n
+- wantnc: 
+    :type: logical
+    :intent: input
+- negcnt: 
+    :type: integer
+    :intent: output
+- ztz: 
+    :type: real
+    :intent: output
+- mingma: 
+    :type: real
+    :intent: output
+- r: 
+    :type: integer
+    :intent: input/output
+- isuppz: 
+    :type: integer
+    :intent: output
+    :dims: 
+    - "2"
+- nrminv: 
+    :type: real
+    :intent: output
+- resid: 
+    :type: real
+    :intent: output
+- rqcorr: 
+    :type: real
+    :intent: output
+- work: 
+    :type: real
+    :intent: workspace
+    :dims: 
+    - 4*n
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE SLAR1V( N, B1, BN, LAMBDA, D, L, LD, LLD, PIVMIN, GAPTOL, Z, WANTNC, NEGCNT, ZTZ, MINGMA, R, ISUPPZ, NRMINV, RESID, RQCORR, WORK )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  SLAR1V computes the (scaled) r-th column of the inverse of\n\
+  *  the sumbmatrix in rows B1 through BN of the tridiagonal matrix\n\
+  *  L D L^T - sigma I. When sigma is close to an eigenvalue, the\n\
+  *  computed vector is an accurate eigenvector. Usually, r corresponds\n\
+  *  to the index where the eigenvector is largest in magnitude.\n\
+  *  The following steps accomplish this computation :\n\
+  *  (a) Stationary qd transform,  L D L^T - sigma I = L(+) D(+) L(+)^T,\n\
+  *  (b) Progressive qd transform, L D L^T - sigma I = U(-) D(-) U(-)^T,\n\
+  *  (c) Computation of the diagonal elements of the inverse of\n\
+  *      L D L^T - sigma I by combining the above transforms, and choosing\n\
+  *      r as the index where the diagonal of the inverse is (one of the)\n\
+  *      largest in magnitude.\n\
+  *  (d) Computation of the (scaled) r-th column of the inverse using the\n\
+  *      twisted factorization obtained by combining the top part of the\n\
+  *      the stationary and the bottom part of the progressive transform.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N        (input) INTEGER\n\
+  *           The order of the matrix L D L^T.\n\
+  *\n\
+  *  B1       (input) INTEGER\n\
+  *           First index of the submatrix of L D L^T.\n\
+  *\n\
+  *  BN       (input) INTEGER\n\
+  *           Last index of the submatrix of L D L^T.\n\
+  *\n\
+  *  LAMBDA    (input) REAL            \n\
+  *           The shift. In order to compute an accurate eigenvector,\n\
+  *           LAMBDA should be a good approximation to an eigenvalue\n\
+  *           of L D L^T.\n\
+  *\n\
+  *  L        (input) REAL             array, dimension (N-1)\n\
+  *           The (n-1) subdiagonal elements of the unit bidiagonal matrix\n\
+  *           L, in elements 1 to N-1.\n\
+  *\n\
+  *  D        (input) REAL             array, dimension (N)\n\
+  *           The n diagonal elements of the diagonal matrix D.\n\
+  *\n\
+  *  LD       (input) REAL             array, dimension (N-1)\n\
+  *           The n-1 elements L(i)*D(i).\n\
+  *\n\
+  *  LLD      (input) REAL             array, dimension (N-1)\n\
+  *           The n-1 elements L(i)*L(i)*D(i).\n\
+  *\n\
+  *  PIVMIN   (input) REAL            \n\
+  *           The minimum pivot in the Sturm sequence.\n\
+  *\n\
+  *  GAPTOL   (input) REAL            \n\
+  *           Tolerance that indicates when eigenvector entries are negligible\n\
+  *           w.r.t. their contribution to the residual.\n\
+  *\n\
+  *  Z        (input/output) REAL             array, dimension (N)\n\
+  *           On input, all entries of Z must be set to 0.\n\
+  *           On output, Z contains the (scaled) r-th column of the\n\
+  *           inverse. The scaling is such that Z(R) equals 1.\n\
+  *\n\
+  *  WANTNC   (input) LOGICAL\n\
+  *           Specifies whether NEGCNT has to be computed.\n\
+  *\n\
+  *  NEGCNT   (output) INTEGER\n\
+  *           If WANTNC is .TRUE. then NEGCNT = the number of pivots < pivmin\n\
+  *           in the  matrix factorization L D L^T, and NEGCNT = -1 otherwise.\n\
+  *\n\
+  *  ZTZ      (output) REAL            \n\
+  *           The square of the 2-norm of Z.\n\
+  *\n\
+  *  MINGMA   (output) REAL            \n\
+  *           The reciprocal of the largest (in magnitude) diagonal\n\
+  *           element of the inverse of L D L^T - sigma I.\n\
+  *\n\
+  *  R        (input/output) INTEGER\n\
+  *           The twist index for the twisted factorization used to\n\
+  *           compute Z.\n\
+  *           On input, 0 <= R <= N. If R is input as 0, R is set to\n\
+  *           the index where (L D L^T - sigma I)^{-1} is largest\n\
+  *           in magnitude. If 1 <= R <= N, R is unchanged.\n\
+  *           On output, R contains the twist index used to compute Z.\n\
+  *           Ideally, R designates the position of the maximum entry in the\n\
+  *           eigenvector.\n\
+  *\n\
+  *  ISUPPZ   (output) INTEGER array, dimension (2)\n\
+  *           The support of the vector in Z, i.e., the vector Z is\n\
+  *           nonzero only in elements ISUPPZ(1) through ISUPPZ( 2 ).\n\
+  *\n\
+  *  NRMINV   (output) REAL            \n\
+  *           NRMINV = 1/SQRT( ZTZ )\n\
+  *\n\
+  *  RESID    (output) REAL            \n\
+  *           The residual of the FP vector.\n\
+  *           RESID = ABS( MINGMA )/SQRT( ZTZ )\n\
+  *\n\
+  *  RQCORR   (output) REAL            \n\
+  *           The Rayleigh Quotient correction to LAMBDA.\n\
+  *           RQCORR = MINGMA*TMP\n\
+  *\n\
+  *  WORK     (workspace) REAL             array, dimension (4*N)\n\
+  *\n\n\
+  *  Further Details\n\
+  *  ===============\n\
+  *\n\
+  *  Based on contributions by\n\
+  *     Beresford Parlett, University of California, Berkeley, USA\n\
+  *     Jim Demmel, University of California, Berkeley, USA\n\
+  *     Inderjit Dhillon, University of Texas, Austin, USA\n\
+  *     Osni Marques, LBNL/NERSC, USA\n\
+  *     Christof Voemel, University of California, Berkeley, USA\n\
+  *\n\
+  *  =====================================================================\n\
+  *\n"

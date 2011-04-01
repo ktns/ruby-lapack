@@ -1,0 +1,192 @@
+--- 
+:name: sbdsdc
+:md5sum: 363562a2bf0038c64910ac814e09f1c7
+:category: :subroutine
+:arguments: 
+- uplo: 
+    :type: char
+    :intent: input
+- compq: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- d: 
+    :type: real
+    :intent: input/output
+    :dims: 
+    - n
+- e: 
+    :type: real
+    :intent: input/output
+    :dims: 
+    - n-1
+- u: 
+    :type: real
+    :intent: output
+    :dims: 
+    - "lsame_(&compq,\"I\") ? ldu : 0"
+    - "lsame_(&compq,\"I\") ? n : 0"
+- ldu: 
+    :type: integer
+    :intent: input
+- vt: 
+    :type: real
+    :intent: output
+    :dims: 
+    - "lsame_(&compq,\"I\") ? ldvt : 0"
+    - "lsame_(&compq,\"I\") ? n : 0"
+- ldvt: 
+    :type: integer
+    :intent: input
+- q: 
+    :type: real
+    :intent: output
+    :dims: 
+    - "lsame_(&compq,\"I\") ? ldq : 0"
+- iq: 
+    :type: integer
+    :intent: output
+    :dims: 
+    - "lsame_(&compq,\"I\") ? ldiq : 0"
+- work: 
+    :type: real
+    :intent: workspace
+    :dims: 
+    - MAX(1,lwork)
+- iwork: 
+    :type: integer
+    :intent: workspace
+    :dims: 
+    - 8*n
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: 
+  c__9: "9"
+  c__0: "0"
+  ldq: "lsame_(&compq,\"P\") ? n*(11+2*smlsiz+8*(int)(log(((double)n)/(smlsiz+1))/log(2.0))) : 0"
+  ldvt: "lsame_(&compq,\"I\") ? MAX(1,n) : 0"
+  ldiq: "lsame_(&compq,\"P\") ? n*(3+3*(int)(log(((double)n)/(smlsiz+1))/log(2.0))) : 0"
+  lwork: "lsame_(&compq,\"N\") ? 4*n : lsame_(&compq,\"P\") ? 6*n : lsame_(&compq,\"I\") ? 3*n*n+4*n : 0"
+  ldu: "lsame_(&compq,\"I\") ? MAX(1,n) : 0"
+  smlsiz: ilaenv_(&c__9, "SBDSDC", " ", &c__0, &c__0, &c__0, &c__0)
+:fortran_help: "      SUBROUTINE SBDSDC( UPLO, COMPQ, N, D, E, U, LDU, VT, LDVT, Q, IQ, WORK, IWORK, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  SBDSDC computes the singular value decomposition (SVD) of a real\n\
+  *  N-by-N (upper or lower) bidiagonal matrix B:  B = U * S * VT,\n\
+  *  using a divide and conquer method, where S is a diagonal matrix\n\
+  *  with non-negative diagonal elements (the singular values of B), and\n\
+  *  U and VT are orthogonal matrices of left and right singular vectors,\n\
+  *  respectively. SBDSDC can be used to compute all singular values,\n\
+  *  and optionally, singular vectors or singular vectors in compact form.\n\
+  *\n\
+  *  This code makes very mild assumptions about floating point\n\
+  *  arithmetic. It will work on machines with a guard digit in\n\
+  *  add/subtract, or on those binary machines without guard digits\n\
+  *  which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or Cray-2.\n\
+  *  It could conceivably fail on hexadecimal or decimal machines\n\
+  *  without guard digits, but we know of none.  See SLASD3 for details.\n\
+  *\n\
+  *  The code currently calls SLASDQ if singular values only are desired.\n\
+  *  However, it can be slightly modified to compute singular values\n\
+  *  using the divide and conquer method.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  UPLO    (input) CHARACTER*1\n\
+  *          = 'U':  B is upper bidiagonal.\n\
+  *          = 'L':  B is lower bidiagonal.\n\
+  *\n\
+  *  COMPQ   (input) CHARACTER*1\n\
+  *          Specifies whether singular vectors are to be computed\n\
+  *          as follows:\n\
+  *          = 'N':  Compute singular values only;\n\
+  *          = 'P':  Compute singular values and compute singular\n\
+  *                  vectors in compact form;\n\
+  *          = 'I':  Compute singular values and singular vectors.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix B.  N >= 0.\n\
+  *\n\
+  *  D       (input/output) REAL array, dimension (N)\n\
+  *          On entry, the n diagonal elements of the bidiagonal matrix B.\n\
+  *          On exit, if INFO=0, the singular values of B.\n\
+  *\n\
+  *  E       (input/output) REAL array, dimension (N-1)\n\
+  *          On entry, the elements of E contain the offdiagonal\n\
+  *          elements of the bidiagonal matrix whose SVD is desired.\n\
+  *          On exit, E has been destroyed.\n\
+  *\n\
+  *  U       (output) REAL array, dimension (LDU,N)\n\
+  *          If  COMPQ = 'I', then:\n\
+  *             On exit, if INFO = 0, U contains the left singular vectors\n\
+  *             of the bidiagonal matrix.\n\
+  *          For other values of COMPQ, U is not referenced.\n\
+  *\n\
+  *  LDU     (input) INTEGER\n\
+  *          The leading dimension of the array U.  LDU >= 1.\n\
+  *          If singular vectors are desired, then LDU >= max( 1, N ).\n\
+  *\n\
+  *  VT      (output) REAL array, dimension (LDVT,N)\n\
+  *          If  COMPQ = 'I', then:\n\
+  *             On exit, if INFO = 0, VT' contains the right singular\n\
+  *             vectors of the bidiagonal matrix.\n\
+  *          For other values of COMPQ, VT is not referenced.\n\
+  *\n\
+  *  LDVT    (input) INTEGER\n\
+  *          The leading dimension of the array VT.  LDVT >= 1.\n\
+  *          If singular vectors are desired, then LDVT >= max( 1, N ).\n\
+  *\n\
+  *  Q       (output) REAL array, dimension (LDQ)\n\
+  *          If  COMPQ = 'P', then:\n\
+  *             On exit, if INFO = 0, Q and IQ contain the left\n\
+  *             and right singular vectors in a compact form,\n\
+  *             requiring O(N log N) space instead of 2*N**2.\n\
+  *             In particular, Q contains all the REAL data in\n\
+  *             LDQ >= N*(11 + 2*SMLSIZ + 8*INT(LOG_2(N/(SMLSIZ+1))))\n\
+  *             words of memory, where SMLSIZ is returned by ILAENV and\n\
+  *             is equal to the maximum size of the subproblems at the\n\
+  *             bottom of the computation tree (usually about 25).\n\
+  *          For other values of COMPQ, Q is not referenced.\n\
+  *\n\
+  *  IQ      (output) INTEGER array, dimension (LDIQ)\n\
+  *          If  COMPQ = 'P', then:\n\
+  *             On exit, if INFO = 0, Q and IQ contain the left\n\
+  *             and right singular vectors in a compact form,\n\
+  *             requiring O(N log N) space instead of 2*N**2.\n\
+  *             In particular, IQ contains all INTEGER data in\n\
+  *             LDIQ >= N*(3 + 3*INT(LOG_2(N/(SMLSIZ+1))))\n\
+  *             words of memory, where SMLSIZ is returned by ILAENV and\n\
+  *             is equal to the maximum size of the subproblems at the\n\
+  *             bottom of the computation tree (usually about 25).\n\
+  *          For other values of COMPQ, IQ is not referenced.\n\
+  *\n\
+  *  WORK    (workspace) REAL array, dimension (MAX(1,LWORK))\n\
+  *          If COMPQ = 'N' then LWORK >= (4 * N).\n\
+  *          If COMPQ = 'P' then LWORK >= (6 * N).\n\
+  *          If COMPQ = 'I' then LWORK >= (3 * N**2 + 4 * N).\n\
+  *\n\
+  *  IWORK   (workspace) INTEGER array, dimension (8*N)\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit.\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value.\n\
+  *          > 0:  The algorithm failed to compute a singular value.\n\
+  *                The update process of divide and conquer failed.\n\
+  *\n\n\
+  *  Further Details\n\
+  *  ===============\n\
+  *\n\
+  *  Based on contributions by\n\
+  *     Ming Gu and Huan Ren, Computer Science Division, University of\n\
+  *     California at Berkeley, USA\n\
+  *  =====================================================================\n\
+  *  Changed dimension statement in comment describing E from (N) to\n\
+  *  (N-1).  Sven, 17 Feb 05.\n\
+  *  =====================================================================\n\
+  *\n"

@@ -1,0 +1,158 @@
+--- 
+:name: strrfs
+:md5sum: 77120e9b758c0a89a337b22b4a383886
+:category: :subroutine
+:arguments: 
+- uplo: 
+    :type: char
+    :intent: input
+- trans: 
+    :type: char
+    :intent: input
+- diag: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- nrhs: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: real
+    :intent: input
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- b: 
+    :type: real
+    :intent: input
+    :dims: 
+    - ldb
+    - nrhs
+- ldb: 
+    :type: integer
+    :intent: input
+- x: 
+    :type: real
+    :intent: input
+    :dims: 
+    - ldx
+    - nrhs
+- ldx: 
+    :type: integer
+    :intent: input
+- ferr: 
+    :type: real
+    :intent: output
+    :dims: 
+    - nrhs
+- berr: 
+    :type: real
+    :intent: output
+    :dims: 
+    - nrhs
+- work: 
+    :type: real
+    :intent: workspace
+    :dims: 
+    - 3*n
+- iwork: 
+    :type: integer
+    :intent: workspace
+    :dims: 
+    - n
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE STRRFS( UPLO, TRANS, DIAG, N, NRHS, A, LDA, B, LDB, X, LDX, FERR, BERR, WORK, IWORK, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  STRRFS provides error bounds and backward error estimates for the\n\
+  *  solution to a system of linear equations with a triangular\n\
+  *  coefficient matrix.\n\
+  *\n\
+  *  The solution matrix X must be computed by STRTRS or some other\n\
+  *  means before entering this routine.  STRRFS does not do iterative\n\
+  *  refinement because doing so cannot improve the backward error.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  UPLO    (input) CHARACTER*1\n\
+  *          = 'U':  A is upper triangular;\n\
+  *          = 'L':  A is lower triangular.\n\
+  *\n\
+  *  TRANS   (input) CHARACTER*1\n\
+  *          Specifies the form of the system of equations:\n\
+  *          = 'N':  A * X = B  (No transpose)\n\
+  *          = 'T':  A**T * X = B  (Transpose)\n\
+  *          = 'C':  A**H * X = B  (Conjugate transpose = Transpose)\n\
+  *\n\
+  *  DIAG    (input) CHARACTER*1\n\
+  *          = 'N':  A is non-unit triangular;\n\
+  *          = 'U':  A is unit triangular.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix A.  N >= 0.\n\
+  *\n\
+  *  NRHS    (input) INTEGER\n\
+  *          The number of right hand sides, i.e., the number of columns\n\
+  *          of the matrices B and X.  NRHS >= 0.\n\
+  *\n\
+  *  A       (input) REAL array, dimension (LDA,N)\n\
+  *          The triangular matrix A.  If UPLO = 'U', the leading N-by-N\n\
+  *          upper triangular part of the array A contains the upper\n\
+  *          triangular matrix, and the strictly lower triangular part of\n\
+  *          A is not referenced.  If UPLO = 'L', the leading N-by-N lower\n\
+  *          triangular part of the array A contains the lower triangular\n\
+  *          matrix, and the strictly upper triangular part of A is not\n\
+  *          referenced.  If DIAG = 'U', the diagonal elements of A are\n\
+  *          also not referenced and are assumed to be 1.\n\
+  *\n\
+  *  LDA     (input) INTEGER\n\
+  *          The leading dimension of the array A.  LDA >= max(1,N).\n\
+  *\n\
+  *  B       (input) REAL array, dimension (LDB,NRHS)\n\
+  *          The right hand side matrix B.\n\
+  *\n\
+  *  LDB     (input) INTEGER\n\
+  *          The leading dimension of the array B.  LDB >= max(1,N).\n\
+  *\n\
+  *  X       (input) REAL array, dimension (LDX,NRHS)\n\
+  *          The solution matrix X.\n\
+  *\n\
+  *  LDX     (input) INTEGER\n\
+  *          The leading dimension of the array X.  LDX >= max(1,N).\n\
+  *\n\
+  *  FERR    (output) REAL array, dimension (NRHS)\n\
+  *          The estimated forward error bound for each solution vector\n\
+  *          X(j) (the j-th column of the solution matrix X).\n\
+  *          If XTRUE is the true solution corresponding to X(j), FERR(j)\n\
+  *          is an estimated upper bound for the magnitude of the largest\n\
+  *          element in (X(j) - XTRUE) divided by the magnitude of the\n\
+  *          largest element in X(j).  The estimate is as reliable as\n\
+  *          the estimate for RCOND, and is almost always a slight\n\
+  *          overestimate of the true error.\n\
+  *\n\
+  *  BERR    (output) REAL array, dimension (NRHS)\n\
+  *          The componentwise relative backward error of each solution\n\
+  *          vector X(j) (i.e., the smallest relative change in\n\
+  *          any element of A or B that makes X(j) an exact solution).\n\
+  *\n\
+  *  WORK    (workspace) REAL array, dimension (3*N)\n\
+  *\n\
+  *  IWORK   (workspace) INTEGER array, dimension (N)\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

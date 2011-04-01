@@ -1,0 +1,167 @@
+--- 
+:name: dgbbrd
+:md5sum: b1d106c514038584d5188d2ac5af4fbe
+:category: :subroutine
+:arguments: 
+- vect: 
+    :type: char
+    :intent: input
+- m: 
+    :type: integer
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- ncc: 
+    :type: integer
+    :intent: input
+- kl: 
+    :type: integer
+    :intent: input
+- ku: 
+    :type: integer
+    :intent: input
+- ab: 
+    :type: doublereal
+    :intent: input/output
+    :dims: 
+    - ldab
+    - n
+- ldab: 
+    :type: integer
+    :intent: input
+- d: 
+    :type: doublereal
+    :intent: output
+    :dims: 
+    - MIN(m,n)
+- e: 
+    :type: doublereal
+    :intent: output
+    :dims: 
+    - MIN(m,n)-1
+- q: 
+    :type: doublereal
+    :intent: output
+    :dims: 
+    - ldq
+    - m
+- ldq: 
+    :type: integer
+    :intent: input
+- pt: 
+    :type: doublereal
+    :intent: output
+    :dims: 
+    - ldpt
+    - n
+- ldpt: 
+    :type: integer
+    :intent: input
+- c: 
+    :type: doublereal
+    :intent: input/output
+    :dims: 
+    - ldc
+    - ncc
+- ldc: 
+    :type: integer
+    :intent: input
+- work: 
+    :type: doublereal
+    :intent: workspace
+    :dims: 
+    - 2*MAX(m,n)
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: 
+  m: ldab
+  ldq: "((lsame_(&vect,\"Q\")) || (lsame_(&vect,\"B\"))) ? MAX(1,m) : 1"
+  ldpt: "((lsame_(&vect,\"P\")) || (lsame_(&vect,\"B\"))) ? MAX(1,n) : 1"
+:fortran_help: "      SUBROUTINE DGBBRD( VECT, M, N, NCC, KL, KU, AB, LDAB, D, E, Q, LDQ, PT, LDPT, C, LDC, WORK, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DGBBRD reduces a real general m-by-n band matrix A to upper\n\
+  *  bidiagonal form B by an orthogonal transformation: Q' * A * P = B.\n\
+  *\n\
+  *  The routine computes B, and optionally forms Q or P', or computes\n\
+  *  Q'*C for a given matrix C.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  VECT    (input) CHARACTER*1\n\
+  *          Specifies whether or not the matrices Q and P' are to be\n\
+  *          formed.\n\
+  *          = 'N': do not form Q or P';\n\
+  *          = 'Q': form Q only;\n\
+  *          = 'P': form P' only;\n\
+  *          = 'B': form both.\n\
+  *\n\
+  *  M       (input) INTEGER\n\
+  *          The number of rows of the matrix A.  M >= 0.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of columns of the matrix A.  N >= 0.\n\
+  *\n\
+  *  NCC     (input) INTEGER\n\
+  *          The number of columns of the matrix C.  NCC >= 0.\n\
+  *\n\
+  *  KL      (input) INTEGER\n\
+  *          The number of subdiagonals of the matrix A. KL >= 0.\n\
+  *\n\
+  *  KU      (input) INTEGER\n\
+  *          The number of superdiagonals of the matrix A. KU >= 0.\n\
+  *\n\
+  *  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB,N)\n\
+  *          On entry, the m-by-n band matrix A, stored in rows 1 to\n\
+  *          KL+KU+1. The j-th column of A is stored in the j-th column of\n\
+  *          the array AB as follows:\n\
+  *          AB(ku+1+i-j,j) = A(i,j) for max(1,j-ku)<=i<=min(m,j+kl).\n\
+  *          On exit, A is overwritten by values generated during the\n\
+  *          reduction.\n\
+  *\n\
+  *  LDAB    (input) INTEGER\n\
+  *          The leading dimension of the array A. LDAB >= KL+KU+1.\n\
+  *\n\
+  *  D       (output) DOUBLE PRECISION array, dimension (min(M,N))\n\
+  *          The diagonal elements of the bidiagonal matrix B.\n\
+  *\n\
+  *  E       (output) DOUBLE PRECISION array, dimension (min(M,N)-1)\n\
+  *          The superdiagonal elements of the bidiagonal matrix B.\n\
+  *\n\
+  *  Q       (output) DOUBLE PRECISION array, dimension (LDQ,M)\n\
+  *          If VECT = 'Q' or 'B', the m-by-m orthogonal matrix Q.\n\
+  *          If VECT = 'N' or 'P', the array Q is not referenced.\n\
+  *\n\
+  *  LDQ     (input) INTEGER\n\
+  *          The leading dimension of the array Q.\n\
+  *          LDQ >= max(1,M) if VECT = 'Q' or 'B'; LDQ >= 1 otherwise.\n\
+  *\n\
+  *  PT      (output) DOUBLE PRECISION array, dimension (LDPT,N)\n\
+  *          If VECT = 'P' or 'B', the n-by-n orthogonal matrix P'.\n\
+  *          If VECT = 'N' or 'Q', the array PT is not referenced.\n\
+  *\n\
+  *  LDPT    (input) INTEGER\n\
+  *          The leading dimension of the array PT.\n\
+  *          LDPT >= max(1,N) if VECT = 'P' or 'B'; LDPT >= 1 otherwise.\n\
+  *\n\
+  *  C       (input/output) DOUBLE PRECISION array, dimension (LDC,NCC)\n\
+  *          On entry, an m-by-ncc matrix C.\n\
+  *          On exit, C is overwritten by Q'*C.\n\
+  *          C is not referenced if NCC = 0.\n\
+  *\n\
+  *  LDC     (input) INTEGER\n\
+  *          The leading dimension of the array C.\n\
+  *          LDC >= max(1,M) if NCC > 0; LDC >= 1 if NCC = 0.\n\
+  *\n\
+  *  WORK    (workspace) DOUBLE PRECISION array, dimension (2*max(M,N))\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit.\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

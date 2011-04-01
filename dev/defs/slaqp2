@@ -1,0 +1,115 @@
+--- 
+:name: slaqp2
+:md5sum: 082858bc789a3c8a0443b0df5a0a377a
+:category: :subroutine
+:arguments: 
+- m: 
+    :type: integer
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- offset: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: real
+    :intent: input/output
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- jpvt: 
+    :type: integer
+    :intent: input/output
+    :dims: 
+    - n
+- tau: 
+    :type: real
+    :intent: output
+    :dims: 
+    - MIN(m,n)
+- vn1: 
+    :type: real
+    :intent: input/output
+    :dims: 
+    - n
+- vn2: 
+    :type: real
+    :intent: input/output
+    :dims: 
+    - n
+- work: 
+    :type: real
+    :intent: workspace
+    :dims: 
+    - n
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE SLAQP2( M, N, OFFSET, A, LDA, JPVT, TAU, VN1, VN2, WORK )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  SLAQP2 computes a QR factorization with column pivoting of\n\
+  *  the block A(OFFSET+1:M,1:N).\n\
+  *  The block A(1:OFFSET,1:N) is accordingly pivoted, but not factorized.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  M       (input) INTEGER\n\
+  *          The number of rows of the matrix A. M >= 0.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of columns of the matrix A. N >= 0.\n\
+  *\n\
+  *  OFFSET  (input) INTEGER\n\
+  *          The number of rows of the matrix A that must be pivoted\n\
+  *          but no factorized. OFFSET >= 0.\n\
+  *\n\
+  *  A       (input/output) REAL array, dimension (LDA,N)\n\
+  *          On entry, the M-by-N matrix A.\n\
+  *          On exit, the upper triangle of block A(OFFSET+1:M,1:N) is \n\
+  *          the triangular factor obtained; the elements in block \n\
+  *          A(OFFSET+1:M,1:N) below the diagonal, together with the \n\
+  *          array TAU, represent the orthogonal matrix Q as a product of\n\
+  *          elementary reflectors. Block A(1:OFFSET,1:N) has been\n\
+  *          accordingly pivoted, but no factorized.\n\
+  *\n\
+  *  LDA     (input) INTEGER\n\
+  *          The leading dimension of the array A. LDA >= max(1,M).\n\
+  *\n\
+  *  JPVT    (input/output) INTEGER array, dimension (N)\n\
+  *          On entry, if JPVT(i) .ne. 0, the i-th column of A is permuted\n\
+  *          to the front of A*P (a leading column); if JPVT(i) = 0,\n\
+  *          the i-th column of A is a free column.\n\
+  *          On exit, if JPVT(i) = k, then the i-th column of A*P\n\
+  *          was the k-th column of A.\n\
+  *\n\
+  *  TAU     (output) REAL array, dimension (min(M,N))\n\
+  *          The scalar factors of the elementary reflectors.\n\
+  *\n\
+  *  VN1     (input/output) REAL array, dimension (N)\n\
+  *          The vector with the partial column norms.\n\
+  *\n\
+  *  VN2     (input/output) REAL array, dimension (N)\n\
+  *          The vector with the exact column norms.\n\
+  *\n\
+  *  WORK    (workspace) REAL array, dimension (N)\n\
+  *\n\n\
+  *  Further Details\n\
+  *  ===============\n\
+  *\n\
+  *  Based on contributions by\n\
+  *    G. Quintana-Orti, Depto. de Informatica, Universidad Jaime I, Spain\n\
+  *    X. Sun, Computer Science Dept., Duke University, USA\n\
+  *\n\
+  *  Partial column norm updating strategy modified by\n\
+  *    Z. Drmac and Z. Bujanovic, Dept. of Mathematics,\n\
+  *    University of Zagreb, Croatia.\n\
+  *     June 2010\n\
+  *  For more details see LAPACK Working Note 176.\n\
+  *  =====================================================================\n\
+  *\n"

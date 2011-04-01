@@ -1,0 +1,29 @@
+--- 
+:name: slapy2
+:md5sum: 4f1338cbdbf1dbb2f5736504748d4bf3
+:type: real
+:arguments: 
+- x: 
+    :type: real
+    :intent: input
+- y: 
+    :type: real
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      REAL             FUNCTION SLAPY2( X, Y )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  SLAPY2 returns sqrt(x**2+y**2), taking care not to cause unnecessary\n\
+  *  overflow.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  X       (input) REAL\n\
+  *  Y       (input) REAL\n\
+  *          X and Y specify the values x and y.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

@@ -1,0 +1,130 @@
+--- 
+:name: zunmr2
+:md5sum: 6bd0a8cf80613c3965370e82e015fa65
+:category: :subroutine
+:arguments: 
+- side: 
+    :type: char
+    :intent: input
+- trans: 
+    :type: char
+    :intent: input
+- m: 
+    :type: integer
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- k: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - lda
+    - m
+- lda: 
+    :type: integer
+    :intent: input
+- tau: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - k
+- c: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - ldc
+    - n
+- ldc: 
+    :type: integer
+    :intent: input
+- work: 
+    :type: doublecomplex
+    :intent: workspace
+    :dims: 
+    - "lsame_(&side,\"L\") ? n : lsame_(&side,\"R\") ? m : 0"
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE ZUNMR2( SIDE, TRANS, M, N, K, A, LDA, TAU, C, LDC, WORK, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  ZUNMR2 overwrites the general complex m-by-n matrix C with\n\
+  *\n\
+  *        Q * C  if SIDE = 'L' and TRANS = 'N', or\n\
+  *\n\
+  *        Q'* C  if SIDE = 'L' and TRANS = 'C', or\n\
+  *\n\
+  *        C * Q  if SIDE = 'R' and TRANS = 'N', or\n\
+  *\n\
+  *        C * Q' if SIDE = 'R' and TRANS = 'C',\n\
+  *\n\
+  *  where Q is a complex unitary matrix defined as the product of k\n\
+  *  elementary reflectors\n\
+  *\n\
+  *        Q = H(1)' H(2)' . . . H(k)'\n\
+  *\n\
+  *  as returned by ZGERQF. Q is of order m if SIDE = 'L' and of order n\n\
+  *  if SIDE = 'R'.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  SIDE    (input) CHARACTER*1\n\
+  *          = 'L': apply Q or Q' from the Left\n\
+  *          = 'R': apply Q or Q' from the Right\n\
+  *\n\
+  *  TRANS   (input) CHARACTER*1\n\
+  *          = 'N': apply Q  (No transpose)\n\
+  *          = 'C': apply Q' (Conjugate transpose)\n\
+  *\n\
+  *  M       (input) INTEGER\n\
+  *          The number of rows of the matrix C. M >= 0.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of columns of the matrix C. N >= 0.\n\
+  *\n\
+  *  K       (input) INTEGER\n\
+  *          The number of elementary reflectors whose product defines\n\
+  *          the matrix Q.\n\
+  *          If SIDE = 'L', M >= K >= 0;\n\
+  *          if SIDE = 'R', N >= K >= 0.\n\
+  *\n\
+  *  A       (input) COMPLEX*16 array, dimension\n\
+  *                               (LDA,M) if SIDE = 'L',\n\
+  *                               (LDA,N) if SIDE = 'R'\n\
+  *          The i-th row must contain the vector which defines the\n\
+  *          elementary reflector H(i), for i = 1,2,...,k, as returned by\n\
+  *          ZGERQF in the last k rows of its array argument A.\n\
+  *          A is modified by the routine but restored on exit.\n\
+  *\n\
+  *  LDA     (input) INTEGER\n\
+  *          The leading dimension of the array A. LDA >= max(1,K).\n\
+  *\n\
+  *  TAU     (input) COMPLEX*16 array, dimension (K)\n\
+  *          TAU(i) must contain the scalar factor of the elementary\n\
+  *          reflector H(i), as returned by ZGERQF.\n\
+  *\n\
+  *  C       (input/output) COMPLEX*16 array, dimension (LDC,N)\n\
+  *          On entry, the m-by-n matrix C.\n\
+  *          On exit, C is overwritten by Q*C or Q'*C or C*Q' or C*Q.\n\
+  *\n\
+  *  LDC     (input) INTEGER\n\
+  *          The leading dimension of the array C. LDC >= max(1,M).\n\
+  *\n\
+  *  WORK    (workspace) COMPLEX*16 array, dimension\n\
+  *                                   (N) if SIDE = 'L',\n\
+  *                                   (M) if SIDE = 'R'\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0: successful exit\n\
+  *          < 0: if INFO = -i, the i-th argument had an illegal value\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

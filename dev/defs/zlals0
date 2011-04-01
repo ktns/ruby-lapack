@@ -1,0 +1,251 @@
+--- 
+:name: zlals0
+:md5sum: 6c3f08f2e87225b43e82d00fc4312c59
+:category: :subroutine
+:arguments: 
+- icompq: 
+    :type: integer
+    :intent: input
+- nl: 
+    :type: integer
+    :intent: input
+- nr: 
+    :type: integer
+    :intent: input
+- sqre: 
+    :type: integer
+    :intent: input
+- nrhs: 
+    :type: integer
+    :intent: input
+- b: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - ldb
+    - nrhs
+- ldb: 
+    :type: integer
+    :intent: input
+- bx: 
+    :type: doublecomplex
+    :intent: workspace
+    :dims: 
+    - ldbx
+    - nrhs
+- ldbx: 
+    :type: integer
+    :intent: input
+- perm: 
+    :type: integer
+    :intent: input
+    :dims: 
+    - n
+- givptr: 
+    :type: integer
+    :intent: input
+- givcol: 
+    :type: integer
+    :intent: input
+    :dims: 
+    - ldgcol
+    - "2"
+- ldgcol: 
+    :type: integer
+    :intent: input
+- givnum: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - ldgnum
+    - "2"
+- ldgnum: 
+    :type: integer
+    :intent: input
+- poles: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - ldgnum
+    - "2"
+- difl: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - k
+- difr: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - ldgnum
+    - "2"
+- z: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - k
+- k: 
+    :type: integer
+    :intent: input
+- c: 
+    :type: doublereal
+    :intent: input
+- s: 
+    :type: doublereal
+    :intent: input
+- rwork: 
+    :type: doublereal
+    :intent: workspace
+    :dims: 
+    - k*(1+nrhs) + 2*nrhs
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: 
+  ldbx: n
+:fortran_help: "      SUBROUTINE ZLALS0( ICOMPQ, NL, NR, SQRE, NRHS, B, LDB, BX, LDBX, PERM, GIVPTR, GIVCOL, LDGCOL, GIVNUM, LDGNUM, POLES, DIFL, DIFR, Z, K, C, S, RWORK, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  ZLALS0 applies back the multiplying factors of either the left or the\n\
+  *  right singular vector matrix of a diagonal matrix appended by a row\n\
+  *  to the right hand side matrix B in solving the least squares problem\n\
+  *  using the divide-and-conquer SVD approach.\n\
+  *\n\
+  *  For the left singular vector matrix, three types of orthogonal\n\
+  *  matrices are involved:\n\
+  *\n\
+  *  (1L) Givens rotations: the number of such rotations is GIVPTR; the\n\
+  *       pairs of columns/rows they were applied to are stored in GIVCOL;\n\
+  *       and the C- and S-values of these rotations are stored in GIVNUM.\n\
+  *\n\
+  *  (2L) Permutation. The (NL+1)-st row of B is to be moved to the first\n\
+  *       row, and for J=2:N, PERM(J)-th row of B is to be moved to the\n\
+  *       J-th row.\n\
+  *\n\
+  *  (3L) The left singular vector matrix of the remaining matrix.\n\
+  *\n\
+  *  For the right singular vector matrix, four types of orthogonal\n\
+  *  matrices are involved:\n\
+  *\n\
+  *  (1R) The right singular vector matrix of the remaining matrix.\n\
+  *\n\
+  *  (2R) If SQRE = 1, one extra Givens rotation to generate the right\n\
+  *       null space.\n\
+  *\n\
+  *  (3R) The inverse transformation of (2L).\n\
+  *\n\
+  *  (4R) The inverse transformation of (1L).\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  ICOMPQ (input) INTEGER\n\
+  *         Specifies whether singular vectors are to be computed in\n\
+  *         factored form:\n\
+  *         = 0: Left singular vector matrix.\n\
+  *         = 1: Right singular vector matrix.\n\
+  *\n\
+  *  NL     (input) INTEGER\n\
+  *         The row dimension of the upper block. NL >= 1.\n\
+  *\n\
+  *  NR     (input) INTEGER\n\
+  *         The row dimension of the lower block. NR >= 1.\n\
+  *\n\
+  *  SQRE   (input) INTEGER\n\
+  *         = 0: the lower block is an NR-by-NR square matrix.\n\
+  *         = 1: the lower block is an NR-by-(NR+1) rectangular matrix.\n\
+  *\n\
+  *         The bidiagonal matrix has row dimension N = NL + NR + 1,\n\
+  *         and column dimension M = N + SQRE.\n\
+  *\n\
+  *  NRHS   (input) INTEGER\n\
+  *         The number of columns of B and BX. NRHS must be at least 1.\n\
+  *\n\
+  *  B      (input/output) COMPLEX*16 array, dimension ( LDB, NRHS )\n\
+  *         On input, B contains the right hand sides of the least\n\
+  *         squares problem in rows 1 through M. On output, B contains\n\
+  *         the solution X in rows 1 through N.\n\
+  *\n\
+  *  LDB    (input) INTEGER\n\
+  *         The leading dimension of B. LDB must be at least\n\
+  *         max(1,MAX( M, N ) ).\n\
+  *\n\
+  *  BX     (workspace) COMPLEX*16 array, dimension ( LDBX, NRHS )\n\
+  *\n\
+  *  LDBX   (input) INTEGER\n\
+  *         The leading dimension of BX.\n\
+  *\n\
+  *  PERM   (input) INTEGER array, dimension ( N )\n\
+  *         The permutations (from deflation and sorting) applied\n\
+  *         to the two blocks.\n\
+  *\n\
+  *  GIVPTR (input) INTEGER\n\
+  *         The number of Givens rotations which took place in this\n\
+  *         subproblem.\n\
+  *\n\
+  *  GIVCOL (input) INTEGER array, dimension ( LDGCOL, 2 )\n\
+  *         Each pair of numbers indicates a pair of rows/columns\n\
+  *         involved in a Givens rotation.\n\
+  *\n\
+  *  LDGCOL (input) INTEGER\n\
+  *         The leading dimension of GIVCOL, must be at least N.\n\
+  *\n\
+  *  GIVNUM (input) DOUBLE PRECISION array, dimension ( LDGNUM, 2 )\n\
+  *         Each number indicates the C or S value used in the\n\
+  *         corresponding Givens rotation.\n\
+  *\n\
+  *  LDGNUM (input) INTEGER\n\
+  *         The leading dimension of arrays DIFR, POLES and\n\
+  *         GIVNUM, must be at least K.\n\
+  *\n\
+  *  POLES  (input) DOUBLE PRECISION array, dimension ( LDGNUM, 2 )\n\
+  *         On entry, POLES(1:K, 1) contains the new singular\n\
+  *         values obtained from solving the secular equation, and\n\
+  *         POLES(1:K, 2) is an array containing the poles in the secular\n\
+  *         equation.\n\
+  *\n\
+  *  DIFL   (input) DOUBLE PRECISION array, dimension ( K ).\n\
+  *         On entry, DIFL(I) is the distance between I-th updated\n\
+  *         (undeflated) singular value and the I-th (undeflated) old\n\
+  *         singular value.\n\
+  *\n\
+  *  DIFR   (input) DOUBLE PRECISION array, dimension ( LDGNUM, 2 ).\n\
+  *         On entry, DIFR(I, 1) contains the distances between I-th\n\
+  *         updated (undeflated) singular value and the I+1-th\n\
+  *         (undeflated) old singular value. And DIFR(I, 2) is the\n\
+  *         normalizing factor for the I-th right singular vector.\n\
+  *\n\
+  *  Z      (input) DOUBLE PRECISION array, dimension ( K )\n\
+  *         Contain the components of the deflation-adjusted updating row\n\
+  *         vector.\n\
+  *\n\
+  *  K      (input) INTEGER\n\
+  *         Contains the dimension of the non-deflated matrix,\n\
+  *         This is the order of the related secular equation. 1 <= K <=N.\n\
+  *\n\
+  *  C      (input) DOUBLE PRECISION\n\
+  *         C contains garbage if SQRE =0 and the C-value of a Givens\n\
+  *         rotation related to the right null space if SQRE = 1.\n\
+  *\n\
+  *  S      (input) DOUBLE PRECISION\n\
+  *         S contains garbage if SQRE =0 and the S-value of a Givens\n\
+  *         rotation related to the right null space if SQRE = 1.\n\
+  *\n\
+  *  RWORK  (workspace) DOUBLE PRECISION array, dimension\n\
+  *         ( K*(1+NRHS) + 2*NRHS )\n\
+  *\n\
+  *  INFO   (output) INTEGER\n\
+  *          = 0:  successful exit.\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value.\n\
+  *\n\n\
+  *  Further Details\n\
+  *  ===============\n\
+  *\n\
+  *  Based on contributions by\n\
+  *     Ming Gu and Ren-Cang Li, Computer Science Division, University of\n\
+  *       California at Berkeley, USA\n\
+  *     Osni Marques, LBNL/NERSC, USA\n\
+  *\n\
+  *  =====================================================================\n\
+  *\n"

@@ -1,0 +1,375 @@
+--- 
+:name: zla_syrfsx_extended
+:md5sum: 1bbc80dff104ad9433d7b76fc0d7da02
+:category: :subroutine
+:arguments: 
+- prec_type: 
+    :type: integer
+    :intent: input
+- uplo: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- nrhs: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- af: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - ldaf
+    - n
+- ldaf: 
+    :type: integer
+    :intent: input
+- ipiv: 
+    :type: integer
+    :intent: input
+    :dims: 
+    - n
+- colequ: 
+    :type: logical
+    :intent: input
+- c: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - n
+- b: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - ldb
+    - nrhs
+- ldb: 
+    :type: integer
+    :intent: input
+- y: 
+    :type: doublecomplex
+    :intent: input/output
+    :dims: 
+    - ldy
+    - nrhs
+- ldy: 
+    :type: integer
+    :intent: input
+- berr_out: 
+    :type: doublereal
+    :intent: output
+    :dims: 
+    - nrhs
+- n_norms: 
+    :type: integer
+    :intent: input
+- err_bnds_norm: 
+    :type: doublereal
+    :intent: input/output
+    :dims: 
+    - nrhs
+    - n_err_bnds
+- err_bnds_comp: 
+    :type: doublereal
+    :intent: input/output
+    :dims: 
+    - nrhs
+    - n_err_bnds
+- res: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - n
+- ayb: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - n
+- dy: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - n
+- y_tail: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - n
+- rcond: 
+    :type: doublereal
+    :intent: input
+- ithresh: 
+    :type: integer
+    :intent: input
+- rthresh: 
+    :type: doublereal
+    :intent: input
+- dz_ub: 
+    :type: doublereal
+    :intent: input
+- ignore_cwise: 
+    :type: logical
+    :intent: input
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE ZLA_SYRFSX_EXTENDED( PREC_TYPE, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, COLEQU, C, B, LDB, Y, LDY, BERR_OUT, N_NORMS, ERR_BNDS_NORM, ERR_BNDS_COMP, RES, AYB, DY, Y_TAIL, RCOND, ITHRESH, RTHRESH, DZ_UB, IGNORE_CWISE, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  ZLA_SYRFSX_EXTENDED improves the computed solution to a system of\n\
+  *  linear equations by performing extra-precise iterative refinement\n\
+  *  and provides error bounds and backward error estimates for the solution.\n\
+  *  This subroutine is called by ZSYRFSX to perform iterative refinement.\n\
+  *  In addition to normwise error bound, the code provides maximum\n\
+  *  componentwise error bound if possible. See comments for ERR_BNDS_NORM\n\
+  *  and ERR_BNDS_COMP for details of the error bounds. Note that this\n\
+  *  subroutine is only resonsible for setting the second fields of\n\
+  *  ERR_BNDS_NORM and ERR_BNDS_COMP.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *     PREC_TYPE      (input) INTEGER\n\
+  *     Specifies the intermediate precision to be used in refinement.\n\
+  *     The value is defined by ILAPREC(P) where P is a CHARACTER and\n\
+  *     P    = 'S':  Single\n\
+  *          = 'D':  Double\n\
+  *          = 'I':  Indigenous\n\
+  *          = 'X', 'E':  Extra\n\
+  *\n\
+  *     UPLO    (input) CHARACTER*1\n\
+  *       = 'U':  Upper triangle of A is stored;\n\
+  *       = 'L':  Lower triangle of A is stored.\n\
+  *\n\
+  *     N              (input) INTEGER\n\
+  *     The number of linear equations, i.e., the order of the\n\
+  *     matrix A.  N >= 0.\n\
+  *\n\
+  *     NRHS           (input) INTEGER\n\
+  *     The number of right-hand-sides, i.e., the number of columns of the\n\
+  *     matrix B.\n\
+  *\n\
+  *     A              (input) COMPLEX*16 array, dimension (LDA,N)\n\
+  *     On entry, the N-by-N matrix A.\n\
+  *\n\
+  *     LDA            (input) INTEGER\n\
+  *     The leading dimension of the array A.  LDA >= max(1,N).\n\
+  *\n\
+  *     AF             (input) COMPLEX*16 array, dimension (LDAF,N)\n\
+  *     The block diagonal matrix D and the multipliers used to\n\
+  *     obtain the factor U or L as computed by ZSYTRF.\n\
+  *\n\
+  *     LDAF           (input) INTEGER\n\
+  *     The leading dimension of the array AF.  LDAF >= max(1,N).\n\
+  *\n\
+  *     IPIV           (input) INTEGER array, dimension (N)\n\
+  *     Details of the interchanges and the block structure of D\n\
+  *     as determined by ZSYTRF.\n\
+  *\n\
+  *     COLEQU         (input) LOGICAL\n\
+  *     If .TRUE. then column equilibration was done to A before calling\n\
+  *     this routine. This is needed to compute the solution and error\n\
+  *     bounds correctly.\n\
+  *\n\
+  *     C              (input) DOUBLE PRECISION array, dimension (N)\n\
+  *     The column scale factors for A. If COLEQU = .FALSE., C\n\
+  *     is not accessed. If C is input, each element of C should be a power\n\
+  *     of the radix to ensure a reliable solution and error estimates.\n\
+  *     Scaling by powers of the radix does not cause rounding errors unless\n\
+  *     the result underflows or overflows. Rounding errors during scaling\n\
+  *     lead to refining with a matrix that is not equivalent to the\n\
+  *     input matrix, producing error estimates that may not be\n\
+  *     reliable.\n\
+  *\n\
+  *     B              (input) COMPLEX*16 array, dimension (LDB,NRHS)\n\
+  *     The right-hand-side matrix B.\n\
+  *\n\
+  *     LDB            (input) INTEGER\n\
+  *     The leading dimension of the array B.  LDB >= max(1,N).\n\
+  *\n\
+  *     Y              (input/output) COMPLEX*16 array, dimension\n\
+  *                    (LDY,NRHS)\n\
+  *     On entry, the solution matrix X, as computed by ZSYTRS.\n\
+  *     On exit, the improved solution matrix Y.\n\
+  *\n\
+  *     LDY            (input) INTEGER\n\
+  *     The leading dimension of the array Y.  LDY >= max(1,N).\n\
+  *\n\
+  *     BERR_OUT       (output) DOUBLE PRECISION array, dimension (NRHS)\n\
+  *     On exit, BERR_OUT(j) contains the componentwise relative backward\n\
+  *     error for right-hand-side j from the formula\n\
+  *         max(i) ( abs(RES(i)) / ( abs(op(A_s))*abs(Y) + abs(B_s) )(i) )\n\
+  *     where abs(Z) is the componentwise absolute value of the matrix\n\
+  *     or vector Z. This is computed by ZLA_LIN_BERR.\n\
+  *\n\
+  *     N_NORMS        (input) INTEGER\n\
+  *     Determines which error bounds to return (see ERR_BNDS_NORM\n\
+  *     and ERR_BNDS_COMP).\n\
+  *     If N_NORMS >= 1 return normwise error bounds.\n\
+  *     If N_NORMS >= 2 return componentwise error bounds.\n\
+  *\n\
+  *     ERR_BNDS_NORM  (input/output) DOUBLE PRECISION array, dimension\n\
+  *                    (NRHS, N_ERR_BNDS)\n\
+  *     For each right-hand side, this array contains information about\n\
+  *     various error bounds and condition numbers corresponding to the\n\
+  *     normwise relative error, which is defined as follows:\n\
+  *\n\
+  *     Normwise relative error in the ith solution vector:\n\
+  *             max_j (abs(XTRUE(j,i) - X(j,i)))\n\
+  *            ------------------------------\n\
+  *                  max_j abs(X(j,i))\n\
+  *\n\
+  *     The array is indexed by the type of error information as described\n\
+  *     below. There currently are up to three pieces of information\n\
+  *     returned.\n\
+  *\n\
+  *     The first index in ERR_BNDS_NORM(i,:) corresponds to the ith\n\
+  *     right-hand side.\n\
+  *\n\
+  *     The second index in ERR_BNDS_NORM(:,err) contains the following\n\
+  *     three fields:\n\
+  *     err = 1 \"Trust/don't trust\" boolean. Trust the answer if the\n\
+  *              reciprocal condition number is less than the threshold\n\
+  *              sqrt(n) * slamch('Epsilon').\n\
+  *\n\
+  *     err = 2 \"Guaranteed\" error bound: The estimated forward error,\n\
+  *              almost certainly within a factor of 10 of the true error\n\
+  *              so long as the next entry is greater than the threshold\n\
+  *              sqrt(n) * slamch('Epsilon'). This error bound should only\n\
+  *              be trusted if the previous boolean is true.\n\
+  *\n\
+  *     err = 3  Reciprocal condition number: Estimated normwise\n\
+  *              reciprocal condition number.  Compared with the threshold\n\
+  *              sqrt(n) * slamch('Epsilon') to determine if the error\n\
+  *              estimate is \"guaranteed\". These reciprocal condition\n\
+  *              numbers are 1 / (norm(Z^{-1},inf) * norm(Z,inf)) for some\n\
+  *              appropriately scaled matrix Z.\n\
+  *              Let Z = S*A, where S scales each row by a power of the\n\
+  *              radix so all absolute row sums of Z are approximately 1.\n\
+  *\n\
+  *     This subroutine is only responsible for setting the second field\n\
+  *     above.\n\
+  *     See Lapack Working Note 165 for further details and extra\n\
+  *     cautions.\n\
+  *\n\
+  *     ERR_BNDS_COMP  (input/output) DOUBLE PRECISION array, dimension\n\
+  *                    (NRHS, N_ERR_BNDS)\n\
+  *     For each right-hand side, this array contains information about\n\
+  *     various error bounds and condition numbers corresponding to the\n\
+  *     componentwise relative error, which is defined as follows:\n\
+  *\n\
+  *     Componentwise relative error in the ith solution vector:\n\
+  *                    abs(XTRUE(j,i) - X(j,i))\n\
+  *             max_j ----------------------\n\
+  *                         abs(X(j,i))\n\
+  *\n\
+  *     The array is indexed by the right-hand side i (on which the\n\
+  *     componentwise relative error depends), and the type of error\n\
+  *     information as described below. There currently are up to three\n\
+  *     pieces of information returned for each right-hand side. If\n\
+  *     componentwise accuracy is not requested (PARAMS(3) = 0.0), then\n\
+  *     ERR_BNDS_COMP is not accessed.  If N_ERR_BNDS .LT. 3, then at most\n\
+  *     the first (:,N_ERR_BNDS) entries are returned.\n\
+  *\n\
+  *     The first index in ERR_BNDS_COMP(i,:) corresponds to the ith\n\
+  *     right-hand side.\n\
+  *\n\
+  *     The second index in ERR_BNDS_COMP(:,err) contains the following\n\
+  *     three fields:\n\
+  *     err = 1 \"Trust/don't trust\" boolean. Trust the answer if the\n\
+  *              reciprocal condition number is less than the threshold\n\
+  *              sqrt(n) * slamch('Epsilon').\n\
+  *\n\
+  *     err = 2 \"Guaranteed\" error bound: The estimated forward error,\n\
+  *              almost certainly within a factor of 10 of the true error\n\
+  *              so long as the next entry is greater than the threshold\n\
+  *              sqrt(n) * slamch('Epsilon'). This error bound should only\n\
+  *              be trusted if the previous boolean is true.\n\
+  *\n\
+  *     err = 3  Reciprocal condition number: Estimated componentwise\n\
+  *              reciprocal condition number.  Compared with the threshold\n\
+  *              sqrt(n) * slamch('Epsilon') to determine if the error\n\
+  *              estimate is \"guaranteed\". These reciprocal condition\n\
+  *              numbers are 1 / (norm(Z^{-1},inf) * norm(Z,inf)) for some\n\
+  *              appropriately scaled matrix Z.\n\
+  *              Let Z = S*(A*diag(x)), where x is the solution for the\n\
+  *              current right-hand side and S scales each row of\n\
+  *              A*diag(x) by a power of the radix so all absolute row\n\
+  *              sums of Z are approximately 1.\n\
+  *\n\
+  *     This subroutine is only responsible for setting the second field\n\
+  *     above.\n\
+  *     See Lapack Working Note 165 for further details and extra\n\
+  *     cautions.\n\
+  *\n\
+  *     RES            (input) COMPLEX*16 array, dimension (N)\n\
+  *     Workspace to hold the intermediate residual.\n\
+  *\n\
+  *     AYB            (input) DOUBLE PRECISION array, dimension (N)\n\
+  *     Workspace.\n\
+  *\n\
+  *     DY             (input) COMPLEX*16 array, dimension (N)\n\
+  *     Workspace to hold the intermediate solution.\n\
+  *\n\
+  *     Y_TAIL         (input) COMPLEX*16 array, dimension (N)\n\
+  *     Workspace to hold the trailing bits of the intermediate solution.\n\
+  *\n\
+  *     RCOND          (input) DOUBLE PRECISION\n\
+  *     Reciprocal scaled condition number.  This is an estimate of the\n\
+  *     reciprocal Skeel condition number of the matrix A after\n\
+  *     equilibration (if done).  If this is less than the machine\n\
+  *     precision (in particular, if it is zero), the matrix is singular\n\
+  *     to working precision.  Note that the error may still be small even\n\
+  *     if this number is very small and the matrix appears ill-\n\
+  *     conditioned.\n\
+  *\n\
+  *     ITHRESH        (input) INTEGER\n\
+  *     The maximum number of residual computations allowed for\n\
+  *     refinement. The default is 10. For 'aggressive' set to 100 to\n\
+  *     permit convergence using approximate factorizations or\n\
+  *     factorizations other than LU. If the factorization uses a\n\
+  *     technique other than Gaussian elimination, the guarantees in\n\
+  *     ERR_BNDS_NORM and ERR_BNDS_COMP may no longer be trustworthy.\n\
+  *\n\
+  *     RTHRESH        (input) DOUBLE PRECISION\n\
+  *     Determines when to stop refinement if the error estimate stops\n\
+  *     decreasing. Refinement will stop when the next solution no longer\n\
+  *     satisfies norm(dx_{i+1}) < RTHRESH * norm(dx_i) where norm(Z) is\n\
+  *     the infinity norm of Z. RTHRESH satisfies 0 < RTHRESH <= 1. The\n\
+  *     default value is 0.5. For 'aggressive' set to 0.9 to permit\n\
+  *     convergence on extremely ill-conditioned matrices. See LAWN 165\n\
+  *     for more details.\n\
+  *\n\
+  *     DZ_UB          (input) DOUBLE PRECISION\n\
+  *     Determines when to start considering componentwise convergence.\n\
+  *     Componentwise convergence is only considered after each component\n\
+  *     of the solution Y is stable, which we definte as the relative\n\
+  *     change in each component being less than DZ_UB. The default value\n\
+  *     is 0.25, requiring the first bit to be stable. See LAWN 165 for\n\
+  *     more details.\n\
+  *\n\
+  *     IGNORE_CWISE   (input) LOGICAL\n\
+  *     If .TRUE. then ignore componentwise convergence. Default value\n\
+  *     is .FALSE..\n\
+  *\n\
+  *     INFO           (output) INTEGER\n\
+  *       = 0:  Successful exit.\n\
+  *       < 0:  if INFO = -i, the ith argument to ZSYTRS had an illegal\n\
+  *             value\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            UPLO2, CNT, I, J, X_STATE, Z_STATE,\n     $                   Y_PREC_STATE\n      DOUBLE PRECISION   YK, DYK, YMIN, NORMY, NORMX, NORMDX, DXRAT,\n     $                   DZRAT, PREVNORMDX, PREV_DZ_Z, DXRATMAX,\n     $                   DZRATMAX, DX_X, DZ_Z, FINAL_DX_X, FINAL_DZ_Z,\n     $                   EPS, HUGEVAL, INCR_THRESH\n      LOGICAL            INCR_PREC\n      COMPLEX*16         ZDUM\n\
+  *     ..\n"

@@ -1,0 +1,84 @@
+--- 
+:name: zptcon
+:md5sum: 55726a854f4ea93e20da6057c21868f0
+:category: :subroutine
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- d: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - n
+- e: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - n-1
+- anorm: 
+    :type: doublereal
+    :intent: input
+- rcond: 
+    :type: doublereal
+    :intent: output
+- rwork: 
+    :type: doublereal
+    :intent: workspace
+    :dims: 
+    - n
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE ZPTCON( N, D, E, ANORM, RCOND, RWORK, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  ZPTCON computes the reciprocal of the condition number (in the\n\
+  *  1-norm) of a complex Hermitian positive definite tridiagonal matrix\n\
+  *  using the factorization A = L*D*L**H or A = U**H*D*U computed by\n\
+  *  ZPTTRF.\n\
+  *\n\
+  *  Norm(inv(A)) is computed by a direct method, and the reciprocal of\n\
+  *  the condition number is computed as\n\
+  *                   RCOND = 1 / (ANORM * norm(inv(A))).\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix A.  N >= 0.\n\
+  *\n\
+  *  D       (input) DOUBLE PRECISION array, dimension (N)\n\
+  *          The n diagonal elements of the diagonal matrix D from the\n\
+  *          factorization of A, as computed by ZPTTRF.\n\
+  *\n\
+  *  E       (input) COMPLEX*16 array, dimension (N-1)\n\
+  *          The (n-1) off-diagonal elements of the unit bidiagonal factor\n\
+  *          U or L from the factorization of A, as computed by ZPTTRF.\n\
+  *\n\
+  *  ANORM   (input) DOUBLE PRECISION\n\
+  *          The 1-norm of the original matrix A.\n\
+  *\n\
+  *  RCOND   (output) DOUBLE PRECISION\n\
+  *          The reciprocal of the condition number of the matrix A,\n\
+  *          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is the\n\
+  *          1-norm of inv(A) computed in this routine.\n\
+  *\n\
+  *  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value\n\
+  *\n\n\
+  *  Further Details\n\
+  *  ===============\n\
+  *\n\
+  *  The method used is described in Nicholas J. Higham, \"Efficient\n\
+  *  Algorithms for Computing the Condition Number of a Tridiagonal\n\
+  *  Matrix\", SIAM J. Sci. Stat. Comput., Vol. 7, No. 1, January 1986.\n\
+  *\n\
+  *  =====================================================================\n\
+  *\n"

@@ -1,0 +1,84 @@
+--- 
+:name: slanv2
+:md5sum: 8fbb15250e591974a48a0ab06ae552d1
+:category: :subroutine
+:arguments: 
+- a: 
+    :type: real
+    :intent: input/output
+- b: 
+    :type: real
+    :intent: input/output
+- c: 
+    :type: real
+    :intent: input/output
+- d: 
+    :type: real
+    :intent: input/output
+- rt1r: 
+    :type: real
+    :intent: output
+- rt1i: 
+    :type: real
+    :intent: output
+- rt2r: 
+    :type: real
+    :intent: output
+- rt2i: 
+    :type: real
+    :intent: output
+- cs: 
+    :type: real
+    :intent: output
+- sn: 
+    :type: real
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE SLANV2( A, B, C, D, RT1R, RT1I, RT2R, RT2I, CS, SN )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  SLANV2 computes the Schur factorization of a real 2-by-2 nonsymmetric\n\
+  *  matrix in standard form:\n\
+  *\n\
+  *       [ A  B ] = [ CS -SN ] [ AA  BB ] [ CS  SN ]\n\
+  *       [ C  D ]   [ SN  CS ] [ CC  DD ] [-SN  CS ]\n\
+  *\n\
+  *  where either\n\
+  *  1) CC = 0 so that AA and DD are real eigenvalues of the matrix, or\n\
+  *  2) AA = DD and BB*CC < 0, so that AA + or - sqrt(BB*CC) are complex\n\
+  *  conjugate eigenvalues.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  A       (input/output) REAL            \n\
+  *  B       (input/output) REAL            \n\
+  *  C       (input/output) REAL            \n\
+  *  D       (input/output) REAL            \n\
+  *          On entry, the elements of the input matrix.\n\
+  *          On exit, they are overwritten by the elements of the\n\
+  *          standardised Schur form.\n\
+  *\n\
+  *  RT1R    (output) REAL \n\
+  *  RT1I    (output) REAL            \n\
+  *  RT2R    (output) REAL            \n\
+  *  RT2I    (output) REAL            \n\
+  *          The real and imaginary parts of the eigenvalues. If the\n\
+  *          eigenvalues are a complex conjugate pair, RT1I > 0.\n\
+  *\n\
+  *  CS      (output) REAL            \n\
+  *  SN      (output) REAL            \n\
+  *          Parameters of the rotation matrix.\n\
+  *\n\n\
+  *  Further Details\n\
+  *  ===============\n\
+  *\n\
+  *  Modified by V. Sima, Research Institute for Informatics, Bucharest,\n\
+  *  Romania, to reduce the risk of cancellation errors,\n\
+  *  when computing real eigenvalues, and to ensure, if possible, that\n\
+  *  abs(RT1R) >= abs(RT2R).\n\
+  *\n\
+  *  =====================================================================\n\
+  *\n"

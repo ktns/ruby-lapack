@@ -1,0 +1,84 @@
+--- 
+:name: csptrs
+:md5sum: f8b60d66389c0af1a3e55795b48dcc6f
+:category: :subroutine
+:arguments: 
+- uplo: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- nrhs: 
+    :type: integer
+    :intent: input
+- ap: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - n*(n+1)/2
+- ipiv: 
+    :type: integer
+    :intent: input
+    :dims: 
+    - n
+- b: 
+    :type: complex
+    :intent: input/output
+    :dims: 
+    - ldb
+    - nrhs
+- ldb: 
+    :type: integer
+    :intent: input
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE CSPTRS( UPLO, N, NRHS, AP, IPIV, B, LDB, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  CSPTRS solves a system of linear equations A*X = B with a complex\n\
+  *  symmetric matrix A stored in packed format using the factorization\n\
+  *  A = U*D*U**T or A = L*D*L**T computed by CSPTRF.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  UPLO    (input) CHARACTER*1\n\
+  *          Specifies whether the details of the factorization are stored\n\
+  *          as an upper or lower triangular matrix.\n\
+  *          = 'U':  Upper triangular, form is A = U*D*U**T;\n\
+  *          = 'L':  Lower triangular, form is A = L*D*L**T.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix A.  N >= 0.\n\
+  *\n\
+  *  NRHS    (input) INTEGER\n\
+  *          The number of right hand sides, i.e., the number of columns\n\
+  *          of the matrix B.  NRHS >= 0.\n\
+  *\n\
+  *  AP      (input) COMPLEX array, dimension (N*(N+1)/2)\n\
+  *          The block diagonal matrix D and the multipliers used to\n\
+  *          obtain the factor U or L as computed by CSPTRF, stored as a\n\
+  *          packed triangular matrix.\n\
+  *\n\
+  *  IPIV    (input) INTEGER array, dimension (N)\n\
+  *          Details of the interchanges and the block structure of D\n\
+  *          as determined by CSPTRF.\n\
+  *\n\
+  *  B       (input/output) COMPLEX array, dimension (LDB,NRHS)\n\
+  *          On entry, the right hand side matrix B.\n\
+  *          On exit, the solution matrix X.\n\
+  *\n\
+  *  LDB     (input) INTEGER\n\
+  *          The leading dimension of the array B.  LDB >= max(1,N).\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0: if INFO = -i, the i-th argument had an illegal value\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

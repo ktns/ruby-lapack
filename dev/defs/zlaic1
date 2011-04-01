@@ -1,0 +1,101 @@
+--- 
+:name: zlaic1
+:md5sum: 63910da00daf76915c35466d47fea244
+:category: :subroutine
+:arguments: 
+- job: 
+    :type: integer
+    :intent: input
+- j: 
+    :type: integer
+    :intent: input
+- x: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - j
+- sest: 
+    :type: doublereal
+    :intent: input
+- w: 
+    :type: doublecomplex
+    :intent: input
+    :dims: 
+    - j
+- gamma: 
+    :type: doublecomplex
+    :intent: input
+- sestpr: 
+    :type: doublereal
+    :intent: output
+- s: 
+    :type: doublecomplex
+    :intent: output
+- c: 
+    :type: doublecomplex
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE ZLAIC1( JOB, J, X, SEST, W, GAMMA, SESTPR, S, C )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  ZLAIC1 applies one step of incremental condition estimation in\n\
+  *  its simplest version:\n\
+  *\n\
+  *  Let x, twonorm(x) = 1, be an approximate singular vector of an j-by-j\n\
+  *  lower triangular matrix L, such that\n\
+  *           twonorm(L*x) = sest\n\
+  *  Then ZLAIC1 computes sestpr, s, c such that\n\
+  *  the vector\n\
+  *                  [ s*x ]\n\
+  *           xhat = [  c  ]\n\
+  *  is an approximate singular vector of\n\
+  *                  [ L     0  ]\n\
+  *           Lhat = [ w' gamma ]\n\
+  *  in the sense that\n\
+  *           twonorm(Lhat*xhat) = sestpr.\n\
+  *\n\
+  *  Depending on JOB, an estimate for the largest or smallest singular\n\
+  *  value is computed.\n\
+  *\n\
+  *  Note that [s c]' and sestpr**2 is an eigenpair of the system\n\
+  *\n\
+  *      diag(sest*sest, 0) + [alpha  gamma] * [ conjg(alpha) ]\n\
+  *                                            [ conjg(gamma) ]\n\
+  *\n\
+  *  where  alpha =  conjg(x)'*w.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  JOB     (input) INTEGER\n\
+  *          = 1: an estimate for the largest singular value is computed.\n\
+  *          = 2: an estimate for the smallest singular value is computed.\n\
+  *\n\
+  *  J       (input) INTEGER\n\
+  *          Length of X and W\n\
+  *\n\
+  *  X       (input) COMPLEX*16 array, dimension (J)\n\
+  *          The j-vector x.\n\
+  *\n\
+  *  SEST    (input) DOUBLE PRECISION\n\
+  *          Estimated singular value of j by j matrix L\n\
+  *\n\
+  *  W       (input) COMPLEX*16 array, dimension (J)\n\
+  *          The j-vector w.\n\
+  *\n\
+  *  GAMMA   (input) COMPLEX*16\n\
+  *          The diagonal element gamma.\n\
+  *\n\
+  *  SESTPR  (output) DOUBLE PRECISION\n\
+  *          Estimated singular value of (j+1) by (j+1) matrix Lhat.\n\
+  *\n\
+  *  S       (output) COMPLEX*16\n\
+  *          Sine needed in forming xhat.\n\
+  *\n\
+  *  C       (output) COMPLEX*16\n\
+  *          Cosine needed in forming xhat.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

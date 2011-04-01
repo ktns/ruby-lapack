@@ -1,0 +1,265 @@
+--- 
+:name: slarre
+:md5sum: 98a7ef095c3e263ebe5088ca21b69c1a
+:category: :subroutine
+:arguments: 
+- range: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- vl: 
+    :type: real
+    :intent: input/output
+- vu: 
+    :type: real
+    :intent: input/output
+- il: 
+    :type: integer
+    :intent: input
+- iu: 
+    :type: integer
+    :intent: input
+- d: 
+    :type: real
+    :intent: input/output
+    :dims: 
+    - n
+- e: 
+    :type: real
+    :intent: input/output
+    :dims: 
+    - n
+- e2: 
+    :type: real
+    :intent: input/output
+    :dims: 
+    - n
+- rtol1: 
+    :type: real
+    :intent: input
+- rtol2: 
+    :type: real
+    :intent: input
+- spltol: 
+    :type: real
+    :intent: input
+- nsplit: 
+    :type: integer
+    :intent: output
+- isplit: 
+    :type: integer
+    :intent: output
+    :dims: 
+    - n
+- m: 
+    :type: integer
+    :intent: output
+- w: 
+    :type: real
+    :intent: output
+    :dims: 
+    - n
+- werr: 
+    :type: real
+    :intent: output
+    :dims: 
+    - n
+- wgap: 
+    :type: real
+    :intent: output
+    :dims: 
+    - n
+- iblock: 
+    :type: integer
+    :intent: output
+    :dims: 
+    - n
+- indexw: 
+    :type: integer
+    :intent: output
+    :dims: 
+    - n
+- gers: 
+    :type: real
+    :intent: output
+    :dims: 
+    - 2*n
+- pivmin: 
+    :type: real
+    :intent: output
+- work: 
+    :type: real
+    :intent: workspace
+    :dims: 
+    - 6*n
+- iwork: 
+    :type: integer
+    :intent: workspace
+    :dims: 
+    - 5*n
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE SLARRE( RANGE, N, VL, VU, IL, IU, D, E, E2, RTOL1, RTOL2, SPLTOL, NSPLIT, ISPLIT, M, W, WERR, WGAP, IBLOCK, INDEXW, GERS, PIVMIN, WORK, IWORK, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  To find the desired eigenvalues of a given real symmetric\n\
+  *  tridiagonal matrix T, SLARRE sets any \"small\" off-diagonal\n\
+  *  elements to zero, and for each unreduced block T_i, it finds\n\
+  *  (a) a suitable shift at one end of the block's spectrum,\n\
+  *  (b) the base representation, T_i - sigma_i I = L_i D_i L_i^T, and\n\
+  *  (c) eigenvalues of each L_i D_i L_i^T.\n\
+  *  The representations and eigenvalues found are then used by\n\
+  *  SSTEMR to compute the eigenvectors of T.\n\
+  *  The accuracy varies depending on whether bisection is used to\n\
+  *  find a few eigenvalues or the dqds algorithm (subroutine SLASQ2) to\n\
+  *  conpute all and then discard any unwanted one.\n\
+  *  As an added benefit, SLARRE also outputs the n\n\
+  *  Gerschgorin intervals for the matrices L_i D_i L_i^T.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  RANGE   (input) CHARACTER*1\n\
+  *          = 'A': (\"All\")   all eigenvalues will be found.\n\
+  *          = 'V': (\"Value\") all eigenvalues in the half-open interval\n\
+  *                           (VL, VU] will be found.\n\
+  *          = 'I': (\"Index\") the IL-th through IU-th eigenvalues (of the\n\
+  *                           entire matrix) will be found.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix. N > 0.\n\
+  *\n\
+  *  VL      (input/output) REAL            \n\
+  *  VU      (input/output) REAL            \n\
+  *          If RANGE='V', the lower and upper bounds for the eigenvalues.\n\
+  *          Eigenvalues less than or equal to VL, or greater than VU,\n\
+  *          will not be returned.  VL < VU.\n\
+  *          If RANGE='I' or ='A', SLARRE computes bounds on the desired\n\
+  *          part of the spectrum.\n\
+  *\n\
+  *  IL      (input) INTEGER\n\
+  *  IU      (input) INTEGER\n\
+  *          If RANGE='I', the indices (in ascending order) of the\n\
+  *          smallest and largest eigenvalues to be returned.\n\
+  *          1 <= IL <= IU <= N.\n\
+  *\n\
+  *  D       (input/output) REAL             array, dimension (N)\n\
+  *          On entry, the N diagonal elements of the tridiagonal\n\
+  *          matrix T.\n\
+  *          On exit, the N diagonal elements of the diagonal\n\
+  *          matrices D_i.\n\
+  *\n\
+  *  E       (input/output) REAL             array, dimension (N)\n\
+  *          On entry, the first (N-1) entries contain the subdiagonal\n\
+  *          elements of the tridiagonal matrix T; E(N) need not be set.\n\
+  *          On exit, E contains the subdiagonal elements of the unit\n\
+  *          bidiagonal matrices L_i. The entries E( ISPLIT( I ) ),\n\
+  *          1 <= I <= NSPLIT, contain the base points sigma_i on output.\n\
+  *\n\
+  *  E2      (input/output) REAL             array, dimension (N)\n\
+  *          On entry, the first (N-1) entries contain the SQUARES of the\n\
+  *          subdiagonal elements of the tridiagonal matrix T;\n\
+  *          E2(N) need not be set.\n\
+  *          On exit, the entries E2( ISPLIT( I ) ),\n\
+  *          1 <= I <= NSPLIT, have been set to zero\n\
+  *\n\
+  *  RTOL1   (input) REAL            \n\
+  *  RTOL2   (input) REAL            \n\
+  *           Parameters for bisection.\n\
+  *           An interval [LEFT,RIGHT] has converged if\n\
+  *           RIGHT-LEFT.LT.MAX( RTOL1*GAP, RTOL2*MAX(|LEFT|,|RIGHT|) )\n\
+  *\n\
+  *  SPLTOL (input) REAL            \n\
+  *          The threshold for splitting.\n\
+  *\n\
+  *  NSPLIT  (output) INTEGER\n\
+  *          The number of blocks T splits into. 1 <= NSPLIT <= N.\n\
+  *\n\
+  *  ISPLIT  (output) INTEGER array, dimension (N)\n\
+  *          The splitting points, at which T breaks up into blocks.\n\
+  *          The first block consists of rows/columns 1 to ISPLIT(1),\n\
+  *          the second of rows/columns ISPLIT(1)+1 through ISPLIT(2),\n\
+  *          etc., and the NSPLIT-th consists of rows/columns\n\
+  *          ISPLIT(NSPLIT-1)+1 through ISPLIT(NSPLIT)=N.\n\
+  *\n\
+  *  M       (output) INTEGER\n\
+  *          The total number of eigenvalues (of all L_i D_i L_i^T)\n\
+  *          found.\n\
+  *\n\
+  *  W       (output) REAL             array, dimension (N)\n\
+  *          The first M elements contain the eigenvalues. The\n\
+  *          eigenvalues of each of the blocks, L_i D_i L_i^T, are\n\
+  *          sorted in ascending order ( SLARRE may use the\n\
+  *          remaining N-M elements as workspace).\n\
+  *\n\
+  *  WERR    (output) REAL             array, dimension (N)\n\
+  *          The error bound on the corresponding eigenvalue in W.\n\
+  *\n\
+  *  WGAP    (output) REAL             array, dimension (N)\n\
+  *          The separation from the right neighbor eigenvalue in W.\n\
+  *          The gap is only with respect to the eigenvalues of the same block\n\
+  *          as each block has its own representation tree.\n\
+  *          Exception: at the right end of a block we store the left gap\n\
+  *\n\
+  *  IBLOCK  (output) INTEGER array, dimension (N)\n\
+  *          The indices of the blocks (submatrices) associated with the\n\
+  *          corresponding eigenvalues in W; IBLOCK(i)=1 if eigenvalue\n\
+  *          W(i) belongs to the first block from the top, =2 if W(i)\n\
+  *          belongs to the second block, etc.\n\
+  *\n\
+  *  INDEXW  (output) INTEGER array, dimension (N)\n\
+  *          The indices of the eigenvalues within each block (submatrix);\n\
+  *          for example, INDEXW(i)= 10 and IBLOCK(i)=2 imply that the\n\
+  *          i-th eigenvalue W(i) is the 10-th eigenvalue in block 2\n\
+  *\n\
+  *  GERS    (output) REAL             array, dimension (2*N)\n\
+  *          The N Gerschgorin intervals (the i-th Gerschgorin interval\n\
+  *          is (GERS(2*i-1), GERS(2*i)).\n\
+  *\n\
+  *  PIVMIN  (output) REAL\n\
+  *          The minimum pivot in the Sturm sequence for T.\n\
+  *\n\
+  *  WORK    (workspace) REAL             array, dimension (6*N)\n\
+  *          Workspace.\n\
+  *\n\
+  *  IWORK   (workspace) INTEGER array, dimension (5*N)\n\
+  *          Workspace.\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          > 0:  A problem occured in SLARRE.\n\
+  *          < 0:  One of the called subroutines signaled an internal problem.\n\
+  *                Needs inspection of the corresponding parameter IINFO\n\
+  *                for further information.\n\
+  *\n\
+  *          =-1:  Problem in SLARRD.\n\
+  *          = 2:  No base representation could be found in MAXTRY iterations.\n\
+  *                Increasing MAXTRY and recompilation might be a remedy.\n\
+  *          =-3:  Problem in SLARRB when computing the refined root\n\
+  *                representation for SLASQ2.\n\
+  *          =-4:  Problem in SLARRB when preforming bisection on the\n\
+  *                desired part of the spectrum.\n\
+  *          =-5:  Problem in SLASQ2.\n\
+  *          =-6:  Problem in SLASQ2.\n\
+  *\n\n\
+  *  Further Details\n\
+  *  The base representations are required to suffer very little\n\
+  *  element growth and consequently define all their eigenvalues to\n\
+  *  high relative accuracy.\n\
+  *  ===============\n\
+  *\n\
+  *  Based on contributions by\n\
+  *     Beresford Parlett, University of California, Berkeley, USA\n\
+  *     Jim Demmel, University of California, Berkeley, USA\n\
+  *     Inderjit Dhillon, University of Texas, Austin, USA\n\
+  *     Osni Marques, LBNL/NERSC, USA\n\
+  *     Christof Voemel, University of California, Berkeley, USA\n\
+  *\n\
+  *  =====================================================================\n\
+  *\n"

@@ -1,0 +1,85 @@
+--- 
+:name: cla_porpvgrw
+:md5sum: b6254f02ecd607ce251062879936c907
+:category: :function
+:type: real
+:arguments: 
+- uplo: 
+    :type: char
+    :intent: input
+- ncols: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- af: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - ldaf
+    - n
+- ldaf: 
+    :type: integer
+    :intent: input
+- work: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - 2*n
+:substitutions: {}
+
+:fortran_help: "      REAL FUNCTION CLA_PORPVGRW( UPLO, NCOLS, A, LDA, AF, LDAF, WORK )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  * \n\
+  *  CLA_PORPVGRW computes the reciprocal pivot growth factor\n\
+  *  norm(A)/norm(U). The \"max absolute element\" norm is used. If this is\n\
+  *  much less than 1, the stability of the LU factorization of the\n\
+  *  (equilibrated) matrix A could be poor. This also means that the\n\
+  *  solution X, estimated condition numbers, and error bounds could be\n\
+  *  unreliable.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *     UPLO    (input) CHARACTER*1\n\
+  *       = 'U':  Upper triangle of A is stored;\n\
+  *       = 'L':  Lower triangle of A is stored.\n\
+  *\n\
+  *     NCOLS   (input) INTEGER\n\
+  *     The number of columns of the matrix A. NCOLS >= 0.\n\
+  *\n\
+  *     A       (input) COMPLEX array, dimension (LDA,N)\n\
+  *     On entry, the N-by-N matrix A.\n\
+  *\n\
+  *     LDA     (input) INTEGER\n\
+  *     The leading dimension of the array A.  LDA >= max(1,N).\n\
+  *\n\
+  *     AF      (input) COMPLEX array, dimension (LDAF,N)\n\
+  *     The triangular factor U or L from the Cholesky factorization\n\
+  *     A = U**T*U or A = L*L**T, as computed by CPOTRF.\n\
+  *\n\
+  *     LDAF    (input) INTEGER\n\
+  *     The leading dimension of the array AF.  LDAF >= max(1,N).\n\
+  *\n\
+  *     WORK    (input) COMPLEX array, dimension (2*N)\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            I, J\n      REAL               AMAX, UMAX, RPVGRW\n      LOGICAL            UPPER\n      COMPLEX            ZDUM\n\
+  *     ..\n\
+  *     .. External Functions ..\n      EXTERNAL           LSAME, CLASET\n      LOGICAL            LSAME\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          ABS, MAX, MIN, REAL, AIMAG\n\
+  *     ..\n\
+  *     .. Statement Functions ..\n      REAL               CABS1\n\
+  *     ..\n\
+  *     .. Statement Function Definitions ..\n      CABS1( ZDUM ) = ABS( REAL( ZDUM ) ) + ABS( AIMAG( ZDUM ) )\n\
+  *     ..\n"

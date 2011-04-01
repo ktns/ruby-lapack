@@ -1,0 +1,89 @@
+--- 
+:name: cptts2
+:md5sum: 681017bf4848ba56ba74ad522dbff08c
+:category: :subroutine
+:arguments: 
+- iuplo: 
+    :type: integer
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- nrhs: 
+    :type: integer
+    :intent: input
+- d: 
+    :type: real
+    :intent: input
+    :dims: 
+    - n
+- e: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - n-1
+- b: 
+    :type: complex
+    :intent: input/output
+    :dims: 
+    - ldb
+    - nrhs
+- ldb: 
+    :type: integer
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE CPTTS2( IUPLO, N, NRHS, D, E, B, LDB )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  CPTTS2 solves a tridiagonal system of the form\n\
+  *     A * X = B\n\
+  *  using the factorization A = U'*D*U or A = L*D*L' computed by CPTTRF.\n\
+  *  D is a diagonal matrix specified in the vector D, U (or L) is a unit\n\
+  *  bidiagonal matrix whose superdiagonal (subdiagonal) is specified in\n\
+  *  the vector E, and X and B are N by NRHS matrices.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  IUPLO   (input) INTEGER\n\
+  *          Specifies the form of the factorization and whether the\n\
+  *          vector E is the superdiagonal of the upper bidiagonal factor\n\
+  *          U or the subdiagonal of the lower bidiagonal factor L.\n\
+  *          = 1:  A = U'*D*U, E is the superdiagonal of U\n\
+  *          = 0:  A = L*D*L', E is the subdiagonal of L\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the tridiagonal matrix A.  N >= 0.\n\
+  *\n\
+  *  NRHS    (input) INTEGER\n\
+  *          The number of right hand sides, i.e., the number of columns\n\
+  *          of the matrix B.  NRHS >= 0.\n\
+  *\n\
+  *  D       (input) REAL array, dimension (N)\n\
+  *          The n diagonal elements of the diagonal matrix D from the\n\
+  *          factorization A = U'*D*U or A = L*D*L'.\n\
+  *\n\
+  *  E       (input) COMPLEX array, dimension (N-1)\n\
+  *          If IUPLO = 1, the (n-1) superdiagonal elements of the unit\n\
+  *          bidiagonal factor U from the factorization A = U'*D*U.\n\
+  *          If IUPLO = 0, the (n-1) subdiagonal elements of the unit\n\
+  *          bidiagonal factor L from the factorization A = L*D*L'.\n\
+  *\n\
+  *  B       (input/output) REAL array, dimension (LDB,NRHS)\n\
+  *          On entry, the right hand side vectors B for the system of\n\
+  *          linear equations.\n\
+  *          On exit, the solution vectors, X.\n\
+  *\n\
+  *  LDB     (input) INTEGER\n\
+  *          The leading dimension of the array B.  LDB >= max(1,N).\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            I, J\n\
+  *     ..\n\
+  *     .. External Subroutines ..\n      EXTERNAL           CSSCAL\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          CONJG\n\
+  *     ..\n"

@@ -1,0 +1,29 @@
+--- 
+:name: ilauplo
+:md5sum: 5876dad692d4c40d99a08273d8c014f9
+:type: integer
+:arguments: 
+- uplo: 
+    :type: char
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      INTEGER FUNCTION ILAUPLO( UPLO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  This subroutine translated from a character string specifying a\n\
+  *  upper- or lower-triangular matrix to the relevant BLAST-specified\n\
+  *  integer constant.\n\
+  *\n\
+  *  ILAUPLO returns an INTEGER.  If ILAUPLO < 0, then the input is not\n\
+  *  a character indicating an upper- or lower-triangular matrix.\n\
+  *  Otherwise ILAUPLO returns the constant value corresponding to UPLO.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *  UPLO    (input) CHARACTER\n\
+  *          = 'U':  A is upper triangular;\n\
+  *          = 'L':  A is lower triangular.\n\n\
+  *  =====================================================================\n\
+  *\n"

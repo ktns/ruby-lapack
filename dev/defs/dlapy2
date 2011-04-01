@@ -1,0 +1,29 @@
+--- 
+:name: dlapy2
+:md5sum: b3aaae9d309eec4c8fefd63e3e59e662
+:type: doublereal
+:arguments: 
+- x: 
+    :type: doublereal
+    :intent: input
+- y: 
+    :type: doublereal
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      DOUBLE PRECISION FUNCTION DLAPY2( X, Y )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DLAPY2 returns sqrt(x**2+y**2), taking care not to cause unnecessary\n\
+  *  overflow.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  X       (input) DOUBLE PRECISION\n\
+  *  Y       (input) DOUBLE PRECISION\n\
+  *          X and Y specify the values x and y.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

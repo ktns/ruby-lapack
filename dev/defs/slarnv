@@ -1,0 +1,61 @@
+--- 
+:name: slarnv
+:md5sum: ec519a2c67aad07cda6a6014d8db7bf2
+:category: :subroutine
+:arguments: 
+- idist: 
+    :type: integer
+    :intent: input
+- iseed: 
+    :type: integer
+    :intent: input/output
+    :dims: 
+    - "4"
+- n: 
+    :type: integer
+    :intent: input
+- x: 
+    :type: real
+    :intent: output
+    :dims: 
+    - MAX(1,n)
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE SLARNV( IDIST, ISEED, N, X )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  SLARNV returns a vector of n random real numbers from a uniform or\n\
+  *  normal distribution.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  IDIST   (input) INTEGER\n\
+  *          Specifies the distribution of the random numbers:\n\
+  *          = 1:  uniform (0,1)\n\
+  *          = 2:  uniform (-1,1)\n\
+  *          = 3:  normal (0,1)\n\
+  *\n\
+  *  ISEED   (input/output) INTEGER array, dimension (4)\n\
+  *          On entry, the seed of the random number generator; the array\n\
+  *          elements must be between 0 and 4095, and ISEED(4) must be\n\
+  *          odd.\n\
+  *          On exit, the seed is updated.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of random numbers to be generated.\n\
+  *\n\
+  *  X       (output) REAL array, dimension (N)\n\
+  *          The generated random numbers.\n\
+  *\n\n\
+  *  Further Details\n\
+  *  ===============\n\
+  *\n\
+  *  This routine calls the auxiliary routine SLARUV to generate random\n\
+  *  real numbers from a uniform (0,1) distribution, in batches of up to\n\
+  *  128 using vectorisable code. The Box-Muller method is used to\n\
+  *  transform numbers from a uniform to a normal distribution.\n\
+  *\n\
+  *  =====================================================================\n\
+  *\n"

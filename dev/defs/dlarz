@@ -1,0 +1,109 @@
+--- 
+:name: dlarz
+:md5sum: 61bd58498447c9dba40be54132c17b25
+:category: :subroutine
+:arguments: 
+- side: 
+    :type: char
+    :intent: input
+- m: 
+    :type: integer
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- l: 
+    :type: integer
+    :intent: input
+- v: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - 1+(l-1)*abs(incv)
+- incv: 
+    :type: integer
+    :intent: input
+- tau: 
+    :type: doublereal
+    :intent: input
+- c: 
+    :type: doublereal
+    :intent: input/output
+    :dims: 
+    - ldc
+    - n
+- ldc: 
+    :type: integer
+    :intent: input
+- work: 
+    :type: doublereal
+    :intent: workspace
+    :dims: 
+    - "lsame_(&side,\"L\") ? n : lsame_(&side,\"R\") ? m : 0"
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE DLARZ( SIDE, M, N, L, V, INCV, TAU, C, LDC, WORK )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DLARZ applies a real elementary reflector H to a real M-by-N\n\
+  *  matrix C, from either the left or the right. H is represented in the\n\
+  *  form\n\
+  *\n\
+  *        H = I - tau * v * v'\n\
+  *\n\
+  *  where tau is a real scalar and v is a real vector.\n\
+  *\n\
+  *  If tau = 0, then H is taken to be the unit matrix.\n\
+  *\n\
+  *\n\
+  *  H is a product of k elementary reflectors as returned by DTZRZF.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  SIDE    (input) CHARACTER*1\n\
+  *          = 'L': form  H * C\n\
+  *          = 'R': form  C * H\n\
+  *\n\
+  *  M       (input) INTEGER\n\
+  *          The number of rows of the matrix C.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of columns of the matrix C.\n\
+  *\n\
+  *  L       (input) INTEGER\n\
+  *          The number of entries of the vector V containing\n\
+  *          the meaningful part of the Householder vectors.\n\
+  *          If SIDE = 'L', M >= L >= 0, if SIDE = 'R', N >= L >= 0.\n\
+  *\n\
+  *  V       (input) DOUBLE PRECISION array, dimension (1+(L-1)*abs(INCV))\n\
+  *          The vector v in the representation of H as returned by\n\
+  *          DTZRZF. V is not used if TAU = 0.\n\
+  *\n\
+  *  INCV    (input) INTEGER\n\
+  *          The increment between elements of v. INCV <> 0.\n\
+  *\n\
+  *  TAU     (input) DOUBLE PRECISION\n\
+  *          The value tau in the representation of H.\n\
+  *\n\
+  *  C       (input/output) DOUBLE PRECISION array, dimension (LDC,N)\n\
+  *          On entry, the M-by-N matrix C.\n\
+  *          On exit, C is overwritten by the matrix H * C if SIDE = 'L',\n\
+  *          or C * H if SIDE = 'R'.\n\
+  *\n\
+  *  LDC     (input) INTEGER\n\
+  *          The leading dimension of the array C. LDC >= max(1,M).\n\
+  *\n\
+  *  WORK    (workspace) DOUBLE PRECISION array, dimension\n\
+  *                         (N) if SIDE = 'L'\n\
+  *                      or (M) if SIDE = 'R'\n\
+  *\n\n\
+  *  Further Details\n\
+  *  ===============\n\
+  *\n\
+  *  Based on contributions by\n\
+  *    A. Petitet, Computer Science Dept., Univ. of Tenn., Knoxville, USA\n\
+  *\n\
+  *  =====================================================================\n\
+  *\n"

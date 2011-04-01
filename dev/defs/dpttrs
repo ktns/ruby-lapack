@@ -1,0 +1,88 @@
+--- 
+:name: dpttrs
+:md5sum: 4df62154d25e780b1accac29911e5aef
+:category: :subroutine
+:arguments: 
+- n: 
+    :type: integer
+    :intent: input
+- nrhs: 
+    :type: integer
+    :intent: input
+- d: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - n
+- e: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - n-1
+- b: 
+    :type: doublereal
+    :intent: input/output
+    :dims: 
+    - ldb
+    - nrhs
+- ldb: 
+    :type: integer
+    :intent: input
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE DPTTRS( N, NRHS, D, E, B, LDB, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DPTTRS solves a tridiagonal system of the form\n\
+  *     A * X = B\n\
+  *  using the L*D*L' factorization of A computed by DPTTRF.  D is a\n\
+  *  diagonal matrix specified in the vector D, L is a unit bidiagonal\n\
+  *  matrix whose subdiagonal is specified in the vector E, and X and B\n\
+  *  are N by NRHS matrices.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the tridiagonal matrix A.  N >= 0.\n\
+  *\n\
+  *  NRHS    (input) INTEGER\n\
+  *          The number of right hand sides, i.e., the number of columns\n\
+  *          of the matrix B.  NRHS >= 0.\n\
+  *\n\
+  *  D       (input) DOUBLE PRECISION array, dimension (N)\n\
+  *          The n diagonal elements of the diagonal matrix D from the\n\
+  *          L*D*L' factorization of A.\n\
+  *\n\
+  *  E       (input) DOUBLE PRECISION array, dimension (N-1)\n\
+  *          The (n-1) subdiagonal elements of the unit bidiagonal factor\n\
+  *          L from the L*D*L' factorization of A.  E can also be regarded\n\
+  *          as the superdiagonal of the unit bidiagonal factor U from the\n\
+  *          factorization A = U'*D*U.\n\
+  *\n\
+  *  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)\n\
+  *          On entry, the right hand side vectors B for the system of\n\
+  *          linear equations.\n\
+  *          On exit, the solution vectors, X.\n\
+  *\n\
+  *  LDB     (input) INTEGER\n\
+  *          The leading dimension of the array B.  LDB >= max(1,N).\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0: successful exit\n\
+  *          < 0: if INFO = -k, the k-th argument had an illegal value\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            J, JB, NB\n\
+  *     ..\n\
+  *     .. External Functions ..\n      INTEGER            ILAENV\n      EXTERNAL           ILAENV\n\
+  *     ..\n\
+  *     .. External Subroutines ..\n      EXTERNAL           DPTTS2, XERBLA\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          MAX, MIN\n\
+  *     ..\n"

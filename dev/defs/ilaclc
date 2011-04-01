@@ -1,0 +1,45 @@
+--- 
+:name: ilaclc
+:md5sum: 40eb72bf94adf85b58d07bf4f02e8461
+:type: integer
+:arguments: 
+- m: 
+    :type: integer
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      INTEGER FUNCTION ILACLC( M, N, A, LDA )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  ILACLC scans A for its last non-zero column.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  M       (input) INTEGER\n\
+  *          The number of rows of the matrix A.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of columns of the matrix A.\n\
+  *\n\
+  *  A       (input) COMPLEX array, dimension (LDA,N)\n\
+  *          The m by n matrix A.\n\
+  *\n\
+  *  LDA     (input) INTEGER\n\
+  *          The leading dimension of the array A. LDA >= max(1,M).\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

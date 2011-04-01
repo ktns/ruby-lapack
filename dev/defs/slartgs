@@ -1,0 +1,57 @@
+--- 
+:name: slartgs
+:md5sum: b94e35bda8fd48cd94048c69f1af78f8
+:category: :subroutine
+:arguments: 
+- x: 
+    :type: real
+    :intent: input
+- y: 
+    :type: real
+    :intent: input
+- sigma: 
+    :type: real
+    :intent: input
+- cs: 
+    :type: real
+    :intent: output
+- sn: 
+    :type: real
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE SLARTGS( X, Y, SIGMA, CS, SN )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  SLARTGS generates a plane rotation designed to introduce a bulge in\n\
+  *  Golub-Reinsch-style implicit QR iteration for the bidiagonal SVD\n\
+  *  problem. X and Y are the top-row entries, and SIGMA is the shift.\n\
+  *  The computed CS and SN define a plane rotation satisfying\n\
+  *\n\
+  *     [  CS  SN  ]  .  [ X^2 - SIGMA ]  =  [ R ],\n\
+  *     [ -SN  CS  ]     [    X * Y    ]     [ 0 ]\n\
+  *\n\
+  *  with R nonnegative.  If X^2 - SIGMA and X * Y are 0, then the\n\
+  *  rotation is by PI/2.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  X       (input) REAL\n\
+  *          The (1,1) entry of an upper bidiagonal matrix.\n\
+  *\n\
+  *  Y       (input) REAL\n\
+  *          The (1,2) entry of an upper bidiagonal matrix.\n\
+  *\n\
+  *  SIGMA   (input) REAL\n\
+  *          The shift.\n\
+  *\n\
+  *  CS      (output) REAL\n\
+  *          The cosine of the rotation.\n\
+  *\n\
+  *  SN      (output) REAL\n\
+  *          The sine of the rotation.\n\
+  *\n\n\
+  *  ===================================================================\n\
+  *\n"

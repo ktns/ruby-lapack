@@ -1,0 +1,167 @@
+--- 
+:name: dlaed3
+:md5sum: 43bf65fad7f2277e7f8939b3c02e35ac
+:category: :subroutine
+:arguments: 
+- k: 
+    :type: integer
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- n1: 
+    :type: integer
+    :intent: input
+- d: 
+    :type: doublereal
+    :intent: output
+    :dims: 
+    - n
+- q: 
+    :type: doublereal
+    :intent: output
+    :dims: 
+    - ldq
+    - n
+- ldq: 
+    :type: integer
+    :intent: input
+- rho: 
+    :type: doublereal
+    :intent: input
+- dlamda: 
+    :type: doublereal
+    :intent: input/output
+    :dims: 
+    - k
+- q2: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - n
+    - n
+- indx: 
+    :type: integer
+    :intent: input
+    :dims: 
+    - n
+- ctot: 
+    :type: integer
+    :intent: input
+    :dims: 
+    - "4"
+- w: 
+    :type: doublereal
+    :intent: input/output
+    :dims: 
+    - k
+- s: 
+    :type: doublereal
+    :intent: workspace
+    :dims: 
+    - MAX(1,k)
+    - (n1 + 1)
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: 
+  ldq: MAX(1,n)
+:fortran_help: "      SUBROUTINE DLAED3( K, N, N1, D, Q, LDQ, RHO, DLAMDA, Q2, INDX, CTOT, W, S, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DLAED3 finds the roots of the secular equation, as defined by the\n\
+  *  values in D, W, and RHO, between 1 and K.  It makes the\n\
+  *  appropriate calls to DLAED4 and then updates the eigenvectors by\n\
+  *  multiplying the matrix of eigenvectors of the pair of eigensystems\n\
+  *  being combined by the matrix of eigenvectors of the K-by-K system\n\
+  *  which is solved here.\n\
+  *\n\
+  *  This code makes very mild assumptions about floating point\n\
+  *  arithmetic. It will work on machines with a guard digit in\n\
+  *  add/subtract, or on those binary machines without guard digits\n\
+  *  which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or Cray-2.\n\
+  *  It could conceivably fail on hexadecimal or decimal machines\n\
+  *  without guard digits, but we know of none.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  K       (input) INTEGER\n\
+  *          The number of terms in the rational function to be solved by\n\
+  *          DLAED4.  K >= 0.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of rows and columns in the Q matrix.\n\
+  *          N >= K (deflation may result in N>K).\n\
+  *\n\
+  *  N1      (input) INTEGER\n\
+  *          The location of the last eigenvalue in the leading submatrix.\n\
+  *          min(1,N) <= N1 <= N/2.\n\
+  *\n\
+  *  D       (output) DOUBLE PRECISION array, dimension (N)\n\
+  *          D(I) contains the updated eigenvalues for\n\
+  *          1 <= I <= K.\n\
+  *\n\
+  *  Q       (output) DOUBLE PRECISION array, dimension (LDQ,N)\n\
+  *          Initially the first K columns are used as workspace.\n\
+  *          On output the columns 1 to K contain\n\
+  *          the updated eigenvectors.\n\
+  *\n\
+  *  LDQ     (input) INTEGER\n\
+  *          The leading dimension of the array Q.  LDQ >= max(1,N).\n\
+  *\n\
+  *  RHO     (input) DOUBLE PRECISION\n\
+  *          The value of the parameter in the rank one update equation.\n\
+  *          RHO >= 0 required.\n\
+  *\n\
+  *  DLAMDA  (input/output) DOUBLE PRECISION array, dimension (K)\n\
+  *          The first K elements of this array contain the old roots\n\
+  *          of the deflated updating problem.  These are the poles\n\
+  *          of the secular equation. May be changed on output by\n\
+  *          having lowest order bit set to zero on Cray X-MP, Cray Y-MP,\n\
+  *          Cray-2, or Cray C-90, as described above.\n\
+  *\n\
+  *  Q2      (input) DOUBLE PRECISION array, dimension (LDQ2, N)\n\
+  *          The first K columns of this matrix contain the non-deflated\n\
+  *          eigenvectors for the split problem.\n\
+  *\n\
+  *  INDX    (input) INTEGER array, dimension (N)\n\
+  *          The permutation used to arrange the columns of the deflated\n\
+  *          Q matrix into three groups (see DLAED2).\n\
+  *          The rows of the eigenvectors found by DLAED4 must be likewise\n\
+  *          permuted before the matrix multiply can take place.\n\
+  *\n\
+  *  CTOT    (input) INTEGER array, dimension (4)\n\
+  *          A count of the total number of the various types of columns\n\
+  *          in Q, as described in INDX.  The fourth column type is any\n\
+  *          column which has been deflated.\n\
+  *\n\
+  *  W       (input/output) DOUBLE PRECISION array, dimension (K)\n\
+  *          The first K elements of this array contain the components\n\
+  *          of the deflation-adjusted updating vector. Destroyed on\n\
+  *          output.\n\
+  *\n\
+  *  S       (workspace) DOUBLE PRECISION array, dimension (N1 + 1)*K\n\
+  *          Will contain the eigenvectors of the repaired matrix which\n\
+  *          will be multiplied by the previously accumulated eigenvectors\n\
+  *          to update the system.\n\
+  *\n\
+  *  LDS     (input) INTEGER\n\
+  *          The leading dimension of S.  LDS >= max(1,K).\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit.\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value.\n\
+  *          > 0:  if INFO = 1, an eigenvalue did not converge\n\
+  *\n\n\
+  *  Further Details\n\
+  *  ===============\n\
+  *\n\
+  *  Based on contributions by\n\
+  *     Jeff Rutter, Computer Science Division, University of California\n\
+  *     at Berkeley, USA\n\
+  *  Modified by Francoise Tisseur, University of Tennessee.\n\
+  *\n\
+  *  =====================================================================\n\
+  *\n"

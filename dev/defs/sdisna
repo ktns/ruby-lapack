@@ -1,0 +1,84 @@
+--- 
+:name: sdisna
+:md5sum: eacdd5bc759975817056bcf26a816e55
+:category: :subroutine
+:arguments: 
+- job: 
+    :type: char
+    :intent: input
+- m: 
+    :type: integer
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- d: 
+    :type: real
+    :intent: input
+    :dims: 
+    - m
+- sep: 
+    :type: real
+    :intent: output
+    :dims: 
+    - "lsame_(&job,\"E\") ? m : ((lsame_(&job,\"L\")) || (lsame_(&job,\"R\"))) ? MIN(m,n) : 0"
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE SDISNA( JOB, M, N, D, SEP, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  SDISNA computes the reciprocal condition numbers for the eigenvectors\n\
+  *  of a real symmetric or complex Hermitian matrix or for the left or\n\
+  *  right singular vectors of a general m-by-n matrix. The reciprocal\n\
+  *  condition number is the 'gap' between the corresponding eigenvalue or\n\
+  *  singular value and the nearest other one.\n\
+  *\n\
+  *  The bound on the error, measured by angle in radians, in the I-th\n\
+  *  computed vector is given by\n\
+  *\n\
+  *         SLAMCH( 'E' ) * ( ANORM / SEP( I ) )\n\
+  *\n\
+  *  where ANORM = 2-norm(A) = max( abs( D(j) ) ).  SEP(I) is not allowed\n\
+  *  to be smaller than SLAMCH( 'E' )*ANORM in order to limit the size of\n\
+  *  the error bound.\n\
+  *\n\
+  *  SDISNA may also be used to compute error bounds for eigenvectors of\n\
+  *  the generalized symmetric definite eigenproblem.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  JOB     (input) CHARACTER*1\n\
+  *          Specifies for which problem the reciprocal condition numbers\n\
+  *          should be computed:\n\
+  *          = 'E':  the eigenvectors of a symmetric/Hermitian matrix;\n\
+  *          = 'L':  the left singular vectors of a general matrix;\n\
+  *          = 'R':  the right singular vectors of a general matrix.\n\
+  *\n\
+  *  M       (input) INTEGER\n\
+  *          The number of rows of the matrix. M >= 0.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          If JOB = 'L' or 'R', the number of columns of the matrix,\n\
+  *          in which case N >= 0. Ignored if JOB = 'E'.\n\
+  *\n\
+  *  D       (input) REAL array, dimension (M) if JOB = 'E'\n\
+  *                              dimension (min(M,N)) if JOB = 'L' or 'R'\n\
+  *          The eigenvalues (if JOB = 'E') or singular values (if JOB =\n\
+  *          'L' or 'R') of the matrix, in either increasing or decreasing\n\
+  *          order. If singular values, they must be non-negative.\n\
+  *\n\
+  *  SEP     (output) REAL array, dimension (M) if JOB = 'E'\n\
+  *                               dimension (min(M,N)) if JOB = 'L' or 'R'\n\
+  *          The reciprocal condition numbers of the vectors.\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit.\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

@@ -1,0 +1,34 @@
+--- 
+:name: slapy3
+:md5sum: d5b21d912addf1cf62c52c3a9cc2e387
+:category: :function
+:type: real
+:arguments: 
+- x: 
+    :type: real
+    :intent: input
+- y: 
+    :type: real
+    :intent: input
+- z: 
+    :type: real
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      REAL             FUNCTION SLAPY3( X, Y, Z )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  SLAPY3 returns sqrt(x**2+y**2+z**2), taking care not to cause\n\
+  *  unnecessary overflow.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  X       (input) REAL\n\
+  *  Y       (input) REAL\n\
+  *  Z       (input) REAL\n\
+  *          X, Y and Z specify the values x, y and z.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

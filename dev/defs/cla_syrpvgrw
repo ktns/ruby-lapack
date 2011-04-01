@@ -1,0 +1,105 @@
+--- 
+:name: cla_syrpvgrw
+:md5sum: e96ba2f50c224c0fa1b51d9376552070
+:category: :function
+:type: real
+:arguments: 
+- uplo: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- info: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- af: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - ldaf
+    - n
+- ldaf: 
+    :type: integer
+    :intent: input
+- ipiv: 
+    :type: integer
+    :intent: input
+    :dims: 
+    - n
+- work: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - 2*n
+:substitutions: {}
+
+:fortran_help: "      REAL FUNCTION CLA_SYRPVGRW( UPLO, N, INFO, A, LDA, AF, LDAF, IPIV, WORK )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  * \n\
+  *  CLA_SYRPVGRW computes the reciprocal pivot growth factor\n\
+  *  norm(A)/norm(U). The \"max absolute element\" norm is used. If this is\n\
+  *  much less than 1, the stability of the LU factorization of the\n\
+  *  (equilibrated) matrix A could be poor. This also means that the\n\
+  *  solution X, estimated condition numbers, and error bounds could be\n\
+  *  unreliable.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *     UPLO    (input) CHARACTER*1\n\
+  *       = 'U':  Upper triangle of A is stored;\n\
+  *       = 'L':  Lower triangle of A is stored.\n\
+  *\n\
+  *     N       (input) INTEGER\n\
+  *     The number of linear equations, i.e., the order of the\n\
+  *     matrix A.  N >= 0.\n\
+  *\n\
+  *     INFO    (input) INTEGER\n\
+  *     The value of INFO returned from CSYTRF, .i.e., the pivot in\n\
+  *     column INFO is exactly 0.\n\
+  *\n\
+  *     NCOLS   (input) INTEGER\n\
+  *     The number of columns of the matrix A. NCOLS >= 0.\n\
+  *\n\
+  *     A       (input) COMPLEX array, dimension (LDA,N)\n\
+  *     On entry, the N-by-N matrix A.\n\
+  *\n\
+  *     LDA     (input) INTEGER\n\
+  *     The leading dimension of the array A.  LDA >= max(1,N).\n\
+  *\n\
+  *     AF      (input) COMPLEX array, dimension (LDAF,N)\n\
+  *     The block diagonal matrix D and the multipliers used to\n\
+  *     obtain the factor U or L as computed by CSYTRF.\n\
+  *\n\
+  *     LDAF    (input) INTEGER\n\
+  *     The leading dimension of the array AF.  LDAF >= max(1,N).\n\
+  *\n\
+  *     IPIV    (input) INTEGER array, dimension (N)\n\
+  *     Details of the interchanges and the block structure of D\n\
+  *     as determined by CSYTRF.\n\
+  *\n\
+  *     WORK    (input) COMPLEX array, dimension (2*N)\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            NCOLS, I, J, K, KP\n      REAL               AMAX, UMAX, RPVGRW, TMP\n      LOGICAL            UPPER\n      COMPLEX            ZDUM\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          ABS, REAL, AIMAG, MAX, MIN\n\
+  *     ..\n\
+  *     .. External Subroutines ..\n      EXTERNAL           LSAME, CLASET\n      LOGICAL            LSAME\n\
+  *     ..\n\
+  *     .. Statement Functions ..\n      REAL               CABS1\n\
+  *     ..\n\
+  *     .. Statement Function Definitions ..\n      CABS1( ZDUM ) = ABS( REAL ( ZDUM ) ) + ABS( AIMAG ( ZDUM ) )\n\
+  *     ..\n"

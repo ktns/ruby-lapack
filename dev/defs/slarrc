@@ -1,0 +1,99 @@
+--- 
+:name: slarrc
+:md5sum: 4fc70568a595ea2437abc06e26daf307
+:category: :subroutine
+:arguments: 
+- jobt: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- vl: 
+    :type: real
+    :intent: input
+- vu: 
+    :type: real
+    :intent: input
+- d: 
+    :type: real
+    :intent: input
+    :dims: 
+    - n
+- e: 
+    :type: real
+    :intent: input
+    :dims: 
+    - n
+- pivmin: 
+    :type: real
+    :intent: input
+- eigcnt: 
+    :type: integer
+    :intent: output
+- lcnt: 
+    :type: integer
+    :intent: output
+- rcnt: 
+    :type: integer
+    :intent: output
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE SLARRC( JOBT, N, VL, VU, D, E, PIVMIN, EIGCNT, LCNT, RCNT, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  Find the number of eigenvalues of the symmetric tridiagonal matrix T\n\
+  *  that are in the interval (VL,VU] if JOBT = 'T', and of L D L^T\n\
+  *  if JOBT = 'L'.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  JOBT    (input) CHARACTER*1\n\
+  *          = 'T':  Compute Sturm count for matrix T.\n\
+  *          = 'L':  Compute Sturm count for matrix L D L^T.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix. N > 0.\n\
+  *\n\
+  *  VL      (input) DOUBLE PRECISION\n\
+  *  VU      (input) DOUBLE PRECISION\n\
+  *          The lower and upper bounds for the eigenvalues.\n\
+  *\n\
+  *  D       (input) DOUBLE PRECISION array, dimension (N)\n\
+  *          JOBT = 'T': The N diagonal elements of the tridiagonal matrix T.\n\
+  *          JOBT = 'L': The N diagonal elements of the diagonal matrix D.\n\
+  *\n\
+  *  E       (input) DOUBLE PRECISION array, dimension (N)\n\
+  *          JOBT = 'T': The N-1 offdiagonal elements of the matrix T.\n\
+  *          JOBT = 'L': The N-1 offdiagonal elements of the matrix L.\n\
+  *\n\
+  *  PIVMIN  (input) REAL\n\
+  *          The minimum pivot in the Sturm sequence for T.\n\
+  *\n\
+  *  EIGCNT  (output) INTEGER\n\
+  *          The number of eigenvalues of the symmetric tridiagonal matrix T\n\
+  *          that are in the interval (VL,VU]\n\
+  *\n\
+  *  LCNT    (output) INTEGER\n\
+  *  RCNT    (output) INTEGER\n\
+  *          The left and right negcounts of the interval.\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *\n\n\
+  *  Further Details\n\
+  *  ===============\n\
+  *\n\
+  *  Based on contributions by\n\
+  *     Beresford Parlett, University of California, Berkeley, USA\n\
+  *     Jim Demmel, University of California, Berkeley, USA\n\
+  *     Inderjit Dhillon, University of Texas, Austin, USA\n\
+  *     Osni Marques, LBNL/NERSC, USA\n\
+  *     Christof Voemel, University of California, Berkeley, USA\n\
+  *\n\
+  *  =====================================================================\n\
+  *\n"

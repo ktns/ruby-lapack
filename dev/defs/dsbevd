@@ -1,0 +1,165 @@
+--- 
+:name: dsbevd
+:md5sum: f4311645f4dac4d301b46deb5fdcd849
+:category: :subroutine
+:arguments: 
+- jobz: 
+    :type: char
+    :intent: input
+- uplo: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- kd: 
+    :type: integer
+    :intent: input
+- ab: 
+    :type: doublereal
+    :intent: input/output
+    :dims: 
+    - ldab
+    - n
+- ldab: 
+    :type: integer
+    :intent: input
+- w: 
+    :type: doublereal
+    :intent: output
+    :dims: 
+    - n
+- z: 
+    :type: doublereal
+    :intent: output
+    :dims: 
+    - ldz
+    - n
+- ldz: 
+    :type: integer
+    :intent: input
+- work: 
+    :type: doublereal
+    :intent: output
+    :dims: 
+    - MAX(1,lwork)
+- lwork: 
+    :type: integer
+    :intent: input
+- iwork: 
+    :type: integer
+    :intent: output
+    :dims: 
+    - MAX(1,liwork)
+- liwork: 
+    :type: integer
+    :intent: input
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: 
+  ldz: "lsame_(&jobz,\"V\") ? MAX(1,n) : 1"
+:fortran_help: "      SUBROUTINE DSBEVD( JOBZ, UPLO, N, KD, AB, LDAB, W, Z, LDZ, WORK, LWORK, IWORK, LIWORK, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DSBEVD computes all the eigenvalues and, optionally, eigenvectors of\n\
+  *  a real symmetric band matrix A. If eigenvectors are desired, it uses\n\
+  *  a divide and conquer algorithm.\n\
+  *\n\
+  *  The divide and conquer algorithm makes very mild assumptions about\n\
+  *  floating point arithmetic. It will work on machines with a guard\n\
+  *  digit in add/subtract, or on those binary machines without guard\n\
+  *  digits which subtract like the Cray X-MP, Cray Y-MP, Cray C-90, or\n\
+  *  Cray-2. It could conceivably fail on hexadecimal or decimal machines\n\
+  *  without guard digits, but we know of none.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  JOBZ    (input) CHARACTER*1\n\
+  *          = 'N':  Compute eigenvalues only;\n\
+  *          = 'V':  Compute eigenvalues and eigenvectors.\n\
+  *\n\
+  *  UPLO    (input) CHARACTER*1\n\
+  *          = 'U':  Upper triangle of A is stored;\n\
+  *          = 'L':  Lower triangle of A is stored.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix A.  N >= 0.\n\
+  *\n\
+  *  KD      (input) INTEGER\n\
+  *          The number of superdiagonals of the matrix A if UPLO = 'U',\n\
+  *          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.\n\
+  *\n\
+  *  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB, N)\n\
+  *          On entry, the upper or lower triangle of the symmetric band\n\
+  *          matrix A, stored in the first KD+1 rows of the array.  The\n\
+  *          j-th column of A is stored in the j-th column of the array AB\n\
+  *          as follows:\n\
+  *          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;\n\
+  *          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).\n\
+  *\n\
+  *          On exit, AB is overwritten by values generated during the\n\
+  *          reduction to tridiagonal form.  If UPLO = 'U', the first\n\
+  *          superdiagonal and the diagonal of the tridiagonal matrix T\n\
+  *          are returned in rows KD and KD+1 of AB, and if UPLO = 'L',\n\
+  *          the diagonal and first subdiagonal of T are returned in the\n\
+  *          first two rows of AB.\n\
+  *\n\
+  *  LDAB    (input) INTEGER\n\
+  *          The leading dimension of the array AB.  LDAB >= KD + 1.\n\
+  *\n\
+  *  W       (output) DOUBLE PRECISION array, dimension (N)\n\
+  *          If INFO = 0, the eigenvalues in ascending order.\n\
+  *\n\
+  *  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)\n\
+  *          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal\n\
+  *          eigenvectors of the matrix A, with the i-th column of Z\n\
+  *          holding the eigenvector associated with W(i).\n\
+  *          If JOBZ = 'N', then Z is not referenced.\n\
+  *\n\
+  *  LDZ     (input) INTEGER\n\
+  *          The leading dimension of the array Z.  LDZ >= 1, and if\n\
+  *          JOBZ = 'V', LDZ >= max(1,N).\n\
+  *\n\
+  *  WORK    (workspace/output) DOUBLE PRECISION array,\n\
+  *                                         dimension (LWORK)\n\
+  *          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.\n\
+  *\n\
+  *  LWORK   (input) INTEGER\n\
+  *          The dimension of the array WORK.\n\
+  *          IF N <= 1,                LWORK must be at least 1.\n\
+  *          If JOBZ  = 'N' and N > 2, LWORK must be at least 2*N.\n\
+  *          If JOBZ  = 'V' and N > 2, LWORK must be at least\n\
+  *                         ( 1 + 5*N + 2*N**2 ).\n\
+  *\n\
+  *          If LWORK = -1, then a workspace query is assumed; the routine\n\
+  *          only calculates the optimal sizes of the WORK and IWORK\n\
+  *          arrays, returns these values as the first entries of the WORK\n\
+  *          and IWORK arrays, and no error message related to LWORK or\n\
+  *          LIWORK is issued by XERBLA.\n\
+  *\n\
+  *  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))\n\
+  *          On exit, if INFO = 0, IWORK(1) returns the optimal LIWORK.\n\
+  *\n\
+  *  LIWORK  (input) INTEGER\n\
+  *          The dimension of the array LIWORK.\n\
+  *          If JOBZ  = 'N' or N <= 1, LIWORK must be at least 1.\n\
+  *          If JOBZ  = 'V' and N > 2, LIWORK must be at least 3 + 5*N.\n\
+  *\n\
+  *          If LIWORK = -1, then a workspace query is assumed; the\n\
+  *          routine only calculates the optimal sizes of the WORK and\n\
+  *          IWORK arrays, returns these values as the first entries of\n\
+  *          the WORK and IWORK arrays, and no error message related to\n\
+  *          LWORK or LIWORK is issued by XERBLA.\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value\n\
+  *          > 0:  if INFO = i, the algorithm failed to converge; i\n\
+  *                off-diagonal elements of an intermediate tridiagonal\n\
+  *                form did not converge to zero.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n"

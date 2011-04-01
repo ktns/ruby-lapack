@@ -1,0 +1,131 @@
+--- 
+:name: dlatdf
+:md5sum: 69cfce3953f1837f451afd56bf000e43
+:category: :subroutine
+:arguments: 
+- ijob: 
+    :type: integer
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- z: 
+    :type: doublereal
+    :intent: input
+    :dims: 
+    - ldz
+    - n
+- ldz: 
+    :type: integer
+    :intent: input
+- rhs: 
+    :type: doublereal
+    :intent: input/output
+    :dims: 
+    - n
+- rdsum: 
+    :type: doublereal
+    :intent: input/output
+- rdscal: 
+    :type: doublereal
+    :intent: input/output
+- ipiv: 
+    :type: integer
+    :intent: input
+    :dims: 
+    - n
+- jpiv: 
+    :type: integer
+    :intent: input
+    :dims: 
+    - n
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE DLATDF( IJOB, N, Z, LDZ, RHS, RDSUM, RDSCAL, IPIV, JPIV )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DLATDF uses the LU factorization of the n-by-n matrix Z computed by\n\
+  *  DGETC2 and computes a contribution to the reciprocal Dif-estimate\n\
+  *  by solving Z * x = b for x, and choosing the r.h.s. b such that\n\
+  *  the norm of x is as large as possible. On entry RHS = b holds the\n\
+  *  contribution from earlier solved sub-systems, and on return RHS = x.\n\
+  *\n\
+  *  The factorization of Z returned by DGETC2 has the form Z = P*L*U*Q,\n\
+  *  where P and Q are permutation matrices. L is lower triangular with\n\
+  *  unit diagonal elements and U is upper triangular.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  IJOB    (input) INTEGER\n\
+  *          IJOB = 2: First compute an approximative null-vector e\n\
+  *              of Z using DGECON, e is normalized and solve for\n\
+  *              Zx = +-e - f with the sign giving the greater value\n\
+  *              of 2-norm(x). About 5 times as expensive as Default.\n\
+  *          IJOB .ne. 2: Local look ahead strategy where all entries of\n\
+  *              the r.h.s. b is choosen as either +1 or -1 (Default).\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The number of columns of the matrix Z.\n\
+  *\n\
+  *  Z       (input) DOUBLE PRECISION array, dimension (LDZ, N)\n\
+  *          On entry, the LU part of the factorization of the n-by-n\n\
+  *          matrix Z computed by DGETC2:  Z = P * L * U * Q\n\
+  *\n\
+  *  LDZ     (input) INTEGER\n\
+  *          The leading dimension of the array Z.  LDA >= max(1, N).\n\
+  *\n\
+  *  RHS     (input/output) DOUBLE PRECISION array, dimension (N)\n\
+  *          On entry, RHS contains contributions from other subsystems.\n\
+  *          On exit, RHS contains the solution of the subsystem with\n\
+  *          entries acoording to the value of IJOB (see above).\n\
+  *\n\
+  *  RDSUM   (input/output) DOUBLE PRECISION\n\
+  *          On entry, the sum of squares of computed contributions to\n\
+  *          the Dif-estimate under computation by DTGSYL, where the\n\
+  *          scaling factor RDSCAL (see below) has been factored out.\n\
+  *          On exit, the corresponding sum of squares updated with the\n\
+  *          contributions from the current sub-system.\n\
+  *          If TRANS = 'T' RDSUM is not touched.\n\
+  *          NOTE: RDSUM only makes sense when DTGSY2 is called by STGSYL.\n\
+  *\n\
+  *  RDSCAL  (input/output) DOUBLE PRECISION\n\
+  *          On entry, scaling factor used to prevent overflow in RDSUM.\n\
+  *          On exit, RDSCAL is updated w.r.t. the current contributions\n\
+  *          in RDSUM.\n\
+  *          If TRANS = 'T', RDSCAL is not touched.\n\
+  *          NOTE: RDSCAL only makes sense when DTGSY2 is called by\n\
+  *                DTGSYL.\n\
+  *\n\
+  *  IPIV    (input) INTEGER array, dimension (N).\n\
+  *          The pivot indices; for 1 <= i <= N, row i of the\n\
+  *          matrix has been interchanged with row IPIV(i).\n\
+  *\n\
+  *  JPIV    (input) INTEGER array, dimension (N).\n\
+  *          The pivot indices; for 1 <= j <= N, column j of the\n\
+  *          matrix has been interchanged with column JPIV(j).\n\
+  *\n\n\
+  *  Further Details\n\
+  *  ===============\n\
+  *\n\
+  *  Based on contributions by\n\
+  *     Bo Kagstrom and Peter Poromaa, Department of Computing Science,\n\
+  *     Umea University, S-901 87 Umea, Sweden.\n\
+  *\n\
+  *  This routine is a further developed implementation of algorithm\n\
+  *  BSOLVE in [1] using complete pivoting in the LU factorization.\n\
+  *\n\
+  *  [1] Bo Kagstrom and Lars Westin,\n\
+  *      Generalized Schur Methods with Condition Estimators for\n\
+  *      Solving the Generalized Sylvester Equation, IEEE Transactions\n\
+  *      on Automatic Control, Vol. 34, No. 7, July 1989, pp 745-751.\n\
+  *\n\
+  *  [2] Peter Poromaa,\n\
+  *      On Efficient and Robust Estimators for the Separation\n\
+  *      between two Regular Matrix Pairs with Applications in\n\
+  *      Condition Estimation. Report IMINF-95.05, Departement of\n\
+  *      Computing Science, Umea University, S-901 87 Umea, Sweden, 1995.\n\
+  *\n\
+  *  =====================================================================\n\
+  *\n"

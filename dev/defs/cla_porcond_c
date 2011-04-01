@@ -1,0 +1,115 @@
+--- 
+:name: cla_porcond_c
+:md5sum: f6e9460efbf813d2f7b6ca569b512d8e
+:type: real
+:arguments: 
+- uplo: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- af: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - ldaf
+    - n
+- ldaf: 
+    :type: integer
+    :intent: input
+- c: 
+    :type: real
+    :intent: input
+    :dims: 
+    - n
+- capply: 
+    :type: logical
+    :intent: input
+- info: 
+    :type: integer
+    :intent: output
+- work: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - 2*n
+- rwork: 
+    :type: real
+    :intent: input
+    :dims: 
+    - n
+:substitutions: {}
+
+:fortran_help: "      REAL FUNCTION CLA_PORCOND_C( UPLO, N, A, LDA, AF, LDAF, C, CAPPLY, INFO, WORK, RWORK )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *     CLA_PORCOND_C Computes the infinity norm condition number of\n\
+  *     op(A) * inv(diag(C)) where C is a DOUBLE PRECISION vector\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *     UPLO    (input) CHARACTER*1\n\
+  *       = 'U':  Upper triangle of A is stored;\n\
+  *       = 'L':  Lower triangle of A is stored.\n\
+  *\n\
+  *     N       (input) INTEGER\n\
+  *     The number of linear equations, i.e., the order of the\n\
+  *     matrix A.  N >= 0.\n\
+  *\n\
+  *     A       (input) COMPLEX array, dimension (LDA,N)\n\
+  *     On entry, the N-by-N matrix A\n\
+  *\n\
+  *     LDA     (input) INTEGER\n\
+  *     The leading dimension of the array A.  LDA >= max(1,N).\n\
+  *\n\
+  *     AF      (input) COMPLEX array, dimension (LDAF,N)\n\
+  *     The triangular factor U or L from the Cholesky factorization\n\
+  *     A = U**T*U or A = L*L**T, as computed by CPOTRF.\n\
+  *\n\
+  *     LDAF    (input) INTEGER\n\
+  *     The leading dimension of the array AF.  LDAF >= max(1,N).\n\
+  *\n\
+  *     C       (input) REAL array, dimension (N)\n\
+  *     The vector C in the formula op(A) * inv(diag(C)).\n\
+  *\n\
+  *     CAPPLY  (input) LOGICAL\n\
+  *     If .TRUE. then access the vector C in the formula above.\n\
+  *\n\
+  *     INFO    (output) INTEGER\n\
+  *       = 0:  Successful exit.\n\
+  *     i > 0:  The ith argument is invalid.\n\
+  *\n\
+  *     WORK    (input) COMPLEX array, dimension (2*N).\n\
+  *     Workspace.\n\
+  *\n\
+  *     RWORK   (input) REAL array, dimension (N).\n\
+  *     Workspace.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      INTEGER            KASE\n      REAL               AINVNM, ANORM, TMP\n      INTEGER            I, J\n      LOGICAL            UP\n      COMPLEX            ZDUM\n\
+  *     ..\n\
+  *     .. Local Arrays ..\n      INTEGER            ISAVE( 3 )\n\
+  *     ..\n\
+  *     .. External Functions ..\n      LOGICAL            LSAME\n      EXTERNAL           LSAME\n\
+  *     ..\n\
+  *     .. External Subroutines ..\n      EXTERNAL           CLACN2, CPOTRS, XERBLA\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          ABS, MAX, REAL, AIMAG\n\
+  *     ..\n\
+  *     .. Statement Functions ..\n      REAL CABS1\n\
+  *     ..\n\
+  *     .. Statement Function Definitions ..\n      CABS1( ZDUM ) = ABS( REAL( ZDUM ) ) + ABS( AIMAG( ZDUM ) )\n\
+  *     ..\n"

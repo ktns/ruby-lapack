@@ -1,0 +1,160 @@
+--- 
+:name: cporfs
+:md5sum: f9b7b261f3c53ee94e6f500ba8bf61b7
+:category: :subroutine
+:arguments: 
+- uplo: 
+    :type: char
+    :intent: input
+- n: 
+    :type: integer
+    :intent: input
+- nrhs: 
+    :type: integer
+    :intent: input
+- a: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - lda
+    - n
+- lda: 
+    :type: integer
+    :intent: input
+- af: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - ldaf
+    - n
+- ldaf: 
+    :type: integer
+    :intent: input
+- b: 
+    :type: complex
+    :intent: input
+    :dims: 
+    - ldb
+    - nrhs
+- ldb: 
+    :type: integer
+    :intent: input
+- x: 
+    :type: complex
+    :intent: input/output
+    :dims: 
+    - ldx
+    - nrhs
+- ldx: 
+    :type: integer
+    :intent: input
+- ferr: 
+    :type: real
+    :intent: output
+    :dims: 
+    - nrhs
+- berr: 
+    :type: real
+    :intent: output
+    :dims: 
+    - nrhs
+- work: 
+    :type: complex
+    :intent: workspace
+    :dims: 
+    - 2*n
+- rwork: 
+    :type: real
+    :intent: workspace
+    :dims: 
+    - n
+- info: 
+    :type: integer
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE CPORFS( UPLO, N, NRHS, A, LDA, AF, LDAF, B, LDB, X, LDX, FERR, BERR, WORK, RWORK, INFO )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  CPORFS improves the computed solution to a system of linear\n\
+  *  equations when the coefficient matrix is Hermitian positive definite,\n\
+  *  and provides error bounds and backward error estimates for the\n\
+  *  solution.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  UPLO    (input) CHARACTER*1\n\
+  *          = 'U':  Upper triangle of A is stored;\n\
+  *          = 'L':  Lower triangle of A is stored.\n\
+  *\n\
+  *  N       (input) INTEGER\n\
+  *          The order of the matrix A.  N >= 0.\n\
+  *\n\
+  *  NRHS    (input) INTEGER\n\
+  *          The number of right hand sides, i.e., the number of columns\n\
+  *          of the matrices B and X.  NRHS >= 0.\n\
+  *\n\
+  *  A       (input) COMPLEX array, dimension (LDA,N)\n\
+  *          The Hermitian matrix A.  If UPLO = 'U', the leading N-by-N\n\
+  *          upper triangular part of A contains the upper triangular part\n\
+  *          of the matrix A, and the strictly lower triangular part of A\n\
+  *          is not referenced.  If UPLO = 'L', the leading N-by-N lower\n\
+  *          triangular part of A contains the lower triangular part of\n\
+  *          the matrix A, and the strictly upper triangular part of A is\n\
+  *          not referenced.\n\
+  *\n\
+  *  LDA     (input) INTEGER\n\
+  *          The leading dimension of the array A.  LDA >= max(1,N).\n\
+  *\n\
+  *  AF      (input) COMPLEX array, dimension (LDAF,N)\n\
+  *          The triangular factor U or L from the Cholesky factorization\n\
+  *          A = U**H*U or A = L*L**H, as computed by CPOTRF.\n\
+  *\n\
+  *  LDAF    (input) INTEGER\n\
+  *          The leading dimension of the array AF.  LDAF >= max(1,N).\n\
+  *\n\
+  *  B       (input) COMPLEX array, dimension (LDB,NRHS)\n\
+  *          The right hand side matrix B.\n\
+  *\n\
+  *  LDB     (input) INTEGER\n\
+  *          The leading dimension of the array B.  LDB >= max(1,N).\n\
+  *\n\
+  *  X       (input/output) COMPLEX array, dimension (LDX,NRHS)\n\
+  *          On entry, the solution matrix X, as computed by CPOTRS.\n\
+  *          On exit, the improved solution matrix X.\n\
+  *\n\
+  *  LDX     (input) INTEGER\n\
+  *          The leading dimension of the array X.  LDX >= max(1,N).\n\
+  *\n\
+  *  FERR    (output) REAL array, dimension (NRHS)\n\
+  *          The estimated forward error bound for each solution vector\n\
+  *          X(j) (the j-th column of the solution matrix X).\n\
+  *          If XTRUE is the true solution corresponding to X(j), FERR(j)\n\
+  *          is an estimated upper bound for the magnitude of the largest\n\
+  *          element in (X(j) - XTRUE) divided by the magnitude of the\n\
+  *          largest element in X(j).  The estimate is as reliable as\n\
+  *          the estimate for RCOND, and is almost always a slight\n\
+  *          overestimate of the true error.\n\
+  *\n\
+  *  BERR    (output) REAL array, dimension (NRHS)\n\
+  *          The componentwise relative backward error of each solution\n\
+  *          vector X(j) (i.e., the smallest relative change in\n\
+  *          any element of A or B that makes X(j) an exact solution).\n\
+  *\n\
+  *  WORK    (workspace) COMPLEX array, dimension (2*N)\n\
+  *\n\
+  *  RWORK   (workspace) REAL array, dimension (N)\n\
+  *\n\
+  *  INFO    (output) INTEGER\n\
+  *          = 0:  successful exit\n\
+  *          < 0:  if INFO = -i, the i-th argument had an illegal value\n\
+  *\n\
+  *  Internal Parameters\n\
+  *  ===================\n\
+  *\n\
+  *  ITMAX is the maximum number of steps of iterative refinement.\n\
+  *\n\n\
+  *  ====================================================================\n\
+  *\n"

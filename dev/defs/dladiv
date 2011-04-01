@@ -1,0 +1,57 @@
+--- 
+:name: dladiv
+:md5sum: 41da7dda9474acb9983598430ee07a80
+:category: :subroutine
+:arguments: 
+- a: 
+    :type: doublereal
+    :intent: input
+- b: 
+    :type: doublereal
+    :intent: input
+- c: 
+    :type: doublereal
+    :intent: input
+- d: 
+    :type: doublereal
+    :intent: input
+- p: 
+    :type: doublereal
+    :intent: output
+- q: 
+    :type: doublereal
+    :intent: output
+:substitutions: {}
+
+:fortran_help: "      SUBROUTINE DLADIV( A, B, C, D, P, Q )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  DLADIV performs complex division in  real arithmetic\n\
+  *\n\
+  *                        a + i*b\n\
+  *             p + i*q = ---------\n\
+  *                        c + i*d\n\
+  *\n\
+  *  The algorithm is due to Robert L. Smith and can be found\n\
+  *  in D. Knuth, The art of Computer Programming, Vol.2, p.195\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *\n\
+  *  A       (input) DOUBLE PRECISION\n\
+  *  B       (input) DOUBLE PRECISION\n\
+  *  C       (input) DOUBLE PRECISION\n\
+  *  D       (input) DOUBLE PRECISION\n\
+  *          The scalars a, b, c, and d in the above expression.\n\
+  *\n\
+  *  P       (output) DOUBLE PRECISION\n\
+  *  Q       (output) DOUBLE PRECISION\n\
+  *          The scalars p and q in the above expression.\n\
+  *\n\n\
+  *  =====================================================================\n\
+  *\n\
+  *     .. Local Scalars ..\n      DOUBLE PRECISION   E, F\n\
+  *     ..\n\
+  *     .. Intrinsic Functions ..\n      INTRINSIC          ABS\n\
+  *     ..\n"

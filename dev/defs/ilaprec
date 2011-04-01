@@ -1,0 +1,32 @@
+--- 
+:name: ilaprec
+:md5sum: ccbd47bb68340bc498273489d1d91536
+:type: integer
+:arguments: 
+- prec: 
+    :type: char
+    :intent: input
+:substitutions: {}
+
+:fortran_help: "      INTEGER FUNCTION ILAPREC( PREC )\n\n\
+  *  Purpose\n\
+  *  =======\n\
+  *\n\
+  *  This subroutine translated from a character string specifying an\n\
+  *  intermediate precision to the relevant BLAST-specified integer\n\
+  *  constant.\n\
+  *\n\
+  *  ILAPREC returns an INTEGER.  If ILAPREC < 0, then the input is not a\n\
+  *  character indicating a supported intermediate precision.  Otherwise\n\
+  *  ILAPREC returns the constant value corresponding to PREC.\n\
+  *\n\n\
+  *  Arguments\n\
+  *  =========\n\
+  *  PREC    (input) CHARACTER\n\
+  *          Specifies the form of the system of equations:\n\
+  *          = 'S':  Single\n\
+  *          = 'D':  Double\n\
+  *          = 'I':  Indigenous\n\
+  *          = 'X', 'E':  Extra\n\n\
+  *  =====================================================================\n\
+  *\n"
