@@ -62,7 +62,7 @@ end
 require "numru/lapack"
 include NumRu
 
-prefix = "../doc"
+prefix = File.dirname(__FILE__)+"/../doc"
 
 path = ARGV[0] || raise("Usage: ruby #$0 path_to_document_html")
 desc = Hash.new
