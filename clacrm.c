@@ -20,7 +20,7 @@ rb_clacrm(int argc, VALUE *argv, VALUE self){
   integer ldc;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  c = NumRu::Lapack.clacrm( m, a, b)\n    or\n  NumRu::Lapack.clacrm  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n  c = NumRu::Lapack.clacrm( m, a, b)\n    or\n  NumRu::Lapack.clacrm  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE CLACRM( M, N, A, LDA, B, LDB, C, LDC, RWORK )\n\n*  Purpose\n*  =======\n*\n*  CLACRM performs a very simple matrix-matrix multiplication:\n*           C := A * B,\n*  where A is M by N and complex; B is N by N and real;\n*  C is M by N and complex.\n*\n\n*  Arguments\n*  =========\n*\n*  M       (input) INTEGER\n*          The number of rows of the matrix A and of the matrix C.\n*          M >= 0.\n*\n*  N       (input) INTEGER\n*          The number of columns and rows of the matrix B and\n*          the number of columns of the matrix C.\n*          N >= 0.\n*\n*  A       (input) COMPLEX array, dimension (LDA, N)\n*          A contains the M by N matrix A.\n*\n*  LDA     (input) INTEGER\n*          The leading dimension of the array A. LDA >=max(1,M).\n*\n*  B       (input) REAL array, dimension (LDB, N)\n*          B contains the N by N matrix B.\n*\n*  LDB     (input) INTEGER\n*          The leading dimension of the array B. LDB >=max(1,N).\n*\n*  C       (input) COMPLEX array, dimension (LDC, N)\n*          C contains the M by N matrix C.\n*\n*  LDC     (input) INTEGER\n*          The leading dimension of the array C. LDC >=max(1,N).\n*\n*  RWORK   (workspace) REAL array, dimension (2*M*N)\n*\n\n*  =====================================================================\n*\n\n");
     return Qnil;
   }
   if (argc != 3)

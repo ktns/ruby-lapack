@@ -18,7 +18,7 @@ rb_ssterf(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  info, d, e = NumRu::Lapack.ssterf( d, e)\n    or\n  NumRu::Lapack.ssterf  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n  info, d, e = NumRu::Lapack.ssterf( d, e)\n    or\n  NumRu::Lapack.ssterf  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SSTERF( N, D, E, INFO )\n\n*  Purpose\n*  =======\n*\n*  SSTERF computes all eigenvalues of a symmetric tridiagonal matrix\n*  using the Pal-Walker-Kahan variant of the QL or QR algorithm.\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The order of the matrix.  N >= 0.\n*\n*  D       (input/output) REAL array, dimension (N)\n*          On entry, the n diagonal elements of the tridiagonal matrix.\n*          On exit, if INFO = 0, the eigenvalues in ascending order.\n*\n*  E       (input/output) REAL array, dimension (N-1)\n*          On entry, the (n-1) subdiagonal elements of the tridiagonal\n*          matrix.\n*          On exit, E has been destroyed.\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*          > 0:  the algorithm failed to find all of the eigenvalues in\n*                a total of 30*N iterations; if INFO = i, then i\n*                elements of E have not converged to zero.\n*\n\n*  =====================================================================\n*\n\n");
     return Qnil;
   }
   if (argc != 2)

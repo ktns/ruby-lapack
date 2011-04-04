@@ -17,7 +17,7 @@ rb_claqr1(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  v = NumRu::Lapack.claqr1( h, s1, s2)\n    or\n  NumRu::Lapack.claqr1  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n  v = NumRu::Lapack.claqr1( h, s1, s2)\n    or\n  NumRu::Lapack.claqr1  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE CLAQR1( N, H, LDH, S1, S2, V )\n\n*       Given a 2-by-2 or 3-by-3 matrix H, CLAQR1 sets v to a\n*       scalar multiple of the first column of the product\n*\n*       (*)  K = (H - s1*I)*(H - s2*I)\n*\n*       scaling to avoid overflows and most underflows.\n*\n*       This is useful for starting double implicit shift bulges\n*       in the QR algorithm.\n*\n*\n\n*       N      (input) integer\n*              Order of the matrix H. N must be either 2 or 3.\n*\n*       H      (input) COMPLEX array of dimension (LDH,N)\n*              The 2-by-2 or 3-by-3 matrix H in (*).\n*\n*       LDH    (input) integer\n*              The leading dimension of H as declared in\n*              the calling procedure.  LDH.GE.N\n*\n*       S1     (input) COMPLEX\n*       S2     S1 and S2 are the shifts defining K in (*) above.\n*\n*       V      (output) COMPLEX array of dimension N\n*              A scalar multiple of the first column of the\n*              matrix K in (*).\n*\n\n*     ================================================================\n*     Based on contributions by\n*        Karen Braman and Ralph Byers, Department of Mathematics,\n*        University of Kansas, USA\n*\n*     ================================================================\n*\n\n");
     return Qnil;
   }
   if (argc != 3)

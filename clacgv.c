@@ -15,7 +15,7 @@ rb_clacgv(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  x = NumRu::Lapack.clacgv( n, x, incx)\n    or\n  NumRu::Lapack.clacgv  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n  x = NumRu::Lapack.clacgv( n, x, incx)\n    or\n  NumRu::Lapack.clacgv  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE CLACGV( N, X, INCX )\n\n*  Purpose\n*  =======\n*\n*  CLACGV conjugates a complex vector of length N.\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The length of the vector X.  N >= 0.\n*\n*  X       (input/output) COMPLEX array, dimension\n*                         (1+(N-1)*abs(INCX))\n*          On entry, the vector of length N to be conjugated.\n*          On exit, X is overwritten with conjg(X).\n*\n*  INCX    (input) INTEGER\n*          The spacing between successive elements of X.\n*\n\n* =====================================================================\n*\n*     .. Local Scalars ..\n      INTEGER            I, IOFF\n*     ..\n*     .. Intrinsic Functions ..\n      INTRINSIC          CONJG\n*     ..\n\n");
     return Qnil;
   }
   if (argc != 3)

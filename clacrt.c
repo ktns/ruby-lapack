@@ -24,7 +24,7 @@ rb_clacrt(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  cx, cy = NumRu::Lapack.clacrt( cx, incx, cy, incy, c, s)\n    or\n  NumRu::Lapack.clacrt  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n  cx, cy = NumRu::Lapack.clacrt( cx, incx, cy, incy, c, s)\n    or\n  NumRu::Lapack.clacrt  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE CLACRT( N, CX, INCX, CY, INCY, C, S )\n\n*  Purpose\n*  =======\n*\n*  CLACRT performs the operation\n*\n*     (  c  s )( x )  ==> ( x )\n*     ( -s  c )( y )      ( y )\n*\n*  where c and s are complex and the vectors x and y are complex.\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The number of elements in the vectors CX and CY.\n*\n*  CX      (input/output) COMPLEX array, dimension (N)\n*          On input, the vector x.\n*          On output, CX is overwritten with c*x + s*y.\n*\n*  INCX    (input) INTEGER\n*          The increment between successive values of CX.  INCX <> 0.\n*\n*  CY      (input/output) COMPLEX array, dimension (N)\n*          On input, the vector y.\n*          On output, CY is overwritten with -s*x + c*y.\n*\n*  INCY    (input) INTEGER\n*          The increment between successive values of CY.  INCY <> 0.\n*\n*  C       (input) COMPLEX\n*  S       (input) COMPLEX\n*          C and S define the matrix\n*             [  C   S  ].\n*             [ -S   C  ]\n*\n\n* =====================================================================\n*\n*     .. Local Scalars ..\n      INTEGER            I, IX, IY\n      COMPLEX            CTEMP\n*     ..\n\n");
     return Qnil;
   }
   if (argc != 6)

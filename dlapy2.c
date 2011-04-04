@@ -13,7 +13,7 @@ rb_dlapy2(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.dlapy2( x, y)\n    or\n  NumRu::Lapack.dlapy2  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.dlapy2( x, y)\n    or\n  NumRu::Lapack.dlapy2  # print help\n\n\nFORTRAN MANUAL\n      DOUBLE PRECISION FUNCTION DLAPY2( X, Y )\n\n*  Purpose\n*  =======\n*\n*  DLAPY2 returns sqrt(x**2+y**2), taking care not to cause unnecessary\n*  overflow.\n*\n\n*  Arguments\n*  =========\n*\n*  X       (input) DOUBLE PRECISION\n*  Y       (input) DOUBLE PRECISION\n*          X and Y specify the values x and y.\n*\n\n*  =====================================================================\n*\n\n");
     return Qnil;
   }
   if (argc != 2)

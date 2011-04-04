@@ -18,7 +18,7 @@ rb_dla_wwaddw(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  x, y = NumRu::Lapack.dla_wwaddw( x, y, w)\n    or\n  NumRu::Lapack.dla_wwaddw  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n  x, y = NumRu::Lapack.dla_wwaddw( x, y, w)\n    or\n  NumRu::Lapack.dla_wwaddw  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLA_WWADDW( N, X, Y, W )\n\n*     Purpose\n*     =======\n*\n*     DLA_WWADDW adds a vector W into a doubled-single vector (X, Y).\n*\n*     This works for all extant IBM's hex and binary floating point\n*     arithmetics, but not for decimal.\n*\n\n*     Arguments\n*     =========\n*\n*     N      (input) INTEGER\n*            The length of vectors X, Y, and W.\n*\n*     X      (input/output) DOUBLE PRECISION array, dimension (N)\n*            The first part of the doubled-single accumulation vector.\n*\n*     Y      (input/output) DOUBLE PRECISION array, dimension (N)\n*            The second part of the doubled-single accumulation vector.\n*\n*     W      (input) DOUBLE PRECISION array, dimension (N)\n*            The vector to be added.\n*\n\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      DOUBLE PRECISION   S\n      INTEGER            I\n*     ..\n\n");
     return Qnil;
   }
   if (argc != 3)

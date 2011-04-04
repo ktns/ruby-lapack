@@ -16,7 +16,7 @@ rb_dlascl2(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  x = NumRu::Lapack.dlascl2( d, x)\n    or\n  NumRu::Lapack.dlascl2  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n  x = NumRu::Lapack.dlascl2( d, x)\n    or\n  NumRu::Lapack.dlascl2  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLASCL2 ( M, N, D, X, LDX )\n\n*  Purpose\n*  =======\n*\n*  DLASCL2 performs a diagonal scaling on a vector:\n*    x <-- D * x\n*  where the diagonal matrix D is stored as a vector.\n*\n*  Eventually to be replaced by BLAS_dge_diag_scale in the new BLAS\n*  standard.\n*\n\n*  Arguments\n*  =========\n*\n*     M       (input) INTEGER\n*     The number of rows of D and X. M >= 0.\n*\n*     N       (input) INTEGER\n*     The number of columns of D and X. N >= 0.\n*\n*     D       (input) DOUBLE PRECISION array, length M\n*     Diagonal matrix D, stored as a vector of length M.\n*\n*     X       (input/output) DOUBLE PRECISION array, dimension (LDX,N)\n*     On entry, the vector X to be scaled by D.\n*     On exit, the scaled vector.\n*\n*     LDX     (input) INTEGER\n*     The leading dimension of the vector X. LDX >= 0.\n*\n\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      INTEGER            I, J\n*     ..\n\n");
     return Qnil;
   }
   if (argc != 2)

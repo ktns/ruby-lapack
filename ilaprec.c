@@ -11,7 +11,7 @@ rb_ilaprec(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.ilaprec( prec)\n    or\n  NumRu::Lapack.ilaprec  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.ilaprec( prec)\n    or\n  NumRu::Lapack.ilaprec  # print help\n\n\nFORTRAN MANUAL\n      INTEGER FUNCTION ILAPREC( PREC )\n\n*  Purpose\n*  =======\n*\n*  This subroutine translated from a character string specifying an\n*  intermediate precision to the relevant BLAST-specified integer\n*  constant.\n*\n*  ILAPREC returns an INTEGER.  If ILAPREC < 0, then the input is not a\n*  character indicating a supported intermediate precision.  Otherwise\n*  ILAPREC returns the constant value corresponding to PREC.\n*\n\n*  Arguments\n*  =========\n*  PREC    (input) CHARACTER\n*          Specifies the form of the system of equations:\n*          = 'S':  Single\n*          = 'D':  Double\n*          = 'I':  Indigenous\n*          = 'X', 'E':  Extra\n\n*  =====================================================================\n*\n\n");
     return Qnil;
   }
   if (argc != 1)

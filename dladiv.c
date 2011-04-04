@@ -19,7 +19,7 @@ rb_dladiv(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  p, q = NumRu::Lapack.dladiv( a, b, c, d)\n    or\n  NumRu::Lapack.dladiv  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n  p, q = NumRu::Lapack.dladiv( a, b, c, d)\n    or\n  NumRu::Lapack.dladiv  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLADIV( A, B, C, D, P, Q )\n\n*  Purpose\n*  =======\n*\n*  DLADIV performs complex division in  real arithmetic\n*\n*                        a + i*b\n*             p + i*q = ---------\n*                        c + i*d\n*\n*  The algorithm is due to Robert L. Smith and can be found\n*  in D. Knuth, The art of Computer Programming, Vol.2, p.195\n*\n\n*  Arguments\n*  =========\n*\n*  A       (input) DOUBLE PRECISION\n*  B       (input) DOUBLE PRECISION\n*  C       (input) DOUBLE PRECISION\n*  D       (input) DOUBLE PRECISION\n*          The scalars a, b, c, and d in the above expression.\n*\n*  P       (output) DOUBLE PRECISION\n*  Q       (output) DOUBLE PRECISION\n*          The scalars p and q in the above expression.\n*\n\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      DOUBLE PRECISION   E, F\n*     ..\n*     .. Intrinsic Functions ..\n      INTRINSIC          ABS\n*     ..\n\n");
     return Qnil;
   }
   if (argc != 4)

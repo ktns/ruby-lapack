@@ -24,7 +24,7 @@ rb_zrot(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  cx, cy = NumRu::Lapack.zrot( cx, incx, cy, incy, c, s)\n    or\n  NumRu::Lapack.zrot  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n  cx, cy = NumRu::Lapack.zrot( cx, incx, cy, incy, c, s)\n    or\n  NumRu::Lapack.zrot  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE ZROT( N, CX, INCX, CY, INCY, C, S )\n\n*  Purpose\n*  =======\n*\n*  ZROT   applies a plane rotation, where the cos (C) is real and the\n*  sin (S) is complex, and the vectors CX and CY are complex.\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The number of elements in the vectors CX and CY.\n*\n*  CX      (input/output) COMPLEX*16 array, dimension (N)\n*          On input, the vector X.\n*          On output, CX is overwritten with C*X + S*Y.\n*\n*  INCX    (input) INTEGER\n*          The increment between successive values of CY.  INCX <> 0.\n*\n*  CY      (input/output) COMPLEX*16 array, dimension (N)\n*          On input, the vector Y.\n*          On output, CY is overwritten with -CONJG(S)*X + C*Y.\n*\n*  INCY    (input) INTEGER\n*          The increment between successive values of CY.  INCX <> 0.\n*\n*  C       (input) DOUBLE PRECISION\n*  S       (input) COMPLEX*16\n*          C and S define a rotation\n*             [  C          S  ]\n*             [ -conjg(S)   C  ]\n*          where C*C + S*CONJG(S) = 1.0.\n*\n\n* =====================================================================\n*\n*     .. Local Scalars ..\n      INTEGER            I, IX, IY\n      COMPLEX*16         STEMP\n*     ..\n*     .. Intrinsic Functions ..\n      INTRINSIC          DCONJG\n*     ..\n\n");
     return Qnil;
   }
   if (argc != 6)

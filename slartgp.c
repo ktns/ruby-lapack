@@ -17,7 +17,7 @@ rb_slartgp(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  cs, sn, r = NumRu::Lapack.slartgp( f, g)\n    or\n  NumRu::Lapack.slartgp  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n  cs, sn, r = NumRu::Lapack.slartgp( f, g)\n    or\n  NumRu::Lapack.slartgp  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SLARTGP( F, G, CS, SN, R )\n\n*  Purpose\n*  =======\n*\n*  SLARTGP generates a plane rotation so that\n*\n*     [  CS  SN  ]  .  [ F ]  =  [ R ]   where CS**2 + SN**2 = 1.\n*     [ -SN  CS  ]     [ G ]     [ 0 ]\n*\n*  This is a slower, more accurate version of the Level 1 BLAS routine SROTG,\n*  with the following other differences:\n*     F and G are unchanged on return.\n*     If G=0, then CS=(+/-)1 and SN=0.\n*     If F=0 and (G .ne. 0), then CS=0 and SN=(+/-)1.\n*\n*  The sign is chosen so that R >= 0.\n*\n\n*  Arguments\n*  =========\n*\n*  F       (input) REAL\n*          The first component of vector to be rotated.\n*\n*  G       (input) REAL\n*          The second component of vector to be rotated.\n*\n*  CS      (output) REAL\n*          The cosine of the rotation.\n*\n*  SN      (output) REAL\n*          The sine of the rotation.\n*\n*  R       (output) REAL\n*          The nonzero component of the rotated vector.\n*\n*  This version has a few statements commented out for thread safety\n*  (machine parameters are computed on each entry). 10 feb 03, SJH.\n*\n\n*  =====================================================================\n*\n\n");
     return Qnil;
   }
   if (argc != 2)

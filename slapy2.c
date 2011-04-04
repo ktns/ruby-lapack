@@ -13,7 +13,7 @@ rb_slapy2(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.slapy2( x, y)\n    or\n  NumRu::Lapack.slapy2  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.slapy2( x, y)\n    or\n  NumRu::Lapack.slapy2  # print help\n\n\nFORTRAN MANUAL\n      REAL             FUNCTION SLAPY2( X, Y )\n\n*  Purpose\n*  =======\n*\n*  SLAPY2 returns sqrt(x**2+y**2), taking care not to cause unnecessary\n*  overflow.\n*\n\n*  Arguments\n*  =========\n*\n*  X       (input) REAL\n*  Y       (input) REAL\n*          X and Y specify the values x and y.\n*\n\n*  =====================================================================\n*\n\n");
     return Qnil;
   }
   if (argc != 2)

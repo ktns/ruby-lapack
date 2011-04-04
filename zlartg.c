@@ -17,7 +17,7 @@ rb_zlartg(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  cs, sn, r = NumRu::Lapack.zlartg( f, g)\n    or\n  NumRu::Lapack.zlartg  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n  cs, sn, r = NumRu::Lapack.zlartg( f, g)\n    or\n  NumRu::Lapack.zlartg  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE ZLARTG( F, G, CS, SN, R )\n\n*  Purpose\n*  =======\n*\n*  ZLARTG generates a plane rotation so that\n*\n*     [  CS  SN  ]     [ F ]     [ R ]\n*     [  __      ]  .  [   ]  =  [   ]   where CS**2 + |SN|**2 = 1.\n*     [ -SN  CS  ]     [ G ]     [ 0 ]\n*\n*  This is a faster version of the BLAS1 routine ZROTG, except for\n*  the following differences:\n*     F and G are unchanged on return.\n*     If G=0, then CS=1 and SN=0.\n*     If F=0, then CS=0 and SN is chosen so that R is real.\n*\n\n*  Arguments\n*  =========\n*\n*  F       (input) COMPLEX*16\n*          The first component of vector to be rotated.\n*\n*  G       (input) COMPLEX*16\n*          The second component of vector to be rotated.\n*\n*  CS      (output) DOUBLE PRECISION\n*          The cosine of the rotation.\n*\n*  SN      (output) COMPLEX*16\n*          The sine of the rotation.\n*\n*  R       (output) COMPLEX*16\n*          The nonzero component of the rotated vector.\n*\n\n*  Further Details\n*  ======= =======\n*\n*  3-5-96 - Modified with a new algorithm by W. Kahan and J. Demmel\n*\n*  This version has a few statements commented out for thread safety\n*  (machine parameters are computed on each entry). 10 feb 03, SJH.\n*\n*  =====================================================================\n*\n\n");
     return Qnil;
   }
   if (argc != 2)

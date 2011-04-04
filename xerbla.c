@@ -11,7 +11,7 @@ rb_xerbla(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n   = NumRu::Lapack.xerbla( srname, info)\n    or\n  NumRu::Lapack.xerbla  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n   = NumRu::Lapack.xerbla( srname, info)\n    or\n  NumRu::Lapack.xerbla  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE XERBLA( SRNAME, INFO )\n\n*  Purpose\n*  =======\n*\n*  XERBLA  is an error handler for the LAPACK routines.\n*  It is called by an LAPACK routine if an input parameter has an\n*  invalid value.  A message is printed and execution stops.\n*\n*  Installers may consider modifying the STOP statement in order to\n*  call system-specific exception-handling facilities.\n*\n\n*  Arguments\n*  =========\n*\n*  SRNAME  (input) CHARACTER*(*)\n*          The name of the routine which called XERBLA.\n*\n*  INFO    (input) INTEGER\n*          The position of the invalid parameter in the parameter list\n*          of the calling routine.\n*\n\n* =====================================================================\n*\n*     .. Intrinsic Functions ..\n      INTRINSIC          LEN_TRIM\n*     ..\n\n");
     return Qnil;
   }
   if (argc != 2)

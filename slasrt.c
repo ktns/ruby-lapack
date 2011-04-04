@@ -16,7 +16,7 @@ rb_slasrt(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  info, d = NumRu::Lapack.slasrt( id, d)\n    or\n  NumRu::Lapack.slasrt  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n  info, d = NumRu::Lapack.slasrt( id, d)\n    or\n  NumRu::Lapack.slasrt  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SLASRT( ID, N, D, INFO )\n\n*  Purpose\n*  =======\n*\n*  Sort the numbers in D in increasing order (if ID = 'I') or\n*  in decreasing order (if ID = 'D' ).\n*\n*  Use Quick Sort, reverting to Insertion sort on arrays of\n*  size <= 20. Dimension of STACK limits N to about 2**32.\n*\n\n*  Arguments\n*  =========\n*\n*  ID      (input) CHARACTER*1\n*          = 'I': sort D in increasing order;\n*          = 'D': sort D in decreasing order.\n*\n*  N       (input) INTEGER\n*          The length of the array D.\n*\n*  D       (input/output) REAL array, dimension (N)\n*          On entry, the array to be sorted.\n*          On exit, D has been sorted into increasing order\n*          (D(1) <= ... <= D(N) ) or into decreasing order\n*          (D(1) >= ... >= D(N) ), depending on ID.\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*\n\n*  =====================================================================\n*\n\n");
     return Qnil;
   }
   if (argc != 2)

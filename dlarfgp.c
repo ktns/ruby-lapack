@@ -19,7 +19,7 @@ rb_dlarfgp(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  tau, alpha, x = NumRu::Lapack.dlarfgp( n, alpha, x, incx)\n    or\n  NumRu::Lapack.dlarfgp  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n  tau, alpha, x = NumRu::Lapack.dlarfgp( n, alpha, x, incx)\n    or\n  NumRu::Lapack.dlarfgp  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLARFGP( N, ALPHA, X, INCX, TAU )\n\n*  Purpose\n*  =======\n*\n*  DLARFGP generates a real elementary reflector H of order n, such\n*  that\n*\n*        H * ( alpha ) = ( beta ),   H' * H = I.\n*            (   x   )   (   0  )\n*\n*  where alpha and beta are scalars, beta is non-negative, and x is\n*  an (n-1)-element real vector.  H is represented in the form\n*\n*        H = I - tau * ( 1 ) * ( 1 v' ) ,\n*                      ( v )\n*\n*  where tau is a real scalar and v is a real (n-1)-element\n*  vector.\n*\n*  If the elements of x are all zero, then tau = 0 and H is taken to be\n*  the unit matrix.\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The order of the elementary reflector.\n*\n*  ALPHA   (input/output) DOUBLE PRECISION\n*          On entry, the value alpha.\n*          On exit, it is overwritten with the value beta.\n*\n*  X       (input/output) DOUBLE PRECISION array, dimension\n*                         (1+(N-2)*abs(INCX))\n*          On entry, the vector x.\n*          On exit, it is overwritten with the vector v.\n*\n*  INCX    (input) INTEGER\n*          The increment between elements of X. INCX > 0.\n*\n*  TAU     (output) DOUBLE PRECISION\n*          The value tau.\n*\n\n*  =====================================================================\n*\n\n");
     return Qnil;
   }
   if (argc != 4)

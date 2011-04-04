@@ -153,7 +153,7 @@ def create_code(name)
   sub_type = hash[:category]
   func_type = hash[:type] if sub_type == :function
   args = hash[:arguments]
-  help = hash[:help]
+  help = hash[:fortran_help]
   subst = hash[:substitutions]
   extras = hash[:extras]
 

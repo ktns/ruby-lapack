@@ -17,7 +17,7 @@ rb_drscl(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  sx = NumRu::Lapack.drscl( n, sa, sx, incx)\n    or\n  NumRu::Lapack.drscl  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n  sx = NumRu::Lapack.drscl( n, sa, sx, incx)\n    or\n  NumRu::Lapack.drscl  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DRSCL( N, SA, SX, INCX )\n\n*  Purpose\n*  =======\n*\n*  DRSCL multiplies an n-element real vector x by the real scalar 1/a.\n*  This is done without overflow or underflow as long as\n*  the final result x/a does not overflow or underflow.\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The number of components of the vector x.\n*\n*  SA      (input) DOUBLE PRECISION\n*          The scalar a which is used to divide each component of x.\n*          SA must be >= 0, or the subroutine will divide by zero.\n*\n*  SX      (input/output) DOUBLE PRECISION array, dimension\n*                         (1+(N-1)*abs(INCX))\n*          The n-element vector x.\n*\n*  INCX    (input) INTEGER\n*          The increment between successive values of the vector SX.\n*          > 0:  SX(1) = X(1) and SX(1+(i-1)*INCX) = x(i),     1< i<= n\n*\n\n* =====================================================================\n*\n\n");
     return Qnil;
   }
   if (argc != 4)

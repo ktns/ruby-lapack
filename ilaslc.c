@@ -15,7 +15,7 @@ rb_ilaslc(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.ilaslc( m, a)\n    or\n  NumRu::Lapack.ilaslc  # print help\n\n\nFORTRAN MANUAL\n\n");
+    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.ilaslc( m, a)\n    or\n  NumRu::Lapack.ilaslc  # print help\n\n\nFORTRAN MANUAL\n      INTEGER FUNCTION ILASLC( M, N, A, LDA )\n\n*  Purpose\n*  =======\n*\n*  ILASLC scans A for its last non-zero column.\n*\n\n*  Arguments\n*  =========\n*\n*  M       (input) INTEGER\n*          The number of rows of the matrix A.\n*\n*  N       (input) INTEGER\n*          The number of columns of the matrix A.\n*\n*  A       (input) REAL array, dimension (LDA,N)\n*          The m by n matrix A.\n*\n*  LDA     (input) INTEGER\n*          The leading dimension of the array A. LDA >= max(1,M).\n*\n\n*  =====================================================================\n*\n\n");
     return Qnil;
   }
   if (argc != 2)
