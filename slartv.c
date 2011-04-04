@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID slartv_(integer *n, real *x, integer *incx, real *y, integer *incy, real *c, real *s, integer *incc);
+
 static VALUE
 rb_slartv(int argc, VALUE *argv, VALUE self){
   VALUE rb_n;
@@ -25,7 +27,7 @@ rb_slartv(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  x, y = NumRu::Lapack.slartv( n, x, incx, y, incy, c, s, incc)\n    or\n  NumRu::Lapack.slartv  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SLARTV( N, X, INCX, Y, INCY, C, S, INCC )\n\n*  Purpose\n*  =======\n*\n*  SLARTV applies a vector of real plane rotations to elements of the\n*  real vectors x and y. For i = 1,2,...,n\n*\n*     ( x(i) ) := (  c(i)  s(i) ) ( x(i) )\n*     ( y(i) )    ( -s(i)  c(i) ) ( y(i) )\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The number of plane rotations to be applied.\n*\n*  X       (input/output) REAL array,\n*                         dimension (1+(N-1)*INCX)\n*          The vector x.\n*\n*  INCX    (input) INTEGER\n*          The increment between elements of X. INCX > 0.\n*\n*  Y       (input/output) REAL array,\n*                         dimension (1+(N-1)*INCY)\n*          The vector y.\n*\n*  INCY    (input) INTEGER\n*          The increment between elements of Y. INCY > 0.\n*\n*  C       (input) REAL array, dimension (1+(N-1)*INCC)\n*          The cosines of the plane rotations.\n*\n*  S       (input) REAL array, dimension (1+(N-1)*INCC)\n*          The sines of the plane rotations.\n*\n*  INCC    (input) INTEGER\n*          The increment between elements of C and S. INCC > 0.\n*\n\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      INTEGER            I, IC, IX, IY\n      REAL               XI, YI\n*     ..\n\n");
+    printf("%s\n", "USAGE:\n  x, y = NumRu::Lapack.slartv( n, x, incx, y, incy, c, s, incc)\n    or\n  NumRu::Lapack.slartv  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 8)
@@ -39,10 +41,10 @@ rb_slartv(int argc, VALUE *argv, VALUE self){
   rb_s = argv[6];
   rb_incc = argv[7];
 
-  n = NUM2INT(rb_n);
   incx = NUM2INT(rb_incx);
   incy = NUM2INT(rb_incy);
   incc = NUM2INT(rb_incc);
+  n = NUM2INT(rb_n);
   if (!NA_IsNArray(rb_x))
     rb_raise(rb_eArgError, "x (2th argument) must be NArray");
   if (NA_RANK(rb_x) != 1)

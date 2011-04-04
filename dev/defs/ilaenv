@@ -1,6 +1,7 @@
 --- 
 :name: ilaenv
 :md5sum: a17ab3474e363bc9e09f7a174f8d4758
+:category: :function
 :type: integer
 :arguments: 
 - ispec: 

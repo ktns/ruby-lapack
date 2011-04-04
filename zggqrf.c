@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID zggqrf_(integer *n, integer *m, integer *p, doublecomplex *a, integer *lda, doublecomplex *taua, doublecomplex *b, integer *ldb, doublecomplex *taub, doublecomplex *work, integer *lwork, integer *info);
+
 static VALUE
 rb_zggqrf(int argc, VALUE *argv, VALUE self){
   VALUE rb_n;
@@ -29,7 +31,7 @@ rb_zggqrf(int argc, VALUE *argv, VALUE self){
   integer p;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  taua, taub, work, info, a, b = NumRu::Lapack.zggqrf( n, a, b, lwork)\n    or\n  NumRu::Lapack.zggqrf  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE ZGGQRF( N, M, P, A, LDA, TAUA, B, LDB, TAUB, WORK, LWORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  ZGGQRF computes a generalized QR factorization of an N-by-M matrix A\n*  and an N-by-P matrix B:\n*\n*              A = Q*R,        B = Q*T*Z,\n*\n*  where Q is an N-by-N unitary matrix, Z is a P-by-P unitary matrix,\n*  and R and T assume one of the forms:\n*\n*  if N >= M,  R = ( R11 ) M  ,   or if N < M,  R = ( R11  R12 ) N,\n*                  (  0  ) N-M                         N   M-N\n*                     M\n*\n*  where R11 is upper triangular, and\n*\n*  if N <= P,  T = ( 0  T12 ) N,   or if N > P,  T = ( T11 ) N-P,\n*                   P-N  N                           ( T21 ) P\n*                                                       P\n*\n*  where T12 or T21 is upper triangular.\n*\n*  In particular, if B is square and nonsingular, the GQR factorization\n*  of A and B implicitly gives the QR factorization of inv(B)*A:\n*\n*               inv(B)*A = Z'*(inv(T)*R)\n*\n*  where inv(B) denotes the inverse of the matrix B, and Z' denotes the\n*  conjugate transpose of matrix Z.\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The number of rows of the matrices A and B. N >= 0.\n*\n*  M       (input) INTEGER\n*          The number of columns of the matrix A.  M >= 0.\n*\n*  P       (input) INTEGER\n*          The number of columns of the matrix B.  P >= 0.\n*\n*  A       (input/output) COMPLEX*16 array, dimension (LDA,M)\n*          On entry, the N-by-M matrix A.\n*          On exit, the elements on and above the diagonal of the array\n*          contain the min(N,M)-by-M upper trapezoidal matrix R (R is\n*          upper triangular if N >= M); the elements below the diagonal,\n*          with the array TAUA, represent the unitary matrix Q as a\n*          product of min(N,M) elementary reflectors (see Further\n*          Details).\n*\n*  LDA     (input) INTEGER\n*          The leading dimension of the array A. LDA >= max(1,N).\n*\n*  TAUA    (output) COMPLEX*16 array, dimension (min(N,M))\n*          The scalar factors of the elementary reflectors which\n*          represent the unitary matrix Q (see Further Details).\n*\n*  B       (input/output) COMPLEX*16 array, dimension (LDB,P)\n*          On entry, the N-by-P matrix B.\n*          On exit, if N <= P, the upper triangle of the subarray\n*          B(1:N,P-N+1:P) contains the N-by-N upper triangular matrix T;\n*          if N > P, the elements on and above the (N-P)-th subdiagonal\n*          contain the N-by-P upper trapezoidal matrix T; the remaining\n*          elements, with the array TAUB, represent the unitary\n*          matrix Z as a product of elementary reflectors (see Further\n*          Details).\n*\n*  LDB     (input) INTEGER\n*          The leading dimension of the array B. LDB >= max(1,N).\n*\n*  TAUB    (output) COMPLEX*16 array, dimension (min(N,P))\n*          The scalar factors of the elementary reflectors which\n*          represent the unitary matrix Z (see Further Details).\n*\n*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))\n*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.\n*\n*  LWORK   (input) INTEGER\n*          The dimension of the array WORK. LWORK >= max(1,N,M,P).\n*          For optimum performance LWORK >= max(N,M,P)*max(NB1,NB2,NB3),\n*          where NB1 is the optimal blocksize for the QR factorization\n*          of an N-by-M matrix, NB2 is the optimal blocksize for the\n*          RQ factorization of an N-by-P matrix, and NB3 is the optimal\n*          blocksize for a call of ZUNMQR.\n*\n*          If LWORK = -1, then a workspace query is assumed; the routine\n*          only calculates the optimal size of the WORK array, returns\n*          this value as the first entry of the WORK array, and no error\n*          message related to LWORK is issued by XERBLA.\n*\n*  INFO    (output) INTEGER\n*           = 0:  successful exit\n*           < 0:  if INFO = -i, the i-th argument had an illegal value.\n*\n\n*  Further Details\n*  ===============\n*\n*  The matrix Q is represented as a product of elementary reflectors\n*\n*     Q = H(1) H(2) . . . H(k), where k = min(n,m).\n*\n*  Each H(i) has the form\n*\n*     H(i) = I - taua * v * v'\n*\n*  where taua is a complex scalar, and v is a complex vector with\n*  v(1:i-1) = 0 and v(i) = 1; v(i+1:n) is stored on exit in A(i+1:n,i),\n*  and taua in TAUA(i).\n*  To form Q explicitly, use LAPACK subroutine ZUNGQR.\n*  To use Q to update another matrix, use LAPACK subroutine ZUNMQR.\n*\n*  The matrix Z is represented as a product of elementary reflectors\n*\n*     Z = H(1) H(2) . . . H(k), where k = min(n,p).\n*\n*  Each H(i) has the form\n*\n*     H(i) = I - taub * v * v'\n*\n*  where taub is a complex scalar, and v is a complex vector with\n*  v(p-k+i+1:p) = 0 and v(p-k+i) = 1; v(1:p-k+i-1) is stored on exit in\n*  B(n-k+i,1:p-k+i-1), and taub in TAUB(i).\n*  To form Z explicitly, use LAPACK subroutine ZUNGRQ.\n*  To use Z to update another matrix, use LAPACK subroutine ZUNMRQ.\n*\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      LOGICAL            LQUERY\n      INTEGER            LOPT, LWKOPT, NB, NB1, NB2, NB3\n*     ..\n*     .. External Subroutines ..\n      EXTERNAL           XERBLA, ZGEQRF, ZGERQF, ZUNMQR\n*     ..\n*     .. External Functions ..\n      INTEGER            ILAENV\n      EXTERNAL           ILAENV\n*     ..\n*     .. Intrinsic Functions ..\n      INTRINSIC          INT, MAX, MIN\n*     ..\n\n");
+    printf("%s\n", "USAGE:\n  taua, taub, work, info, a, b = NumRu::Lapack.zggqrf( n, a, b, lwork)\n    or\n  NumRu::Lapack.zggqrf  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 4)
@@ -39,14 +41,12 @@ rb_zggqrf(int argc, VALUE *argv, VALUE self){
   rb_b = argv[2];
   rb_lwork = argv[3];
 
-  n = NUM2INT(rb_n);
-  lwork = NUM2INT(rb_lwork);
   if (!NA_IsNArray(rb_a))
     rb_raise(rb_eArgError, "a (2th argument) must be NArray");
   if (NA_RANK(rb_a) != 2)
     rb_raise(rb_eArgError, "rank of a (2th argument) must be %d", 2);
-  lda = NA_SHAPE0(rb_a);
   m = NA_SHAPE1(rb_a);
+  lda = NA_SHAPE0(rb_a);
   if (NA_TYPE(rb_a) != NA_DCOMPLEX)
     rb_a = na_change_type(rb_a, NA_DCOMPLEX);
   a = NA_PTR_TYPE(rb_a, doublecomplex*);
@@ -54,11 +54,13 @@ rb_zggqrf(int argc, VALUE *argv, VALUE self){
     rb_raise(rb_eArgError, "b (3th argument) must be NArray");
   if (NA_RANK(rb_b) != 2)
     rb_raise(rb_eArgError, "rank of b (3th argument) must be %d", 2);
-  ldb = NA_SHAPE0(rb_b);
   p = NA_SHAPE1(rb_b);
+  ldb = NA_SHAPE0(rb_b);
   if (NA_TYPE(rb_b) != NA_DCOMPLEX)
     rb_b = na_change_type(rb_b, NA_DCOMPLEX);
   b = NA_PTR_TYPE(rb_b, doublecomplex*);
+  n = NUM2INT(rb_n);
+  lwork = NUM2INT(rb_lwork);
   {
     int shape[1];
     shape[0] = MIN(n,m);

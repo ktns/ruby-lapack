@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID ssteqr_(char *compz, integer *n, real *d, real *e, real *z, integer *ldz, real *work, integer *info);
+
 static VALUE
 rb_ssteqr(int argc, VALUE *argv, VALUE self){
   VALUE rb_compz;
@@ -24,7 +26,7 @@ rb_ssteqr(int argc, VALUE *argv, VALUE self){
   integer ldz;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  info, d, e, z = NumRu::Lapack.ssteqr( compz, d, e, z)\n    or\n  NumRu::Lapack.ssteqr  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SSTEQR( COMPZ, N, D, E, Z, LDZ, WORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  SSTEQR computes all eigenvalues and, optionally, eigenvectors of a\n*  symmetric tridiagonal matrix using the implicit QL or QR method.\n*  The eigenvectors of a full or band symmetric matrix can also be found\n*  if SSYTRD or SSPTRD or SSBTRD has been used to reduce this matrix to\n*  tridiagonal form.\n*\n\n*  Arguments\n*  =========\n*\n*  COMPZ   (input) CHARACTER*1\n*          = 'N':  Compute eigenvalues only.\n*          = 'V':  Compute eigenvalues and eigenvectors of the original\n*                  symmetric matrix.  On entry, Z must contain the\n*                  orthogonal matrix used to reduce the original matrix\n*                  to tridiagonal form.\n*          = 'I':  Compute eigenvalues and eigenvectors of the\n*                  tridiagonal matrix.  Z is initialized to the identity\n*                  matrix.\n*\n*  N       (input) INTEGER\n*          The order of the matrix.  N >= 0.\n*\n*  D       (input/output) REAL array, dimension (N)\n*          On entry, the diagonal elements of the tridiagonal matrix.\n*          On exit, if INFO = 0, the eigenvalues in ascending order.\n*\n*  E       (input/output) REAL array, dimension (N-1)\n*          On entry, the (n-1) subdiagonal elements of the tridiagonal\n*          matrix.\n*          On exit, E has been destroyed.\n*\n*  Z       (input/output) REAL array, dimension (LDZ, N)\n*          On entry, if  COMPZ = 'V', then Z contains the orthogonal\n*          matrix used in the reduction to tridiagonal form.\n*          On exit, if INFO = 0, then if  COMPZ = 'V', Z contains the\n*          orthonormal eigenvectors of the original symmetric matrix,\n*          and if COMPZ = 'I', Z contains the orthonormal eigenvectors\n*          of the symmetric tridiagonal matrix.\n*          If COMPZ = 'N', then Z is not referenced.\n*\n*  LDZ     (input) INTEGER\n*          The leading dimension of the array Z.  LDZ >= 1, and if\n*          eigenvectors are desired, then  LDZ >= max(1,N).\n*\n*  WORK    (workspace) REAL array, dimension (max(1,2*N-2))\n*          If COMPZ = 'N', then WORK is not referenced.\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*          > 0:  the algorithm has failed to find all the eigenvalues in\n*                a total of 30*N iterations; if INFO = i, then i\n*                elements of E have not converged to zero; on exit, D\n*                and E contain the elements of a symmetric tridiagonal\n*                matrix which is orthogonally similar to the original\n*                matrix.\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  info, d, e, z = NumRu::Lapack.ssteqr( compz, d, e, z)\n    or\n  NumRu::Lapack.ssteqr  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 4)
@@ -35,11 +37,21 @@ rb_ssteqr(int argc, VALUE *argv, VALUE self){
   rb_z = argv[3];
 
   compz = StringValueCStr(rb_compz)[0];
+  if (!NA_IsNArray(rb_z))
+    rb_raise(rb_eArgError, "z (4th argument) must be NArray");
+  if (NA_RANK(rb_z) != 2)
+    rb_raise(rb_eArgError, "rank of z (4th argument) must be %d", 2);
+  n = NA_SHAPE1(rb_z);
+  ldz = NA_SHAPE0(rb_z);
+  if (NA_TYPE(rb_z) != NA_SFLOAT)
+    rb_z = na_change_type(rb_z, NA_SFLOAT);
+  z = NA_PTR_TYPE(rb_z, real*);
   if (!NA_IsNArray(rb_d))
     rb_raise(rb_eArgError, "d (2th argument) must be NArray");
   if (NA_RANK(rb_d) != 1)
     rb_raise(rb_eArgError, "rank of d (2th argument) must be %d", 1);
-  n = NA_SHAPE0(rb_d);
+  if (NA_SHAPE0(rb_d) != n)
+    rb_raise(rb_eRuntimeError, "shape 0 of d must be the same as shape 1 of z");
   if (NA_TYPE(rb_d) != NA_SFLOAT)
     rb_d = na_change_type(rb_d, NA_SFLOAT);
   d = NA_PTR_TYPE(rb_d, real*);
@@ -52,16 +64,6 @@ rb_ssteqr(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_e) != NA_SFLOAT)
     rb_e = na_change_type(rb_e, NA_SFLOAT);
   e = NA_PTR_TYPE(rb_e, real*);
-  if (!NA_IsNArray(rb_z))
-    rb_raise(rb_eArgError, "z (4th argument) must be NArray");
-  if (NA_RANK(rb_z) != 2)
-    rb_raise(rb_eArgError, "rank of z (4th argument) must be %d", 2);
-  ldz = NA_SHAPE0(rb_z);
-  if (NA_SHAPE1(rb_z) != n)
-    rb_raise(rb_eRuntimeError, "shape 1 of z must be the same as shape 0 of d");
-  if (NA_TYPE(rb_z) != NA_SFLOAT)
-    rb_z = na_change_type(rb_z, NA_SFLOAT);
-  z = NA_PTR_TYPE(rb_z, real*);
   {
     int shape[1];
     shape[0] = n;

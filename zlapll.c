@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID zlapll_(integer *n, doublecomplex *x, integer *incx, doublecomplex *y, integer *incy, doublereal *ssmin);
+
 static VALUE
 rb_zlapll(int argc, VALUE *argv, VALUE self){
   VALUE rb_n;
@@ -21,7 +23,7 @@ rb_zlapll(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  ssmin, x, y = NumRu::Lapack.zlapll( n, x, incx, y, incy)\n    or\n  NumRu::Lapack.zlapll  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE ZLAPLL( N, X, INCX, Y, INCY, SSMIN )\n\n*  Purpose\n*  =======\n*\n*  Given two column vectors X and Y, let\n*\n*                       A = ( X Y ).\n*\n*  The subroutine first computes the QR factorization of A = Q*R,\n*  and then computes the SVD of the 2-by-2 upper triangular matrix R.\n*  The smaller singular value of R is returned in SSMIN, which is used\n*  as the measurement of the linear dependency of the vectors X and Y.\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The length of the vectors X and Y.\n*\n*  X       (input/output) COMPLEX*16 array, dimension (1+(N-1)*INCX)\n*          On entry, X contains the N-vector X.\n*          On exit, X is overwritten.\n*\n*  INCX    (input) INTEGER\n*          The increment between successive elements of X. INCX > 0.\n*\n*  Y       (input/output) COMPLEX*16 array, dimension (1+(N-1)*INCY)\n*          On entry, Y contains the N-vector Y.\n*          On exit, Y is overwritten.\n*\n*  INCY    (input) INTEGER\n*          The increment between successive elements of Y. INCY > 0.\n*\n*  SSMIN   (output) DOUBLE PRECISION\n*          The smallest singular value of the N-by-2 matrix A = ( X Y ).\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  ssmin, x, y = NumRu::Lapack.zlapll( n, x, incx, y, incy)\n    or\n  NumRu::Lapack.zlapll  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 5)
@@ -32,18 +34,9 @@ rb_zlapll(int argc, VALUE *argv, VALUE self){
   rb_y = argv[3];
   rb_incy = argv[4];
 
-  n = NUM2INT(rb_n);
-  incx = NUM2INT(rb_incx);
   incy = NUM2INT(rb_incy);
-  if (!NA_IsNArray(rb_x))
-    rb_raise(rb_eArgError, "x (2th argument) must be NArray");
-  if (NA_RANK(rb_x) != 1)
-    rb_raise(rb_eArgError, "rank of x (2th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_x) != (1+(n-1)*incx))
-    rb_raise(rb_eRuntimeError, "shape 0 of x must be %d", 1+(n-1)*incx);
-  if (NA_TYPE(rb_x) != NA_DCOMPLEX)
-    rb_x = na_change_type(rb_x, NA_DCOMPLEX);
-  x = NA_PTR_TYPE(rb_x, doublecomplex*);
+  incx = NUM2INT(rb_incx);
+  n = NUM2INT(rb_n);
   if (!NA_IsNArray(rb_y))
     rb_raise(rb_eArgError, "y (4th argument) must be NArray");
   if (NA_RANK(rb_y) != 1)
@@ -53,6 +46,15 @@ rb_zlapll(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_y) != NA_DCOMPLEX)
     rb_y = na_change_type(rb_y, NA_DCOMPLEX);
   y = NA_PTR_TYPE(rb_y, doublecomplex*);
+  if (!NA_IsNArray(rb_x))
+    rb_raise(rb_eArgError, "x (2th argument) must be NArray");
+  if (NA_RANK(rb_x) != 1)
+    rb_raise(rb_eArgError, "rank of x (2th argument) must be %d", 1);
+  if (NA_SHAPE0(rb_x) != (1+(n-1)*incx))
+    rb_raise(rb_eRuntimeError, "shape 0 of x must be %d", 1+(n-1)*incx);
+  if (NA_TYPE(rb_x) != NA_DCOMPLEX)
+    rb_x = na_change_type(rb_x, NA_DCOMPLEX);
+  x = NA_PTR_TYPE(rb_x, doublecomplex*);
   {
     int shape[1];
     shape[0] = 1+(n-1)*incx;

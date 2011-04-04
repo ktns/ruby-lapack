@@ -1,6 +1,7 @@
 --- 
 :name: slapy2
 :md5sum: 4f1338cbdbf1dbb2f5736504748d4bf3
+:category: :function
 :type: real
 :arguments: 
 - x: 

@@ -1,6 +1,7 @@
 --- 
 :name: zla_gbrcond_c
 :md5sum: 1dcbea81eec20033235e6bc8b3fbb4c5
+:category: :function
 :type: doublereal
 :arguments: 
 - trans: 

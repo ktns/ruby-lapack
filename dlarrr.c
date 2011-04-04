@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dlarrr_(integer *n, doublereal *d, doublereal *e, integer *info);
+
 static VALUE
 rb_dlarrr(int argc, VALUE *argv, VALUE self){
   VALUE rb_d;
@@ -14,7 +16,7 @@ rb_dlarrr(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  info, e = NumRu::Lapack.dlarrr( d, e)\n    or\n  NumRu::Lapack.dlarrr  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLARRR( N, D, E, INFO )\n\n*  Purpose\n*  =======\n*\n*  Perform tests to decide whether the symmetric tridiagonal matrix T\n*  warrants expensive computations which guarantee high relative accuracy\n*  in the eigenvalues.\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The order of the matrix. N > 0.\n*\n*  D       (input) DOUBLE PRECISION array, dimension (N)\n*          The N diagonal elements of the tridiagonal matrix T.\n*\n*  E       (input/output) DOUBLE PRECISION array, dimension (N)\n*          On entry, the first (N-1) entries contain the subdiagonal\n*          elements of the tridiagonal matrix T; E(N) is set to ZERO.\n*\n*  INFO    (output) INTEGER\n*          INFO = 0(default) : the matrix warrants computations preserving\n*                              relative accuracy.\n*          INFO = 1          : the matrix warrants computations guaranteeing\n*                              only absolute accuracy.\n*\n\n*  Further Details\n*  ===============\n*\n*  Based on contributions by\n*     Beresford Parlett, University of California, Berkeley, USA\n*     Jim Demmel, University of California, Berkeley, USA\n*     Inderjit Dhillon, University of Texas, Austin, USA\n*     Osni Marques, LBNL/NERSC, USA\n*     Christof Voemel, University of California, Berkeley, USA\n*\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  info, e = NumRu::Lapack.dlarrr( d, e)\n    or\n  NumRu::Lapack.dlarrr  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 2)

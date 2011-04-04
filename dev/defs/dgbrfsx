@@ -101,8 +101,8 @@
 - params: 
     :type: doublereal
     :intent: input/output
-    :dims: []
-
+    :dims: 
+    - nparams
 - work: 
     :type: doublereal
     :intent: workspace
@@ -116,8 +116,8 @@
 - info: 
     :type: integer
     :intent: output
-:substitutions: {}
-
+:substitutions: 
+  n_err_bnds: "3"
 :fortran_help: "      SUBROUTINE DGBRFSX( TRANS, EQUED, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB, IPIV, R, C, B, LDB, X, LDX, RCOND, BERR, N_ERR_BNDS, ERR_BNDS_NORM, ERR_BNDS_COMP, NPARAMS, PARAMS, WORK, IWORK, INFO )\n\n\
   *     Purpose\n\
   *     =======\n\

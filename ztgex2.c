@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID ztgex2_(logical *wantq, logical *wantz, integer *n, doublecomplex *a, integer *lda, doublecomplex *b, integer *ldb, doublecomplex *q, integer *ldq, doublecomplex *z, integer *ldz, integer *j1, integer *info);
+
 static VALUE
 rb_ztgex2(int argc, VALUE *argv, VALUE self){
   VALUE rb_wantq;
@@ -36,7 +38,7 @@ rb_ztgex2(int argc, VALUE *argv, VALUE self){
   integer ldb;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  info, a, b, q, z = NumRu::Lapack.ztgex2( wantq, wantz, a, b, q, ldq, z, ldz, j1)\n    or\n  NumRu::Lapack.ztgex2  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE ZTGEX2( WANTQ, WANTZ, N, A, LDA, B, LDB, Q, LDQ, Z, LDZ, J1, INFO )\n\n*  Purpose\n*  =======\n*\n*  ZTGEX2 swaps adjacent diagonal 1 by 1 blocks (A11,B11) and (A22,B22)\n*  in an upper triangular matrix pair (A, B) by an unitary equivalence\n*  transformation.\n*\n*  (A, B) must be in generalized Schur canonical form, that is, A and\n*  B are both upper triangular.\n*\n*  Optionally, the matrices Q and Z of generalized Schur vectors are\n*  updated.\n*\n*         Q(in) * A(in) * Z(in)' = Q(out) * A(out) * Z(out)'\n*         Q(in) * B(in) * Z(in)' = Q(out) * B(out) * Z(out)'\n*\n*\n\n*  Arguments\n*  =========\n*\n*  WANTQ   (input) LOGICAL\n*          .TRUE. : update the left transformation matrix Q;\n*          .FALSE.: do not update Q.\n*\n*  WANTZ   (input) LOGICAL\n*          .TRUE. : update the right transformation matrix Z;\n*          .FALSE.: do not update Z.\n*\n*  N       (input) INTEGER\n*          The order of the matrices A and B. N >= 0.\n*\n*  A       (input/output) COMPLEX*16 arrays, dimensions (LDA,N)\n*          On entry, the matrix A in the pair (A, B).\n*          On exit, the updated matrix A.\n*\n*  LDA     (input)  INTEGER\n*          The leading dimension of the array A. LDA >= max(1,N).\n*\n*  B       (input/output) COMPLEX*16 arrays, dimensions (LDB,N)\n*          On entry, the matrix B in the pair (A, B).\n*          On exit, the updated matrix B.\n*\n*  LDB     (input)  INTEGER\n*          The leading dimension of the array B. LDB >= max(1,N).\n*\n*  Q       (input/output) COMPLEX*16 array, dimension (LDZ,N)\n*          If WANTQ = .TRUE, on entry, the unitary matrix Q. On exit,\n*          the updated matrix Q.\n*          Not referenced if WANTQ = .FALSE..\n*\n*  LDQ     (input) INTEGER\n*          The leading dimension of the array Q. LDQ >= 1;\n*          If WANTQ = .TRUE., LDQ >= N.\n*\n*  Z       (input/output) COMPLEX*16 array, dimension (LDZ,N)\n*          If WANTZ = .TRUE, on entry, the unitary matrix Z. On exit,\n*          the updated matrix Z.\n*          Not referenced if WANTZ = .FALSE..\n*\n*  LDZ     (input) INTEGER\n*          The leading dimension of the array Z. LDZ >= 1;\n*          If WANTZ = .TRUE., LDZ >= N.\n*\n*  J1      (input) INTEGER\n*          The index to the first block (A11, B11).\n*\n*  INFO    (output) INTEGER\n*           =0:  Successful exit.\n*           =1:  The transformed matrix pair (A, B) would be too far\n*                from generalized Schur form; the problem is ill-\n*                conditioned. \n*\n*\n\n*  Further Details\n*  ===============\n*\n*  Based on contributions by\n*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,\n*     Umea University, S-901 87 Umea, Sweden.\n*\n*  In the current code both weak and strong stability tests are\n*  performed. The user can omit the strong stability test by changing\n*  the internal logical parameter WANDS to .FALSE.. See ref. [2] for\n*  details.\n*\n*  [1] B. Kagstrom; A Direct Method for Reordering Eigenvalues in the\n*      Generalized Real Schur Form of a Regular Matrix Pair (A, B), in\n*      M.S. Moonen et al (eds), Linear Algebra for Large Scale and\n*      Real-Time Applications, Kluwer Academic Publ. 1993, pp 195-218.\n*\n*  [2] B. Kagstrom and P. Poromaa; Computing Eigenspaces with Specified\n*      Eigenvalues of a Regular Matrix Pair (A, B) and Condition\n*      Estimation: Theory, Algorithms and Software, Report UMINF-94.04,\n*      Department of Computing Science, Umea University, S-901 87 Umea,\n*      Sweden, 1994. Also as LAPACK Working Note 87. To appear in\n*      Numerical Algorithms, 1996.\n*\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  info, a, b, q, z = NumRu::Lapack.ztgex2( wantq, wantz, a, b, q, ldq, z, ldz, j1)\n    or\n  NumRu::Lapack.ztgex2  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 9)
@@ -51,38 +53,38 @@ rb_ztgex2(int argc, VALUE *argv, VALUE self){
   rb_ldz = argv[7];
   rb_j1 = argv[8];
 
-  wantq = (rb_wantq == Qtrue);
-  wantz = (rb_wantz == Qtrue);
-  ldq = NUM2INT(rb_ldq);
-  ldz = NUM2INT(rb_ldz);
-  j1 = NUM2INT(rb_j1);
   if (!NA_IsNArray(rb_a))
     rb_raise(rb_eArgError, "a (3th argument) must be NArray");
   if (NA_RANK(rb_a) != 2)
     rb_raise(rb_eArgError, "rank of a (3th argument) must be %d", 2);
-  lda = NA_SHAPE0(rb_a);
   n = NA_SHAPE1(rb_a);
+  lda = NA_SHAPE0(rb_a);
   if (NA_TYPE(rb_a) != NA_DCOMPLEX)
     rb_a = na_change_type(rb_a, NA_DCOMPLEX);
   a = NA_PTR_TYPE(rb_a, doublecomplex*);
+  wantz = (rb_wantz == Qtrue);
+  ldz = NUM2INT(rb_ldz);
   if (!NA_IsNArray(rb_b))
     rb_raise(rb_eArgError, "b (4th argument) must be NArray");
   if (NA_RANK(rb_b) != 2)
     rb_raise(rb_eArgError, "rank of b (4th argument) must be %d", 2);
-  ldb = NA_SHAPE0(rb_b);
   if (NA_SHAPE1(rb_b) != n)
     rb_raise(rb_eRuntimeError, "shape 1 of b must be the same as shape 1 of a");
+  ldb = NA_SHAPE0(rb_b);
   if (NA_TYPE(rb_b) != NA_DCOMPLEX)
     rb_b = na_change_type(rb_b, NA_DCOMPLEX);
   b = NA_PTR_TYPE(rb_b, doublecomplex*);
+  j1 = NUM2INT(rb_j1);
+  wantq = (rb_wantq == Qtrue);
+  ldq = NUM2INT(rb_ldq);
   if (!NA_IsNArray(rb_q))
     rb_raise(rb_eArgError, "q (5th argument) must be NArray");
   if (NA_RANK(rb_q) != 2)
     rb_raise(rb_eArgError, "rank of q (5th argument) must be %d", 2);
-  if (NA_SHAPE0(rb_q) != (wantq ? ldq : 0))
-    rb_raise(rb_eRuntimeError, "shape 0 of q must be %d", wantq ? ldq : 0);
   if (NA_SHAPE1(rb_q) != (wantq ? n : 0))
     rb_raise(rb_eRuntimeError, "shape 1 of q must be %d", wantq ? n : 0);
+  if (NA_SHAPE0(rb_q) != (wantq ? ldq : 0))
+    rb_raise(rb_eRuntimeError, "shape 0 of q must be %d", wantq ? ldq : 0);
   if (NA_TYPE(rb_q) != NA_DCOMPLEX)
     rb_q = na_change_type(rb_q, NA_DCOMPLEX);
   q = NA_PTR_TYPE(rb_q, doublecomplex*);
@@ -90,10 +92,10 @@ rb_ztgex2(int argc, VALUE *argv, VALUE self){
     rb_raise(rb_eArgError, "z (7th argument) must be NArray");
   if (NA_RANK(rb_z) != 2)
     rb_raise(rb_eArgError, "rank of z (7th argument) must be %d", 2);
-  if (NA_SHAPE0(rb_z) != (wantq ? ldz : 0))
-    rb_raise(rb_eRuntimeError, "shape 0 of z must be %d", wantq ? ldz : 0);
   if (NA_SHAPE1(rb_z) != (wantq ? n : 0))
     rb_raise(rb_eRuntimeError, "shape 1 of z must be %d", wantq ? n : 0);
+  if (NA_SHAPE0(rb_z) != (wantq ? ldz : 0))
+    rb_raise(rb_eRuntimeError, "shape 0 of z must be %d", wantq ? ldz : 0);
   if (NA_TYPE(rb_z) != NA_DCOMPLEX)
     rb_z = na_change_type(rb_z, NA_DCOMPLEX);
   z = NA_PTR_TYPE(rb_z, doublecomplex*);

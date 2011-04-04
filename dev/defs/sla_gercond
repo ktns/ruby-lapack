@@ -1,6 +1,7 @@
 --- 
 :name: sla_gercond
 :md5sum: e387f0de4f947d692671de72b3925269
+:category: :function
 :type: real
 :arguments: 
 - trans: 

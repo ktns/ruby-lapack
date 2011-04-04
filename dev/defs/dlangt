@@ -1,6 +1,7 @@
 --- 
 :name: dlangt
 :md5sum: a56e7eb61491985defd273c24dd9d896
+:category: :function
 :type: doublereal
 :arguments: 
 - norm: 

@@ -1,6 +1,7 @@
 --- 
 :name: ilaslc
 :md5sum: 98329b8613d7cf648a79d80e5f7526ba
+:category: :function
 :type: integer
 :arguments: 
 - m: 

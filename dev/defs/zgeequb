@@ -40,8 +40,8 @@
 - info: 
     :type: integer
     :intent: output
-:substitutions: {}
-
+:substitutions: 
+  lda: m
 :fortran_help: "      SUBROUTINE ZGEEQUB( M, N, A, LDA, R, C, ROWCND, COLCND, AMAX, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\

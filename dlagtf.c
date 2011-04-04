@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dlagtf_(integer *n, doublereal *a, doublereal *lambda, doublereal *b, doublereal *c, doublereal *tol, doublereal *d, integer *in, integer *info);
+
 static VALUE
 rb_dlagtf(int argc, VALUE *argv, VALUE self){
   VALUE rb_a;
@@ -28,7 +30,7 @@ rb_dlagtf(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  d, in, info, a, b, c = NumRu::Lapack.dlagtf( a, lambda, b, c, tol)\n    or\n  NumRu::Lapack.dlagtf  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLAGTF( N, A, LAMBDA, B, C, TOL, D, IN, INFO )\n\n*  Purpose\n*  =======\n*\n*  DLAGTF factorizes the matrix (T - lambda*I), where T is an n by n\n*  tridiagonal matrix and lambda is a scalar, as\n*\n*     T - lambda*I = PLU,\n*\n*  where P is a permutation matrix, L is a unit lower tridiagonal matrix\n*  with at most one non-zero sub-diagonal elements per column and U is\n*  an upper triangular matrix with at most two non-zero super-diagonal\n*  elements per column.\n*\n*  The factorization is obtained by Gaussian elimination with partial\n*  pivoting and implicit row scaling.\n*\n*  The parameter LAMBDA is included in the routine so that DLAGTF may\n*  be used, in conjunction with DLAGTS, to obtain eigenvectors of T by\n*  inverse iteration.\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The order of the matrix T.\n*\n*  A       (input/output) DOUBLE PRECISION array, dimension (N)\n*          On entry, A must contain the diagonal elements of T.\n*\n*          On exit, A is overwritten by the n diagonal elements of the\n*          upper triangular matrix U of the factorization of T.\n*\n*  LAMBDA  (input) DOUBLE PRECISION\n*          On entry, the scalar lambda.\n*\n*  B       (input/output) DOUBLE PRECISION array, dimension (N-1)\n*          On entry, B must contain the (n-1) super-diagonal elements of\n*          T.\n*\n*          On exit, B is overwritten by the (n-1) super-diagonal\n*          elements of the matrix U of the factorization of T.\n*\n*  C       (input/output) DOUBLE PRECISION array, dimension (N-1)\n*          On entry, C must contain the (n-1) sub-diagonal elements of\n*          T.\n*\n*          On exit, C is overwritten by the (n-1) sub-diagonal elements\n*          of the matrix L of the factorization of T.\n*\n*  TOL     (input) DOUBLE PRECISION\n*          On entry, a relative tolerance used to indicate whether or\n*          not the matrix (T - lambda*I) is nearly singular. TOL should\n*          normally be chose as approximately the largest relative error\n*          in the elements of T. For example, if the elements of T are\n*          correct to about 4 significant figures, then TOL should be\n*          set to about 5*10**(-4). If TOL is supplied as less than eps,\n*          where eps is the relative machine precision, then the value\n*          eps is used in place of TOL.\n*\n*  D       (output) DOUBLE PRECISION array, dimension (N-2)\n*          On exit, D is overwritten by the (n-2) second super-diagonal\n*          elements of the matrix U of the factorization of T.\n*\n*  IN      (output) INTEGER array, dimension (N)\n*          On exit, IN contains details of the permutation matrix P. If\n*          an interchange occurred at the kth step of the elimination,\n*          then IN(k) = 1, otherwise IN(k) = 0. The element IN(n)\n*          returns the smallest positive integer j such that\n*\n*             abs( u(j,j) ).le. norm( (T - lambda*I)(j) )*TOL,\n*\n*          where norm( A(j) ) denotes the sum of the absolute values of\n*          the jth row of the matrix A. If no such j exists then IN(n)\n*          is returned as zero. If IN(n) is returned as positive, then a\n*          diagonal element of U is small, indicating that\n*          (T - lambda*I) is singular or nearly singular,\n*\n*  INFO    (output) INTEGER\n*          = 0   : successful exit\n*          .lt. 0: if INFO = -k, the kth argument had an illegal value\n*\n\n* =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  d, in, info, a, b, c = NumRu::Lapack.dlagtf( a, lambda, b, c, tol)\n    or\n  NumRu::Lapack.dlagtf  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 5)
@@ -39,8 +41,6 @@ rb_dlagtf(int argc, VALUE *argv, VALUE self){
   rb_c = argv[3];
   rb_tol = argv[4];
 
-  lambda = NUM2DBL(rb_lambda);
-  tol = NUM2DBL(rb_tol);
   if (!NA_IsNArray(rb_a))
     rb_raise(rb_eArgError, "a (1th argument) must be NArray");
   if (NA_RANK(rb_a) != 1)
@@ -49,6 +49,8 @@ rb_dlagtf(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_a) != NA_DFLOAT)
     rb_a = na_change_type(rb_a, NA_DFLOAT);
   a = NA_PTR_TYPE(rb_a, doublereal*);
+  tol = NUM2DBL(rb_tol);
+  lambda = NUM2DBL(rb_lambda);
   if (!NA_IsNArray(rb_b))
     rb_raise(rb_eArgError, "b (3th argument) must be NArray");
   if (NA_RANK(rb_b) != 1)
@@ -75,7 +77,7 @@ rb_dlagtf(int argc, VALUE *argv, VALUE self){
   d = NA_PTR_TYPE(rb_d, doublereal*);
   {
     int shape[1];
-    shape[0] = DIM_LEN(n);
+    shape[0] = n;
     rb_in = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   in = NA_PTR_TYPE(rb_in, integer*);

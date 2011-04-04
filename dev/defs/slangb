@@ -1,6 +1,7 @@
 --- 
 :name: slangb
 :md5sum: 3f8c81af777bb7ec2cc1b2625266d675
+:category: :function
 :type: real
 :arguments: 
 - norm: 

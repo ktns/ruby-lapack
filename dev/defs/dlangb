@@ -1,6 +1,7 @@
 --- 
 :name: dlangb
 :md5sum: 5a9301c71e52681db32faa73a8ccc40f
+:category: :function
 :type: doublereal
 :arguments: 
 - norm: 

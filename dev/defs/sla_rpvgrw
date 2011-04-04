@@ -1,6 +1,7 @@
 --- 
 :name: sla_rpvgrw
 :md5sum: ad9440dfdcfca1213188ee2e5876bf80
+:category: :function
 :type: real
 :arguments: 
 - n: 

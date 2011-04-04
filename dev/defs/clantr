@@ -1,6 +1,7 @@
 --- 
 :name: clantr
 :md5sum: 2952a019c52f6bc7681a557329258545
+:category: :function
 :type: real
 :arguments: 
 - norm: 

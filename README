@@ -2,7 +2,7 @@
 Ruby-LAPACK is a Ruby wrapper of LAPACK.
 Requires
 
-    * CLAPACK (http://www.netlib.org/clapack/)
+    * LAPACK (http://www.netlib.org/lapack/)
     * NArray (http://narray.rubyforge.org/index.html.en)
 
 

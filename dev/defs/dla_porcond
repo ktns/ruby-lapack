@@ -1,6 +1,7 @@
 --- 
 :name: dla_porcond
 :md5sum: ad89241edd2e8e4f14c40b59471af634
+:category: :function
 :type: doublereal
 :arguments: 
 - uplo: 

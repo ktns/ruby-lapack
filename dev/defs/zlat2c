@@ -31,7 +31,7 @@
     :type: integer
     :intent: output
 :substitutions: 
-  ldsa: MAX(1,m)
+  ldsa: MAX(1,n)
 :fortran_help: "      SUBROUTINE ZLAT2C( UPLO, N, A, LDA, SA, LDSA, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\

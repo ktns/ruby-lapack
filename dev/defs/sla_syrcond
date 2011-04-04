@@ -1,6 +1,7 @@
 --- 
 :name: sla_syrcond
 :md5sum: 5eaaae108449bbac6d01191c8809734f
+:category: :function
 :type: real
 :arguments: 
 - uplo: 

@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dlarzb_(char *side, char *trans, char *direct, char *storev, integer *m, integer *n, integer *k, integer *l, doublereal *v, integer *ldv, doublereal *t, integer *ldt, doublereal *c, integer *ldc, doublereal *work, integer *ldwork);
+
 static VALUE
 rb_dlarzb(int argc, VALUE *argv, VALUE self){
   VALUE rb_side;
@@ -33,7 +35,7 @@ rb_dlarzb(int argc, VALUE *argv, VALUE self){
   integer ldwork;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  c = NumRu::Lapack.dlarzb( side, trans, direct, storev, m, l, v, t, c)\n    or\n  NumRu::Lapack.dlarzb  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLARZB( SIDE, TRANS, DIRECT, STOREV, M, N, K, L, V, LDV, T, LDT, C, LDC, WORK, LDWORK )\n\n*  Purpose\n*  =======\n*\n*  DLARZB applies a real block reflector H or its transpose H**T to\n*  a real distributed M-by-N  C from the left or the right.\n*\n*  Currently, only STOREV = 'R' and DIRECT = 'B' are supported.\n*\n\n*  Arguments\n*  =========\n*\n*  SIDE    (input) CHARACTER*1\n*          = 'L': apply H or H' from the Left\n*          = 'R': apply H or H' from the Right\n*\n*  TRANS   (input) CHARACTER*1\n*          = 'N': apply H (No transpose)\n*          = 'C': apply H' (Transpose)\n*\n*  DIRECT  (input) CHARACTER*1\n*          Indicates how H is formed from a product of elementary\n*          reflectors\n*          = 'F': H = H(1) H(2) . . . H(k) (Forward, not supported yet)\n*          = 'B': H = H(k) . . . H(2) H(1) (Backward)\n*\n*  STOREV  (input) CHARACTER*1\n*          Indicates how the vectors which define the elementary\n*          reflectors are stored:\n*          = 'C': Columnwise                        (not supported yet)\n*          = 'R': Rowwise\n*\n*  M       (input) INTEGER\n*          The number of rows of the matrix C.\n*\n*  N       (input) INTEGER\n*          The number of columns of the matrix C.\n*\n*  K       (input) INTEGER\n*          The order of the matrix T (= the number of elementary\n*          reflectors whose product defines the block reflector).\n*\n*  L       (input) INTEGER\n*          The number of columns of the matrix V containing the\n*          meaningful part of the Householder reflectors.\n*          If SIDE = 'L', M >= L >= 0, if SIDE = 'R', N >= L >= 0.\n*\n*  V       (input) DOUBLE PRECISION array, dimension (LDV,NV).\n*          If STOREV = 'C', NV = K; if STOREV = 'R', NV = L.\n*\n*  LDV     (input) INTEGER\n*          The leading dimension of the array V.\n*          If STOREV = 'C', LDV >= L; if STOREV = 'R', LDV >= K.\n*\n*  T       (input) DOUBLE PRECISION array, dimension (LDT,K)\n*          The triangular K-by-K matrix T in the representation of the\n*          block reflector.\n*\n*  LDT     (input) INTEGER\n*          The leading dimension of the array T. LDT >= K.\n*\n*  C       (input/output) DOUBLE PRECISION array, dimension (LDC,N)\n*          On entry, the M-by-N matrix C.\n*          On exit, C is overwritten by H*C or H'*C or C*H or C*H'.\n*\n*  LDC     (input) INTEGER\n*          The leading dimension of the array C. LDC >= max(1,M).\n*\n*  WORK    (workspace) DOUBLE PRECISION array, dimension (LDWORK,K)\n*\n*  LDWORK  (input) INTEGER\n*          The leading dimension of the array WORK.\n*          If SIDE = 'L', LDWORK >= max(1,N);\n*          if SIDE = 'R', LDWORK >= max(1,M).\n*\n\n*  Further Details\n*  ===============\n*\n*  Based on contributions by\n*    A. Petitet, Computer Science Dept., Univ. of Tenn., Knoxville, USA\n*\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  c = NumRu::Lapack.dlarzb( side, trans, direct, storev, m, l, v, t, c)\n    or\n  NumRu::Lapack.dlarzb  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 9)
@@ -48,39 +50,40 @@ rb_dlarzb(int argc, VALUE *argv, VALUE self){
   rb_t = argv[7];
   rb_c = argv[8];
 
-  side = StringValueCStr(rb_side)[0];
   trans = StringValueCStr(rb_trans)[0];
-  direct = StringValueCStr(rb_direct)[0];
-  storev = StringValueCStr(rb_storev)[0];
-  m = NUM2INT(rb_m);
-  l = NUM2INT(rb_l);
   if (!NA_IsNArray(rb_v))
     rb_raise(rb_eArgError, "v (7th argument) must be NArray");
   if (NA_RANK(rb_v) != 2)
     rb_raise(rb_eArgError, "rank of v (7th argument) must be %d", 2);
-  ldv = NA_SHAPE0(rb_v);
   nv = NA_SHAPE1(rb_v);
+  ldv = NA_SHAPE0(rb_v);
   if (NA_TYPE(rb_v) != NA_DFLOAT)
     rb_v = na_change_type(rb_v, NA_DFLOAT);
   v = NA_PTR_TYPE(rb_v, doublereal*);
-  if (!NA_IsNArray(rb_t))
-    rb_raise(rb_eArgError, "t (8th argument) must be NArray");
-  if (NA_RANK(rb_t) != 2)
-    rb_raise(rb_eArgError, "rank of t (8th argument) must be %d", 2);
-  ldt = NA_SHAPE0(rb_t);
-  k = NA_SHAPE1(rb_t);
-  if (NA_TYPE(rb_t) != NA_DFLOAT)
-    rb_t = na_change_type(rb_t, NA_DFLOAT);
-  t = NA_PTR_TYPE(rb_t, doublereal*);
+  direct = StringValueCStr(rb_direct)[0];
+  l = NUM2INT(rb_l);
+  side = StringValueCStr(rb_side)[0];
+  storev = StringValueCStr(rb_storev)[0];
   if (!NA_IsNArray(rb_c))
     rb_raise(rb_eArgError, "c (9th argument) must be NArray");
   if (NA_RANK(rb_c) != 2)
     rb_raise(rb_eArgError, "rank of c (9th argument) must be %d", 2);
-  ldc = NA_SHAPE0(rb_c);
   n = NA_SHAPE1(rb_c);
+  ldc = NA_SHAPE0(rb_c);
   if (NA_TYPE(rb_c) != NA_DFLOAT)
     rb_c = na_change_type(rb_c, NA_DFLOAT);
   c = NA_PTR_TYPE(rb_c, doublereal*);
+  if (!NA_IsNArray(rb_t))
+    rb_raise(rb_eArgError, "t (8th argument) must be NArray");
+  if (NA_RANK(rb_t) != 2)
+    rb_raise(rb_eArgError, "rank of t (8th argument) must be %d", 2);
+  k = NA_SHAPE1(rb_t);
+  ldt = NA_SHAPE0(rb_t);
+  if (NA_TYPE(rb_t) != NA_DFLOAT)
+    rb_t = na_change_type(rb_t, NA_DFLOAT);
+  t = NA_PTR_TYPE(rb_t, doublereal*);
+  m = NUM2INT(rb_m);
+  ldwork = max(1,n) ? side = 'l' : max(1,m) ? side = 'r' : 0;
   {
     int shape[2];
     shape[0] = ldc;
@@ -91,7 +94,6 @@ rb_dlarzb(int argc, VALUE *argv, VALUE self){
   MEMCPY(c_out__, c, doublereal, NA_TOTAL(rb_c));
   rb_c = rb_c_out__;
   c = c_out__;
-  ldwork = max(1,n) ? side = 'l' : max(1,m) ? side = 'r' : 0;
   work = ALLOC_N(doublereal, (ldwork)*(k));
 
   dlarzb_(&side, &trans, &direct, &storev, &m, &n, &k, &l, v, &ldv, t, &ldt, c, &ldc, work, &ldwork);

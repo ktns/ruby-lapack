@@ -1,6 +1,7 @@
 --- 
 :name: slaneg
 :md5sum: b592b6c8f13d7dc0edca587a18aebd9f
+:category: :function
 :type: integer
 :arguments: 
 - n: 

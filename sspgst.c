@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID sspgst_(integer *itype, char *uplo, integer *n, real *ap, real *bp, integer *info);
+
 static VALUE
 rb_sspgst(int argc, VALUE *argv, VALUE self){
   VALUE rb_itype;
@@ -19,7 +21,7 @@ rb_sspgst(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  info, ap = NumRu::Lapack.sspgst( itype, uplo, n, ap, bp)\n    or\n  NumRu::Lapack.sspgst  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SSPGST( ITYPE, UPLO, N, AP, BP, INFO )\n\n*  Purpose\n*  =======\n*\n*  SSPGST reduces a real symmetric-definite generalized eigenproblem\n*  to standard form, using packed storage.\n*\n*  If ITYPE = 1, the problem is A*x = lambda*B*x,\n*  and A is overwritten by inv(U**T)*A*inv(U) or inv(L)*A*inv(L**T)\n*\n*  If ITYPE = 2 or 3, the problem is A*B*x = lambda*x or\n*  B*A*x = lambda*x, and A is overwritten by U*A*U**T or L**T*A*L.\n*\n*  B must have been previously factorized as U**T*U or L*L**T by SPPTRF.\n*\n\n*  Arguments\n*  =========\n*\n*  ITYPE   (input) INTEGER\n*          = 1: compute inv(U**T)*A*inv(U) or inv(L)*A*inv(L**T);\n*          = 2 or 3: compute U*A*U**T or L**T*A*L.\n*\n*  UPLO    (input) CHARACTER*1\n*          = 'U':  Upper triangle of A is stored and B is factored as\n*                  U**T*U;\n*          = 'L':  Lower triangle of A is stored and B is factored as\n*                  L*L**T.\n*\n*  N       (input) INTEGER\n*          The order of the matrices A and B.  N >= 0.\n*\n*  AP      (input/output) REAL array, dimension (N*(N+1)/2)\n*          On entry, the upper or lower triangle of the symmetric matrix\n*          A, packed columnwise in a linear array.  The j-th column of A\n*          is stored in the array AP as follows:\n*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;\n*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.\n*\n*          On exit, if INFO = 0, the transformed matrix, stored in the\n*          same format as A.\n*\n*  BP      (input) REAL array, dimension (N*(N+1)/2)\n*          The triangular factor from the Cholesky factorization of B,\n*          stored in the same format as A, as returned by SPPTRF.\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  info, ap = NumRu::Lapack.sspgst( itype, uplo, n, ap, bp)\n    or\n  NumRu::Lapack.sspgst  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 5)
@@ -30,9 +32,9 @@ rb_sspgst(int argc, VALUE *argv, VALUE self){
   rb_ap = argv[3];
   rb_bp = argv[4];
 
-  itype = NUM2INT(rb_itype);
   uplo = StringValueCStr(rb_uplo)[0];
   n = NUM2INT(rb_n);
+  itype = NUM2INT(rb_itype);
   if (!NA_IsNArray(rb_ap))
     rb_raise(rb_eArgError, "ap (4th argument) must be NArray");
   if (NA_RANK(rb_ap) != 1)

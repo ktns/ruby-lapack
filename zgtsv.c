@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID zgtsv_(integer *n, integer *nrhs, doublecomplex *dl, doublecomplex *d, doublecomplex *du, doublecomplex *b, integer *ldb, integer *info);
+
 static VALUE
 rb_zgtsv(int argc, VALUE *argv, VALUE self){
   VALUE rb_dl;
@@ -26,7 +28,7 @@ rb_zgtsv(int argc, VALUE *argv, VALUE self){
   integer nrhs;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  info, dl, d, du, b = NumRu::Lapack.zgtsv( dl, d, du, b)\n    or\n  NumRu::Lapack.zgtsv  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE ZGTSV( N, NRHS, DL, D, DU, B, LDB, INFO )\n\n*  Purpose\n*  =======\n*\n*  ZGTSV  solves the equation\n*\n*     A*X = B,\n*\n*  where A is an N-by-N tridiagonal matrix, by Gaussian elimination with\n*  partial pivoting.\n*\n*  Note that the equation  A'*X = B  may be solved by interchanging the\n*  order of the arguments DU and DL.\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The order of the matrix A.  N >= 0.\n*\n*  NRHS    (input) INTEGER\n*          The number of right hand sides, i.e., the number of columns\n*          of the matrix B.  NRHS >= 0.\n*\n*  DL      (input/output) COMPLEX*16 array, dimension (N-1)\n*          On entry, DL must contain the (n-1) subdiagonal elements of\n*          A.\n*          On exit, DL is overwritten by the (n-2) elements of the\n*          second superdiagonal of the upper triangular matrix U from\n*          the LU factorization of A, in DL(1), ..., DL(n-2).\n*\n*  D       (input/output) COMPLEX*16 array, dimension (N)\n*          On entry, D must contain the diagonal elements of A.\n*          On exit, D is overwritten by the n diagonal elements of U.\n*\n*  DU      (input/output) COMPLEX*16 array, dimension (N-1)\n*          On entry, DU must contain the (n-1) superdiagonal elements\n*          of A.\n*          On exit, DU is overwritten by the (n-1) elements of the first\n*          superdiagonal of U.\n*\n*  B       (input/output) COMPLEX*16 array, dimension (LDB,NRHS)\n*          On entry, the N-by-NRHS right hand side matrix B.\n*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.\n*\n*  LDB     (input) INTEGER\n*          The leading dimension of the array B.  LDB >= max(1,N).\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*          > 0:  if INFO = i, U(i,i) is exactly zero, and the solution\n*                has not been computed.  The factorization has not been\n*                completed unless i = N.\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  info, dl, d, du, b = NumRu::Lapack.zgtsv( dl, d, du, b)\n    or\n  NumRu::Lapack.zgtsv  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 4)
@@ -36,23 +38,23 @@ rb_zgtsv(int argc, VALUE *argv, VALUE self){
   rb_du = argv[2];
   rb_b = argv[3];
 
+  if (!NA_IsNArray(rb_b))
+    rb_raise(rb_eArgError, "b (4th argument) must be NArray");
+  if (NA_RANK(rb_b) != 2)
+    rb_raise(rb_eArgError, "rank of b (4th argument) must be %d", 2);
+  nrhs = NA_SHAPE1(rb_b);
+  ldb = NA_SHAPE0(rb_b);
+  if (NA_TYPE(rb_b) != NA_DCOMPLEX)
+    rb_b = na_change_type(rb_b, NA_DCOMPLEX);
+  b = NA_PTR_TYPE(rb_b, doublecomplex*);
   if (!NA_IsNArray(rb_d))
-    rb_raise(rb_eArgError, "d (1th argument) must be NArray");
+    rb_raise(rb_eArgError, "d (2th argument) must be NArray");
   if (NA_RANK(rb_d) != 1)
-    rb_raise(rb_eArgError, "rank of d (1th argument) must be %d", 1);
+    rb_raise(rb_eArgError, "rank of d (2th argument) must be %d", 1);
   n = NA_SHAPE0(rb_d);
   if (NA_TYPE(rb_d) != NA_DCOMPLEX)
     rb_d = na_change_type(rb_d, NA_DCOMPLEX);
   d = NA_PTR_TYPE(rb_d, doublecomplex*);
-  if (!NA_IsNArray(rb_dl))
-    rb_raise(rb_eArgError, "dl (2th argument) must be NArray");
-  if (NA_RANK(rb_dl) != 1)
-    rb_raise(rb_eArgError, "rank of dl (2th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_dl) != (n-1))
-    rb_raise(rb_eRuntimeError, "shape 0 of dl must be %d", n-1);
-  if (NA_TYPE(rb_dl) != NA_DCOMPLEX)
-    rb_dl = na_change_type(rb_dl, NA_DCOMPLEX);
-  dl = NA_PTR_TYPE(rb_dl, doublecomplex*);
   if (!NA_IsNArray(rb_du))
     rb_raise(rb_eArgError, "du (3th argument) must be NArray");
   if (NA_RANK(rb_du) != 1)
@@ -62,15 +64,15 @@ rb_zgtsv(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_du) != NA_DCOMPLEX)
     rb_du = na_change_type(rb_du, NA_DCOMPLEX);
   du = NA_PTR_TYPE(rb_du, doublecomplex*);
-  if (!NA_IsNArray(rb_b))
-    rb_raise(rb_eArgError, "b (4th argument) must be NArray");
-  if (NA_RANK(rb_b) != 2)
-    rb_raise(rb_eArgError, "rank of b (4th argument) must be %d", 2);
-  ldb = NA_SHAPE0(rb_b);
-  nrhs = NA_SHAPE1(rb_b);
-  if (NA_TYPE(rb_b) != NA_DCOMPLEX)
-    rb_b = na_change_type(rb_b, NA_DCOMPLEX);
-  b = NA_PTR_TYPE(rb_b, doublecomplex*);
+  if (!NA_IsNArray(rb_dl))
+    rb_raise(rb_eArgError, "dl (1th argument) must be NArray");
+  if (NA_RANK(rb_dl) != 1)
+    rb_raise(rb_eArgError, "rank of dl (1th argument) must be %d", 1);
+  if (NA_SHAPE0(rb_dl) != (n-1))
+    rb_raise(rb_eRuntimeError, "shape 0 of dl must be %d", n-1);
+  if (NA_TYPE(rb_dl) != NA_DCOMPLEX)
+    rb_dl = na_change_type(rb_dl, NA_DCOMPLEX);
+  dl = NA_PTR_TYPE(rb_dl, doublecomplex*);
   {
     int shape[1];
     shape[0] = n-1;

@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern real slanhs_(char *norm, integer *n, real *a, integer *lda, real *work);
+
 static VALUE
 rb_slanhs(int argc, VALUE *argv, VALUE self){
   VALUE rb_norm;
@@ -15,7 +17,7 @@ rb_slanhs(int argc, VALUE *argv, VALUE self){
   integer lwork;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.slanhs( norm, a)\n    or\n  NumRu::Lapack.slanhs  # print help\n\n\nFORTRAN MANUAL\n      REAL             FUNCTION SLANHS( NORM, N, A, LDA, WORK )\n\n*  Purpose\n*  =======\n*\n*  SLANHS  returns the value of the one norm,  or the Frobenius norm, or\n*  the  infinity norm,  or the  element of  largest absolute value  of a\n*  Hessenberg matrix A.\n*\n*  Description\n*  ===========\n*\n*  SLANHS returns the value\n*\n*     SLANHS = ( max(abs(A(i,j))), NORM = 'M' or 'm'\n*              (\n*              ( norm1(A),         NORM = '1', 'O' or 'o'\n*              (\n*              ( normI(A),         NORM = 'I' or 'i'\n*              (\n*              ( normF(A),         NORM = 'F', 'f', 'E' or 'e'\n*\n*  where  norm1  denotes the  one norm of a matrix (maximum column sum),\n*  normI  denotes the  infinity norm  of a matrix  (maximum row sum) and\n*  normF  denotes the  Frobenius norm of a matrix (square root of sum of\n*  squares).  Note that  max(abs(A(i,j)))  is not a consistent matrix norm.\n*\n\n*  Arguments\n*  =========\n*\n*  NORM    (input) CHARACTER*1\n*          Specifies the value to be returned in SLANHS as described\n*          above.\n*\n*  N       (input) INTEGER\n*          The order of the matrix A.  N >= 0.  When N = 0, SLANHS is\n*          set to zero.\n*\n*  A       (input) REAL array, dimension (LDA,N)\n*          The n by n upper Hessenberg matrix A; the part of A below the\n*          first sub-diagonal is not referenced.\n*\n*  LDA     (input) INTEGER\n*          The leading dimension of the array A.  LDA >= max(N,1).\n*\n*  WORK    (workspace) REAL array, dimension (MAX(1,LWORK)),\n*          where LWORK >= N when NORM = 'I'; otherwise, WORK is not\n*          referenced.\n*\n\n* =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.slanhs( norm, a)\n    or\n  NumRu::Lapack.slanhs  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 2)
@@ -23,16 +25,16 @@ rb_slanhs(int argc, VALUE *argv, VALUE self){
   rb_norm = argv[0];
   rb_a = argv[1];
 
-  norm = StringValueCStr(rb_norm)[0];
   if (!NA_IsNArray(rb_a))
     rb_raise(rb_eArgError, "a (2th argument) must be NArray");
   if (NA_RANK(rb_a) != 2)
     rb_raise(rb_eArgError, "rank of a (2th argument) must be %d", 2);
-  lda = NA_SHAPE0(rb_a);
   n = NA_SHAPE1(rb_a);
+  lda = NA_SHAPE0(rb_a);
   if (NA_TYPE(rb_a) != NA_SFLOAT)
     rb_a = na_change_type(rb_a, NA_SFLOAT);
   a = NA_PTR_TYPE(rb_a, real*);
+  norm = StringValueCStr(rb_norm)[0];
   lwork = lsame_(&norm,"I") ? n : 0;
   work = ALLOC_N(real, (MAX(1,lwork)));
 

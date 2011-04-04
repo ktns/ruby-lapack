@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dlascl2_(integer *m, integer *n, doublereal *d, doublereal *x, integer *ldx);
+
 static VALUE
 rb_dlascl2(int argc, VALUE *argv, VALUE self){
   VALUE rb_d;
@@ -14,7 +16,7 @@ rb_dlascl2(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  x = NumRu::Lapack.dlascl2( d, x)\n    or\n  NumRu::Lapack.dlascl2  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLASCL2 ( M, N, D, X, LDX )\n\n*  Purpose\n*  =======\n*\n*  DLASCL2 performs a diagonal scaling on a vector:\n*    x <-- D * x\n*  where the diagonal matrix D is stored as a vector.\n*\n*  Eventually to be replaced by BLAS_dge_diag_scale in the new BLAS\n*  standard.\n*\n\n*  Arguments\n*  =========\n*\n*     M       (input) INTEGER\n*     The number of rows of D and X. M >= 0.\n*\n*     N       (input) INTEGER\n*     The number of columns of D and X. N >= 0.\n*\n*     D       (input) DOUBLE PRECISION array, length M\n*     Diagonal matrix D, stored as a vector of length M.\n*\n*     X       (input/output) DOUBLE PRECISION array, dimension (LDX,N)\n*     On entry, the vector X to be scaled by D.\n*     On exit, the scaled vector.\n*\n*     LDX     (input) INTEGER\n*     The leading dimension of the vector X. LDX >= 0.\n*\n\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      INTEGER            I, J\n*     ..\n\n");
+    printf("%s\n", "USAGE:\n  x = NumRu::Lapack.dlascl2( d, x)\n    or\n  NumRu::Lapack.dlascl2  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 2)
@@ -22,6 +24,15 @@ rb_dlascl2(int argc, VALUE *argv, VALUE self){
   rb_d = argv[0];
   rb_x = argv[1];
 
+  if (!NA_IsNArray(rb_x))
+    rb_raise(rb_eArgError, "x (2th argument) must be NArray");
+  if (NA_RANK(rb_x) != 2)
+    rb_raise(rb_eArgError, "rank of x (2th argument) must be %d", 2);
+  n = NA_SHAPE1(rb_x);
+  ldx = NA_SHAPE0(rb_x);
+  if (NA_TYPE(rb_x) != NA_DFLOAT)
+    rb_x = na_change_type(rb_x, NA_DFLOAT);
+  x = NA_PTR_TYPE(rb_x, doublereal*);
   if (!NA_IsNArray(rb_d))
     rb_raise(rb_eArgError, "d (1th argument) must be NArray");
   if (NA_RANK(rb_d) != 1)
@@ -30,15 +41,6 @@ rb_dlascl2(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_d) != NA_DFLOAT)
     rb_d = na_change_type(rb_d, NA_DFLOAT);
   d = NA_PTR_TYPE(rb_d, doublereal*);
-  if (!NA_IsNArray(rb_x))
-    rb_raise(rb_eArgError, "x (2th argument) must be NArray");
-  if (NA_RANK(rb_x) != 2)
-    rb_raise(rb_eArgError, "rank of x (2th argument) must be %d", 2);
-  ldx = NA_SHAPE0(rb_x);
-  n = NA_SHAPE1(rb_x);
-  if (NA_TYPE(rb_x) != NA_DFLOAT)
-    rb_x = na_change_type(rb_x, NA_DFLOAT);
-  x = NA_PTR_TYPE(rb_x, doublereal*);
   {
     int shape[2];
     shape[0] = ldx;

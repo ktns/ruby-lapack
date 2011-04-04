@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID zgglse_(integer *m, integer *n, integer *p, doublecomplex *a, integer *lda, doublecomplex *b, integer *ldb, doublecomplex *c, doublecomplex *d, doublecomplex *x, doublecomplex *work, integer *lwork, integer *info);
+
 static VALUE
 rb_zgglse(int argc, VALUE *argv, VALUE self){
   VALUE rb_a;
@@ -34,7 +36,7 @@ rb_zgglse(int argc, VALUE *argv, VALUE self){
   integer p;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  x, work, info, a, b, c, d = NumRu::Lapack.zgglse( a, b, c, d, lwork)\n    or\n  NumRu::Lapack.zgglse  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE ZGGLSE( M, N, P, A, LDA, B, LDB, C, D, X, WORK, LWORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  ZGGLSE solves the linear equality-constrained least squares (LSE)\n*  problem:\n*\n*          minimize || c - A*x ||_2   subject to   B*x = d\n*\n*  where A is an M-by-N matrix, B is a P-by-N matrix, c is a given\n*  M-vector, and d is a given P-vector. It is assumed that\n*  P <= N <= M+P, and\n*\n*           rank(B) = P and  rank( ( A ) ) = N.\n*                                ( ( B ) )\n*\n*  These conditions ensure that the LSE problem has a unique solution,\n*  which is obtained using a generalized RQ factorization of the\n*  matrices (B, A) given by\n*\n*     B = (0 R)*Q,   A = Z*T*Q.\n*\n\n*  Arguments\n*  =========\n*\n*  M       (input) INTEGER\n*          The number of rows of the matrix A.  M >= 0.\n*\n*  N       (input) INTEGER\n*          The number of columns of the matrices A and B. N >= 0.\n*\n*  P       (input) INTEGER\n*          The number of rows of the matrix B. 0 <= P <= N <= M+P.\n*\n*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)\n*          On entry, the M-by-N matrix A.\n*          On exit, the elements on and above the diagonal of the array\n*          contain the min(M,N)-by-N upper trapezoidal matrix T.\n*\n*  LDA     (input) INTEGER\n*          The leading dimension of the array A. LDA >= max(1,M).\n*\n*  B       (input/output) COMPLEX*16 array, dimension (LDB,N)\n*          On entry, the P-by-N matrix B.\n*          On exit, the upper triangle of the subarray B(1:P,N-P+1:N)\n*          contains the P-by-P upper triangular matrix R.\n*\n*  LDB     (input) INTEGER\n*          The leading dimension of the array B. LDB >= max(1,P).\n*\n*  C       (input/output) COMPLEX*16 array, dimension (M)\n*          On entry, C contains the right hand side vector for the\n*          least squares part of the LSE problem.\n*          On exit, the residual sum of squares for the solution\n*          is given by the sum of squares of elements N-P+1 to M of\n*          vector C.\n*\n*  D       (input/output) COMPLEX*16 array, dimension (P)\n*          On entry, D contains the right hand side vector for the\n*          constrained equation.\n*          On exit, D is destroyed.\n*\n*  X       (output) COMPLEX*16 array, dimension (N)\n*          On exit, X is the solution of the LSE problem.\n*\n*  WORK    (workspace/output) COMPLEX*16 array, dimension (MAX(1,LWORK))\n*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.\n*\n*  LWORK   (input) INTEGER\n*          The dimension of the array WORK. LWORK >= max(1,M+N+P).\n*          For optimum performance LWORK >= P+min(M,N)+max(M,N)*NB,\n*          where NB is an upper bound for the optimal blocksizes for\n*          ZGEQRF, CGERQF, ZUNMQR and CUNMRQ.\n*\n*          If LWORK = -1, then a workspace query is assumed; the routine\n*          only calculates the optimal size of the WORK array, returns\n*          this value as the first entry of the WORK array, and no error\n*          message related to LWORK is issued by XERBLA.\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit.\n*          < 0:  if INFO = -i, the i-th argument had an illegal value.\n*          = 1:  the upper triangular factor R associated with B in the\n*                generalized RQ factorization of the pair (B, A) is\n*                singular, so that rank(B) < P; the least squares\n*                solution could not be computed.\n*          = 2:  the (N-P) by (N-P) part of the upper trapezoidal factor\n*                T associated with A in the generalized RQ factorization\n*                of the pair (B, A) is singular, so that\n*                rank( (A) ) < N; the least squares solution could not\n*                    ( (B) )\n*                be computed.\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  x, work, info, a, b, c, d = NumRu::Lapack.zgglse( a, b, c, d, lwork)\n    or\n  NumRu::Lapack.zgglse  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 5)
@@ -45,13 +47,12 @@ rb_zgglse(int argc, VALUE *argv, VALUE self){
   rb_d = argv[3];
   rb_lwork = argv[4];
 
-  lwork = NUM2INT(rb_lwork);
   if (!NA_IsNArray(rb_a))
     rb_raise(rb_eArgError, "a (1th argument) must be NArray");
   if (NA_RANK(rb_a) != 2)
     rb_raise(rb_eArgError, "rank of a (1th argument) must be %d", 2);
-  lda = NA_SHAPE0(rb_a);
   n = NA_SHAPE1(rb_a);
+  lda = NA_SHAPE0(rb_a);
   if (NA_TYPE(rb_a) != NA_DCOMPLEX)
     rb_a = na_change_type(rb_a, NA_DCOMPLEX);
   a = NA_PTR_TYPE(rb_a, doublecomplex*);
@@ -59,9 +60,9 @@ rb_zgglse(int argc, VALUE *argv, VALUE self){
     rb_raise(rb_eArgError, "b (2th argument) must be NArray");
   if (NA_RANK(rb_b) != 2)
     rb_raise(rb_eArgError, "rank of b (2th argument) must be %d", 2);
-  ldb = NA_SHAPE0(rb_b);
   if (NA_SHAPE1(rb_b) != n)
     rb_raise(rb_eRuntimeError, "shape 1 of b must be the same as shape 1 of a");
+  ldb = NA_SHAPE0(rb_b);
   if (NA_TYPE(rb_b) != NA_DCOMPLEX)
     rb_b = na_change_type(rb_b, NA_DCOMPLEX);
   b = NA_PTR_TYPE(rb_b, doublecomplex*);
@@ -81,6 +82,7 @@ rb_zgglse(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_d) != NA_DCOMPLEX)
     rb_d = na_change_type(rb_d, NA_DCOMPLEX);
   d = NA_PTR_TYPE(rb_d, doublecomplex*);
+  lwork = NUM2INT(rb_lwork);
   {
     int shape[1];
     shape[0] = n;

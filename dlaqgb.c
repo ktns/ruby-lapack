@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dlaqgb_(integer *m, integer *n, integer *kl, integer *ku, doublereal *ab, integer *ldab, doublereal *r, doublereal *c, doublereal *rowcnd, doublereal *colcnd, doublereal *amax, char *equed);
+
 static VALUE
 rb_dlaqgb(int argc, VALUE *argv, VALUE self){
   VALUE rb_kl;
@@ -28,7 +30,7 @@ rb_dlaqgb(int argc, VALUE *argv, VALUE self){
   integer m;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  equed, ab = NumRu::Lapack.dlaqgb( kl, ku, ab, r, c, rowcnd, colcnd, amax)\n    or\n  NumRu::Lapack.dlaqgb  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLAQGB( M, N, KL, KU, AB, LDAB, R, C, ROWCND, COLCND, AMAX, EQUED )\n\n*  Purpose\n*  =======\n*\n*  DLAQGB equilibrates a general M by N band matrix A with KL\n*  subdiagonals and KU superdiagonals using the row and scaling factors\n*  in the vectors R and C.\n*\n\n*  Arguments\n*  =========\n*\n*  M       (input) INTEGER\n*          The number of rows of the matrix A.  M >= 0.\n*\n*  N       (input) INTEGER\n*          The number of columns of the matrix A.  N >= 0.\n*\n*  KL      (input) INTEGER\n*          The number of subdiagonals within the band of A.  KL >= 0.\n*\n*  KU      (input) INTEGER\n*          The number of superdiagonals within the band of A.  KU >= 0.\n*\n*  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB,N)\n*          On entry, the matrix A in band storage, in rows 1 to KL+KU+1.\n*          The j-th column of A is stored in the j-th column of the\n*          array AB as follows:\n*          AB(ku+1+i-j,j) = A(i,j) for max(1,j-ku)<=i<=min(m,j+kl)\n*\n*          On exit, the equilibrated matrix, in the same storage format\n*          as A.  See EQUED for the form of the equilibrated matrix.\n*\n*  LDAB    (input) INTEGER\n*          The leading dimension of the array AB.  LDA >= KL+KU+1.\n*\n*  R       (input) DOUBLE PRECISION array, dimension (M)\n*          The row scale factors for A.\n*\n*  C       (input) DOUBLE PRECISION array, dimension (N)\n*          The column scale factors for A.\n*\n*  ROWCND  (input) DOUBLE PRECISION\n*          Ratio of the smallest R(i) to the largest R(i).\n*\n*  COLCND  (input) DOUBLE PRECISION\n*          Ratio of the smallest C(i) to the largest C(i).\n*\n*  AMAX    (input) DOUBLE PRECISION\n*          Absolute value of largest matrix entry.\n*\n*  EQUED   (output) CHARACTER*1\n*          Specifies the form of equilibration that was done.\n*          = 'N':  No equilibration\n*          = 'R':  Row equilibration, i.e., A has been premultiplied by\n*                  diag(R).\n*          = 'C':  Column equilibration, i.e., A has been postmultiplied\n*                  by diag(C).\n*          = 'B':  Both row and column equilibration, i.e., A has been\n*                  replaced by diag(R) * A * diag(C).\n*\n*  Internal Parameters\n*  ===================\n*\n*  THRESH is a threshold value used to decide if row or column scaling\n*  should be done based on the ratio of the row or column scaling\n*  factors.  If ROWCND < THRESH, row scaling is done, and if\n*  COLCND < THRESH, column scaling is done.\n*\n*  LARGE and SMALL are threshold values used to decide if row scaling\n*  should be done based on the absolute size of the largest matrix\n*  element.  If AMAX > LARGE or AMAX < SMALL, row scaling is done.\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  equed, ab = NumRu::Lapack.dlaqgb( kl, ku, ab, r, c, rowcnd, colcnd, amax)\n    or\n  NumRu::Lapack.dlaqgb  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 8)
@@ -42,28 +44,16 @@ rb_dlaqgb(int argc, VALUE *argv, VALUE self){
   rb_colcnd = argv[6];
   rb_amax = argv[7];
 
-  kl = NUM2INT(rb_kl);
-  ku = NUM2INT(rb_ku);
-  rowcnd = NUM2DBL(rb_rowcnd);
-  colcnd = NUM2DBL(rb_colcnd);
-  amax = NUM2DBL(rb_amax);
   if (!NA_IsNArray(rb_ab))
     rb_raise(rb_eArgError, "ab (3th argument) must be NArray");
   if (NA_RANK(rb_ab) != 2)
     rb_raise(rb_eArgError, "rank of ab (3th argument) must be %d", 2);
-  ldab = NA_SHAPE0(rb_ab);
   n = NA_SHAPE1(rb_ab);
+  ldab = NA_SHAPE0(rb_ab);
   if (NA_TYPE(rb_ab) != NA_DFLOAT)
     rb_ab = na_change_type(rb_ab, NA_DFLOAT);
   ab = NA_PTR_TYPE(rb_ab, doublereal*);
-  if (!NA_IsNArray(rb_r))
-    rb_raise(rb_eArgError, "r (4th argument) must be NArray");
-  if (NA_RANK(rb_r) != 1)
-    rb_raise(rb_eArgError, "rank of r (4th argument) must be %d", 1);
-  m = NA_SHAPE0(rb_r);
-  if (NA_TYPE(rb_r) != NA_DFLOAT)
-    rb_r = na_change_type(rb_r, NA_DFLOAT);
-  r = NA_PTR_TYPE(rb_r, doublereal*);
+  kl = NUM2INT(rb_kl);
   if (!NA_IsNArray(rb_c))
     rb_raise(rb_eArgError, "c (5th argument) must be NArray");
   if (NA_RANK(rb_c) != 1)
@@ -73,6 +63,18 @@ rb_dlaqgb(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_c) != NA_DFLOAT)
     rb_c = na_change_type(rb_c, NA_DFLOAT);
   c = NA_PTR_TYPE(rb_c, doublereal*);
+  amax = NUM2DBL(rb_amax);
+  colcnd = NUM2DBL(rb_colcnd);
+  if (!NA_IsNArray(rb_r))
+    rb_raise(rb_eArgError, "r (4th argument) must be NArray");
+  if (NA_RANK(rb_r) != 1)
+    rb_raise(rb_eArgError, "rank of r (4th argument) must be %d", 1);
+  m = NA_SHAPE0(rb_r);
+  if (NA_TYPE(rb_r) != NA_DFLOAT)
+    rb_r = na_change_type(rb_r, NA_DFLOAT);
+  r = NA_PTR_TYPE(rb_r, doublereal*);
+  rowcnd = NUM2DBL(rb_rowcnd);
+  ku = NUM2INT(rb_ku);
   {
     int shape[2];
     shape[0] = ldab;

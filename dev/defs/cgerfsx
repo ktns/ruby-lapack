@@ -95,8 +95,8 @@
 - params: 
     :type: real
     :intent: input/output
-    :dims: []
-
+    :dims: 
+    - nparams
 - work: 
     :type: complex
     :intent: workspace
@@ -110,8 +110,8 @@
 - info: 
     :type: integer
     :intent: output
-:substitutions: {}
-
+:substitutions: 
+  n_err_bnds: "3"
 :fortran_help: "      SUBROUTINE CGERFSX( TRANS, EQUED, N, NRHS, A, LDA, AF, LDAF, IPIV, R, C, B, LDB, X, LDX, RCOND, BERR, N_ERR_BNDS, ERR_BNDS_NORM, ERR_BNDS_COMP, NPARAMS, PARAMS, WORK, RWORK, INFO )\n\n\
   *     Purpose\n\
   *     =======\n\

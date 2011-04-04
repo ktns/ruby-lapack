@@ -1,6 +1,7 @@
 --- 
 :name: cla_hercond_x
 :md5sum: 92fff2de9005dc3e2f76fc1542552543
+:category: :function
 :type: real
 :arguments: 
 - uplo: 

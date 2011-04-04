@@ -1,6 +1,7 @@
 --- 
 :name: ilaprec
 :md5sum: ccbd47bb68340bc498273489d1d91536
+:category: :function
 :type: integer
 :arguments: 
 - prec: 

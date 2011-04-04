@@ -1,6 +1,7 @@
 --- 
 :name: dla_gercond
 :md5sum: 2049376510eb05d8caae1262a8c242ec
+:category: :function
 :type: doublereal
 :arguments: 
 - trans: 

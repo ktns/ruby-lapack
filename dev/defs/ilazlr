@@ -1,6 +1,7 @@
 --- 
 :name: ilazlr
 :md5sum: e07f8aa44b48e26c9c8627cb2c3fadd1
+:category: :function
 :type: integer
 :arguments: 
 - m: 

@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dlae2_(doublereal *a, doublereal *b, doublereal *c, doublereal *rt1, doublereal *rt2);
+
 static VALUE
 rb_dlae2(int argc, VALUE *argv, VALUE self){
   VALUE rb_a;
@@ -15,7 +17,7 @@ rb_dlae2(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  rt1, rt2 = NumRu::Lapack.dlae2( a, b, c)\n    or\n  NumRu::Lapack.dlae2  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLAE2( A, B, C, RT1, RT2 )\n\n*  Purpose\n*  =======\n*\n*  DLAE2  computes the eigenvalues of a 2-by-2 symmetric matrix\n*     [  A   B  ]\n*     [  B   C  ].\n*  On return, RT1 is the eigenvalue of larger absolute value, and RT2\n*  is the eigenvalue of smaller absolute value.\n*\n\n*  Arguments\n*  =========\n*\n*  A       (input) DOUBLE PRECISION\n*          The (1,1) element of the 2-by-2 matrix.\n*\n*  B       (input) DOUBLE PRECISION\n*          The (1,2) and (2,1) elements of the 2-by-2 matrix.\n*\n*  C       (input) DOUBLE PRECISION\n*          The (2,2) element of the 2-by-2 matrix.\n*\n*  RT1     (output) DOUBLE PRECISION\n*          The eigenvalue of larger absolute value.\n*\n*  RT2     (output) DOUBLE PRECISION\n*          The eigenvalue of smaller absolute value.\n*\n\n*  Further Details\n*  ===============\n*\n*  RT1 is accurate to a few ulps barring over/underflow.\n*\n*  RT2 may be inaccurate if there is massive cancellation in the\n*  determinant A*C-B*B; higher precision or correctly rounded or\n*  correctly truncated arithmetic would be needed to compute RT2\n*  accurately in all cases.\n*\n*  Overflow is possible only if RT1 is within a factor of 5 of overflow.\n*  Underflow is harmless if the input data is 0 or exceeds\n*     underflow_threshold / macheps.\n*\n* =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  rt1, rt2 = NumRu::Lapack.dlae2( a, b, c)\n    or\n  NumRu::Lapack.dlae2  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 3)

@@ -1,6 +1,7 @@
 --- 
 :name: cla_syrcond_x
 :md5sum: 3ac4221b1dcc11fa685d99f3692f1e54
+:category: :function
 :type: real
 :arguments: 
 - uplo: 

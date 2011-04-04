@@ -16,7 +16,7 @@
     :type: doublereal
     :intent: input
     :dims: 
-    - n*(n+1)/2
+    - ldarf
 - a: 
     :type: doublereal
     :intent: output
@@ -30,7 +30,10 @@
     :type: integer
     :intent: output
 :substitutions: 
+  n: ((int)sqrtf(8*ldarf+1.0f)-1)/2
   lda: MAX(1,n)
+:extras:
+  ldarf: integer
 :fortran_help: "      SUBROUTINE DTFTTR( TRANSR, UPLO, N, ARF, A, LDA, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\

@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID cggglm_(integer *n, integer *m, integer *p, complex *a, integer *lda, complex *b, integer *ldb, complex *d, complex *x, complex *y, complex *work, integer *lwork, integer *info);
+
 static VALUE
 rb_cggglm(int argc, VALUE *argv, VALUE self){
   VALUE rb_a;
@@ -32,7 +34,7 @@ rb_cggglm(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  x, y, work, info, a, b, d = NumRu::Lapack.cggglm( a, b, d, lwork)\n    or\n  NumRu::Lapack.cggglm  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE CGGGLM( N, M, P, A, LDA, B, LDB, D, X, Y, WORK, LWORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  CGGGLM solves a general Gauss-Markov linear model (GLM) problem:\n*\n*          minimize || y ||_2   subject to   d = A*x + B*y\n*              x\n*\n*  where A is an N-by-M matrix, B is an N-by-P matrix, and d is a\n*  given N-vector. It is assumed that M <= N <= M+P, and\n*\n*             rank(A) = M    and    rank( A B ) = N.\n*\n*  Under these assumptions, the constrained equation is always\n*  consistent, and there is a unique solution x and a minimal 2-norm\n*  solution y, which is obtained using a generalized QR factorization\n*  of the matrices (A, B) given by\n*\n*     A = Q*(R),   B = Q*T*Z.\n*           (0)\n*\n*  In particular, if matrix B is square nonsingular, then the problem\n*  GLM is equivalent to the following weighted linear least squares\n*  problem\n*\n*               minimize || inv(B)*(d-A*x) ||_2\n*                   x\n*\n*  where inv(B) denotes the inverse of B.\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The number of rows of the matrices A and B.  N >= 0.\n*\n*  M       (input) INTEGER\n*          The number of columns of the matrix A.  0 <= M <= N.\n*\n*  P       (input) INTEGER\n*          The number of columns of the matrix B.  P >= N-M.\n*\n*  A       (input/output) COMPLEX array, dimension (LDA,M)\n*          On entry, the N-by-M matrix A.\n*          On exit, the upper triangular part of the array A contains\n*          the M-by-M upper triangular matrix R.\n*\n*  LDA     (input) INTEGER\n*          The leading dimension of the array A. LDA >= max(1,N).\n*\n*  B       (input/output) COMPLEX array, dimension (LDB,P)\n*          On entry, the N-by-P matrix B.\n*          On exit, if N <= P, the upper triangle of the subarray\n*          B(1:N,P-N+1:P) contains the N-by-N upper triangular matrix T;\n*          if N > P, the elements on and above the (N-P)th subdiagonal\n*          contain the N-by-P upper trapezoidal matrix T.\n*\n*  LDB     (input) INTEGER\n*          The leading dimension of the array B. LDB >= max(1,N).\n*\n*  D       (input/output) COMPLEX array, dimension (N)\n*          On entry, D is the left hand side of the GLM equation.\n*          On exit, D is destroyed.\n*\n*  X       (output) COMPLEX array, dimension (M)\n*  Y       (output) COMPLEX array, dimension (P)\n*          On exit, X and Y are the solutions of the GLM problem.\n*\n*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))\n*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.\n*\n*  LWORK   (input) INTEGER\n*          The dimension of the array WORK. LWORK >= max(1,N+M+P).\n*          For optimum performance, LWORK >= M+min(N,P)+max(N,P)*NB,\n*          where NB is an upper bound for the optimal blocksizes for\n*          CGEQRF, CGERQF, CUNMQR and CUNMRQ.\n*\n*          If LWORK = -1, then a workspace query is assumed; the routine\n*          only calculates the optimal size of the WORK array, returns\n*          this value as the first entry of the WORK array, and no error\n*          message related to LWORK is issued by XERBLA.\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit.\n*          < 0:  if INFO = -i, the i-th argument had an illegal value.\n*          = 1:  the upper triangular factor R associated with A in the\n*                generalized QR factorization of the pair (A, B) is\n*                singular, so that rank(A) < M; the least squares\n*                solution could not be computed.\n*          = 2:  the bottom (N-M) by (N-M) part of the upper trapezoidal\n*                factor T associated with B in the generalized QR\n*                factorization of the pair (A, B) is singular, so that\n*                rank( A B ) < N; the least squares solution could not\n*                be computed.\n*\n\n*  ===================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  x, y, work, info, a, b, d = NumRu::Lapack.cggglm( a, b, d, lwork)\n    or\n  NumRu::Lapack.cggglm  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 4)
@@ -42,13 +44,12 @@ rb_cggglm(int argc, VALUE *argv, VALUE self){
   rb_d = argv[2];
   rb_lwork = argv[3];
 
-  lwork = NUM2INT(rb_lwork);
   if (!NA_IsNArray(rb_a))
     rb_raise(rb_eArgError, "a (1th argument) must be NArray");
   if (NA_RANK(rb_a) != 2)
     rb_raise(rb_eArgError, "rank of a (1th argument) must be %d", 2);
-  lda = NA_SHAPE0(rb_a);
   m = NA_SHAPE1(rb_a);
+  lda = NA_SHAPE0(rb_a);
   if (NA_TYPE(rb_a) != NA_SCOMPLEX)
     rb_a = na_change_type(rb_a, NA_SCOMPLEX);
   a = NA_PTR_TYPE(rb_a, complex*);
@@ -56,8 +57,8 @@ rb_cggglm(int argc, VALUE *argv, VALUE self){
     rb_raise(rb_eArgError, "b (2th argument) must be NArray");
   if (NA_RANK(rb_b) != 2)
     rb_raise(rb_eArgError, "rank of b (2th argument) must be %d", 2);
-  ldb = NA_SHAPE0(rb_b);
   p = NA_SHAPE1(rb_b);
+  ldb = NA_SHAPE0(rb_b);
   if (NA_TYPE(rb_b) != NA_SCOMPLEX)
     rb_b = na_change_type(rb_b, NA_SCOMPLEX);
   b = NA_PTR_TYPE(rb_b, complex*);
@@ -69,6 +70,7 @@ rb_cggglm(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_d) != NA_SCOMPLEX)
     rb_d = na_change_type(rb_d, NA_SCOMPLEX);
   d = NA_PTR_TYPE(rb_d, complex*);
+  lwork = NUM2INT(rb_lwork);
   {
     int shape[1];
     shape[0] = m;

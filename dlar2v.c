@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dlar2v_(integer *n, doublereal *x, doublereal *y, doublereal *z, integer *incx, doublereal *c, doublereal *s, integer *incc);
+
 static VALUE
 rb_dlar2v(int argc, VALUE *argv, VALUE self){
   VALUE rb_n;
@@ -27,7 +29,7 @@ rb_dlar2v(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  x, y, z = NumRu::Lapack.dlar2v( n, x, y, z, incx, c, s, incc)\n    or\n  NumRu::Lapack.dlar2v  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLAR2V( N, X, Y, Z, INCX, C, S, INCC )\n\n*  Purpose\n*  =======\n*\n*  DLAR2V applies a vector of real plane rotations from both sides to\n*  a sequence of 2-by-2 real symmetric matrices, defined by the elements\n*  of the vectors x, y and z. For i = 1,2,...,n\n*\n*     ( x(i)  z(i) ) := (  c(i)  s(i) ) ( x(i)  z(i) ) ( c(i) -s(i) )\n*     ( z(i)  y(i) )    ( -s(i)  c(i) ) ( z(i)  y(i) ) ( s(i)  c(i) )\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The number of plane rotations to be applied.\n*\n*  X       (input/output) DOUBLE PRECISION array,\n*                         dimension (1+(N-1)*INCX)\n*          The vector x.\n*\n*  Y       (input/output) DOUBLE PRECISION array,\n*                         dimension (1+(N-1)*INCX)\n*          The vector y.\n*\n*  Z       (input/output) DOUBLE PRECISION array,\n*                         dimension (1+(N-1)*INCX)\n*          The vector z.\n*\n*  INCX    (input) INTEGER\n*          The increment between elements of X, Y and Z. INCX > 0.\n*\n*  C       (input) DOUBLE PRECISION array, dimension (1+(N-1)*INCC)\n*          The cosines of the plane rotations.\n*\n*  S       (input) DOUBLE PRECISION array, dimension (1+(N-1)*INCC)\n*          The sines of the plane rotations.\n*\n*  INCC    (input) INTEGER\n*          The increment between elements of C and S. INCC > 0.\n*\n\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      INTEGER            I, IC, IX\n      DOUBLE PRECISION   CI, SI, T1, T2, T3, T4, T5, T6, XI, YI, ZI\n*     ..\n\n");
+    printf("%s\n", "USAGE:\n  x, y, z = NumRu::Lapack.dlar2v( n, x, y, z, incx, c, s, incc)\n    or\n  NumRu::Lapack.dlar2v  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 8)
@@ -42,8 +44,17 @@ rb_dlar2v(int argc, VALUE *argv, VALUE self){
   rb_incc = argv[7];
 
   n = NUM2INT(rb_n);
-  incx = NUM2INT(rb_incx);
   incc = NUM2INT(rb_incc);
+  incx = NUM2INT(rb_incx);
+  if (!NA_IsNArray(rb_z))
+    rb_raise(rb_eArgError, "z (4th argument) must be NArray");
+  if (NA_RANK(rb_z) != 1)
+    rb_raise(rb_eArgError, "rank of z (4th argument) must be %d", 1);
+  if (NA_SHAPE0(rb_z) != (1+(n-1)*incx))
+    rb_raise(rb_eRuntimeError, "shape 0 of z must be %d", 1+(n-1)*incx);
+  if (NA_TYPE(rb_z) != NA_DFLOAT)
+    rb_z = na_change_type(rb_z, NA_DFLOAT);
+  z = NA_PTR_TYPE(rb_z, doublereal*);
   if (!NA_IsNArray(rb_x))
     rb_raise(rb_eArgError, "x (2th argument) must be NArray");
   if (NA_RANK(rb_x) != 1)
@@ -62,15 +73,6 @@ rb_dlar2v(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_y) != NA_DFLOAT)
     rb_y = na_change_type(rb_y, NA_DFLOAT);
   y = NA_PTR_TYPE(rb_y, doublereal*);
-  if (!NA_IsNArray(rb_z))
-    rb_raise(rb_eArgError, "z (4th argument) must be NArray");
-  if (NA_RANK(rb_z) != 1)
-    rb_raise(rb_eArgError, "rank of z (4th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_z) != (1+(n-1)*incx))
-    rb_raise(rb_eRuntimeError, "shape 0 of z must be %d", 1+(n-1)*incx);
-  if (NA_TYPE(rb_z) != NA_DFLOAT)
-    rb_z = na_change_type(rb_z, NA_DFLOAT);
-  z = NA_PTR_TYPE(rb_z, doublereal*);
   if (!NA_IsNArray(rb_c))
     rb_raise(rb_eArgError, "c (6th argument) must be NArray");
   if (NA_RANK(rb_c) != 1)

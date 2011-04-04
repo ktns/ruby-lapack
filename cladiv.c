@@ -1,6 +1,7 @@
 #include "rb_lapack.h"
 
 extern VOID cladiv_(complex *__out__, complex *x, complex *y);
+
 static VALUE
 rb_cladiv(int argc, VALUE *argv, VALUE self){
   VALUE rb_x;
@@ -12,7 +13,7 @@ rb_cladiv(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.cladiv( x, y)\n    or\n  NumRu::Lapack.cladiv  # print help\n\n\nFORTRAN MANUAL\n      COMPLEX FUNCTION CLADIV( X, Y )\n\n*  Purpose\n*  =======\n*\n*  CLADIV := X / Y, where X and Y are complex.  The computation of X / Y\n*  will not overflow on an intermediary step unless the results\n*  overflows.\n*\n\n*  Arguments\n*  =========\n*\n*  X       (input) COMPLEX\n*  Y       (input) COMPLEX\n*          The complex scalars X and Y.\n*\n\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      REAL               ZI, ZR\n*     ..\n*     .. External Subroutines ..\n      EXTERNAL           SLADIV\n*     ..\n*     .. Intrinsic Functions ..\n      INTRINSIC          AIMAG, CMPLX, REAL\n*     ..\n\n");
+    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.cladiv( x, y)\n    or\n  NumRu::Lapack.cladiv  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 2)

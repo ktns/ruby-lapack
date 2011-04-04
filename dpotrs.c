@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dpotrs_(char *uplo, integer *n, integer *nrhs, doublereal *a, integer *lda, doublereal *b, integer *ldb, integer *info);
+
 static VALUE
 rb_dpotrs(int argc, VALUE *argv, VALUE self){
   VALUE rb_uplo;
@@ -19,7 +21,7 @@ rb_dpotrs(int argc, VALUE *argv, VALUE self){
   integer nrhs;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  info, b = NumRu::Lapack.dpotrs( uplo, a, b)\n    or\n  NumRu::Lapack.dpotrs  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DPOTRS( UPLO, N, NRHS, A, LDA, B, LDB, INFO )\n\n*  Purpose\n*  =======\n*\n*  DPOTRS solves a system of linear equations A*X = B with a symmetric\n*  positive definite matrix A using the Cholesky factorization\n*  A = U**T*U or A = L*L**T computed by DPOTRF.\n*\n\n*  Arguments\n*  =========\n*\n*  UPLO    (input) CHARACTER*1\n*          = 'U':  Upper triangle of A is stored;\n*          = 'L':  Lower triangle of A is stored.\n*\n*  N       (input) INTEGER\n*          The order of the matrix A.  N >= 0.\n*\n*  NRHS    (input) INTEGER\n*          The number of right hand sides, i.e., the number of columns\n*          of the matrix B.  NRHS >= 0.\n*\n*  A       (input) DOUBLE PRECISION array, dimension (LDA,N)\n*          The triangular factor U or L from the Cholesky factorization\n*          A = U**T*U or A = L*L**T, as computed by DPOTRF.\n*\n*  LDA     (input) INTEGER\n*          The leading dimension of the array A.  LDA >= max(1,N).\n*\n*  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)\n*          On entry, the right hand side matrix B.\n*          On exit, the solution matrix X.\n*\n*  LDB     (input) INTEGER\n*          The leading dimension of the array B.  LDB >= max(1,N).\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  info, b = NumRu::Lapack.dpotrs( uplo, a, b)\n    or\n  NumRu::Lapack.dpotrs  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 3)
@@ -28,13 +30,12 @@ rb_dpotrs(int argc, VALUE *argv, VALUE self){
   rb_a = argv[1];
   rb_b = argv[2];
 
-  uplo = StringValueCStr(rb_uplo)[0];
   if (!NA_IsNArray(rb_a))
     rb_raise(rb_eArgError, "a (2th argument) must be NArray");
   if (NA_RANK(rb_a) != 2)
     rb_raise(rb_eArgError, "rank of a (2th argument) must be %d", 2);
-  lda = NA_SHAPE0(rb_a);
   n = NA_SHAPE1(rb_a);
+  lda = NA_SHAPE0(rb_a);
   if (NA_TYPE(rb_a) != NA_DFLOAT)
     rb_a = na_change_type(rb_a, NA_DFLOAT);
   a = NA_PTR_TYPE(rb_a, doublereal*);
@@ -42,11 +43,12 @@ rb_dpotrs(int argc, VALUE *argv, VALUE self){
     rb_raise(rb_eArgError, "b (3th argument) must be NArray");
   if (NA_RANK(rb_b) != 2)
     rb_raise(rb_eArgError, "rank of b (3th argument) must be %d", 2);
-  ldb = NA_SHAPE0(rb_b);
   nrhs = NA_SHAPE1(rb_b);
+  ldb = NA_SHAPE0(rb_b);
   if (NA_TYPE(rb_b) != NA_DFLOAT)
     rb_b = na_change_type(rb_b, NA_DFLOAT);
   b = NA_PTR_TYPE(rb_b, doublereal*);
+  uplo = StringValueCStr(rb_uplo)[0];
   {
     int shape[2];
     shape[0] = ldb;

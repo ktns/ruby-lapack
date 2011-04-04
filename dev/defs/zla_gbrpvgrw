@@ -1,6 +1,7 @@
 --- 
 :name: zla_gbrpvgrw
 :md5sum: 93b4b0e0e44371aacf2dcc4f944acec7
+:category: :function
 :type: doublereal
 :arguments: 
 - n: 

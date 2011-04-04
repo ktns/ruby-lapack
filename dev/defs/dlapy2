@@ -1,6 +1,7 @@
 --- 
 :name: dlapy2
 :md5sum: b3aaae9d309eec4c8fefd63e3e59e662
+:category: :function
 :type: doublereal
 :arguments: 
 - x: 

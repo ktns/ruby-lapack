@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern logical sisnan_(real *sin);
+
 static VALUE
 rb_sisnan(int argc, VALUE *argv, VALUE self){
   VALUE rb_sin;
@@ -9,7 +11,7 @@ rb_sisnan(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.sisnan( sin)\n    or\n  NumRu::Lapack.sisnan  # print help\n\n\nFORTRAN MANUAL\n      LOGICAL FUNCTION SISNAN(SIN)\n\n*  Purpose\n*  =======\n*\n*  SISNAN returns .TRUE. if its argument is NaN, and .FALSE.\n*  otherwise.  To be replaced by the Fortran 2003 intrinsic in the\n*  future.\n*\n\n*  Arguments\n*  =========\n*\n*  SIN      (input) REAL\n*          Input to test for NaN.\n*\n\n*  =====================================================================\n*\n*  .. External Functions ..\n      LOGICAL SLAISNAN\n      EXTERNAL SLAISNAN\n*  ..\n\n");
+    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.sisnan( sin)\n    or\n  NumRu::Lapack.sisnan  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 1)

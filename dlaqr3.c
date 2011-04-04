@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dlaqr3_(logical *wantt, logical *wantz, integer *n, integer *ktop, integer *kbot, integer *nw, doublereal *h, integer *ldh, integer *iloz, integer *ihiz, doublereal *z, integer *ldz, integer *ns, integer *nd, doublereal *sr, doublereal *si, doublereal *v, integer *ldv, integer *nh, doublereal *t, integer *ldt, integer *nv, doublereal *wv, integer *ldwv, doublereal *work, integer *lwork);
+
 static VALUE
 rb_dlaqr3(int argc, VALUE *argv, VALUE self){
   VALUE rb_wantt;
@@ -51,7 +53,7 @@ rb_dlaqr3(int argc, VALUE *argv, VALUE self){
   integer ldwv;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  ns, nd, sr, si, h, z = NumRu::Lapack.dlaqr3( wantt, wantz, ktop, kbot, nw, h, iloz, ihiz, z, nh, nv, lwork)\n    or\n  NumRu::Lapack.dlaqr3  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLAQR3( WANTT, WANTZ, N, KTOP, KBOT, NW, H, LDH, ILOZ, IHIZ, Z, LDZ, NS, ND, SR, SI, V, LDV, NH, T, LDT, NV, WV, LDWV, WORK, LWORK )\n\n*     Aggressive early deflation:\n*\n*     This subroutine accepts as input an upper Hessenberg matrix\n*     H and performs an orthogonal similarity transformation\n*     designed to detect and deflate fully converged eigenvalues from\n*     a trailing principal submatrix.  On output H has been over-\n*     written by a new Hessenberg matrix that is a perturbation of\n*     an orthogonal similarity transformation of H.  It is to be\n*     hoped that the final version of H has many zero subdiagonal\n*     entries.\n*\n*     ******************************************************************\n\n*     WANTT   (input) LOGICAL\n*          If .TRUE., then the Hessenberg matrix H is fully updated\n*          so that the quasi-triangular Schur factor may be\n*          computed (in cooperation with the calling subroutine).\n*          If .FALSE., then only enough of H is updated to preserve\n*          the eigenvalues.\n*\n*     WANTZ   (input) LOGICAL\n*          If .TRUE., then the orthogonal matrix Z is updated so\n*          so that the orthogonal Schur factor may be computed\n*          (in cooperation with the calling subroutine).\n*          If .FALSE., then Z is not referenced.\n*\n*     N       (input) INTEGER\n*          The order of the matrix H and (if WANTZ is .TRUE.) the\n*          order of the orthogonal matrix Z.\n*\n*     KTOP    (input) INTEGER\n*          It is assumed that either KTOP = 1 or H(KTOP,KTOP-1)=0.\n*          KBOT and KTOP together determine an isolated block\n*          along the diagonal of the Hessenberg matrix.\n*\n*     KBOT    (input) INTEGER\n*          It is assumed without a check that either\n*          KBOT = N or H(KBOT+1,KBOT)=0.  KBOT and KTOP together\n*          determine an isolated block along the diagonal of the\n*          Hessenberg matrix.\n*\n*     NW      (input) INTEGER\n*          Deflation window size.  1 .LE. NW .LE. (KBOT-KTOP+1).\n*\n*     H       (input/output) DOUBLE PRECISION array, dimension (LDH,N)\n*          On input the initial N-by-N section of H stores the\n*          Hessenberg matrix undergoing aggressive early deflation.\n*          On output H has been transformed by an orthogonal\n*          similarity transformation, perturbed, and the returned\n*          to Hessenberg form that (it is to be hoped) has some\n*          zero subdiagonal entries.\n*\n*     LDH     (input) integer\n*          Leading dimension of H just as declared in the calling\n*          subroutine.  N .LE. LDH\n*\n*     ILOZ    (input) INTEGER\n*     IHIZ    (input) INTEGER\n*          Specify the rows of Z to which transformations must be\n*          applied if WANTZ is .TRUE.. 1 .LE. ILOZ .LE. IHIZ .LE. N.\n*\n*     Z       (input/output) DOUBLE PRECISION array, dimension (LDZ,N)\n*          IF WANTZ is .TRUE., then on output, the orthogonal\n*          similarity transformation mentioned above has been\n*          accumulated into Z(ILOZ:IHIZ,ILO:IHI) from the right.\n*          If WANTZ is .FALSE., then Z is unreferenced.\n*\n*     LDZ     (input) integer\n*          The leading dimension of Z just as declared in the\n*          calling subroutine.  1 .LE. LDZ.\n*\n*     NS      (output) integer\n*          The number of unconverged (ie approximate) eigenvalues\n*          returned in SR and SI that may be used as shifts by the\n*          calling subroutine.\n*\n*     ND      (output) integer\n*          The number of converged eigenvalues uncovered by this\n*          subroutine.\n*\n*     SR      (output) DOUBLE PRECISION array, dimension KBOT\n*     SI      (output) DOUBLE PRECISION array, dimension KBOT\n*          On output, the real and imaginary parts of approximate\n*          eigenvalues that may be used for shifts are stored in\n*          SR(KBOT-ND-NS+1) through SR(KBOT-ND) and\n*          SI(KBOT-ND-NS+1) through SI(KBOT-ND), respectively.\n*          The real and imaginary parts of converged eigenvalues\n*          are stored in SR(KBOT-ND+1) through SR(KBOT) and\n*          SI(KBOT-ND+1) through SI(KBOT), respectively.\n*\n*     V       (workspace) DOUBLE PRECISION array, dimension (LDV,NW)\n*          An NW-by-NW work array.\n*\n*     LDV     (input) integer scalar\n*          The leading dimension of V just as declared in the\n*          calling subroutine.  NW .LE. LDV\n*\n*     NH      (input) integer scalar\n*          The number of columns of T.  NH.GE.NW.\n*\n*     T       (workspace) DOUBLE PRECISION array, dimension (LDT,NW)\n*\n*     LDT     (input) integer\n*          The leading dimension of T just as declared in the\n*          calling subroutine.  NW .LE. LDT\n*\n*     NV      (input) integer\n*          The number of rows of work array WV available for\n*          workspace.  NV.GE.NW.\n*\n*     WV      (workspace) DOUBLE PRECISION array, dimension (LDWV,NW)\n*\n*     LDWV    (input) integer\n*          The leading dimension of W just as declared in the\n*          calling subroutine.  NW .LE. LDV\n*\n*     WORK    (workspace) DOUBLE PRECISION array, dimension LWORK.\n*          On exit, WORK(1) is set to an estimate of the optimal value\n*          of LWORK for the given values of N, NW, KTOP and KBOT.\n*\n*     LWORK   (input) integer\n*          The dimension of the work array WORK.  LWORK = 2*NW\n*          suffices, but greater efficiency may result from larger\n*          values of LWORK.\n*\n*          If LWORK = -1, then a workspace query is assumed; DLAQR3\n*          only estimates the optimal workspace size for the given\n*          values of N, NW, KTOP and KBOT.  The estimate is returned\n*          in WORK(1).  No error message related to LWORK is issued\n*          by XERBLA.  Neither H nor Z are accessed.\n*\n\n*     ================================================================\n*     Based on contributions by\n*        Karen Braman and Ralph Byers, Department of Mathematics,\n*        University of Kansas, USA\n*\n*     ================================================================\n\n");
+    printf("%s\n", "USAGE:\n  ns, nd, sr, si, h, z = NumRu::Lapack.dlaqr3( wantt, wantz, ktop, kbot, nw, h, iloz, ihiz, z, nh, nv, lwork)\n    or\n  NumRu::Lapack.dlaqr3  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 12)
@@ -69,35 +71,38 @@ rb_dlaqr3(int argc, VALUE *argv, VALUE self){
   rb_nv = argv[10];
   rb_lwork = argv[11];
 
-  wantt = (rb_wantt == Qtrue);
-  wantz = (rb_wantz == Qtrue);
   ktop = NUM2INT(rb_ktop);
-  kbot = NUM2INT(rb_kbot);
-  nw = NUM2INT(rb_nw);
-  iloz = NUM2INT(rb_iloz);
-  ihiz = NUM2INT(rb_ihiz);
+  wantz = (rb_wantz == Qtrue);
   nh = NUM2INT(rb_nh);
-  nv = NUM2INT(rb_nv);
-  lwork = NUM2INT(rb_lwork);
-  if (!NA_IsNArray(rb_h))
-    rb_raise(rb_eArgError, "h (6th argument) must be NArray");
-  if (NA_RANK(rb_h) != 2)
-    rb_raise(rb_eArgError, "rank of h (6th argument) must be %d", 2);
-  ldh = NA_SHAPE0(rb_h);
-  n = NA_SHAPE1(rb_h);
-  if (NA_TYPE(rb_h) != NA_DFLOAT)
-    rb_h = na_change_type(rb_h, NA_DFLOAT);
-  h = NA_PTR_TYPE(rb_h, doublereal*);
   if (!NA_IsNArray(rb_z))
     rb_raise(rb_eArgError, "z (9th argument) must be NArray");
   if (NA_RANK(rb_z) != 2)
     rb_raise(rb_eArgError, "rank of z (9th argument) must be %d", 2);
+  n = NA_SHAPE1(rb_z);
   ldz = NA_SHAPE0(rb_z);
-  if (NA_SHAPE1(rb_z) != n)
-    rb_raise(rb_eRuntimeError, "shape 1 of z must be the same as shape 1 of h");
   if (NA_TYPE(rb_z) != NA_DFLOAT)
     rb_z = na_change_type(rb_z, NA_DFLOAT);
   z = NA_PTR_TYPE(rb_z, doublereal*);
+  kbot = NUM2INT(rb_kbot);
+  lwork = NUM2INT(rb_lwork);
+  iloz = NUM2INT(rb_iloz);
+  nv = NUM2INT(rb_nv);
+  wantt = (rb_wantt == Qtrue);
+  ihiz = NUM2INT(rb_ihiz);
+  if (!NA_IsNArray(rb_h))
+    rb_raise(rb_eArgError, "h (6th argument) must be NArray");
+  if (NA_RANK(rb_h) != 2)
+    rb_raise(rb_eArgError, "rank of h (6th argument) must be %d", 2);
+  if (NA_SHAPE1(rb_h) != n)
+    rb_raise(rb_eRuntimeError, "shape 1 of h must be the same as shape 1 of z");
+  ldh = NA_SHAPE0(rb_h);
+  if (NA_TYPE(rb_h) != NA_DFLOAT)
+    rb_h = na_change_type(rb_h, NA_DFLOAT);
+  h = NA_PTR_TYPE(rb_h, doublereal*);
+  nw = NUM2INT(rb_nw);
+  ldv = nw;
+  ldwv = nw;
+  ldt = nw;
   {
     int shape[1];
     shape[0] = MAX(1,kbot);
@@ -130,11 +135,8 @@ rb_dlaqr3(int argc, VALUE *argv, VALUE self){
   MEMCPY(z_out__, z, doublereal, NA_TOTAL(rb_z));
   rb_z = rb_z_out__;
   z = z_out__;
-  ldv = nw;
   v = ALLOC_N(doublereal, (ldv)*(MAX(1,nw)));
-  ldt = nw;
   t = ALLOC_N(doublereal, (ldt)*(MAX(1,nw)));
-  ldwv = nw;
   wv = ALLOC_N(doublereal, (ldwv)*(MAX(1,nw)));
   work = ALLOC_N(doublereal, (MAX(1,lwork)));
 

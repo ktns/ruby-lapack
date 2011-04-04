@@ -1,6 +1,7 @@
 --- 
 :name: clanhe
 :md5sum: 35c5d3fb031ab7f142837a679fb0d090
+:category: :function
 :type: real
 :arguments: 
 - norm: 

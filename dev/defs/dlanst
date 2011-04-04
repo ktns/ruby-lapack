@@ -1,6 +1,7 @@
 --- 
 :name: dlanst
 :md5sum: 615e091890476d886b6641697bfe7b25
+:category: :function
 :type: doublereal
 :arguments: 
 - norm: 

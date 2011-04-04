@@ -16,7 +16,7 @@
     :type: doublecomplex
     :intent: input
     :dims: 
-    - ( n*(n+1)/2 )
+    - ldarf
 - a: 
     :type: doublecomplex
     :intent: output
@@ -31,6 +31,7 @@
     :intent: output
 :substitutions: 
   lda: MAX(1,n)
+  n: ((int)sqrtf(8*ldarf+1.0f)-1)/2
 :fortran_help: "      SUBROUTINE ZTFTTR( TRANSR, UPLO, N, ARF, A, LDA, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\

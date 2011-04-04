@@ -1,6 +1,7 @@
 --- 
 :name: slantb
 :md5sum: 7d0806eebdfcdd6789f9862ed9fa7fed
+:category: :function
 :type: real
 :arguments: 
 - norm: 

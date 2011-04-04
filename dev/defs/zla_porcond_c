@@ -1,6 +1,7 @@
 --- 
 :name: zla_porcond_c
 :md5sum: 7f972d94051304574e069015710f2e69
+:category: :function
 :type: doublereal
 :arguments: 
 - uplo: 

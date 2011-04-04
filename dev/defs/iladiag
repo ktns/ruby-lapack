@@ -1,6 +1,7 @@
 --- 
 :name: iladiag
 :md5sum: dc4a24ef58c1ee18a364cb9ea175b8b2
+:category: :function
 :type: integer
 :arguments: 
 - diag: 

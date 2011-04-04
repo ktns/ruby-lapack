@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID zsprfs_(char *uplo, integer *n, integer *nrhs, doublecomplex *ap, doublecomplex *afp, integer *ipiv, doublecomplex *b, integer *ldb, doublecomplex *x, integer *ldx, doublereal *ferr, doublereal *berr, doublecomplex *work, doublereal *rwork, integer *info);
+
 static VALUE
 rb_zsprfs(int argc, VALUE *argv, VALUE self){
   VALUE rb_uplo;
@@ -31,7 +33,7 @@ rb_zsprfs(int argc, VALUE *argv, VALUE self){
   integer ldx;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  ferr, berr, info, x = NumRu::Lapack.zsprfs( uplo, ap, afp, ipiv, b, x)\n    or\n  NumRu::Lapack.zsprfs  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE ZSPRFS( UPLO, N, NRHS, AP, AFP, IPIV, B, LDB, X, LDX, FERR, BERR, WORK, RWORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  ZSPRFS improves the computed solution to a system of linear\n*  equations when the coefficient matrix is symmetric indefinite\n*  and packed, and provides error bounds and backward error estimates\n*  for the solution.\n*\n\n*  Arguments\n*  =========\n*\n*  UPLO    (input) CHARACTER*1\n*          = 'U':  Upper triangle of A is stored;\n*          = 'L':  Lower triangle of A is stored.\n*\n*  N       (input) INTEGER\n*          The order of the matrix A.  N >= 0.\n*\n*  NRHS    (input) INTEGER\n*          The number of right hand sides, i.e., the number of columns\n*          of the matrices B and X.  NRHS >= 0.\n*\n*  AP      (input) COMPLEX*16 array, dimension (N*(N+1)/2)\n*          The upper or lower triangle of the symmetric matrix A, packed\n*          columnwise in a linear array.  The j-th column of A is stored\n*          in the array AP as follows:\n*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;\n*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.\n*\n*  AFP     (input) COMPLEX*16 array, dimension (N*(N+1)/2)\n*          The factored form of the matrix A.  AFP contains the block\n*          diagonal matrix D and the multipliers used to obtain the\n*          factor U or L from the factorization A = U*D*U**T or\n*          A = L*D*L**T as computed by ZSPTRF, stored as a packed\n*          triangular matrix.\n*\n*  IPIV    (input) INTEGER array, dimension (N)\n*          Details of the interchanges and the block structure of D\n*          as determined by ZSPTRF.\n*\n*  B       (input) COMPLEX*16 array, dimension (LDB,NRHS)\n*          The right hand side matrix B.\n*\n*  LDB     (input) INTEGER\n*          The leading dimension of the array B.  LDB >= max(1,N).\n*\n*  X       (input/output) COMPLEX*16 array, dimension (LDX,NRHS)\n*          On entry, the solution matrix X, as computed by ZSPTRS.\n*          On exit, the improved solution matrix X.\n*\n*  LDX     (input) INTEGER\n*          The leading dimension of the array X.  LDX >= max(1,N).\n*\n*  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)\n*          The estimated forward error bound for each solution vector\n*          X(j) (the j-th column of the solution matrix X).\n*          If XTRUE is the true solution corresponding to X(j), FERR(j)\n*          is an estimated upper bound for the magnitude of the largest\n*          element in (X(j) - XTRUE) divided by the magnitude of the\n*          largest element in X(j).  The estimate is as reliable as\n*          the estimate for RCOND, and is almost always a slight\n*          overestimate of the true error.\n*\n*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)\n*          The componentwise relative backward error of each solution\n*          vector X(j) (i.e., the smallest relative change in\n*          any element of A or B that makes X(j) an exact solution).\n*\n*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)\n*\n*  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*\n*  Internal Parameters\n*  ===================\n*\n*  ITMAX is the maximum number of steps of iterative refinement.\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  ferr, berr, info, x = NumRu::Lapack.zsprfs( uplo, ap, afp, ipiv, b, x)\n    or\n  NumRu::Lapack.zsprfs  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 6)
@@ -43,52 +45,52 @@ rb_zsprfs(int argc, VALUE *argv, VALUE self){
   rb_b = argv[4];
   rb_x = argv[5];
 
-  uplo = StringValueCStr(rb_uplo)[0];
-  if (!NA_IsNArray(rb_b))
-    rb_raise(rb_eArgError, "b (2th argument) must be NArray");
-  if (NA_RANK(rb_b) != 2)
-    rb_raise(rb_eArgError, "rank of b (2th argument) must be %d", 2);
-  ldb = NA_SHAPE0(rb_b);
-  nrhs = NA_SHAPE1(rb_b);
-  if (NA_TYPE(rb_b) != NA_DCOMPLEX)
-    rb_b = na_change_type(rb_b, NA_DCOMPLEX);
-  b = NA_PTR_TYPE(rb_b, doublecomplex*);
   if (!NA_IsNArray(rb_ipiv))
-    rb_raise(rb_eArgError, "ipiv (3th argument) must be NArray");
+    rb_raise(rb_eArgError, "ipiv (4th argument) must be NArray");
   if (NA_RANK(rb_ipiv) != 1)
-    rb_raise(rb_eArgError, "rank of ipiv (3th argument) must be %d", 1);
+    rb_raise(rb_eArgError, "rank of ipiv (4th argument) must be %d", 1);
   n = NA_SHAPE0(rb_ipiv);
   if (NA_TYPE(rb_ipiv) != NA_LINT)
     rb_ipiv = na_change_type(rb_ipiv, NA_LINT);
   ipiv = NA_PTR_TYPE(rb_ipiv, integer*);
-  if (!NA_IsNArray(rb_afp))
-    rb_raise(rb_eArgError, "afp (4th argument) must be NArray");
-  if (NA_RANK(rb_afp) != 1)
-    rb_raise(rb_eArgError, "rank of afp (4th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_afp) != (n*(n+1)/2))
-    rb_raise(rb_eRuntimeError, "shape 0 of afp must be %d", n*(n+1)/2);
-  if (NA_TYPE(rb_afp) != NA_DCOMPLEX)
-    rb_afp = na_change_type(rb_afp, NA_DCOMPLEX);
-  afp = NA_PTR_TYPE(rb_afp, doublecomplex*);
+  uplo = StringValueCStr(rb_uplo)[0];
+  if (!NA_IsNArray(rb_x))
+    rb_raise(rb_eArgError, "x (6th argument) must be NArray");
+  if (NA_RANK(rb_x) != 2)
+    rb_raise(rb_eArgError, "rank of x (6th argument) must be %d", 2);
+  nrhs = NA_SHAPE1(rb_x);
+  ldx = NA_SHAPE0(rb_x);
+  if (NA_TYPE(rb_x) != NA_DCOMPLEX)
+    rb_x = na_change_type(rb_x, NA_DCOMPLEX);
+  x = NA_PTR_TYPE(rb_x, doublecomplex*);
+  if (!NA_IsNArray(rb_b))
+    rb_raise(rb_eArgError, "b (5th argument) must be NArray");
+  if (NA_RANK(rb_b) != 2)
+    rb_raise(rb_eArgError, "rank of b (5th argument) must be %d", 2);
+  if (NA_SHAPE1(rb_b) != nrhs)
+    rb_raise(rb_eRuntimeError, "shape 1 of b must be the same as shape 1 of x");
+  ldb = NA_SHAPE0(rb_b);
+  if (NA_TYPE(rb_b) != NA_DCOMPLEX)
+    rb_b = na_change_type(rb_b, NA_DCOMPLEX);
+  b = NA_PTR_TYPE(rb_b, doublecomplex*);
   if (!NA_IsNArray(rb_ap))
-    rb_raise(rb_eArgError, "ap (5th argument) must be NArray");
+    rb_raise(rb_eArgError, "ap (2th argument) must be NArray");
   if (NA_RANK(rb_ap) != 1)
-    rb_raise(rb_eArgError, "rank of ap (5th argument) must be %d", 1);
+    rb_raise(rb_eArgError, "rank of ap (2th argument) must be %d", 1);
   if (NA_SHAPE0(rb_ap) != (n*(n+1)/2))
     rb_raise(rb_eRuntimeError, "shape 0 of ap must be %d", n*(n+1)/2);
   if (NA_TYPE(rb_ap) != NA_DCOMPLEX)
     rb_ap = na_change_type(rb_ap, NA_DCOMPLEX);
   ap = NA_PTR_TYPE(rb_ap, doublecomplex*);
-  if (!NA_IsNArray(rb_x))
-    rb_raise(rb_eArgError, "x (6th argument) must be NArray");
-  if (NA_RANK(rb_x) != 2)
-    rb_raise(rb_eArgError, "rank of x (6th argument) must be %d", 2);
-  ldx = NA_SHAPE0(rb_x);
-  if (NA_SHAPE1(rb_x) != nrhs)
-    rb_raise(rb_eRuntimeError, "shape 1 of x must be the same as shape 1 of b");
-  if (NA_TYPE(rb_x) != NA_DCOMPLEX)
-    rb_x = na_change_type(rb_x, NA_DCOMPLEX);
-  x = NA_PTR_TYPE(rb_x, doublecomplex*);
+  if (!NA_IsNArray(rb_afp))
+    rb_raise(rb_eArgError, "afp (3th argument) must be NArray");
+  if (NA_RANK(rb_afp) != 1)
+    rb_raise(rb_eArgError, "rank of afp (3th argument) must be %d", 1);
+  if (NA_SHAPE0(rb_afp) != (n*(n+1)/2))
+    rb_raise(rb_eRuntimeError, "shape 0 of afp must be %d", n*(n+1)/2);
+  if (NA_TYPE(rb_afp) != NA_DCOMPLEX)
+    rb_afp = na_change_type(rb_afp, NA_DCOMPLEX);
+  afp = NA_PTR_TYPE(rb_afp, doublecomplex*);
   {
     int shape[1];
     shape[0] = nrhs;

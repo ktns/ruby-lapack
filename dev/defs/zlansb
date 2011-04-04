@@ -1,6 +1,7 @@
 --- 
 :name: zlansb
 :md5sum: 2cf3136063091d0832acc52777370cbe
+:category: :function
 :type: doublereal
 :arguments: 
 - norm: 

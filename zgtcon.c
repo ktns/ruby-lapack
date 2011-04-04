@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID zgtcon_(char *norm, integer *n, doublecomplex *dl, doublecomplex *d, doublecomplex *du, doublecomplex *du2, integer *ipiv, doublereal *anorm, doublereal *rcond, doublecomplex *work, integer *info);
+
 static VALUE
 rb_zgtcon(int argc, VALUE *argv, VALUE self){
   VALUE rb_norm;
@@ -25,7 +27,7 @@ rb_zgtcon(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  rcond, info = NumRu::Lapack.zgtcon( norm, dl, d, du, du2, ipiv, anorm)\n    or\n  NumRu::Lapack.zgtcon  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE ZGTCON( NORM, N, DL, D, DU, DU2, IPIV, ANORM, RCOND, WORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  ZGTCON estimates the reciprocal of the condition number of a complex\n*  tridiagonal matrix A using the LU factorization as computed by\n*  ZGTTRF.\n*\n*  An estimate is obtained for norm(inv(A)), and the reciprocal of the\n*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).\n*\n\n*  Arguments\n*  =========\n*\n*  NORM    (input) CHARACTER*1\n*          Specifies whether the 1-norm condition number or the\n*          infinity-norm condition number is required:\n*          = '1' or 'O':  1-norm;\n*          = 'I':         Infinity-norm.\n*\n*  N       (input) INTEGER\n*          The order of the matrix A.  N >= 0.\n*\n*  DL      (input) COMPLEX*16 array, dimension (N-1)\n*          The (n-1) multipliers that define the matrix L from the\n*          LU factorization of A as computed by ZGTTRF.\n*\n*  D       (input) COMPLEX*16 array, dimension (N)\n*          The n diagonal elements of the upper triangular matrix U from\n*          the LU factorization of A.\n*\n*  DU      (input) COMPLEX*16 array, dimension (N-1)\n*          The (n-1) elements of the first superdiagonal of U.\n*\n*  DU2     (input) COMPLEX*16 array, dimension (N-2)\n*          The (n-2) elements of the second superdiagonal of U.\n*\n*  IPIV    (input) INTEGER array, dimension (N)\n*          The pivot indices; for 1 <= i <= n, row i of the matrix was\n*          interchanged with row IPIV(i).  IPIV(i) will always be either\n*          i or i+1; IPIV(i) = i indicates a row interchange was not\n*          required.\n*\n*  ANORM   (input) DOUBLE PRECISION\n*          If NORM = '1' or 'O', the 1-norm of the original matrix A.\n*          If NORM = 'I', the infinity-norm of the original matrix A.\n*\n*  RCOND   (output) DOUBLE PRECISION\n*          The reciprocal of the condition number of the matrix A,\n*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an\n*          estimate of the 1-norm of inv(A) computed in this routine.\n*\n*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  rcond, info = NumRu::Lapack.zgtcon( norm, dl, d, du, du2, ipiv, anorm)\n    or\n  NumRu::Lapack.zgtcon  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 7)
@@ -38,16 +40,16 @@ rb_zgtcon(int argc, VALUE *argv, VALUE self){
   rb_ipiv = argv[5];
   rb_anorm = argv[6];
 
-  norm = StringValueCStr(rb_norm)[0];
   anorm = NUM2DBL(rb_anorm);
   if (!NA_IsNArray(rb_ipiv))
-    rb_raise(rb_eArgError, "ipiv (2th argument) must be NArray");
+    rb_raise(rb_eArgError, "ipiv (6th argument) must be NArray");
   if (NA_RANK(rb_ipiv) != 1)
-    rb_raise(rb_eArgError, "rank of ipiv (2th argument) must be %d", 1);
+    rb_raise(rb_eArgError, "rank of ipiv (6th argument) must be %d", 1);
   n = NA_SHAPE0(rb_ipiv);
   if (NA_TYPE(rb_ipiv) != NA_LINT)
     rb_ipiv = na_change_type(rb_ipiv, NA_LINT);
   ipiv = NA_PTR_TYPE(rb_ipiv, integer*);
+  norm = StringValueCStr(rb_norm)[0];
   if (!NA_IsNArray(rb_d))
     rb_raise(rb_eArgError, "d (3th argument) must be NArray");
   if (NA_RANK(rb_d) != 1)
@@ -57,15 +59,15 @@ rb_zgtcon(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_d) != NA_DCOMPLEX)
     rb_d = na_change_type(rb_d, NA_DCOMPLEX);
   d = NA_PTR_TYPE(rb_d, doublecomplex*);
-  if (!NA_IsNArray(rb_dl))
-    rb_raise(rb_eArgError, "dl (4th argument) must be NArray");
-  if (NA_RANK(rb_dl) != 1)
-    rb_raise(rb_eArgError, "rank of dl (4th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_dl) != (n-1))
-    rb_raise(rb_eRuntimeError, "shape 0 of dl must be %d", n-1);
-  if (NA_TYPE(rb_dl) != NA_DCOMPLEX)
-    rb_dl = na_change_type(rb_dl, NA_DCOMPLEX);
-  dl = NA_PTR_TYPE(rb_dl, doublecomplex*);
+  if (!NA_IsNArray(rb_du))
+    rb_raise(rb_eArgError, "du (4th argument) must be NArray");
+  if (NA_RANK(rb_du) != 1)
+    rb_raise(rb_eArgError, "rank of du (4th argument) must be %d", 1);
+  if (NA_SHAPE0(rb_du) != (n-1))
+    rb_raise(rb_eRuntimeError, "shape 0 of du must be %d", n-1);
+  if (NA_TYPE(rb_du) != NA_DCOMPLEX)
+    rb_du = na_change_type(rb_du, NA_DCOMPLEX);
+  du = NA_PTR_TYPE(rb_du, doublecomplex*);
   if (!NA_IsNArray(rb_du2))
     rb_raise(rb_eArgError, "du2 (5th argument) must be NArray");
   if (NA_RANK(rb_du2) != 1)
@@ -75,15 +77,15 @@ rb_zgtcon(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_du2) != NA_DCOMPLEX)
     rb_du2 = na_change_type(rb_du2, NA_DCOMPLEX);
   du2 = NA_PTR_TYPE(rb_du2, doublecomplex*);
-  if (!NA_IsNArray(rb_du))
-    rb_raise(rb_eArgError, "du (6th argument) must be NArray");
-  if (NA_RANK(rb_du) != 1)
-    rb_raise(rb_eArgError, "rank of du (6th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_du) != (n-1))
-    rb_raise(rb_eRuntimeError, "shape 0 of du must be %d", n-1);
-  if (NA_TYPE(rb_du) != NA_DCOMPLEX)
-    rb_du = na_change_type(rb_du, NA_DCOMPLEX);
-  du = NA_PTR_TYPE(rb_du, doublecomplex*);
+  if (!NA_IsNArray(rb_dl))
+    rb_raise(rb_eArgError, "dl (2th argument) must be NArray");
+  if (NA_RANK(rb_dl) != 1)
+    rb_raise(rb_eArgError, "rank of dl (2th argument) must be %d", 1);
+  if (NA_SHAPE0(rb_dl) != (n-1))
+    rb_raise(rb_eRuntimeError, "shape 0 of dl must be %d", n-1);
+  if (NA_TYPE(rb_dl) != NA_DCOMPLEX)
+    rb_dl = na_change_type(rb_dl, NA_DCOMPLEX);
+  dl = NA_PTR_TYPE(rb_dl, doublecomplex*);
   work = ALLOC_N(doublecomplex, (2*n));
 
   zgtcon_(&norm, &n, dl, d, du, du2, ipiv, &anorm, &rcond, work, &info);

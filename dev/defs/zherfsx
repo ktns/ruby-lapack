@@ -90,8 +90,8 @@
 - params: 
     :type: doublereal
     :intent: input/output
-    :dims: []
-
+    :dims: 
+    - nparams
 - work: 
     :type: doublecomplex
     :intent: workspace
@@ -105,8 +105,8 @@
 - info: 
     :type: integer
     :intent: output
-:substitutions: {}
-
+:substitutions: 
+  n_err_bnds: "3"
 :fortran_help: "      SUBROUTINE ZHERFSX( UPLO, EQUED, N, NRHS, A, LDA, AF, LDAF, IPIV, S, B, LDB, X, LDX, RCOND, BERR, N_ERR_BNDS, ERR_BNDS_NORM, ERR_BNDS_COMP, NPARAMS, PARAMS, WORK, RWORK, INFO )\n\n\
   *     Purpose\n\
   *     =======\n\

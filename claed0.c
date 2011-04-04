@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID claed0_(integer *qsiz, integer *n, real *d, real *e, complex *q, integer *ldq, complex *qstore, integer *ldqs, real *rwork, integer *iwork, integer *info);
+
 static VALUE
 rb_claed0(int argc, VALUE *argv, VALUE self){
   VALUE rb_qsiz;
@@ -27,7 +29,7 @@ rb_claed0(int argc, VALUE *argv, VALUE self){
   integer ldqs;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  info, d, e, q = NumRu::Lapack.claed0( qsiz, d, e, q)\n    or\n  NumRu::Lapack.claed0  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE CLAED0( QSIZ, N, D, E, Q, LDQ, QSTORE, LDQS, RWORK, IWORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  Using the divide and conquer method, CLAED0 computes all eigenvalues\n*  of a symmetric tridiagonal matrix which is one diagonal block of\n*  those from reducing a dense or band Hermitian matrix and\n*  corresponding eigenvectors of the dense or band matrix.\n*\n\n*  Arguments\n*  =========\n*\n*  QSIZ   (input) INTEGER\n*         The dimension of the unitary matrix used to reduce\n*         the full matrix to tridiagonal form.  QSIZ >= N if ICOMPQ = 1.\n*\n*  N      (input) INTEGER\n*         The dimension of the symmetric tridiagonal matrix.  N >= 0.\n*\n*  D      (input/output) REAL array, dimension (N)\n*         On entry, the diagonal elements of the tridiagonal matrix.\n*         On exit, the eigenvalues in ascending order.\n*\n*  E      (input/output) REAL array, dimension (N-1)\n*         On entry, the off-diagonal elements of the tridiagonal matrix.\n*         On exit, E has been destroyed.\n*\n*  Q      (input/output) COMPLEX array, dimension (LDQ,N)\n*         On entry, Q must contain an QSIZ x N matrix whose columns\n*         unitarily orthonormal. It is a part of the unitary matrix\n*         that reduces the full dense Hermitian matrix to a\n*         (reducible) symmetric tridiagonal matrix.\n*\n*  LDQ    (input) INTEGER\n*         The leading dimension of the array Q.  LDQ >= max(1,N).\n*\n*  IWORK  (workspace) INTEGER array,\n*         the dimension of IWORK must be at least\n*                      6 + 6*N + 5*N*lg N\n*                      ( lg( N ) = smallest integer k\n*                                  such that 2^k >= N )\n*\n*  RWORK  (workspace) REAL array,\n*                               dimension (1 + 3*N + 2*N*lg N + 3*N**2)\n*                        ( lg( N ) = smallest integer k\n*                                    such that 2^k >= N )\n*\n*  QSTORE (workspace) COMPLEX array, dimension (LDQS, N)\n*         Used to store parts of\n*         the eigenvector matrix when the updating matrix multiplies\n*         take place.\n*\n*  LDQS   (input) INTEGER\n*         The leading dimension of the array QSTORE.\n*         LDQS >= max(1,N).\n*\n*  INFO   (output) INTEGER\n*          = 0:  successful exit.\n*          < 0:  if INFO = -i, the i-th argument had an illegal value.\n*          > 0:  The algorithm failed to compute an eigenvalue while\n*                working on the submatrix lying in rows and columns\n*                INFO/(N+1) through mod(INFO,N+1).\n*\n\n*  =====================================================================\n*\n*  Warning:      N could be as big as QSIZ!\n*\n\n");
+    printf("%s\n", "USAGE:\n  info, d, e, q = NumRu::Lapack.claed0( qsiz, d, e, q)\n    or\n  NumRu::Lapack.claed0  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 4)
@@ -46,6 +48,16 @@ rb_claed0(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_d) != NA_SFLOAT)
     rb_d = na_change_type(rb_d, NA_SFLOAT);
   d = NA_PTR_TYPE(rb_d, real*);
+  if (!NA_IsNArray(rb_q))
+    rb_raise(rb_eArgError, "q (4th argument) must be NArray");
+  if (NA_RANK(rb_q) != 2)
+    rb_raise(rb_eArgError, "rank of q (4th argument) must be %d", 2);
+  if (NA_SHAPE1(rb_q) != n)
+    rb_raise(rb_eRuntimeError, "shape 1 of q must be the same as shape 0 of d");
+  ldq = NA_SHAPE0(rb_q);
+  if (NA_TYPE(rb_q) != NA_SCOMPLEX)
+    rb_q = na_change_type(rb_q, NA_SCOMPLEX);
+  q = NA_PTR_TYPE(rb_q, complex*);
   if (!NA_IsNArray(rb_e))
     rb_raise(rb_eArgError, "e (3th argument) must be NArray");
   if (NA_RANK(rb_e) != 1)
@@ -55,16 +67,7 @@ rb_claed0(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_e) != NA_SFLOAT)
     rb_e = na_change_type(rb_e, NA_SFLOAT);
   e = NA_PTR_TYPE(rb_e, real*);
-  if (!NA_IsNArray(rb_q))
-    rb_raise(rb_eArgError, "q (4th argument) must be NArray");
-  if (NA_RANK(rb_q) != 2)
-    rb_raise(rb_eArgError, "rank of q (4th argument) must be %d", 2);
-  ldq = NA_SHAPE0(rb_q);
-  if (NA_SHAPE1(rb_q) != n)
-    rb_raise(rb_eRuntimeError, "shape 1 of q must be the same as shape 0 of d");
-  if (NA_TYPE(rb_q) != NA_SCOMPLEX)
-    rb_q = na_change_type(rb_q, NA_SCOMPLEX);
-  q = NA_PTR_TYPE(rb_q, complex*);
+  ldqs = MAX(1,n);
   {
     int shape[1];
     shape[0] = n;
@@ -93,7 +96,6 @@ rb_claed0(int argc, VALUE *argv, VALUE self){
   MEMCPY(q_out__, q, complex, NA_TOTAL(rb_q));
   rb_q = rb_q_out__;
   q = q_out__;
-  ldqs = MAX(1,n);
   qstore = ALLOC_N(complex, (ldqs)*(n));
   rwork = ALLOC_N(real, (1 + 3*n + 2*n*LG(n) + 3*pow(n,2)));
   iwork = ALLOC_N(integer, (6 + 6*n + 5*n*LG(n)));

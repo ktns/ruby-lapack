@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dstevx_(char *jobz, char *range, integer *n, doublereal *d, doublereal *e, doublereal *vl, doublereal *vu, integer *il, integer *iu, doublereal *abstol, integer *m, doublereal *w, doublereal *z, integer *ldz, doublereal *work, integer *iwork, integer *ifail, integer *info);
+
 static VALUE
 rb_dstevx(int argc, VALUE *argv, VALUE self){
   VALUE rb_jobz;
@@ -41,7 +43,7 @@ rb_dstevx(int argc, VALUE *argv, VALUE self){
   integer ldz;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  m, w, z, ifail, info, d, e = NumRu::Lapack.dstevx( jobz, range, d, e, vl, vu, il, iu, abstol)\n    or\n  NumRu::Lapack.dstevx  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DSTEVX( JOBZ, RANGE, N, D, E, VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, IWORK, IFAIL, INFO )\n\n*  Purpose\n*  =======\n*\n*  DSTEVX computes selected eigenvalues and, optionally, eigenvectors\n*  of a real symmetric tridiagonal matrix A.  Eigenvalues and\n*  eigenvectors can be selected by specifying either a range of values\n*  or a range of indices for the desired eigenvalues.\n*\n\n*  Arguments\n*  =========\n*\n*  JOBZ    (input) CHARACTER*1\n*          = 'N':  Compute eigenvalues only;\n*          = 'V':  Compute eigenvalues and eigenvectors.\n*\n*  RANGE   (input) CHARACTER*1\n*          = 'A': all eigenvalues will be found.\n*          = 'V': all eigenvalues in the half-open interval (VL,VU]\n*                 will be found.\n*          = 'I': the IL-th through IU-th eigenvalues will be found.\n*\n*  N       (input) INTEGER\n*          The order of the matrix.  N >= 0.\n*\n*  D       (input/output) DOUBLE PRECISION array, dimension (N)\n*          On entry, the n diagonal elements of the tridiagonal matrix\n*          A.\n*          On exit, D may be multiplied by a constant factor chosen\n*          to avoid over/underflow in computing the eigenvalues.\n*\n*  E       (input/output) DOUBLE PRECISION array, dimension (max(1,N-1))\n*          On entry, the (n-1) subdiagonal elements of the tridiagonal\n*          matrix A in elements 1 to N-1 of E.\n*          On exit, E may be multiplied by a constant factor chosen\n*          to avoid over/underflow in computing the eigenvalues.\n*\n*  VL      (input) DOUBLE PRECISION\n*  VU      (input) DOUBLE PRECISION\n*          If RANGE='V', the lower and upper bounds of the interval to\n*          be searched for eigenvalues. VL < VU.\n*          Not referenced if RANGE = 'A' or 'I'.\n*\n*  IL      (input) INTEGER\n*  IU      (input) INTEGER\n*          If RANGE='I', the indices (in ascending order) of the\n*          smallest and largest eigenvalues to be returned.\n*          1 <= IL <= IU <= N, if N > 0; IL = 1 and IU = 0 if N = 0.\n*          Not referenced if RANGE = 'A' or 'V'.\n*\n*  ABSTOL  (input) DOUBLE PRECISION\n*          The absolute error tolerance for the eigenvalues.\n*          An approximate eigenvalue is accepted as converged\n*          when it is determined to lie in an interval [a,b]\n*          of width less than or equal to\n*\n*                  ABSTOL + EPS *   max( |a|,|b| ) ,\n*\n*          where EPS is the machine precision.  If ABSTOL is less\n*          than or equal to zero, then  EPS*|T|  will be used in\n*          its place, where |T| is the 1-norm of the tridiagonal\n*          matrix.\n*\n*          Eigenvalues will be computed most accurately when ABSTOL is\n*          set to twice the underflow threshold 2*DLAMCH('S'), not zero.\n*          If this routine returns with INFO>0, indicating that some\n*          eigenvectors did not converge, try setting ABSTOL to\n*          2*DLAMCH('S').\n*\n*          See \"Computing Small Singular Values of Bidiagonal Matrices\n*          with Guaranteed High Relative Accuracy,\" by Demmel and\n*          Kahan, LAPACK Working Note #3.\n*\n*  M       (output) INTEGER\n*          The total number of eigenvalues found.  0 <= M <= N.\n*          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.\n*\n*  W       (output) DOUBLE PRECISION array, dimension (N)\n*          The first M elements contain the selected eigenvalues in\n*          ascending order.\n*\n*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, max(1,M) )\n*          If JOBZ = 'V', then if INFO = 0, the first M columns of Z\n*          contain the orthonormal eigenvectors of the matrix A\n*          corresponding to the selected eigenvalues, with the i-th\n*          column of Z holding the eigenvector associated with W(i).\n*          If an eigenvector fails to converge (INFO > 0), then that\n*          column of Z contains the latest approximation to the\n*          eigenvector, and the index of the eigenvector is returned\n*          in IFAIL.  If JOBZ = 'N', then Z is not referenced.\n*          Note: the user must ensure that at least max(1,M) columns are\n*          supplied in the array Z; if RANGE = 'V', the exact value of M\n*          is not known in advance and an upper bound must be used.\n*\n*  LDZ     (input) INTEGER\n*          The leading dimension of the array Z.  LDZ >= 1, and if\n*          JOBZ = 'V', LDZ >= max(1,N).\n*\n*  WORK    (workspace) DOUBLE PRECISION array, dimension (5*N)\n*\n*  IWORK   (workspace) INTEGER array, dimension (5*N)\n*\n*  IFAIL   (output) INTEGER array, dimension (N)\n*          If JOBZ = 'V', then if INFO = 0, the first M elements of\n*          IFAIL are zero.  If INFO > 0, then IFAIL contains the\n*          indices of the eigenvectors that failed to converge.\n*          If JOBZ = 'N', then IFAIL is not referenced.\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*          > 0:  if INFO = i, then i eigenvectors failed to converge.\n*                Their indices are stored in array IFAIL.\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  m, w, z, ifail, info, d, e = NumRu::Lapack.dstevx( jobz, range, d, e, vl, vu, il, iu, abstol)\n    or\n  NumRu::Lapack.dstevx  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 9)
@@ -56,13 +58,12 @@ rb_dstevx(int argc, VALUE *argv, VALUE self){
   rb_iu = argv[7];
   rb_abstol = argv[8];
 
-  jobz = StringValueCStr(rb_jobz)[0];
-  range = StringValueCStr(rb_range)[0];
-  vl = NUM2DBL(rb_vl);
-  vu = NUM2DBL(rb_vu);
-  il = NUM2INT(rb_il);
-  iu = NUM2INT(rb_iu);
   abstol = NUM2DBL(rb_abstol);
+  vl = NUM2DBL(rb_vl);
+  iu = NUM2INT(rb_iu);
+  jobz = StringValueCStr(rb_jobz)[0];
+  vu = NUM2DBL(rb_vu);
+  range = StringValueCStr(rb_range)[0];
   if (!NA_IsNArray(rb_d))
     rb_raise(rb_eArgError, "d (3th argument) must be NArray");
   if (NA_RANK(rb_d) != 1)
@@ -71,6 +72,7 @@ rb_dstevx(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_d) != NA_DFLOAT)
     rb_d = na_change_type(rb_d, NA_DFLOAT);
   d = NA_PTR_TYPE(rb_d, doublereal*);
+  il = NUM2INT(rb_il);
   if (!NA_IsNArray(rb_e))
     rb_raise(rb_eArgError, "e (4th argument) must be NArray");
   if (NA_RANK(rb_e) != 1)
@@ -80,14 +82,14 @@ rb_dstevx(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_e) != NA_DFLOAT)
     rb_e = na_change_type(rb_e, NA_DFLOAT);
   e = NA_PTR_TYPE(rb_e, doublereal*);
+  m = n;
+  ldz = lsame_(&jobz,"V") ? MAX(1,n) : 1;
   {
     int shape[1];
     shape[0] = n;
     rb_w = na_make_object(NA_DFLOAT, 1, shape, cNArray);
   }
   w = NA_PTR_TYPE(rb_w, doublereal*);
-  ldz = lsame_(&jobz,"V") ? MAX(1,n) : 1;
-  m = n;
   {
     int shape[2];
     shape[0] = ldz;
@@ -97,7 +99,7 @@ rb_dstevx(int argc, VALUE *argv, VALUE self){
   z = NA_PTR_TYPE(rb_z, doublereal*);
   {
     int shape[1];
-    shape[0] = DIM_LEN(n);
+    shape[0] = n;
     rb_ifail = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   ifail = NA_PTR_TYPE(rb_ifail, integer*);

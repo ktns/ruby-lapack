@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dlaqps_(integer *m, integer *n, integer *offset, integer *nb, integer *kb, doublereal *a, integer *lda, integer *jpvt, doublereal *tau, doublereal *vn1, doublereal *vn2, doublereal *auxv, doublereal *f, integer *ldf);
+
 static VALUE
 rb_dlaqps(int argc, VALUE *argv, VALUE self){
   VALUE rb_m;
@@ -41,7 +43,7 @@ rb_dlaqps(int argc, VALUE *argv, VALUE self){
   integer ldf;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  kb, tau, a, jpvt, vn1, vn2, auxv, f = NumRu::Lapack.dlaqps( m, offset, a, jpvt, vn1, vn2, auxv, f)\n    or\n  NumRu::Lapack.dlaqps  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLAQPS( M, N, OFFSET, NB, KB, A, LDA, JPVT, TAU, VN1, VN2, AUXV, F, LDF )\n\n*  Purpose\n*  =======\n*\n*  DLAQPS computes a step of QR factorization with column pivoting\n*  of a real M-by-N matrix A by using Blas-3.  It tries to factorize\n*  NB columns from A starting from the row OFFSET+1, and updates all\n*  of the matrix with Blas-3 xGEMM.\n*\n*  In some cases, due to catastrophic cancellations, it cannot\n*  factorize NB columns.  Hence, the actual number of factorized\n*  columns is returned in KB.\n*\n*  Block A(1:OFFSET,1:N) is accordingly pivoted, but not factorized.\n*\n\n*  Arguments\n*  =========\n*\n*  M       (input) INTEGER\n*          The number of rows of the matrix A. M >= 0.\n*\n*  N       (input) INTEGER\n*          The number of columns of the matrix A. N >= 0\n*\n*  OFFSET  (input) INTEGER\n*          The number of rows of A that have been factorized in\n*          previous steps.\n*\n*  NB      (input) INTEGER\n*          The number of columns to factorize.\n*\n*  KB      (output) INTEGER\n*          The number of columns actually factorized.\n*\n*  A       (input/output) DOUBLE PRECISION array, dimension (LDA,N)\n*          On entry, the M-by-N matrix A.\n*          On exit, block A(OFFSET+1:M,1:KB) is the triangular\n*          factor obtained and block A(1:OFFSET,1:N) has been\n*          accordingly pivoted, but no factorized.\n*          The rest of the matrix, block A(OFFSET+1:M,KB+1:N) has\n*          been updated.\n*\n*  LDA     (input) INTEGER\n*          The leading dimension of the array A. LDA >= max(1,M).\n*\n*  JPVT    (input/output) INTEGER array, dimension (N)\n*          JPVT(I) = K <==> Column K of the full matrix A has been\n*          permuted into position I in AP.\n*\n*  TAU     (output) DOUBLE PRECISION array, dimension (KB)\n*          The scalar factors of the elementary reflectors.\n*\n*  VN1     (input/output) DOUBLE PRECISION array, dimension (N)\n*          The vector with the partial column norms.\n*\n*  VN2     (input/output) DOUBLE PRECISION array, dimension (N)\n*          The vector with the exact column norms.\n*\n*  AUXV    (input/output) DOUBLE PRECISION array, dimension (NB)\n*          Auxiliar vector.\n*\n*  F       (input/output) DOUBLE PRECISION array, dimension (LDF,NB)\n*          Matrix F' = L*Y'*A.\n*\n*  LDF     (input) INTEGER\n*          The leading dimension of the array F. LDF >= max(1,N).\n*\n\n*  Further Details\n*  ===============\n*\n*  Based on contributions by\n*    G. Quintana-Orti, Depto. de Informatica, Universidad Jaime I, Spain\n*    X. Sun, Computer Science Dept., Duke University, USA\n*\n*  Partial column norm updating strategy modified by\n*    Z. Drmac and Z. Bujanovic, Dept. of Mathematics,\n*    University of Zagreb, Croatia.\n*    June 2006.\n*  For more details see LAPACK Working Note 176.\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  kb, tau, a, jpvt, vn1, vn2, auxv, f = NumRu::Lapack.dlaqps( m, offset, a, jpvt, vn1, vn2, auxv, f)\n    or\n  NumRu::Lapack.dlaqps  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 8)
@@ -55,17 +57,25 @@ rb_dlaqps(int argc, VALUE *argv, VALUE self){
   rb_auxv = argv[6];
   rb_f = argv[7];
 
-  m = NUM2INT(rb_m);
+  if (!NA_IsNArray(rb_auxv))
+    rb_raise(rb_eArgError, "auxv (7th argument) must be NArray");
+  if (NA_RANK(rb_auxv) != 1)
+    rb_raise(rb_eArgError, "rank of auxv (7th argument) must be %d", 1);
+  nb = NA_SHAPE0(rb_auxv);
+  if (NA_TYPE(rb_auxv) != NA_DFLOAT)
+    rb_auxv = na_change_type(rb_auxv, NA_DFLOAT);
+  auxv = NA_PTR_TYPE(rb_auxv, doublereal*);
   offset = NUM2INT(rb_offset);
   if (!NA_IsNArray(rb_a))
     rb_raise(rb_eArgError, "a (3th argument) must be NArray");
   if (NA_RANK(rb_a) != 2)
     rb_raise(rb_eArgError, "rank of a (3th argument) must be %d", 2);
-  lda = NA_SHAPE0(rb_a);
   n = NA_SHAPE1(rb_a);
+  lda = NA_SHAPE0(rb_a);
   if (NA_TYPE(rb_a) != NA_DFLOAT)
     rb_a = na_change_type(rb_a, NA_DFLOAT);
   a = NA_PTR_TYPE(rb_a, doublereal*);
+  m = NUM2INT(rb_m);
   if (!NA_IsNArray(rb_jpvt))
     rb_raise(rb_eArgError, "jpvt (4th argument) must be NArray");
   if (NA_RANK(rb_jpvt) != 1)
@@ -75,15 +85,6 @@ rb_dlaqps(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_jpvt) != NA_LINT)
     rb_jpvt = na_change_type(rb_jpvt, NA_LINT);
   jpvt = NA_PTR_TYPE(rb_jpvt, integer*);
-  if (!NA_IsNArray(rb_vn1))
-    rb_raise(rb_eArgError, "vn1 (5th argument) must be NArray");
-  if (NA_RANK(rb_vn1) != 1)
-    rb_raise(rb_eArgError, "rank of vn1 (5th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_vn1) != n)
-    rb_raise(rb_eRuntimeError, "shape 0 of vn1 must be the same as shape 1 of a");
-  if (NA_TYPE(rb_vn1) != NA_DFLOAT)
-    rb_vn1 = na_change_type(rb_vn1, NA_DFLOAT);
-  vn1 = NA_PTR_TYPE(rb_vn1, doublereal*);
   if (!NA_IsNArray(rb_vn2))
     rb_raise(rb_eArgError, "vn2 (6th argument) must be NArray");
   if (NA_RANK(rb_vn2) != 1)
@@ -93,24 +94,25 @@ rb_dlaqps(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_vn2) != NA_DFLOAT)
     rb_vn2 = na_change_type(rb_vn2, NA_DFLOAT);
   vn2 = NA_PTR_TYPE(rb_vn2, doublereal*);
-  if (!NA_IsNArray(rb_auxv))
-    rb_raise(rb_eArgError, "auxv (7th argument) must be NArray");
-  if (NA_RANK(rb_auxv) != 1)
-    rb_raise(rb_eArgError, "rank of auxv (7th argument) must be %d", 1);
-  nb = NA_SHAPE0(rb_auxv);
-  if (NA_TYPE(rb_auxv) != NA_DFLOAT)
-    rb_auxv = na_change_type(rb_auxv, NA_DFLOAT);
-  auxv = NA_PTR_TYPE(rb_auxv, doublereal*);
   if (!NA_IsNArray(rb_f))
     rb_raise(rb_eArgError, "f (8th argument) must be NArray");
   if (NA_RANK(rb_f) != 2)
     rb_raise(rb_eArgError, "rank of f (8th argument) must be %d", 2);
-  ldf = NA_SHAPE0(rb_f);
   if (NA_SHAPE1(rb_f) != nb)
     rb_raise(rb_eRuntimeError, "shape 1 of f must be the same as shape 0 of auxv");
+  ldf = NA_SHAPE0(rb_f);
   if (NA_TYPE(rb_f) != NA_DFLOAT)
     rb_f = na_change_type(rb_f, NA_DFLOAT);
   f = NA_PTR_TYPE(rb_f, doublereal*);
+  if (!NA_IsNArray(rb_vn1))
+    rb_raise(rb_eArgError, "vn1 (5th argument) must be NArray");
+  if (NA_RANK(rb_vn1) != 1)
+    rb_raise(rb_eArgError, "rank of vn1 (5th argument) must be %d", 1);
+  if (NA_SHAPE0(rb_vn1) != n)
+    rb_raise(rb_eRuntimeError, "shape 0 of vn1 must be the same as shape 1 of a");
+  if (NA_TYPE(rb_vn1) != NA_DFLOAT)
+    rb_vn1 = na_change_type(rb_vn1, NA_DFLOAT);
+  vn1 = NA_PTR_TYPE(rb_vn1, doublereal*);
   kb = nb;
   {
     int shape[1];
@@ -130,7 +132,7 @@ rb_dlaqps(int argc, VALUE *argv, VALUE self){
   a = a_out__;
   {
     int shape[1];
-    shape[0] = DIM_LEN(n);
+    shape[0] = n;
     rb_jpvt_out__ = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   jpvt_out__ = NA_PTR_TYPE(rb_jpvt_out__, integer*);

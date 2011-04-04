@@ -1,6 +1,7 @@
 --- 
 :name: clangt
 :md5sum: 652ea6ab81e8f71ce9bebc5bc9493bb5
+:category: :function
 :type: real
 :arguments: 
 - norm: 

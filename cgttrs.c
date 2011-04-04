@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID cgttrs_(char *trans, integer *n, integer *nrhs, complex *dl, complex *d, complex *du, complex *du2, integer *ipiv, complex *b, integer *ldb, integer *info);
+
 static VALUE
 rb_cgttrs(int argc, VALUE *argv, VALUE self){
   VALUE rb_trans;
@@ -26,7 +28,7 @@ rb_cgttrs(int argc, VALUE *argv, VALUE self){
   integer nrhs;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  info, b = NumRu::Lapack.cgttrs( trans, dl, d, du, du2, ipiv, b)\n    or\n  NumRu::Lapack.cgttrs  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE CGTTRS( TRANS, N, NRHS, DL, D, DU, DU2, IPIV, B, LDB, INFO )\n\n*  Purpose\n*  =======\n*\n*  CGTTRS solves one of the systems of equations\n*     A * X = B,  A**T * X = B,  or  A**H * X = B,\n*  with a tridiagonal matrix A using the LU factorization computed\n*  by CGTTRF.\n*\n\n*  Arguments\n*  =========\n*\n*  TRANS   (input) CHARACTER*1\n*          Specifies the form of the system of equations.\n*          = 'N':  A * X = B     (No transpose)\n*          = 'T':  A**T * X = B  (Transpose)\n*          = 'C':  A**H * X = B  (Conjugate transpose)\n*\n*  N       (input) INTEGER\n*          The order of the matrix A.\n*\n*  NRHS    (input) INTEGER\n*          The number of right hand sides, i.e., the number of columns\n*          of the matrix B.  NRHS >= 0.\n*\n*  DL      (input) COMPLEX array, dimension (N-1)\n*          The (n-1) multipliers that define the matrix L from the\n*          LU factorization of A.\n*\n*  D       (input) COMPLEX array, dimension (N)\n*          The n diagonal elements of the upper triangular matrix U from\n*          the LU factorization of A.\n*\n*  DU      (input) COMPLEX array, dimension (N-1)\n*          The (n-1) elements of the first super-diagonal of U.\n*\n*  DU2     (input) COMPLEX array, dimension (N-2)\n*          The (n-2) elements of the second super-diagonal of U.\n*\n*  IPIV    (input) INTEGER array, dimension (N)\n*          The pivot indices; for 1 <= i <= n, row i of the matrix was\n*          interchanged with row IPIV(i).  IPIV(i) will always be either\n*          i or i+1; IPIV(i) = i indicates a row interchange was not\n*          required.\n*\n*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)\n*          On entry, the matrix of right hand side vectors B.\n*          On exit, B is overwritten by the solution vectors X.\n*\n*  LDB     (input) INTEGER\n*          The leading dimension of the array B.  LDB >= max(1,N).\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -k, the k-th argument had an illegal value\n*\n\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      LOGICAL            NOTRAN\n      INTEGER            ITRANS, J, JB, NB\n*     ..\n*     .. External Functions ..\n      INTEGER            ILAENV\n      EXTERNAL           ILAENV\n*     ..\n*     .. External Subroutines ..\n      EXTERNAL           CGTTS2, XERBLA\n*     ..\n*     .. Intrinsic Functions ..\n      INTRINSIC          MAX, MIN\n*     ..\n\n");
+    printf("%s\n", "USAGE:\n  info, b = NumRu::Lapack.cgttrs( trans, dl, d, du, du2, ipiv, b)\n    or\n  NumRu::Lapack.cgttrs  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 7)
@@ -39,15 +41,24 @@ rb_cgttrs(int argc, VALUE *argv, VALUE self){
   rb_ipiv = argv[5];
   rb_b = argv[6];
 
-  trans = StringValueCStr(rb_trans)[0];
   if (!NA_IsNArray(rb_ipiv))
-    rb_raise(rb_eArgError, "ipiv (2th argument) must be NArray");
+    rb_raise(rb_eArgError, "ipiv (6th argument) must be NArray");
   if (NA_RANK(rb_ipiv) != 1)
-    rb_raise(rb_eArgError, "rank of ipiv (2th argument) must be %d", 1);
+    rb_raise(rb_eArgError, "rank of ipiv (6th argument) must be %d", 1);
   n = NA_SHAPE0(rb_ipiv);
   if (NA_TYPE(rb_ipiv) != NA_LINT)
     rb_ipiv = na_change_type(rb_ipiv, NA_LINT);
   ipiv = NA_PTR_TYPE(rb_ipiv, integer*);
+  trans = StringValueCStr(rb_trans)[0];
+  if (!NA_IsNArray(rb_b))
+    rb_raise(rb_eArgError, "b (7th argument) must be NArray");
+  if (NA_RANK(rb_b) != 2)
+    rb_raise(rb_eArgError, "rank of b (7th argument) must be %d", 2);
+  nrhs = NA_SHAPE1(rb_b);
+  ldb = NA_SHAPE0(rb_b);
+  if (NA_TYPE(rb_b) != NA_SCOMPLEX)
+    rb_b = na_change_type(rb_b, NA_SCOMPLEX);
+  b = NA_PTR_TYPE(rb_b, complex*);
   if (!NA_IsNArray(rb_d))
     rb_raise(rb_eArgError, "d (3th argument) must be NArray");
   if (NA_RANK(rb_d) != 1)
@@ -57,10 +68,19 @@ rb_cgttrs(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_d) != NA_SCOMPLEX)
     rb_d = na_change_type(rb_d, NA_SCOMPLEX);
   d = NA_PTR_TYPE(rb_d, complex*);
+  if (!NA_IsNArray(rb_du))
+    rb_raise(rb_eArgError, "du (4th argument) must be NArray");
+  if (NA_RANK(rb_du) != 1)
+    rb_raise(rb_eArgError, "rank of du (4th argument) must be %d", 1);
+  if (NA_SHAPE0(rb_du) != (n-1))
+    rb_raise(rb_eRuntimeError, "shape 0 of du must be %d", n-1);
+  if (NA_TYPE(rb_du) != NA_SCOMPLEX)
+    rb_du = na_change_type(rb_du, NA_SCOMPLEX);
+  du = NA_PTR_TYPE(rb_du, complex*);
   if (!NA_IsNArray(rb_dl))
-    rb_raise(rb_eArgError, "dl (4th argument) must be NArray");
+    rb_raise(rb_eArgError, "dl (2th argument) must be NArray");
   if (NA_RANK(rb_dl) != 1)
-    rb_raise(rb_eArgError, "rank of dl (4th argument) must be %d", 1);
+    rb_raise(rb_eArgError, "rank of dl (2th argument) must be %d", 1);
   if (NA_SHAPE0(rb_dl) != (n-1))
     rb_raise(rb_eRuntimeError, "shape 0 of dl must be %d", n-1);
   if (NA_TYPE(rb_dl) != NA_SCOMPLEX)
@@ -75,24 +95,6 @@ rb_cgttrs(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_du2) != NA_SCOMPLEX)
     rb_du2 = na_change_type(rb_du2, NA_SCOMPLEX);
   du2 = NA_PTR_TYPE(rb_du2, complex*);
-  if (!NA_IsNArray(rb_du))
-    rb_raise(rb_eArgError, "du (6th argument) must be NArray");
-  if (NA_RANK(rb_du) != 1)
-    rb_raise(rb_eArgError, "rank of du (6th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_du) != (n-1))
-    rb_raise(rb_eRuntimeError, "shape 0 of du must be %d", n-1);
-  if (NA_TYPE(rb_du) != NA_SCOMPLEX)
-    rb_du = na_change_type(rb_du, NA_SCOMPLEX);
-  du = NA_PTR_TYPE(rb_du, complex*);
-  if (!NA_IsNArray(rb_b))
-    rb_raise(rb_eArgError, "b (7th argument) must be NArray");
-  if (NA_RANK(rb_b) != 2)
-    rb_raise(rb_eArgError, "rank of b (7th argument) must be %d", 2);
-  ldb = NA_SHAPE0(rb_b);
-  nrhs = NA_SHAPE1(rb_b);
-  if (NA_TYPE(rb_b) != NA_SCOMPLEX)
-    rb_b = na_change_type(rb_b, NA_SCOMPLEX);
-  b = NA_PTR_TYPE(rb_b, complex*);
   {
     int shape[2];
     shape[0] = ldb;

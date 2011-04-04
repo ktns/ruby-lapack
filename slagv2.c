@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID slagv2_(real *a, integer *lda, real *b, integer *ldb, real *alphar, real *alphai, real *beta, real *csl, real *snl, real *csr, real *snr);
+
 static VALUE
 rb_slagv2(int argc, VALUE *argv, VALUE self){
   VALUE rb_a;
@@ -29,7 +31,7 @@ rb_slagv2(int argc, VALUE *argv, VALUE self){
   integer ldb;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  alphar, alphai, beta, csl, snl, csr, snr, a, b = NumRu::Lapack.slagv2( a, b)\n    or\n  NumRu::Lapack.slagv2  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SLAGV2( A, LDA, B, LDB, ALPHAR, ALPHAI, BETA, CSL, SNL, CSR, SNR )\n\n*  Purpose\n*  =======\n*\n*  SLAGV2 computes the Generalized Schur factorization of a real 2-by-2\n*  matrix pencil (A,B) where B is upper triangular. This routine\n*  computes orthogonal (rotation) matrices given by CSL, SNL and CSR,\n*  SNR such that\n*\n*  1) if the pencil (A,B) has two real eigenvalues (include 0/0 or 1/0\n*     types), then\n*\n*     [ a11 a12 ] := [  CSL  SNL ] [ a11 a12 ] [  CSR -SNR ]\n*     [  0  a22 ]    [ -SNL  CSL ] [ a21 a22 ] [  SNR  CSR ]\n*\n*     [ b11 b12 ] := [  CSL  SNL ] [ b11 b12 ] [  CSR -SNR ]\n*     [  0  b22 ]    [ -SNL  CSL ] [  0  b22 ] [  SNR  CSR ],\n*\n*  2) if the pencil (A,B) has a pair of complex conjugate eigenvalues,\n*     then\n*\n*     [ a11 a12 ] := [  CSL  SNL ] [ a11 a12 ] [  CSR -SNR ]\n*     [ a21 a22 ]    [ -SNL  CSL ] [ a21 a22 ] [  SNR  CSR ]\n*\n*     [ b11  0  ] := [  CSL  SNL ] [ b11 b12 ] [  CSR -SNR ]\n*     [  0  b22 ]    [ -SNL  CSL ] [  0  b22 ] [  SNR  CSR ]\n*\n*     where b11 >= b22 > 0.\n*\n*\n\n*  Arguments\n*  =========\n*\n*  A       (input/output) REAL array, dimension (LDA, 2)\n*          On entry, the 2 x 2 matrix A.\n*          On exit, A is overwritten by the ``A-part'' of the\n*          generalized Schur form.\n*\n*  LDA     (input) INTEGER\n*          THe leading dimension of the array A.  LDA >= 2.\n*\n*  B       (input/output) REAL array, dimension (LDB, 2)\n*          On entry, the upper triangular 2 x 2 matrix B.\n*          On exit, B is overwritten by the ``B-part'' of the\n*          generalized Schur form.\n*\n*  LDB     (input) INTEGER\n*          THe leading dimension of the array B.  LDB >= 2.\n*\n*  ALPHAR  (output) REAL array, dimension (2)\n*  ALPHAI  (output) REAL array, dimension (2)\n*  BETA    (output) REAL array, dimension (2)\n*          (ALPHAR(k)+i*ALPHAI(k))/BETA(k) are the eigenvalues of the\n*          pencil (A,B), k=1,2, i = sqrt(-1).  Note that BETA(k) may\n*          be zero.\n*\n*  CSL     (output) REAL\n*          The cosine of the left rotation matrix.\n*\n*  SNL     (output) REAL\n*          The sine of the left rotation matrix.\n*\n*  CSR     (output) REAL\n*          The cosine of the right rotation matrix.\n*\n*  SNR     (output) REAL\n*          The sine of the right rotation matrix.\n*\n\n*  Further Details\n*  ===============\n*\n*  Based on contributions by\n*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA\n*\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  alphar, alphai, beta, csl, snl, csr, snr, a, b = NumRu::Lapack.slagv2( a, b)\n    or\n  NumRu::Lapack.slagv2  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 2)
@@ -41,9 +43,9 @@ rb_slagv2(int argc, VALUE *argv, VALUE self){
     rb_raise(rb_eArgError, "a (1th argument) must be NArray");
   if (NA_RANK(rb_a) != 2)
     rb_raise(rb_eArgError, "rank of a (1th argument) must be %d", 2);
-  lda = NA_SHAPE0(rb_a);
   if (NA_SHAPE1(rb_a) != (2))
     rb_raise(rb_eRuntimeError, "shape 1 of a must be %d", 2);
+  lda = NA_SHAPE0(rb_a);
   if (NA_TYPE(rb_a) != NA_SFLOAT)
     rb_a = na_change_type(rb_a, NA_SFLOAT);
   a = NA_PTR_TYPE(rb_a, real*);
@@ -51,9 +53,9 @@ rb_slagv2(int argc, VALUE *argv, VALUE self){
     rb_raise(rb_eArgError, "b (2th argument) must be NArray");
   if (NA_RANK(rb_b) != 2)
     rb_raise(rb_eArgError, "rank of b (2th argument) must be %d", 2);
-  ldb = NA_SHAPE0(rb_b);
   if (NA_SHAPE1(rb_b) != (2))
     rb_raise(rb_eRuntimeError, "shape 1 of b must be %d", 2);
+  ldb = NA_SHAPE0(rb_b);
   if (NA_TYPE(rb_b) != NA_SFLOAT)
     rb_b = na_change_type(rb_b, NA_SFLOAT);
   b = NA_PTR_TYPE(rb_b, real*);

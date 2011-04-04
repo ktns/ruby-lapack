@@ -1,6 +1,7 @@
 --- 
 :name: sla_syrpvgrw
 :md5sum: 2520bed9e6244f2db3d5b849f49a59d2
+:category: :function
 :type: real
 :arguments: 
 - uplo: 

@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID slamrg_(integer *n1, integer *n2, real *a, integer *strd1, integer *strd2, integer *index);
+
 static VALUE
 rb_slamrg(int argc, VALUE *argv, VALUE self){
   VALUE rb_n1;
@@ -17,7 +19,7 @@ rb_slamrg(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  index = NumRu::Lapack.slamrg( n1, n2, a, strd1, strd2)\n    or\n  NumRu::Lapack.slamrg  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SLAMRG( N1, N2, A, STRD1, STRD2, INDEX )\n\n*  Purpose\n*  =======\n*\n*  SLAMRG will create a permutation list which will merge the elements\n*  of A (which is composed of two independently sorted sets) into a\n*  single set which is sorted in ascending order.\n*\n\n*  Arguments\n*  =========\n*\n*  N1     (input) INTEGER\n*  N2     (input) INTEGER\n*         These arguements contain the respective lengths of the two\n*         sorted lists to be merged.\n*\n*  A      (input) REAL array, dimension (N1+N2)\n*         The first N1 elements of A contain a list of numbers which\n*         are sorted in either ascending or descending order.  Likewise\n*         for the final N2 elements.\n*\n*  STRD1  (input) INTEGER\n*  STRD2  (input) INTEGER\n*         These are the strides to be taken through the array A.\n*         Allowable strides are 1 and -1.  They indicate whether a\n*         subset of A is sorted in ascending (STRDx = 1) or descending\n*         (STRDx = -1) order.\n*\n*  INDEX  (output) INTEGER array, dimension (N1+N2)\n*         On exit this array will contain a permutation such that\n*         if B( I ) = A( INDEX( I ) ) for I=1,N1+N2, then B will be\n*         sorted in ascending order.\n*\n\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      INTEGER            I, IND1, IND2, N1SV, N2SV\n*     ..\n\n");
+    printf("%s\n", "USAGE:\n  index = NumRu::Lapack.slamrg( n1, n2, a, strd1, strd2)\n    or\n  NumRu::Lapack.slamrg  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 5)
@@ -28,9 +30,9 @@ rb_slamrg(int argc, VALUE *argv, VALUE self){
   rb_strd1 = argv[3];
   rb_strd2 = argv[4];
 
-  n1 = NUM2INT(rb_n1);
-  n2 = NUM2INT(rb_n2);
   strd1 = NUM2INT(rb_strd1);
+  n2 = NUM2INT(rb_n2);
+  n1 = NUM2INT(rb_n1);
   strd2 = NUM2INT(rb_strd2);
   if (!NA_IsNArray(rb_a))
     rb_raise(rb_eArgError, "a (3th argument) must be NArray");
@@ -43,7 +45,7 @@ rb_slamrg(int argc, VALUE *argv, VALUE self){
   a = NA_PTR_TYPE(rb_a, real*);
   {
     int shape[1];
-    shape[0] = DIM_LEN(n1+n2);
+    shape[0] = n1+n2;
     rb_index = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   index = NA_PTR_TYPE(rb_index, integer*);

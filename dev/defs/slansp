@@ -1,6 +1,7 @@
 --- 
 :name: slansp
 :md5sum: 5f100ca86e29bd04042b892b3d73567a
+:category: :function
 :type: real
 :arguments: 
 - norm: 

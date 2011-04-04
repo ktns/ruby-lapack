@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID zgetf2_(integer *m, integer *n, doublecomplex *a, integer *lda, integer *ipiv, integer *info);
+
 static VALUE
 rb_zgetf2(int argc, VALUE *argv, VALUE self){
   VALUE rb_m;
@@ -17,7 +19,7 @@ rb_zgetf2(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  ipiv, info, a = NumRu::Lapack.zgetf2( m, a)\n    or\n  NumRu::Lapack.zgetf2  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE ZGETF2( M, N, A, LDA, IPIV, INFO )\n\n*  Purpose\n*  =======\n*\n*  ZGETF2 computes an LU factorization of a general m-by-n matrix A\n*  using partial pivoting with row interchanges.\n*\n*  The factorization has the form\n*     A = P * L * U\n*  where P is a permutation matrix, L is lower triangular with unit\n*  diagonal elements (lower trapezoidal if m > n), and U is upper\n*  triangular (upper trapezoidal if m < n).\n*\n*  This is the right-looking Level 2 BLAS version of the algorithm.\n*\n\n*  Arguments\n*  =========\n*\n*  M       (input) INTEGER\n*          The number of rows of the matrix A.  M >= 0.\n*\n*  N       (input) INTEGER\n*          The number of columns of the matrix A.  N >= 0.\n*\n*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)\n*          On entry, the m by n matrix to be factored.\n*          On exit, the factors L and U from the factorization\n*          A = P*L*U; the unit diagonal elements of L are not stored.\n*\n*  LDA     (input) INTEGER\n*          The leading dimension of the array A.  LDA >= max(1,M).\n*\n*  IPIV    (output) INTEGER array, dimension (min(M,N))\n*          The pivot indices; for 1 <= i <= min(M,N), row i of the\n*          matrix was interchanged with row IPIV(i).\n*\n*  INFO    (output) INTEGER\n*          = 0: successful exit\n*          < 0: if INFO = -k, the k-th argument had an illegal value\n*          > 0: if INFO = k, U(k,k) is exactly zero. The factorization\n*               has been completed, but the factor U is exactly\n*               singular, and division by zero will occur if it is used\n*               to solve a system of equations.\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  ipiv, info, a = NumRu::Lapack.zgetf2( m, a)\n    or\n  NumRu::Lapack.zgetf2  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 2)
@@ -25,19 +27,19 @@ rb_zgetf2(int argc, VALUE *argv, VALUE self){
   rb_m = argv[0];
   rb_a = argv[1];
 
-  m = NUM2INT(rb_m);
   if (!NA_IsNArray(rb_a))
     rb_raise(rb_eArgError, "a (2th argument) must be NArray");
   if (NA_RANK(rb_a) != 2)
     rb_raise(rb_eArgError, "rank of a (2th argument) must be %d", 2);
-  lda = NA_SHAPE0(rb_a);
   n = NA_SHAPE1(rb_a);
+  lda = NA_SHAPE0(rb_a);
   if (NA_TYPE(rb_a) != NA_DCOMPLEX)
     rb_a = na_change_type(rb_a, NA_DCOMPLEX);
   a = NA_PTR_TYPE(rb_a, doublecomplex*);
+  m = NUM2INT(rb_m);
   {
     int shape[1];
-    shape[0] = DIM_LEN(MIN(m,n));
+    shape[0] = MIN(m,n);
     rb_ipiv = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   ipiv = NA_PTR_TYPE(rb_ipiv, integer*);

@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dlasd8_(integer *icompq, integer *k, doublereal *d, doublereal *z, doublereal *vf, doublereal *vl, doublereal *difl, doublereal *difr, integer *lddifr, doublereal *dsigma, doublereal *work, integer *info);
+
 static VALUE
 rb_dlasd8(int argc, VALUE *argv, VALUE self){
   VALUE rb_icompq;
@@ -35,7 +37,7 @@ rb_dlasd8(int argc, VALUE *argv, VALUE self){
   integer k;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  d, difl, difr, info, z, vf, vl, dsigma = NumRu::Lapack.dlasd8( icompq, z, vf, vl, lddifr, dsigma)\n    or\n  NumRu::Lapack.dlasd8  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLASD8( ICOMPQ, K, D, Z, VF, VL, DIFL, DIFR, LDDIFR, DSIGMA, WORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  DLASD8 finds the square roots of the roots of the secular equation,\n*  as defined by the values in DSIGMA and Z. It makes the appropriate\n*  calls to DLASD4, and stores, for each  element in D, the distance\n*  to its two nearest poles (elements in DSIGMA). It also updates\n*  the arrays VF and VL, the first and last components of all the\n*  right singular vectors of the original bidiagonal matrix.\n*\n*  DLASD8 is called from DLASD6.\n*\n\n*  Arguments\n*  =========\n*\n*  ICOMPQ  (input) INTEGER\n*          Specifies whether singular vectors are to be computed in\n*          factored form in the calling routine:\n*          = 0: Compute singular values only.\n*          = 1: Compute singular vectors in factored form as well.\n*\n*  K       (input) INTEGER\n*          The number of terms in the rational function to be solved\n*          by DLASD4.  K >= 1.\n*\n*  D       (output) DOUBLE PRECISION array, dimension ( K )\n*          On output, D contains the updated singular values.\n*\n*  Z       (input/output) DOUBLE PRECISION array, dimension ( K )\n*          On entry, the first K elements of this array contain the\n*          components of the deflation-adjusted updating row vector.\n*          On exit, Z is updated.\n*\n*  VF      (input/output) DOUBLE PRECISION array, dimension ( K )\n*          On entry, VF contains  information passed through DBEDE8.\n*          On exit, VF contains the first K components of the first\n*          components of all right singular vectors of the bidiagonal\n*          matrix.\n*\n*  VL      (input/output) DOUBLE PRECISION array, dimension ( K )\n*          On entry, VL contains  information passed through DBEDE8.\n*          On exit, VL contains the first K components of the last\n*          components of all right singular vectors of the bidiagonal\n*          matrix.\n*\n*  DIFL    (output) DOUBLE PRECISION array, dimension ( K )\n*          On exit, DIFL(I) = D(I) - DSIGMA(I).\n*\n*  DIFR    (output) DOUBLE PRECISION array,\n*                   dimension ( LDDIFR, 2 ) if ICOMPQ = 1 and\n*                   dimension ( K ) if ICOMPQ = 0.\n*          On exit, DIFR(I,1) = D(I) - DSIGMA(I+1), DIFR(K,1) is not\n*          defined and will not be referenced.\n*\n*          If ICOMPQ = 1, DIFR(1:K,2) is an array containing the\n*          normalizing factors for the right singular vector matrix.\n*\n*  LDDIFR  (input) INTEGER\n*          The leading dimension of DIFR, must be at least K.\n*\n*  DSIGMA  (input/output) DOUBLE PRECISION array, dimension ( K )\n*          On entry, the first K elements of this array contain the old\n*          roots of the deflated updating problem.  These are the poles\n*          of the secular equation.\n*          On exit, the elements of DSIGMA may be very slightly altered\n*          in value.\n*\n*  WORK    (workspace) DOUBLE PRECISION array, dimension at least 3 * K\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit.\n*          < 0:  if INFO = -i, the i-th argument had an illegal value.\n*          > 0:  if INFO = 1, an singular value did not converge\n*\n\n*  Further Details\n*  ===============\n*\n*  Based on contributions by\n*     Ming Gu and Huan Ren, Computer Science Division, University of\n*     California at Berkeley, USA\n*\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  d, difl, difr, info, z, vf, vl, dsigma = NumRu::Lapack.dlasd8( icompq, z, vf, vl, lddifr, dsigma)\n    or\n  NumRu::Lapack.dlasd8  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 6)
@@ -48,30 +50,11 @@ rb_dlasd8(int argc, VALUE *argv, VALUE self){
   rb_dsigma = argv[5];
 
   icompq = NUM2INT(rb_icompq);
-  lddifr = NUM2INT(rb_lddifr);
-  if (!NA_IsNArray(rb_z))
-    rb_raise(rb_eArgError, "z (2th argument) must be NArray");
-  if (NA_RANK(rb_z) != 1)
-    rb_raise(rb_eArgError, "rank of z (2th argument) must be %d", 1);
-  k = NA_SHAPE0(rb_z);
-  if (NA_TYPE(rb_z) != NA_DFLOAT)
-    rb_z = na_change_type(rb_z, NA_DFLOAT);
-  z = NA_PTR_TYPE(rb_z, doublereal*);
-  if (!NA_IsNArray(rb_vf))
-    rb_raise(rb_eArgError, "vf (3th argument) must be NArray");
-  if (NA_RANK(rb_vf) != 1)
-    rb_raise(rb_eArgError, "rank of vf (3th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_vf) != k)
-    rb_raise(rb_eRuntimeError, "shape 0 of vf must be the same as shape 0 of z");
-  if (NA_TYPE(rb_vf) != NA_DFLOAT)
-    rb_vf = na_change_type(rb_vf, NA_DFLOAT);
-  vf = NA_PTR_TYPE(rb_vf, doublereal*);
   if (!NA_IsNArray(rb_vl))
     rb_raise(rb_eArgError, "vl (4th argument) must be NArray");
   if (NA_RANK(rb_vl) != 1)
     rb_raise(rb_eArgError, "rank of vl (4th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_vl) != k)
-    rb_raise(rb_eRuntimeError, "shape 0 of vl must be the same as shape 0 of z");
+  k = NA_SHAPE0(rb_vl);
   if (NA_TYPE(rb_vl) != NA_DFLOAT)
     rb_vl = na_change_type(rb_vl, NA_DFLOAT);
   vl = NA_PTR_TYPE(rb_vl, doublereal*);
@@ -80,10 +63,29 @@ rb_dlasd8(int argc, VALUE *argv, VALUE self){
   if (NA_RANK(rb_dsigma) != 1)
     rb_raise(rb_eArgError, "rank of dsigma (6th argument) must be %d", 1);
   if (NA_SHAPE0(rb_dsigma) != k)
-    rb_raise(rb_eRuntimeError, "shape 0 of dsigma must be the same as shape 0 of z");
+    rb_raise(rb_eRuntimeError, "shape 0 of dsigma must be the same as shape 0 of vl");
   if (NA_TYPE(rb_dsigma) != NA_DFLOAT)
     rb_dsigma = na_change_type(rb_dsigma, NA_DFLOAT);
   dsigma = NA_PTR_TYPE(rb_dsigma, doublereal*);
+  if (!NA_IsNArray(rb_vf))
+    rb_raise(rb_eArgError, "vf (3th argument) must be NArray");
+  if (NA_RANK(rb_vf) != 1)
+    rb_raise(rb_eArgError, "rank of vf (3th argument) must be %d", 1);
+  if (NA_SHAPE0(rb_vf) != k)
+    rb_raise(rb_eRuntimeError, "shape 0 of vf must be the same as shape 0 of vl");
+  if (NA_TYPE(rb_vf) != NA_DFLOAT)
+    rb_vf = na_change_type(rb_vf, NA_DFLOAT);
+  vf = NA_PTR_TYPE(rb_vf, doublereal*);
+  if (!NA_IsNArray(rb_z))
+    rb_raise(rb_eArgError, "z (2th argument) must be NArray");
+  if (NA_RANK(rb_z) != 1)
+    rb_raise(rb_eArgError, "rank of z (2th argument) must be %d", 1);
+  if (NA_SHAPE0(rb_z) != k)
+    rb_raise(rb_eRuntimeError, "shape 0 of z must be the same as shape 0 of vl");
+  if (NA_TYPE(rb_z) != NA_DFLOAT)
+    rb_z = na_change_type(rb_z, NA_DFLOAT);
+  z = NA_PTR_TYPE(rb_z, doublereal*);
+  lddifr = k;
   {
     int shape[1];
     shape[0] = k;
@@ -96,7 +98,6 @@ rb_dlasd8(int argc, VALUE *argv, VALUE self){
     rb_difl = na_make_object(NA_DFLOAT, 1, shape, cNArray);
   }
   difl = NA_PTR_TYPE(rb_difl, doublereal*);
-  lddifr = k;
   {
     int shape[2];
     shape[0] = icompq == 1 ? lddifr : icompq == 0 ? k : 0;

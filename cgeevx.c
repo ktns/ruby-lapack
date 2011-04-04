@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID cgeevx_(char *balanc, char *jobvl, char *jobvr, char *sense, integer *n, complex *a, integer *lda, complex *w, complex *vl, integer *ldvl, complex *vr, integer *ldvr, integer *ilo, integer *ihi, real *scale, real *abnrm, real *rconde, real *rcondv, complex *work, integer *lwork, real *rwork, integer *info);
+
 static VALUE
 rb_cgeevx(int argc, VALUE *argv, VALUE self){
   VALUE rb_balanc;
@@ -46,7 +48,7 @@ rb_cgeevx(int argc, VALUE *argv, VALUE self){
   integer ldvr;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  w, vl, vr, ilo, ihi, scale, abnrm, rconde, rcondv, work, info, a = NumRu::Lapack.cgeevx( balanc, jobvl, jobvr, sense, a, lwork)\n    or\n  NumRu::Lapack.cgeevx  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE CGEEVX( BALANC, JOBVL, JOBVR, SENSE, N, A, LDA, W, VL, LDVL, VR, LDVR, ILO, IHI, SCALE, ABNRM, RCONDE, RCONDV, WORK, LWORK, RWORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  CGEEVX computes for an N-by-N complex nonsymmetric matrix A, the\n*  eigenvalues and, optionally, the left and/or right eigenvectors.\n*\n*  Optionally also, it computes a balancing transformation to improve\n*  the conditioning of the eigenvalues and eigenvectors (ILO, IHI,\n*  SCALE, and ABNRM), reciprocal condition numbers for the eigenvalues\n*  (RCONDE), and reciprocal condition numbers for the right\n*  eigenvectors (RCONDV).\n*\n*  The right eigenvector v(j) of A satisfies\n*                   A * v(j) = lambda(j) * v(j)\n*  where lambda(j) is its eigenvalue.\n*  The left eigenvector u(j) of A satisfies\n*                u(j)**H * A = lambda(j) * u(j)**H\n*  where u(j)**H denotes the conjugate transpose of u(j).\n*\n*  The computed eigenvectors are normalized to have Euclidean norm\n*  equal to 1 and largest component real.\n*\n*  Balancing a matrix means permuting the rows and columns to make it\n*  more nearly upper triangular, and applying a diagonal similarity\n*  transformation D * A * D**(-1), where D is a diagonal matrix, to\n*  make its rows and columns closer in norm and the condition numbers\n*  of its eigenvalues and eigenvectors smaller.  The computed\n*  reciprocal condition numbers correspond to the balanced matrix.\n*  Permuting rows and columns will not change the condition numbers\n*  (in exact arithmetic) but diagonal scaling will.  For further\n*  explanation of balancing, see section 4.10.2 of the LAPACK\n*  Users' Guide.\n*\n\n*  Arguments\n*  =========\n*\n*  BALANC  (input) CHARACTER*1\n*          Indicates how the input matrix should be diagonally scaled\n*          and/or permuted to improve the conditioning of its\n*          eigenvalues.\n*          = 'N': Do not diagonally scale or permute;\n*          = 'P': Perform permutations to make the matrix more nearly\n*                 upper triangular. Do not diagonally scale;\n*          = 'S': Diagonally scale the matrix, ie. replace A by\n*                 D*A*D**(-1), where D is a diagonal matrix chosen\n*                 to make the rows and columns of A more equal in\n*                 norm. Do not permute;\n*          = 'B': Both diagonally scale and permute A.\n*\n*          Computed reciprocal condition numbers will be for the matrix\n*          after balancing and/or permuting. Permuting does not change\n*          condition numbers (in exact arithmetic), but balancing does.\n*\n*  JOBVL   (input) CHARACTER*1\n*          = 'N': left eigenvectors of A are not computed;\n*          = 'V': left eigenvectors of A are computed.\n*          If SENSE = 'E' or 'B', JOBVL must = 'V'.\n*\n*  JOBVR   (input) CHARACTER*1\n*          = 'N': right eigenvectors of A are not computed;\n*          = 'V': right eigenvectors of A are computed.\n*          If SENSE = 'E' or 'B', JOBVR must = 'V'.\n*\n*  SENSE   (input) CHARACTER*1\n*          Determines which reciprocal condition numbers are computed.\n*          = 'N': None are computed;\n*          = 'E': Computed for eigenvalues only;\n*          = 'V': Computed for right eigenvectors only;\n*          = 'B': Computed for eigenvalues and right eigenvectors.\n*\n*          If SENSE = 'E' or 'B', both left and right eigenvectors\n*          must also be computed (JOBVL = 'V' and JOBVR = 'V').\n*\n*  N       (input) INTEGER\n*          The order of the matrix A. N >= 0.\n*\n*  A       (input/output) COMPLEX array, dimension (LDA,N)\n*          On entry, the N-by-N matrix A.\n*          On exit, A has been overwritten.  If JOBVL = 'V' or\n*          JOBVR = 'V', A contains the Schur form of the balanced \n*          version of the matrix A.\n*\n*  LDA     (input) INTEGER\n*          The leading dimension of the array A.  LDA >= max(1,N).\n*\n*  W       (output) COMPLEX array, dimension (N)\n*          W contains the computed eigenvalues.\n*\n*  VL      (output) COMPLEX array, dimension (LDVL,N)\n*          If JOBVL = 'V', the left eigenvectors u(j) are stored one\n*          after another in the columns of VL, in the same order\n*          as their eigenvalues.\n*          If JOBVL = 'N', VL is not referenced.\n*          u(j) = VL(:,j), the j-th column of VL.\n*\n*  LDVL    (input) INTEGER\n*          The leading dimension of the array VL.  LDVL >= 1; if\n*          JOBVL = 'V', LDVL >= N.\n*\n*  VR      (output) COMPLEX array, dimension (LDVR,N)\n*          If JOBVR = 'V', the right eigenvectors v(j) are stored one\n*          after another in the columns of VR, in the same order\n*          as their eigenvalues.\n*          If JOBVR = 'N', VR is not referenced.\n*          v(j) = VR(:,j), the j-th column of VR.\n*\n*  LDVR    (input) INTEGER\n*          The leading dimension of the array VR.  LDVR >= 1; if\n*          JOBVR = 'V', LDVR >= N.\n*\n*  ILO     (output) INTEGER\n*  IHI     (output) INTEGER\n*          ILO and IHI are integer values determined when A was\n*          balanced.  The balanced A(i,j) = 0 if I > J and\n*          J = 1,...,ILO-1 or I = IHI+1,...,N.\n*\n*  SCALE   (output) REAL array, dimension (N)\n*          Details of the permutations and scaling factors applied\n*          when balancing A.  If P(j) is the index of the row and column\n*          interchanged with row and column j, and D(j) is the scaling\n*          factor applied to row and column j, then\n*          SCALE(J) = P(J),    for J = 1,...,ILO-1\n*                   = D(J),    for J = ILO,...,IHI\n*                   = P(J)     for J = IHI+1,...,N.\n*          The order in which the interchanges are made is N to IHI+1,\n*          then 1 to ILO-1.\n*\n*  ABNRM   (output) REAL\n*          The one-norm of the balanced matrix (the maximum\n*          of the sum of absolute values of elements of any column).\n*\n*  RCONDE  (output) REAL array, dimension (N)\n*          RCONDE(j) is the reciprocal condition number of the j-th\n*          eigenvalue.\n*\n*  RCONDV  (output) REAL array, dimension (N)\n*          RCONDV(j) is the reciprocal condition number of the j-th\n*          right eigenvector.\n*\n*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))\n*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.\n*\n*  LWORK   (input) INTEGER\n*          The dimension of the array WORK.  If SENSE = 'N' or 'E',\n*          LWORK >= max(1,2*N), and if SENSE = 'V' or 'B',\n*          LWORK >= N*N+2*N.\n*          For good performance, LWORK must generally be larger.\n*\n*          If LWORK = -1, then a workspace query is assumed; the routine\n*          only calculates the optimal size of the WORK array, returns\n*          this value as the first entry of the WORK array, and no error\n*          message related to LWORK is issued by XERBLA.\n*\n*  RWORK   (workspace) REAL array, dimension (2*N)\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value.\n*          > 0:  if INFO = i, the QR algorithm failed to compute all the\n*                eigenvalues, and no eigenvectors or condition numbers\n*                have been computed; elements 1:ILO-1 and i+1:N of W\n*                contain eigenvalues which have converged.\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  w, vl, vr, ilo, ihi, scale, abnrm, rconde, rcondv, work, info, a = NumRu::Lapack.cgeevx( balanc, jobvl, jobvr, sense, a, lwork)\n    or\n  NumRu::Lapack.cgeevx  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 6)
@@ -58,27 +60,28 @@ rb_cgeevx(int argc, VALUE *argv, VALUE self){
   rb_a = argv[4];
   rb_lwork = argv[5];
 
-  balanc = StringValueCStr(rb_balanc)[0];
-  jobvl = StringValueCStr(rb_jobvl)[0];
-  jobvr = StringValueCStr(rb_jobvr)[0];
-  sense = StringValueCStr(rb_sense)[0];
-  lwork = NUM2INT(rb_lwork);
   if (!NA_IsNArray(rb_a))
     rb_raise(rb_eArgError, "a (5th argument) must be NArray");
   if (NA_RANK(rb_a) != 2)
     rb_raise(rb_eArgError, "rank of a (5th argument) must be %d", 2);
-  lda = NA_SHAPE0(rb_a);
   n = NA_SHAPE1(rb_a);
+  lda = NA_SHAPE0(rb_a);
   if (NA_TYPE(rb_a) != NA_SCOMPLEX)
     rb_a = na_change_type(rb_a, NA_SCOMPLEX);
   a = NA_PTR_TYPE(rb_a, complex*);
+  jobvr = StringValueCStr(rb_jobvr)[0];
+  balanc = StringValueCStr(rb_balanc)[0];
+  sense = StringValueCStr(rb_sense)[0];
+  jobvl = StringValueCStr(rb_jobvl)[0];
+  lwork = NUM2INT(rb_lwork);
+  ldvl = lsame_(&jobvl,"V") ? n : 1;
+  ldvr = lsame_(&jobvr,"V") ? n : 1;
   {
     int shape[1];
     shape[0] = n;
     rb_w = na_make_object(NA_SCOMPLEX, 1, shape, cNArray);
   }
   w = NA_PTR_TYPE(rb_w, complex*);
-  ldvl = lsame_(&jobvl,"V") ? n : 1;
   {
     int shape[2];
     shape[0] = ldvl;
@@ -86,7 +89,6 @@ rb_cgeevx(int argc, VALUE *argv, VALUE self){
     rb_vl = na_make_object(NA_SCOMPLEX, 2, shape, cNArray);
   }
   vl = NA_PTR_TYPE(rb_vl, complex*);
-  ldvr = lsame_(&jobvr,"V") ? n : 1;
   {
     int shape[2];
     shape[0] = ldvr;

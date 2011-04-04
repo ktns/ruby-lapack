@@ -1,6 +1,7 @@
 --- 
 :name: dlansb
 :md5sum: 7d865bf099b44083eb35658d545bd4cf
+:category: :function
 :type: doublereal
 :arguments: 
 - norm: 

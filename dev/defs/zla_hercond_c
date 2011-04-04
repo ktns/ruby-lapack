@@ -1,6 +1,7 @@
 --- 
 :name: zla_hercond_c
 :md5sum: bbcd580ed7550b8d9f2ce9d894f56ec1
+:category: :function
 :type: doublereal
 :arguments: 
 - uplo: 

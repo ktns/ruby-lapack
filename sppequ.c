@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID sppequ_(char *uplo, integer *n, real *ap, real *s, real *scond, real *amax, integer *info);
+
 static VALUE
 rb_sppequ(int argc, VALUE *argv, VALUE self){
   VALUE rb_uplo;
@@ -19,7 +21,7 @@ rb_sppequ(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  s, scond, amax, info = NumRu::Lapack.sppequ( uplo, ap)\n    or\n  NumRu::Lapack.sppequ  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SPPEQU( UPLO, N, AP, S, SCOND, AMAX, INFO )\n\n*  Purpose\n*  =======\n*\n*  SPPEQU computes row and column scalings intended to equilibrate a\n*  symmetric positive definite matrix A in packed storage and reduce\n*  its condition number (with respect to the two-norm).  S contains the\n*  scale factors, S(i)=1/sqrt(A(i,i)), chosen so that the scaled matrix\n*  B with elements B(i,j)=S(i)*A(i,j)*S(j) has ones on the diagonal.\n*  This choice of S puts the condition number of B within a factor N of\n*  the smallest possible condition number over all possible diagonal\n*  scalings.\n*\n\n*  Arguments\n*  =========\n*\n*  UPLO    (input) CHARACTER*1\n*          = 'U':  Upper triangle of A is stored;\n*          = 'L':  Lower triangle of A is stored.\n*\n*  N       (input) INTEGER\n*          The order of the matrix A.  N >= 0.\n*\n*  AP      (input) REAL array, dimension (N*(N+1)/2)\n*          The upper or lower triangle of the symmetric matrix A, packed\n*          columnwise in a linear array.  The j-th column of A is stored\n*          in the array AP as follows:\n*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;\n*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.\n*\n*  S       (output) REAL array, dimension (N)\n*          If INFO = 0, S contains the scale factors for A.\n*\n*  SCOND   (output) REAL\n*          If INFO = 0, S contains the ratio of the smallest S(i) to\n*          the largest S(i).  If SCOND >= 0.1 and AMAX is neither too\n*          large nor too small, it is not worth scaling by S.\n*\n*  AMAX    (output) REAL\n*          Absolute value of largest matrix element.  If AMAX is very\n*          close to overflow or very close to underflow, the matrix\n*          should be scaled.\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*          > 0:  if INFO = i, the i-th diagonal element is nonpositive.\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  s, scond, amax, info = NumRu::Lapack.sppequ( uplo, ap)\n    or\n  NumRu::Lapack.sppequ  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 2)
@@ -36,7 +38,7 @@ rb_sppequ(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_ap) != NA_SFLOAT)
     rb_ap = na_change_type(rb_ap, NA_SFLOAT);
   ap = NA_PTR_TYPE(rb_ap, real*);
-  n = (int)(sqrt((double)8*ldap+1)-1)/2;
+  n = ((int)sqrtf(ldap*8+1.0f)-1)/2;
   {
     int shape[1];
     shape[0] = n;

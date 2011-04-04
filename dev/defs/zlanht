@@ -1,6 +1,7 @@
 --- 
 :name: zlanht
 :md5sum: 6a22c58b6e99c06f31961f03100c6c14
+:category: :function
 :type: doublereal
 :arguments: 
 - norm: 

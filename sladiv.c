@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID sladiv_(real *a, real *b, real *c, real *d, real *p, real *q);
+
 static VALUE
 rb_sladiv(int argc, VALUE *argv, VALUE self){
   VALUE rb_a;
@@ -17,7 +19,7 @@ rb_sladiv(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  p, q = NumRu::Lapack.sladiv( a, b, c, d)\n    or\n  NumRu::Lapack.sladiv  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SLADIV( A, B, C, D, P, Q )\n\n*  Purpose\n*  =======\n*\n*  SLADIV performs complex division in  real arithmetic\n*\n*                        a + i*b\n*             p + i*q = ---------\n*                        c + i*d\n*\n*  The algorithm is due to Robert L. Smith and can be found\n*  in D. Knuth, The art of Computer Programming, Vol.2, p.195\n*\n\n*  Arguments\n*  =========\n*\n*  A       (input) REAL\n*  B       (input) REAL\n*  C       (input) REAL\n*  D       (input) REAL\n*          The scalars a, b, c, and d in the above expression.\n*\n*  P       (output) REAL\n*  Q       (output) REAL\n*          The scalars p and q in the above expression.\n*\n\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      REAL               E, F\n*     ..\n*     .. Intrinsic Functions ..\n      INTRINSIC          ABS\n*     ..\n\n");
+    printf("%s\n", "USAGE:\n  p, q = NumRu::Lapack.sladiv( a, b, c, d)\n    or\n  NumRu::Lapack.sladiv  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 4)

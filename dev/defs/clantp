@@ -1,6 +1,7 @@
 --- 
 :name: clantp
 :md5sum: dbd82e1acf27b336626c0bbbfee9eec8
+:category: :function
 :type: real
 :arguments: 
 - norm: 

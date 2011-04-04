@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dpttrf_(integer *n, doublereal *d, doublereal *e, integer *info);
+
 static VALUE
 rb_dpttrf(int argc, VALUE *argv, VALUE self){
   VALUE rb_d;
@@ -16,7 +18,7 @@ rb_dpttrf(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  info, d, e = NumRu::Lapack.dpttrf( d, e)\n    or\n  NumRu::Lapack.dpttrf  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DPTTRF( N, D, E, INFO )\n\n*  Purpose\n*  =======\n*\n*  DPTTRF computes the L*D*L' factorization of a real symmetric\n*  positive definite tridiagonal matrix A.  The factorization may also\n*  be regarded as having the form A = U'*D*U.\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The order of the matrix A.  N >= 0.\n*\n*  D       (input/output) DOUBLE PRECISION array, dimension (N)\n*          On entry, the n diagonal elements of the tridiagonal matrix\n*          A.  On exit, the n diagonal elements of the diagonal matrix\n*          D from the L*D*L' factorization of A.\n*\n*  E       (input/output) DOUBLE PRECISION array, dimension (N-1)\n*          On entry, the (n-1) subdiagonal elements of the tridiagonal\n*          matrix A.  On exit, the (n-1) subdiagonal elements of the\n*          unit bidiagonal factor L from the L*D*L' factorization of A.\n*          E can also be regarded as the superdiagonal of the unit\n*          bidiagonal factor U from the U'*D*U factorization of A.\n*\n*  INFO    (output) INTEGER\n*          = 0: successful exit\n*          < 0: if INFO = -k, the k-th argument had an illegal value\n*          > 0: if INFO = k, the leading minor of order k is not\n*               positive definite; if k < N, the factorization could not\n*               be completed, while if k = N, the factorization was\n*               completed, but D(N) <= 0.\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  info, d, e = NumRu::Lapack.dpttrf( d, e)\n    or\n  NumRu::Lapack.dpttrf  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 2)

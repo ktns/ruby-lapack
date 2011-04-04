@@ -1,6 +1,7 @@
 --- 
 :name: zlansy
 :md5sum: 53d4b9c917535a23b36d076e4b5e3c08
+:category: :function
 :type: doublereal
 :arguments: 
 - norm: 

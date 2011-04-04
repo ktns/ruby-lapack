@@ -1,6 +1,7 @@
 --- 
 :name: izmax1
 :md5sum: 9594df1850d6464cd15f4e4b7161a5fa
+:category: :function
 :type: integer
 :arguments: 
 - n: 

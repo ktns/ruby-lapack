@@ -1,6 +1,7 @@
 --- 
 :name: slanst
 :md5sum: cabf2b8182a1ceb35b27b12871092df3
+:category: :function
 :type: real
 :arguments: 
 - norm: 

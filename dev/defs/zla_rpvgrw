@@ -1,6 +1,7 @@
 --- 
 :name: zla_rpvgrw
 :md5sum: 973297576068c8104e05e11efcbf080f
+:category: :function
 :type: doublereal
 :arguments: 
 - n: 

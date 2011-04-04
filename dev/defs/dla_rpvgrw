@@ -1,6 +1,7 @@
 --- 
 :name: dla_rpvgrw
 :md5sum: f34d9e53195025ba4075345e34febe49
+:category: :function
 :type: doublereal
 :arguments: 
 - n: 

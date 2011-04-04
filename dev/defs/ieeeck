@@ -1,6 +1,7 @@
 --- 
 :name: ieeeck
 :md5sum: 912297d3164c5b304dfe88d1002d97b1
+:category: :function
 :type: integer
 :arguments: 
 - ispec: 

@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID slasq5_(integer *i0, integer *n0, real *z, integer *pp, real *tau, real *dmin, real *dmin1, real *dmin2, real *dn, real *dnm1, real *dnm2, logical *ieee);
+
 static VALUE
 rb_slasq5(int argc, VALUE *argv, VALUE self){
   VALUE rb_i0;
@@ -29,7 +31,7 @@ rb_slasq5(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  dmin, dmin1, dmin2, dn, dnm1, dnm2 = NumRu::Lapack.slasq5( i0, n0, z, pp, tau, ieee)\n    or\n  NumRu::Lapack.slasq5  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SLASQ5( I0, N0, Z, PP, TAU, DMIN, DMIN1, DMIN2, DN, DNM1, DNM2, IEEE )\n\n*  Purpose\n*  =======\n*\n*  SLASQ5 computes one dqds transform in ping-pong form, one\n*  version for IEEE machines another for non IEEE machines.\n*\n\n*  Arguments\n*  =========\n*\n*  I0    (input) INTEGER\n*        First index.\n*\n*  N0    (input) INTEGER\n*        Last index.\n*\n*  Z     (input) REAL array, dimension ( 4*N )\n*        Z holds the qd array. EMIN is stored in Z(4*N0) to avoid\n*        an extra argument.\n*\n*  PP    (input) INTEGER\n*        PP=0 for ping, PP=1 for pong.\n*\n*  TAU   (input) REAL\n*        This is the shift.\n*\n*  DMIN  (output) REAL\n*        Minimum value of d.\n*\n*  DMIN1 (output) REAL\n*        Minimum value of d, excluding D( N0 ).\n*\n*  DMIN2 (output) REAL\n*        Minimum value of d, excluding D( N0 ) and D( N0-1 ).\n*\n*  DN    (output) REAL\n*        d(N0), the last value of d.\n*\n*  DNM1  (output) REAL\n*        d(N0-1).\n*\n*  DNM2  (output) REAL\n*        d(N0-2).\n*\n*  IEEE  (input) LOGICAL\n*        Flag for IEEE or non IEEE arithmetic.\n*\n\n*  =====================================================================\n*\n*     .. Parameter ..\n      REAL               ZERO\n      PARAMETER          ( ZERO = 0.0E0 )\n*     ..\n*     .. Local Scalars ..\n      INTEGER            J4, J4P2\n      REAL               D, EMIN, TEMP\n*     ..\n*     .. Intrinsic Functions ..\n      INTRINSIC          MIN\n*     ..\n\n");
+    printf("%s\n", "USAGE:\n  dmin, dmin1, dmin2, dn, dnm1, dnm2 = NumRu::Lapack.slasq5( i0, n0, z, pp, tau, ieee)\n    or\n  NumRu::Lapack.slasq5  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 6)
@@ -41,11 +43,11 @@ rb_slasq5(int argc, VALUE *argv, VALUE self){
   rb_tau = argv[4];
   rb_ieee = argv[5];
 
-  i0 = NUM2INT(rb_i0);
-  n0 = NUM2INT(rb_n0);
   pp = NUM2INT(rb_pp);
+  n0 = NUM2INT(rb_n0);
   tau = (real)NUM2DBL(rb_tau);
   ieee = (rb_ieee == Qtrue);
+  i0 = NUM2INT(rb_i0);
   if (!NA_IsNArray(rb_z))
     rb_raise(rb_eArgError, "z (3th argument) must be NArray");
   if (NA_RANK(rb_z) != 1)

@@ -1,6 +1,7 @@
 --- 
 :name: sla_gbrcond
 :md5sum: ff5d11e89ee27a58b83e3bf9843a8a8c
+:category: :function
 :type: real
 :arguments: 
 - trans: 

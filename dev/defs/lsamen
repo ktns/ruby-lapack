@@ -1,6 +1,7 @@
 --- 
 :name: lsamen
 :md5sum: 436b27be921ef85dfbabbd827f65a5f1
+:category: :function
 :type: logical
 :arguments: 
 - n: 

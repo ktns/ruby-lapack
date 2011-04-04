@@ -23,7 +23,7 @@
     :type: integer
     :intent: output
 :substitutions: 
-  n: (int)(sqrt((double)8*ldap+1)-1)/2
+  n: ((int)sqrtf(ldap*8+1.0f)-1)/2
 :fortran_help: "      SUBROUTINE DSPTRF( UPLO, N, AP, IPIV, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\

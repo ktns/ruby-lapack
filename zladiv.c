@@ -1,6 +1,7 @@
 #include "rb_lapack.h"
 
 extern VOID zladiv_(doublecomplex *__out__, doublecomplex *x, doublecomplex *y);
+
 static VALUE
 rb_zladiv(int argc, VALUE *argv, VALUE self){
   VALUE rb_x;
@@ -12,7 +13,7 @@ rb_zladiv(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.zladiv( x, y)\n    or\n  NumRu::Lapack.zladiv  # print help\n\n\nFORTRAN MANUAL\n      COMPLEX*16     FUNCTION ZLADIV( X, Y )\n\n*  Purpose\n*  =======\n*\n*  ZLADIV := X / Y, where X and Y are complex.  The computation of X / Y\n*  will not overflow on an intermediary step unless the results\n*  overflows.\n*\n\n*  Arguments\n*  =========\n*\n*  X       (input) COMPLEX*16\n*  Y       (input) COMPLEX*16\n*          The complex scalars X and Y.\n*\n\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      DOUBLE PRECISION   ZI, ZR\n*     ..\n*     .. External Subroutines ..\n      EXTERNAL           DLADIV\n*     ..\n*     .. Intrinsic Functions ..\n      INTRINSIC          DBLE, DCMPLX, DIMAG\n*     ..\n\n");
+    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.zladiv( x, y)\n    or\n  NumRu::Lapack.zladiv  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 2)

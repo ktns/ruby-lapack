@@ -65,7 +65,7 @@
     :dims: 
     - lwork
 - lwork: 
-    :type: 
+    :type: integer
     :intent: input
 - iwork: 
     :type: integer

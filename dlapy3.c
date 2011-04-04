@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern doublereal dlapy3_(doublereal *x, doublereal *y, doublereal *z);
+
 static VALUE
 rb_dlapy3(int argc, VALUE *argv, VALUE self){
   VALUE rb_x;
@@ -13,7 +15,7 @@ rb_dlapy3(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.dlapy3( x, y, z)\n    or\n  NumRu::Lapack.dlapy3  # print help\n\n\nFORTRAN MANUAL\n      DOUBLE PRECISION FUNCTION DLAPY3( X, Y, Z )\n\n*  Purpose\n*  =======\n*\n*  DLAPY3 returns sqrt(x**2+y**2+z**2), taking care not to cause\n*  unnecessary overflow.\n*\n\n*  Arguments\n*  =========\n*\n*  X       (input) DOUBLE PRECISION\n*  Y       (input) DOUBLE PRECISION\n*  Z       (input) DOUBLE PRECISION\n*          X, Y and Z specify the values x, y and z.\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.dlapy3( x, y, z)\n    or\n  NumRu::Lapack.dlapy3  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 3)

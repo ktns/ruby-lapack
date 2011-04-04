@@ -1,6 +1,7 @@
 --- 
 :name: dla_gbrcond
 :md5sum: 166b58ae6ab01504cac311045c0152cb
+:category: :function
 :type: doublereal
 :arguments: 
 - trans: 

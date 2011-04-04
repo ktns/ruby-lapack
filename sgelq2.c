@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID sgelq2_(integer *m, integer *n, real *a, integer *lda, real *tau, real *work, integer *info);
+
 static VALUE
 rb_sgelq2(int argc, VALUE *argv, VALUE self){
   VALUE rb_a;
@@ -17,7 +19,7 @@ rb_sgelq2(int argc, VALUE *argv, VALUE self){
   integer m;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  tau, info, a = NumRu::Lapack.sgelq2( a)\n    or\n  NumRu::Lapack.sgelq2  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SGELQ2( M, N, A, LDA, TAU, WORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  SGELQ2 computes an LQ factorization of a real m by n matrix A:\n*  A = L * Q.\n*\n\n*  Arguments\n*  =========\n*\n*  M       (input) INTEGER\n*          The number of rows of the matrix A.  M >= 0.\n*\n*  N       (input) INTEGER\n*          The number of columns of the matrix A.  N >= 0.\n*\n*  A       (input/output) REAL array, dimension (LDA,N)\n*          On entry, the m by n matrix A.\n*          On exit, the elements on and below the diagonal of the array\n*          contain the m by min(m,n) lower trapezoidal matrix L (L is\n*          lower triangular if m <= n); the elements above the diagonal,\n*          with the array TAU, represent the orthogonal matrix Q as a\n*          product of elementary reflectors (see Further Details).\n*\n*  LDA     (input) INTEGER\n*          The leading dimension of the array A.  LDA >= max(1,M).\n*\n*  TAU     (output) REAL array, dimension (min(M,N))\n*          The scalar factors of the elementary reflectors (see Further\n*          Details).\n*\n*  WORK    (workspace) REAL array, dimension (M)\n*\n*  INFO    (output) INTEGER\n*          = 0: successful exit\n*          < 0: if INFO = -i, the i-th argument had an illegal value\n*\n\n*  Further Details\n*  ===============\n*\n*  The matrix Q is represented as a product of elementary reflectors\n*\n*     Q = H(k) . . . H(2) H(1), where k = min(m,n).\n*\n*  Each H(i) has the form\n*\n*     H(i) = I - tau * v * v'\n*\n*  where tau is a real scalar, and v is a real vector with\n*  v(1:i-1) = 0 and v(i) = 1; v(i+1:n) is stored on exit in A(i,i+1:n),\n*  and tau in TAU(i).\n*\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  tau, info, a = NumRu::Lapack.sgelq2( a)\n    or\n  NumRu::Lapack.sgelq2  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 1)
@@ -28,8 +30,8 @@ rb_sgelq2(int argc, VALUE *argv, VALUE self){
     rb_raise(rb_eArgError, "a (1th argument) must be NArray");
   if (NA_RANK(rb_a) != 2)
     rb_raise(rb_eArgError, "rank of a (1th argument) must be %d", 2);
-  lda = NA_SHAPE0(rb_a);
   n = NA_SHAPE1(rb_a);
+  lda = NA_SHAPE0(rb_a);
   if (NA_TYPE(rb_a) != NA_SFLOAT)
     rb_a = na_change_type(rb_a, NA_SFLOAT);
   a = NA_PTR_TYPE(rb_a, real*);

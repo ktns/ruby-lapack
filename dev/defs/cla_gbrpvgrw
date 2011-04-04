@@ -1,6 +1,7 @@
 --- 
 :name: cla_gbrpvgrw
 :md5sum: 6ebe3ad7622d703a0633348eddaf80d8
+:category: :function
 :type: real
 :arguments: 
 - n: 

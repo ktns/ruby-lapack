@@ -1,6 +1,7 @@
 --- 
 :name: cla_porcond_c
 :md5sum: f6e9460efbf813d2f7b6ca569b512d8e
+:category: :function
 :type: real
 :arguments: 
 - uplo: 

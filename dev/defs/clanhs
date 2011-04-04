@@ -1,6 +1,7 @@
 --- 
 :name: clanhs
 :md5sum: 7cf1a1d1a95e15c62f33d712a3f376be
+:category: :function
 :type: real
 :arguments: 
 - norm: 

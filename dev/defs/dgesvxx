@@ -101,8 +101,8 @@
 - params: 
     :type: doublereal
     :intent: input/output
-    :dims: []
-
+    :dims: 
+    - nparams
 - work: 
     :type: doublereal
     :intent: workspace
@@ -118,6 +118,7 @@
     :intent: output
 :substitutions: 
   ldx: MAX(1,n)
+  n_err_bnds: "3"
 :fortran_help: "      SUBROUTINE DGESVXX( FACT, TRANS, N, NRHS, A, LDA, AF, LDAF, IPIV, EQUED, R, C, B, LDB, X, LDX, RCOND, RPVGRW, BERR, N_ERR_BNDS, ERR_BNDS_NORM, ERR_BNDS_COMP, NPARAMS, PARAMS, WORK, IWORK, INFO )\n\n\
   *     Purpose\n\
   *     =======\n\

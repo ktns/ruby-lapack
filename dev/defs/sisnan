@@ -1,6 +1,7 @@
 --- 
 :name: sisnan
 :md5sum: 59f568b95ecad80e459328f43736527e
+:category: :function
 :type: logical
 :arguments: 
 - sin: 

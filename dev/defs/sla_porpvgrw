@@ -1,6 +1,7 @@
 --- 
 :name: sla_porpvgrw
 :md5sum: 2edaf717ab5460c71293b964d4229d50
+:category: :function
 :type: real
 :arguments: 
 - uplo: 

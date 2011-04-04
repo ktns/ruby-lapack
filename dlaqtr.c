@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dlaqtr_(logical *ltran, logical *lreal, integer *n, doublereal *t, integer *ldt, doublereal *b, doublereal *w, doublereal *scale, doublereal *x, doublereal *work, integer *info);
+
 static VALUE
 rb_dlaqtr(int argc, VALUE *argv, VALUE self){
   VALUE rb_ltran;
@@ -26,7 +28,7 @@ rb_dlaqtr(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  scale, info, x = NumRu::Lapack.dlaqtr( ltran, lreal, t, b, w, x)\n    or\n  NumRu::Lapack.dlaqtr  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLAQTR( LTRAN, LREAL, N, T, LDT, B, W, SCALE, X, WORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  DLAQTR solves the real quasi-triangular system\n*\n*               op(T)*p = scale*c,               if LREAL = .TRUE.\n*\n*  or the complex quasi-triangular systems\n*\n*             op(T + iB)*(p+iq) = scale*(c+id),  if LREAL = .FALSE.\n*\n*  in real arithmetic, where T is upper quasi-triangular.\n*  If LREAL = .FALSE., then the first diagonal block of T must be\n*  1 by 1, B is the specially structured matrix\n*\n*                 B = [ b(1) b(2) ... b(n) ]\n*                     [       w            ]\n*                     [           w        ]\n*                     [              .     ]\n*                     [                 w  ]\n*\n*  op(A) = A or A', A' denotes the conjugate transpose of\n*  matrix A.\n*\n*  On input, X = [ c ].  On output, X = [ p ].\n*                [ d ]                  [ q ]\n*\n*  This subroutine is designed for the condition number estimation\n*  in routine DTRSNA.\n*\n\n*  Arguments\n*  =========\n*\n*  LTRAN   (input) LOGICAL\n*          On entry, LTRAN specifies the option of conjugate transpose:\n*             = .FALSE.,    op(T+i*B) = T+i*B,\n*             = .TRUE.,     op(T+i*B) = (T+i*B)'.\n*\n*  LREAL   (input) LOGICAL\n*          On entry, LREAL specifies the input matrix structure:\n*             = .FALSE.,    the input is complex\n*             = .TRUE.,     the input is real\n*\n*  N       (input) INTEGER\n*          On entry, N specifies the order of T+i*B. N >= 0.\n*\n*  T       (input) DOUBLE PRECISION array, dimension (LDT,N)\n*          On entry, T contains a matrix in Schur canonical form.\n*          If LREAL = .FALSE., then the first diagonal block of T mu\n*          be 1 by 1.\n*\n*  LDT     (input) INTEGER\n*          The leading dimension of the matrix T. LDT >= max(1,N).\n*\n*  B       (input) DOUBLE PRECISION array, dimension (N)\n*          On entry, B contains the elements to form the matrix\n*          B as described above.\n*          If LREAL = .TRUE., B is not referenced.\n*\n*  W       (input) DOUBLE PRECISION\n*          On entry, W is the diagonal element of the matrix B.\n*          If LREAL = .TRUE., W is not referenced.\n*\n*  SCALE   (output) DOUBLE PRECISION\n*          On exit, SCALE is the scale factor.\n*\n*  X       (input/output) DOUBLE PRECISION array, dimension (2*N)\n*          On entry, X contains the right hand side of the system.\n*          On exit, X is overwritten by the solution.\n*\n*  WORK    (workspace) DOUBLE PRECISION array, dimension (N)\n*\n*  INFO    (output) INTEGER\n*          On exit, INFO is set to\n*             0: successful exit.\n*               1: the some diagonal 1 by 1 block has been perturbed by\n*                  a small number SMIN to keep nonsingularity.\n*               2: the some diagonal 2 by 2 block has been perturbed by\n*                  a small number in DLALN2 to keep nonsingularity.\n*          NOTE: In the interests of speed, this routine does not\n*                check the inputs for errors.\n*\n\n* =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  scale, info, x = NumRu::Lapack.dlaqtr( ltran, lreal, t, b, w, x)\n    or\n  NumRu::Lapack.dlaqtr  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 6)
@@ -38,18 +40,18 @@ rb_dlaqtr(int argc, VALUE *argv, VALUE self){
   rb_w = argv[4];
   rb_x = argv[5];
 
-  ltran = (rb_ltran == Qtrue);
-  lreal = (rb_lreal == Qtrue);
   w = NUM2DBL(rb_w);
+  lreal = (rb_lreal == Qtrue);
   if (!NA_IsNArray(rb_t))
     rb_raise(rb_eArgError, "t (3th argument) must be NArray");
   if (NA_RANK(rb_t) != 2)
     rb_raise(rb_eArgError, "rank of t (3th argument) must be %d", 2);
-  ldt = NA_SHAPE0(rb_t);
   n = NA_SHAPE1(rb_t);
+  ldt = NA_SHAPE0(rb_t);
   if (NA_TYPE(rb_t) != NA_DFLOAT)
     rb_t = na_change_type(rb_t, NA_DFLOAT);
   t = NA_PTR_TYPE(rb_t, doublereal*);
+  ltran = (rb_ltran == Qtrue);
   if (!NA_IsNArray(rb_b))
     rb_raise(rb_eArgError, "b (4th argument) must be NArray");
   if (NA_RANK(rb_b) != 1)

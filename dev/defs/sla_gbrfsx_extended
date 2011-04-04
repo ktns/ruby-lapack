@@ -81,13 +81,15 @@
 - err_bnds_norm: 
     :type: real
     :intent: input/output
-    :dims: []
-
+    :dims: 
+    - nrhs
+    - n_norms
 - err_bnds_comp: 
     :type: real
     :intent: input/output
-    :dims: []
-
+    :dims: 
+    - nrhs
+    - n_norms
 - res: 
     :type: real
     :intent: input

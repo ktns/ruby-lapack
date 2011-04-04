@@ -1,6 +1,7 @@
 --- 
 :name: clange
 :md5sum: 6793322d76fa36f62a8b759167322ea6
+:category: :function
 :type: real
 :arguments: 
 - norm: 

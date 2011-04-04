@@ -102,9 +102,9 @@
     :type: integer
     :intent: output
 :substitutions: 
-  m: lda
+  lda: m
   ldq: "lsame_(&jobq,\"Q\") ? MAX(1,n) : 1"
-  p: ldb
+  ldb: p
   ldu: "lsame_(&jobu,\"U\") ? MAX(1,m) : 1"
   ldv: "lsame_(&jobv,\"V\") ? MAX(1,p) : 1"
 :fortran_help: "      SUBROUTINE ZGGSVD( JOBU, JOBV, JOBQ, M, N, P, K, L, A, LDA, B, LDB, ALPHA, BETA, U, LDU, V, LDV, Q, LDQ, WORK, RWORK, IWORK, INFO )\n\n\

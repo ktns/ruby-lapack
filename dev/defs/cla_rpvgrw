@@ -1,6 +1,7 @@
 --- 
 :name: cla_rpvgrw
 :md5sum: 6ea05cda1b7eeeb5b354576bf4a33b68
+:category: :function
 :type: real
 :arguments: 
 - n: 

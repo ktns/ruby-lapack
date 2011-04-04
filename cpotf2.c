@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID cpotf2_(char *uplo, integer *n, complex *a, integer *lda, integer *info);
+
 static VALUE
 rb_cpotf2(int argc, VALUE *argv, VALUE self){
   VALUE rb_uplo;
@@ -15,7 +17,7 @@ rb_cpotf2(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  info, a = NumRu::Lapack.cpotf2( uplo, a)\n    or\n  NumRu::Lapack.cpotf2  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE CPOTF2( UPLO, N, A, LDA, INFO )\n\n*  Purpose\n*  =======\n*\n*  CPOTF2 computes the Cholesky factorization of a complex Hermitian\n*  positive definite matrix A.\n*\n*  The factorization has the form\n*     A = U' * U ,  if UPLO = 'U', or\n*     A = L  * L',  if UPLO = 'L',\n*  where U is an upper triangular matrix and L is lower triangular.\n*\n*  This is the unblocked version of the algorithm, calling Level 2 BLAS.\n*\n\n*  Arguments\n*  =========\n*\n*  UPLO    (input) CHARACTER*1\n*          Specifies whether the upper or lower triangular part of the\n*          Hermitian matrix A is stored.\n*          = 'U':  Upper triangular\n*          = 'L':  Lower triangular\n*\n*  N       (input) INTEGER\n*          The order of the matrix A.  N >= 0.\n*\n*  A       (input/output) COMPLEX array, dimension (LDA,N)\n*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading\n*          n by n upper triangular part of A contains the upper\n*          triangular part of the matrix A, and the strictly lower\n*          triangular part of A is not referenced.  If UPLO = 'L', the\n*          leading n by n lower triangular part of A contains the lower\n*          triangular part of the matrix A, and the strictly upper\n*          triangular part of A is not referenced.\n*\n*          On exit, if INFO = 0, the factor U or L from the Cholesky\n*          factorization A = U'*U  or A = L*L'.\n*\n*  LDA     (input) INTEGER\n*          The leading dimension of the array A.  LDA >= max(1,N).\n*\n*  INFO    (output) INTEGER\n*          = 0: successful exit\n*          < 0: if INFO = -k, the k-th argument had an illegal value\n*          > 0: if INFO = k, the leading minor of order k is not\n*               positive definite, and the factorization could not be\n*               completed.\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  info, a = NumRu::Lapack.cpotf2( uplo, a)\n    or\n  NumRu::Lapack.cpotf2  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 2)
@@ -23,16 +25,16 @@ rb_cpotf2(int argc, VALUE *argv, VALUE self){
   rb_uplo = argv[0];
   rb_a = argv[1];
 
-  uplo = StringValueCStr(rb_uplo)[0];
   if (!NA_IsNArray(rb_a))
     rb_raise(rb_eArgError, "a (2th argument) must be NArray");
   if (NA_RANK(rb_a) != 2)
     rb_raise(rb_eArgError, "rank of a (2th argument) must be %d", 2);
-  lda = NA_SHAPE0(rb_a);
   n = NA_SHAPE1(rb_a);
+  lda = NA_SHAPE0(rb_a);
   if (NA_TYPE(rb_a) != NA_SCOMPLEX)
     rb_a = na_change_type(rb_a, NA_SCOMPLEX);
   a = NA_PTR_TYPE(rb_a, complex*);
+  uplo = StringValueCStr(rb_uplo)[0];
   {
     int shape[2];
     shape[0] = lda;

@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dlasq6_(integer *i0, integer *n0, doublereal *z, integer *pp, doublereal *dmin, doublereal *dmin1, doublereal *dmin2, doublereal *dn, doublereal *dnm1, doublereal *dnm2);
+
 static VALUE
 rb_dlasq6(int argc, VALUE *argv, VALUE self){
   VALUE rb_i0;
@@ -25,7 +27,7 @@ rb_dlasq6(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  dmin, dmin1, dmin2, dn, dnm1, dnm2 = NumRu::Lapack.dlasq6( i0, n0, z, pp)\n    or\n  NumRu::Lapack.dlasq6  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLASQ6( I0, N0, Z, PP, DMIN, DMIN1, DMIN2, DN, DNM1, DNM2 )\n\n*  Purpose\n*  =======\n*\n*  DLASQ6 computes one dqd (shift equal to zero) transform in\n*  ping-pong form, with protection against underflow and overflow.\n*\n\n*  Arguments\n*  =========\n*\n*  I0    (input) INTEGER\n*        First index.\n*\n*  N0    (input) INTEGER\n*        Last index.\n*\n*  Z     (input) DOUBLE PRECISION array, dimension ( 4*N )\n*        Z holds the qd array. EMIN is stored in Z(4*N0) to avoid\n*        an extra argument.\n*\n*  PP    (input) INTEGER\n*        PP=0 for ping, PP=1 for pong.\n*\n*  DMIN  (output) DOUBLE PRECISION\n*        Minimum value of d.\n*\n*  DMIN1 (output) DOUBLE PRECISION\n*        Minimum value of d, excluding D( N0 ).\n*\n*  DMIN2 (output) DOUBLE PRECISION\n*        Minimum value of d, excluding D( N0 ) and D( N0-1 ).\n*\n*  DN    (output) DOUBLE PRECISION\n*        d(N0), the last value of d.\n*\n*  DNM1  (output) DOUBLE PRECISION\n*        d(N0-1).\n*\n*  DNM2  (output) DOUBLE PRECISION\n*        d(N0-2).\n*\n\n*  =====================================================================\n*\n*     .. Parameter ..\n      DOUBLE PRECISION   ZERO\n      PARAMETER          ( ZERO = 0.0D0 )\n*     ..\n*     .. Local Scalars ..\n      INTEGER            J4, J4P2\n      DOUBLE PRECISION   D, EMIN, SAFMIN, TEMP\n*     ..\n*     .. External Function ..\n      DOUBLE PRECISION   DLAMCH\n      EXTERNAL           DLAMCH\n*     ..\n*     .. Intrinsic Functions ..\n      INTRINSIC          MIN\n*     ..\n\n");
+    printf("%s\n", "USAGE:\n  dmin, dmin1, dmin2, dn, dnm1, dnm2 = NumRu::Lapack.dlasq6( i0, n0, z, pp)\n    or\n  NumRu::Lapack.dlasq6  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 4)
@@ -35,9 +37,9 @@ rb_dlasq6(int argc, VALUE *argv, VALUE self){
   rb_z = argv[2];
   rb_pp = argv[3];
 
-  i0 = NUM2INT(rb_i0);
-  n0 = NUM2INT(rb_n0);
   pp = NUM2INT(rb_pp);
+  n0 = NUM2INT(rb_n0);
+  i0 = NUM2INT(rb_i0);
   if (!NA_IsNArray(rb_z))
     rb_raise(rb_eArgError, "z (3th argument) must be NArray");
   if (NA_RANK(rb_z) != 1)

@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dlasdt_(integer *n, integer *lvl, integer *nd, integer *inode, integer *ndiml, integer *ndimr, integer *msub);
+
 static VALUE
 rb_dlasdt(int argc, VALUE *argv, VALUE self){
   VALUE rb_n;
@@ -19,7 +21,7 @@ rb_dlasdt(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  lvl, nd, inode, ndiml, ndimr = NumRu::Lapack.dlasdt( n, msub)\n    or\n  NumRu::Lapack.dlasdt  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLASDT( N, LVL, ND, INODE, NDIML, NDIMR, MSUB )\n\n*  Purpose\n*  =======\n*\n*  DLASDT creates a tree of subproblems for bidiagonal divide and\n*  conquer.\n*\n\n*  Arguments\n*  =========\n*\n*   N      (input) INTEGER\n*          On entry, the number of diagonal elements of the\n*          bidiagonal matrix.\n*\n*   LVL    (output) INTEGER\n*          On exit, the number of levels on the computation tree.\n*\n*   ND     (output) INTEGER\n*          On exit, the number of nodes on the tree.\n*\n*   INODE  (output) INTEGER array, dimension ( N )\n*          On exit, centers of subproblems.\n*\n*   NDIML  (output) INTEGER array, dimension ( N )\n*          On exit, row dimensions of left children.\n*\n*   NDIMR  (output) INTEGER array, dimension ( N )\n*          On exit, row dimensions of right children.\n*\n*   MSUB   (input) INTEGER.\n*          On entry, the maximum row dimension each subproblem at the\n*          bottom of the tree can be of.\n*\n\n*  Further Details\n*  ===============\n*\n*  Based on contributions by\n*     Ming Gu and Huan Ren, Computer Science Division, University of\n*     California at Berkeley, USA\n*\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  lvl, nd, inode, ndiml, ndimr = NumRu::Lapack.dlasdt( n, msub)\n    or\n  NumRu::Lapack.dlasdt  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 2)
@@ -31,19 +33,19 @@ rb_dlasdt(int argc, VALUE *argv, VALUE self){
   msub = NUM2INT(rb_msub);
   {
     int shape[1];
-    shape[0] = DIM_LEN(MAX(1,n));
+    shape[0] = MAX(1,n);
     rb_inode = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   inode = NA_PTR_TYPE(rb_inode, integer*);
   {
     int shape[1];
-    shape[0] = DIM_LEN(MAX(1,n));
+    shape[0] = MAX(1,n);
     rb_ndiml = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   ndiml = NA_PTR_TYPE(rb_ndiml, integer*);
   {
     int shape[1];
-    shape[0] = DIM_LEN(MAX(1,n));
+    shape[0] = MAX(1,n);
     rb_ndimr = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   ndimr = NA_PTR_TYPE(rb_ndimr, integer*);

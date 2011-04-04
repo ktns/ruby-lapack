@@ -1,6 +1,7 @@
 --- 
 :name: slansy
 :md5sum: 9ac8e2d4146d44485b5a4e92c90c712c
+:category: :function
 :type: real
 :arguments: 
 - norm: 

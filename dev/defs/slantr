@@ -1,6 +1,7 @@
 --- 
 :name: slantr
 :md5sum: f3ff0071196a89e069537cf5a2e623f8
+:category: :function
 :type: real
 :arguments: 
 - norm: 

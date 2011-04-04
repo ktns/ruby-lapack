@@ -85,8 +85,8 @@
 - params: 
     :type: doublereal
     :intent: input/output
-    :dims: []
-
+    :dims: 
+    - nparams
 - work: 
     :type: doublecomplex
     :intent: workspace

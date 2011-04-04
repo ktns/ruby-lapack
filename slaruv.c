@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID slaruv_(integer *iseed, integer *n, real *x);
+
 static VALUE
 rb_slaruv(int argc, VALUE *argv, VALUE self){
   VALUE rb_iseed;
@@ -13,7 +15,7 @@ rb_slaruv(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  x, iseed = NumRu::Lapack.slaruv( iseed, n)\n    or\n  NumRu::Lapack.slaruv  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SLARUV( ISEED, N, X )\n\n*  Purpose\n*  =======\n*\n*  SLARUV returns a vector of n random real numbers from a uniform (0,1)\n*  distribution (n <= 128).\n*\n*  This is an auxiliary routine called by SLARNV and CLARNV.\n*\n\n*  Arguments\n*  =========\n*\n*  ISEED   (input/output) INTEGER array, dimension (4)\n*          On entry, the seed of the random number generator; the array\n*          elements must be between 0 and 4095, and ISEED(4) must be\n*          odd.\n*          On exit, the seed is updated.\n*\n*  N       (input) INTEGER\n*          The number of random numbers to be generated. N <= 128.\n*\n*  X       (output) REAL array, dimension (N)\n*          The generated random numbers.\n*\n\n*  Further Details\n*  ===============\n*\n*  This routine uses a multiplicative congruential method with modulus\n*  2**48 and multiplier 33952834046453 (see G.S.Fishman,\n*  'Multiplicative congruential random number generators with modulus\n*  2**b: an exhaustive analysis for b = 32 and a partial analysis for\n*  b = 48', Math. Comp. 189, pp 331-344, 1990).\n*\n*  48-bit integers are stored in 4 integer array elements with 12 bits\n*  per element. Hence the routine is portable across machines with\n*  integers of 32 bits or more.\n*\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  x, iseed = NumRu::Lapack.slaruv( iseed, n)\n    or\n  NumRu::Lapack.slaruv  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 2)
@@ -39,7 +41,7 @@ rb_slaruv(int argc, VALUE *argv, VALUE self){
   x = NA_PTR_TYPE(rb_x, real*);
   {
     int shape[1];
-    shape[0] = DIM_LEN(4);
+    shape[0] = 4;
     rb_iseed_out__ = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   iseed_out__ = NA_PTR_TYPE(rb_iseed_out__, integer*);

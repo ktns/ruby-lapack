@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID cla_wwaddw_(integer *n, complex *x, complex *y, complex *w);
+
 static VALUE
 rb_cla_wwaddw(int argc, VALUE *argv, VALUE self){
   VALUE rb_x;
@@ -16,7 +18,7 @@ rb_cla_wwaddw(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  x, y = NumRu::Lapack.cla_wwaddw( x, y, w)\n    or\n  NumRu::Lapack.cla_wwaddw  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE CLA_WWADDW( N, X, Y, W )\n\n*     Purpose\n*     =======\n*\n*     CLA_WWADDW adds a vector W into a doubled-single vector (X, Y).\n*\n*     This works for all extant IBM's hex and binary floating point\n*     arithmetics, but not for decimal.\n*\n\n*     Arguments\n*     =========\n*\n*     N      (input) INTEGER\n*            The length of vectors X, Y, and W.\n*\n*     X, Y   (input/output) COMPLEX array, length N\n*            The doubled-single accumulation vector.\n*\n*     W      (input) COMPLEX array, length N\n*            The vector to be added.\n*\n\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      COMPLEX            S\n      INTEGER            I\n*     ..\n\n");
+    printf("%s\n", "USAGE:\n  x, y = NumRu::Lapack.cla_wwaddw( x, y, w)\n    or\n  NumRu::Lapack.cla_wwaddw  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 3)
@@ -25,11 +27,20 @@ rb_cla_wwaddw(int argc, VALUE *argv, VALUE self){
   rb_y = argv[1];
   rb_w = argv[2];
 
+  if (!NA_IsNArray(rb_w))
+    rb_raise(rb_eArgError, "w (3th argument) must be NArray");
+  if (NA_RANK(rb_w) != 1)
+    rb_raise(rb_eArgError, "rank of w (3th argument) must be %d", 1);
+  n = NA_SHAPE0(rb_w);
+  if (NA_TYPE(rb_w) != NA_SCOMPLEX)
+    rb_w = na_change_type(rb_w, NA_SCOMPLEX);
+  w = NA_PTR_TYPE(rb_w, complex*);
   if (!NA_IsNArray(rb_x))
     rb_raise(rb_eArgError, "x (1th argument) must be NArray");
   if (NA_RANK(rb_x) != 1)
     rb_raise(rb_eArgError, "rank of x (1th argument) must be %d", 1);
-  n = NA_SHAPE0(rb_x);
+  if (NA_SHAPE0(rb_x) != n)
+    rb_raise(rb_eRuntimeError, "shape 0 of x must be the same as shape 0 of w");
   if (NA_TYPE(rb_x) != NA_SCOMPLEX)
     rb_x = na_change_type(rb_x, NA_SCOMPLEX);
   x = NA_PTR_TYPE(rb_x, complex*);
@@ -38,19 +49,10 @@ rb_cla_wwaddw(int argc, VALUE *argv, VALUE self){
   if (NA_RANK(rb_y) != 1)
     rb_raise(rb_eArgError, "rank of y (2th argument) must be %d", 1);
   if (NA_SHAPE0(rb_y) != n)
-    rb_raise(rb_eRuntimeError, "shape 0 of y must be the same as shape 0 of x");
+    rb_raise(rb_eRuntimeError, "shape 0 of y must be the same as shape 0 of w");
   if (NA_TYPE(rb_y) != NA_SCOMPLEX)
     rb_y = na_change_type(rb_y, NA_SCOMPLEX);
   y = NA_PTR_TYPE(rb_y, complex*);
-  if (!NA_IsNArray(rb_w))
-    rb_raise(rb_eArgError, "w (3th argument) must be NArray");
-  if (NA_RANK(rb_w) != 1)
-    rb_raise(rb_eArgError, "rank of w (3th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_w) != n)
-    rb_raise(rb_eRuntimeError, "shape 0 of w must be the same as shape 0 of x");
-  if (NA_TYPE(rb_w) != NA_SCOMPLEX)
-    rb_w = na_change_type(rb_w, NA_SCOMPLEX);
-  w = NA_PTR_TYPE(rb_w, complex*);
   {
     int shape[1];
     shape[0] = n;

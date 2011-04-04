@@ -1,6 +1,7 @@
 --- 
 :name: dla_porpvgrw
 :md5sum: 808a3e0cfa3cafe090522d7d169ee362
+:category: :function
 :type: doublereal
 :arguments: 
 - uplo: 

@@ -1,6 +1,7 @@
 --- 
 :name: dlantp
 :md5sum: 89c0a27d7546449efda1386a0b958f8b
+:category: :function
 :type: doublereal
 :arguments: 
 - norm: 

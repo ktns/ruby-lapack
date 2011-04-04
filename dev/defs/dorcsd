@@ -35,6 +35,7 @@
     :intent: input
     :dims: 
     - ldx11
+    - q
 - ldx11: 
     :type: integer
     :intent: input
@@ -43,6 +44,7 @@
     :intent: input
     :dims: 
     - ldx12
+    - m-q
 - ldx12: 
     :type: integer
     :intent: input
@@ -51,6 +53,7 @@
     :intent: input
     :dims: 
     - ldx21
+    - q
 - ldx21: 
     :type: integer
     :intent: input
@@ -59,6 +62,7 @@
     :intent: input
     :dims: 
     - ldx22
+    - m-q
 - ldx22: 
     :type: integer
     :intent: input
@@ -120,6 +124,10 @@
   ldv1t: "lsame_(&jobv1t,\"Y\") ? MAX(1,q) : 0"
   ldu1: "lsame_(&jobu1,\"Y\") ? MAX(1,p) : 0"
   ldu2: "lsame_(&jobu2,\"Y\") ? MAX(1,m-p) : 0"
+  ldx11: p
+  ldx12: p
+  ldx21: p
+  ldx22: p
 :fortran_help: "      RECURSIVE SUBROUTINE DORCSD( JOBU1, JOBU2, JOBV1T, JOBV2T, TRANS, SIGNS, M, P, Q, X11, LDX11, X12, LDX12, X21, LDX21, X22, LDX22, THETA, U1, LDU1, U2, LDU2, V1T, LDV1T, V2T, LDV2T, WORK, LWORK, IWORK, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\

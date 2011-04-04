@@ -47,7 +47,7 @@
     :type: integer
     :intent: output
 :substitutions: 
-  ldab: MAX(1,m)
+  ldab: m
 :fortran_help: "      SUBROUTINE DGBEQUB( M, N, KL, KU, AB, LDAB, R, C, ROWCND, COLCND, AMAX, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\

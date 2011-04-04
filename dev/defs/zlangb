@@ -1,6 +1,7 @@
 --- 
 :name: zlangb
 :md5sum: 4120e61255d0848a64b6de95b2ceac7d
+:category: :function
 :type: doublereal
 :arguments: 
 - norm: 

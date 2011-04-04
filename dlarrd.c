@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dlarrd_(char *range, char *order, integer *n, doublereal *vl, doublereal *vu, integer *il, integer *iu, doublereal *gers, doublereal *reltol, doublereal *d, doublereal *e, doublereal *e2, doublereal *pivmin, integer *nsplit, integer *isplit, integer *m, doublereal *w, doublereal *werr, doublereal *wl, doublereal *wu, integer *iblock, integer *indexw, doublereal *work, integer *iwork, integer *info);
+
 static VALUE
 rb_dlarrd(int argc, VALUE *argv, VALUE self){
   VALUE rb_range;
@@ -52,7 +54,7 @@ rb_dlarrd(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  m, w, werr, wl, wu, iblock, indexw, info = NumRu::Lapack.dlarrd( range, order, vl, vu, il, iu, gers, reltol, d, e, e2, pivmin, nsplit, isplit)\n    or\n  NumRu::Lapack.dlarrd  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLARRD( RANGE, ORDER, N, VL, VU, IL, IU, GERS, RELTOL, D, E, E2, PIVMIN, NSPLIT, ISPLIT, M, W, WERR, WL, WU, IBLOCK, INDEXW, WORK, IWORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  DLARRD computes the eigenvalues of a symmetric tridiagonal\n*  matrix T to suitable accuracy. This is an auxiliary code to be\n*  called from DSTEMR.\n*  The user may ask for all eigenvalues, all eigenvalues\n*  in the half-open interval (VL, VU], or the IL-th through IU-th\n*  eigenvalues.\n*\n*  To avoid overflow, the matrix must be scaled so that its\n*  largest element is no greater than overflow**(1/2) *\n*  underflow**(1/4) in absolute value, and for greatest\n*  accuracy, it should not be much smaller than that.\n*\n*  See W. Kahan \"Accurate Eigenvalues of a Symmetric Tridiagonal\n*  Matrix\", Report CS41, Computer Science Dept., Stanford\n*  University, July 21, 1966.\n*\n\n*  Arguments\n*  =========\n*\n*  RANGE   (input) CHARACTER\n*          = 'A': (\"All\")   all eigenvalues will be found.\n*          = 'V': (\"Value\") all eigenvalues in the half-open interval\n*                           (VL, VU] will be found.\n*          = 'I': (\"Index\") the IL-th through IU-th eigenvalues (of the\n*                           entire matrix) will be found.\n*\n*  ORDER   (input) CHARACTER\n*          = 'B': (\"By Block\") the eigenvalues will be grouped by\n*                              split-off block (see IBLOCK, ISPLIT) and\n*                              ordered from smallest to largest within\n*                              the block.\n*          = 'E': (\"Entire matrix\")\n*                              the eigenvalues for the entire matrix\n*                              will be ordered from smallest to\n*                              largest.\n*\n*  N       (input) INTEGER\n*          The order of the tridiagonal matrix T.  N >= 0.\n*\n*  VL      (input) DOUBLE PRECISION\n*  VU      (input) DOUBLE PRECISION\n*          If RANGE='V', the lower and upper bounds of the interval to\n*          be searched for eigenvalues.  Eigenvalues less than or equal\n*          to VL, or greater than VU, will not be returned.  VL < VU.\n*          Not referenced if RANGE = 'A' or 'I'.\n*\n*  IL      (input) INTEGER\n*  IU      (input) INTEGER\n*          If RANGE='I', the indices (in ascending order) of the\n*          smallest and largest eigenvalues to be returned.\n*          1 <= IL <= IU <= N, if N > 0; IL = 1 and IU = 0 if N = 0.\n*          Not referenced if RANGE = 'A' or 'V'.\n*\n*  GERS    (input) DOUBLE PRECISION array, dimension (2*N)\n*          The N Gerschgorin intervals (the i-th Gerschgorin interval\n*          is (GERS(2*i-1), GERS(2*i)).\n*\n*  RELTOL  (input) DOUBLE PRECISION\n*          The minimum relative width of an interval.  When an interval\n*          is narrower than RELTOL times the larger (in\n*          magnitude) endpoint, then it is considered to be\n*          sufficiently small, i.e., converged.  Note: this should\n*          always be at least radix*machine epsilon.\n*\n*  D       (input) DOUBLE PRECISION array, dimension (N)\n*          The n diagonal elements of the tridiagonal matrix T.\n*\n*  E       (input) DOUBLE PRECISION array, dimension (N-1)\n*          The (n-1) off-diagonal elements of the tridiagonal matrix T.\n*\n*  E2      (input) DOUBLE PRECISION array, dimension (N-1)\n*          The (n-1) squared off-diagonal elements of the tridiagonal matrix T.\n*\n*  PIVMIN  (input) DOUBLE PRECISION\n*          The minimum pivot allowed in the Sturm sequence for T.\n*\n*  NSPLIT  (input) INTEGER\n*          The number of diagonal blocks in the matrix T.\n*          1 <= NSPLIT <= N.\n*\n*  ISPLIT  (input) INTEGER array, dimension (N)\n*          The splitting points, at which T breaks up into submatrices.\n*          The first submatrix consists of rows/columns 1 to ISPLIT(1),\n*          the second of rows/columns ISPLIT(1)+1 through ISPLIT(2),\n*          etc., and the NSPLIT-th consists of rows/columns\n*          ISPLIT(NSPLIT-1)+1 through ISPLIT(NSPLIT)=N.\n*          (Only the first NSPLIT elements will actually be used, but\n*          since the user cannot know a priori what value NSPLIT will\n*          have, N words must be reserved for ISPLIT.)\n*\n*  M       (output) INTEGER\n*          The actual number of eigenvalues found. 0 <= M <= N.\n*          (See also the description of INFO=2,3.)\n*\n*  W       (output) DOUBLE PRECISION array, dimension (N)\n*          On exit, the first M elements of W will contain the\n*          eigenvalue approximations. DLARRD computes an interval\n*          I_j = (a_j, b_j] that includes eigenvalue j. The eigenvalue\n*          approximation is given as the interval midpoint\n*          W(j)= ( a_j + b_j)/2. The corresponding error is bounded by\n*          WERR(j) = abs( a_j - b_j)/2\n*\n*  WERR    (output) DOUBLE PRECISION array, dimension (N)\n*          The error bound on the corresponding eigenvalue approximation\n*          in W.\n*\n*  WL      (output) DOUBLE PRECISION\n*  WU      (output) DOUBLE PRECISION\n*          The interval (WL, WU] contains all the wanted eigenvalues.\n*          If RANGE='V', then WL=VL and WU=VU.\n*          If RANGE='A', then WL and WU are the global Gerschgorin bounds\n*                        on the spectrum.\n*          If RANGE='I', then WL and WU are computed by DLAEBZ from the\n*                        index range specified.\n*\n*  IBLOCK  (output) INTEGER array, dimension (N)\n*          At each row/column j where E(j) is zero or small, the\n*          matrix T is considered to split into a block diagonal\n*          matrix.  On exit, if INFO = 0, IBLOCK(i) specifies to which\n*          block (from 1 to the number of blocks) the eigenvalue W(i)\n*          belongs.  (DLARRD may use the remaining N-M elements as\n*          workspace.)\n*\n*  INDEXW  (output) INTEGER array, dimension (N)\n*          The indices of the eigenvalues within each block (submatrix);\n*          for example, INDEXW(i)= j and IBLOCK(i)=k imply that the\n*          i-th eigenvalue W(i) is the j-th eigenvalue in block k.\n*\n*  WORK    (workspace) DOUBLE PRECISION array, dimension (4*N)\n*\n*  IWORK   (workspace) INTEGER array, dimension (3*N)\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*          > 0:  some or all of the eigenvalues failed to converge or\n*                were not computed:\n*                =1 or 3: Bisection failed to converge for some\n*                        eigenvalues; these eigenvalues are flagged by a\n*                        negative block number.  The effect is that the\n*                        eigenvalues may not be as accurate as the\n*                        absolute and relative tolerances.  This is\n*                        generally caused by unexpectedly inaccurate\n*                        arithmetic.\n*                =2 or 3: RANGE='I' only: Not all of the eigenvalues\n*                        IL:IU were found.\n*                        Effect: M < IU+1-IL\n*                        Cause:  non-monotonic arithmetic, causing the\n*                                Sturm sequence to be non-monotonic.\n*                        Cure:   recalculate, using RANGE='A', and pick\n*                                out eigenvalues IL:IU.  In some cases,\n*                                increasing the PARAMETER \"FUDGE\" may\n*                                make things work.\n*                = 4:    RANGE='I', and the Gershgorin interval\n*                        initially used was too small.  No eigenvalues\n*                        were computed.\n*                        Probable cause: your machine has sloppy\n*                                        floating-point arithmetic.\n*                        Cure: Increase the PARAMETER \"FUDGE\",\n*                              recompile, and try again.\n*\n*  Internal Parameters\n*  ===================\n*\n*  FUDGE   DOUBLE PRECISION, default = 2\n*          A \"fudge factor\" to widen the Gershgorin intervals.  Ideally,\n*          a value of 1 should work, but on machines with sloppy\n*          arithmetic, this needs to be larger.  The default for\n*          publicly released versions should be large enough to handle\n*          the worst machine around.  Note that this has no effect\n*          on accuracy of the solution.\n*\n*  Based on contributions by\n*     W. Kahan, University of California, Berkeley, USA\n*     Beresford Parlett, University of California, Berkeley, USA\n*     Jim Demmel, University of California, Berkeley, USA\n*     Inderjit Dhillon, University of Texas, Austin, USA\n*     Osni Marques, LBNL/NERSC, USA\n*     Christof Voemel, University of California, Berkeley, USA\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  m, w, werr, wl, wu, iblock, indexw, info = NumRu::Lapack.dlarrd( range, order, vl, vu, il, iu, gers, reltol, d, e, e2, pivmin, nsplit, isplit)\n    or\n  NumRu::Lapack.dlarrd  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 14)
@@ -72,59 +74,59 @@ rb_dlarrd(int argc, VALUE *argv, VALUE self){
   rb_nsplit = argv[12];
   rb_isplit = argv[13];
 
-  reltol = NUM2DBL(rb_reltol);
-  range = StringValueCStr(rb_range)[0];
-  order = StringValueCStr(rb_order)[0];
-  vu = NUM2DBL(rb_vu);
-  iu = NUM2INT(rb_iu);
   vl = NUM2DBL(rb_vl);
+  iu = NUM2INT(rb_iu);
   pivmin = NUM2DBL(rb_pivmin);
+  vu = NUM2DBL(rb_vu);
   nsplit = NUM2INT(rb_nsplit);
   il = NUM2INT(rb_il);
   if (!NA_IsNArray(rb_d))
-    rb_raise(rb_eArgError, "d (1th argument) must be NArray");
+    rb_raise(rb_eArgError, "d (9th argument) must be NArray");
   if (NA_RANK(rb_d) != 1)
-    rb_raise(rb_eArgError, "rank of d (1th argument) must be %d", 1);
+    rb_raise(rb_eArgError, "rank of d (9th argument) must be %d", 1);
   n = NA_SHAPE0(rb_d);
   if (NA_TYPE(rb_d) != NA_DFLOAT)
     rb_d = na_change_type(rb_d, NA_DFLOAT);
   d = NA_PTR_TYPE(rb_d, doublereal*);
   if (!NA_IsNArray(rb_isplit))
-    rb_raise(rb_eArgError, "isplit (2th argument) must be NArray");
+    rb_raise(rb_eArgError, "isplit (14th argument) must be NArray");
   if (NA_RANK(rb_isplit) != 1)
-    rb_raise(rb_eArgError, "rank of isplit (2th argument) must be %d", 1);
+    rb_raise(rb_eArgError, "rank of isplit (14th argument) must be %d", 1);
   if (NA_SHAPE0(rb_isplit) != n)
     rb_raise(rb_eRuntimeError, "shape 0 of isplit must be the same as shape 0 of d");
   if (NA_TYPE(rb_isplit) != NA_LINT)
     rb_isplit = na_change_type(rb_isplit, NA_LINT);
   isplit = NA_PTR_TYPE(rb_isplit, integer*);
+  range = StringValueCStr(rb_range)[0];
+  order = StringValueCStr(rb_order)[0];
+  reltol = NUM2DBL(rb_reltol);
   if (!NA_IsNArray(rb_e))
-    rb_raise(rb_eArgError, "e (7th argument) must be NArray");
+    rb_raise(rb_eArgError, "e (10th argument) must be NArray");
   if (NA_RANK(rb_e) != 1)
-    rb_raise(rb_eArgError, "rank of e (7th argument) must be %d", 1);
+    rb_raise(rb_eArgError, "rank of e (10th argument) must be %d", 1);
   if (NA_SHAPE0(rb_e) != (n-1))
     rb_raise(rb_eRuntimeError, "shape 0 of e must be %d", n-1);
   if (NA_TYPE(rb_e) != NA_DFLOAT)
     rb_e = na_change_type(rb_e, NA_DFLOAT);
   e = NA_PTR_TYPE(rb_e, doublereal*);
-  if (!NA_IsNArray(rb_e2))
-    rb_raise(rb_eArgError, "e2 (9th argument) must be NArray");
-  if (NA_RANK(rb_e2) != 1)
-    rb_raise(rb_eArgError, "rank of e2 (9th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_e2) != (n-1))
-    rb_raise(rb_eRuntimeError, "shape 0 of e2 must be %d", n-1);
-  if (NA_TYPE(rb_e2) != NA_DFLOAT)
-    rb_e2 = na_change_type(rb_e2, NA_DFLOAT);
-  e2 = NA_PTR_TYPE(rb_e2, doublereal*);
   if (!NA_IsNArray(rb_gers))
-    rb_raise(rb_eArgError, "gers (12th argument) must be NArray");
+    rb_raise(rb_eArgError, "gers (7th argument) must be NArray");
   if (NA_RANK(rb_gers) != 1)
-    rb_raise(rb_eArgError, "rank of gers (12th argument) must be %d", 1);
+    rb_raise(rb_eArgError, "rank of gers (7th argument) must be %d", 1);
   if (NA_SHAPE0(rb_gers) != (2*n))
     rb_raise(rb_eRuntimeError, "shape 0 of gers must be %d", 2*n);
   if (NA_TYPE(rb_gers) != NA_DFLOAT)
     rb_gers = na_change_type(rb_gers, NA_DFLOAT);
   gers = NA_PTR_TYPE(rb_gers, doublereal*);
+  if (!NA_IsNArray(rb_e2))
+    rb_raise(rb_eArgError, "e2 (11th argument) must be NArray");
+  if (NA_RANK(rb_e2) != 1)
+    rb_raise(rb_eArgError, "rank of e2 (11th argument) must be %d", 1);
+  if (NA_SHAPE0(rb_e2) != (n-1))
+    rb_raise(rb_eRuntimeError, "shape 0 of e2 must be %d", n-1);
+  if (NA_TYPE(rb_e2) != NA_DFLOAT)
+    rb_e2 = na_change_type(rb_e2, NA_DFLOAT);
+  e2 = NA_PTR_TYPE(rb_e2, doublereal*);
   {
     int shape[1];
     shape[0] = n;
@@ -139,13 +141,13 @@ rb_dlarrd(int argc, VALUE *argv, VALUE self){
   werr = NA_PTR_TYPE(rb_werr, doublereal*);
   {
     int shape[1];
-    shape[0] = DIM_LEN(n);
+    shape[0] = n;
     rb_iblock = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   iblock = NA_PTR_TYPE(rb_iblock, integer*);
   {
     int shape[1];
-    shape[0] = DIM_LEN(n);
+    shape[0] = n;
     rb_indexw = na_make_object(NA_LINT, 1, shape, cNArray);
   }
   indexw = NA_PTR_TYPE(rb_indexw, integer*);

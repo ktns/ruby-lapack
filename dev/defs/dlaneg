@@ -1,6 +1,7 @@
 --- 
 :name: dlaneg
 :md5sum: c5a7742f33a7d96a4fed5f670646bf40
+:category: :function
 :type: integer
 :arguments: 
 - n: 

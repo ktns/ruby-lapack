@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern logical lsamen_(integer *n, char *ca, char *cb);
+
 static VALUE
 rb_lsamen(int argc, VALUE *argv, VALUE self){
   VALUE rb_n;
@@ -13,7 +15,7 @@ rb_lsamen(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.lsamen( n, ca, cb)\n    or\n  NumRu::Lapack.lsamen  # print help\n\n\nFORTRAN MANUAL\n      LOGICAL          FUNCTION LSAMEN( N, CA, CB )\n\n*  Purpose\n*  =======\n*\n*  LSAMEN  tests if the first N letters of CA are the same as the\n*  first N letters of CB, regardless of case.\n*  LSAMEN returns .TRUE. if CA and CB are equivalent except for case\n*  and .FALSE. otherwise.  LSAMEN also returns .FALSE. if LEN( CA )\n*  or LEN( CB ) is less than N.\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The number of characters in CA and CB to be compared.\n*\n*  CA      (input) CHARACTER*(*)\n*  CB      (input) CHARACTER*(*)\n*          CA and CB specify two character strings of length at least N.\n*          Only the first N characters of each string will be accessed.\n*\n\n* =====================================================================\n*\n*     .. Local Scalars ..\n      INTEGER            I\n*     ..\n*     .. External Functions ..\n      LOGICAL            LSAME\n      EXTERNAL           LSAME\n*     ..\n*     .. Intrinsic Functions ..\n      INTRINSIC          LEN\n*     ..\n\n");
+    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.lsamen( n, ca, cb)\n    or\n  NumRu::Lapack.lsamen  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 3)

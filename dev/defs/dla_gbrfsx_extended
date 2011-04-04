@@ -64,8 +64,9 @@
 - y: 
     :type: doublereal
     :intent: input/output
-    :dims: []
-
+    :dims: 
+    - ldy
+    - nrhs
 - ldy: 
     :type: integer
     :intent: input
@@ -80,13 +81,15 @@
 - err_bnds_norm: 
     :type: doublereal
     :intent: input/output
-    :dims: []
-
+    :dims: 
+    - nrhs
+    - n_norms
 - err_bnds_comp: 
     :type: doublereal
     :intent: input/output
-    :dims: []
-
+    :dims: 
+    - nrhs
+    - n_norms
 - res: 
     :type: doublereal
     :intent: input
@@ -128,6 +131,7 @@
 :substitutions: 
   ldab: n
   ldafb: n
+  n_norms: "3"
 :fortran_help: "      SUBROUTINE DLA_GBRFSX_EXTENDED( PREC_TYPE, TRANS_TYPE, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB, IPIV, COLEQU, C, B, LDB, Y, LDY, BERR_OUT, N_NORMS, ERR_BNDS_NORM, ERR_BNDS_COMP, RES, AYB, DY, Y_TAIL, RCOND, ITHRESH, RTHRESH, DZ_UB, IGNORE_CWISE, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\

@@ -1,6 +1,7 @@
 --- 
 :name: zla_herpvgrw
 :md5sum: c7a4c2c50b491711138d57d30bf2f509
+:category: :function
 :type: doublereal
 :arguments: 
 - uplo: 

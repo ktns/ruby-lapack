@@ -34,7 +34,7 @@
     :type: real
     :intent: input
     :dims: 
-    - p
+    - ldx11
     - q
 - ldx11: 
     :type: integer
@@ -43,7 +43,7 @@
     :type: real
     :intent: input
     :dims: 
-    - p
+    - ldx12
     - m-q
 - ldx12: 
     :type: integer
@@ -52,7 +52,7 @@
     :type: real
     :intent: input
     :dims: 
-    - p
+    - ldx21
     - q
 - ldx21: 
     :type: integer
@@ -61,7 +61,7 @@
     :type: real
     :intent: input
     :dims: 
-    - p
+    - ldx22
     - m-q
 - ldx22: 
     :type: integer

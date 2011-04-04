@@ -1,6 +1,7 @@
 --- 
 :name: zlange
 :md5sum: 50408df6803944fddcccdb05db912293
+:category: :function
 :type: doublereal
 :arguments: 
 - norm: 

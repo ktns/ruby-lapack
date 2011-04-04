@@ -1,6 +1,7 @@
 --- 
 :name: ilauplo
 :md5sum: 5876dad692d4c40d99a08273d8c014f9
+:category: :function
 :type: integer
 :arguments: 
 - uplo: 

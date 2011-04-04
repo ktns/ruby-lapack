@@ -78,7 +78,7 @@
 :substitutions: 
   ldz: "lsame_(&jobz,\"V\") ? MAX(1,n) : 1"
   m: "lsame_(&range,\"A\") ? n : lsame_(&range,\"I\") ? iu-il+1 : 0"
-  n: (int)(sqrt((double)8*ldap+1)-1)/2
+  n: ((int)sqrtf(ldap*8+1.0f)-1)/2
 :fortran_help: "      SUBROUTINE ZHPEVX( JOBZ, RANGE, UPLO, N, AP, VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, RWORK, IWORK, IFAIL, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\

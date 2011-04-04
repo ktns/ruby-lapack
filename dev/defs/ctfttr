@@ -16,7 +16,7 @@
     :type: complex
     :intent: input
     :dims: 
-    - ( n*(n+1)/2 )
+    - ldarf
 - a: 
     :type: complex
     :intent: output
@@ -31,6 +31,7 @@
     :intent: output
 :substitutions: 
   lda: MAX(1,n)
+  n: ((int)sqrtf(ldarf*8+1.0f)-1)/2
 :fortran_help: "      SUBROUTINE CTFTTR( TRANSR, UPLO, N, ARF, A, LDA, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\

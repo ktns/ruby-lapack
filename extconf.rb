@@ -89,44 +89,33 @@ end
 
 
 
-dir_config("f2c", "/usr/local")
-unless find_header("f2c.h")
-  header_not_found("f2c")
-end
-unless find_library("f2c","MAIN__")
-  library_not_found("f2c")
-end
+dir_config("lapack")
+unless find_library("lapack")
+  library_not_found("lapack",nil)
 
-dir_config("clapack")
-unless find_header("clapack.h")
-  header_not_found("clapack")
-end
-#unless find_library("lapack")
-#  library_not_found("lapack",nil)
+  warn "LAPACK will be tried to find"
 
-  warn "CLAPACK will be tried to find"
-
-  name = with_config("cblas-name","blas_LINUX.a")
+  name = with_config("blas-name","blas_LINUX.a")
   unless have_library(name)
-    lib_path = with_config("cblas-lib","/usr/local/lib")
+    lib_path = with_config("blas-lib","/usr/local/lib")
     _libarg = LIBARG
     LIBARG.replace "#{lib_path}/%s"
     unless have_library(name)
-      library_not_found("cblas",name)
+      library_not_found("blas",name)
     end
     LIBARG.replace _libarg
   end
-  name = with_config("clapack-name","lapack_LINUX.a")
+  name = with_config("lapack-name","lapack_LINUX.a")
   unless have_library(name)
-    lib_path = with_config("clapack-lib","/usr/local/lib")
+    lib_path = with_config("lapack-lib","/usr/local/lib")
     _libarg = LIBARG
     LIBARG.replace "#{lib_path}/%s"
     unless have_library(name)
-      library_not_found("clapack",name)
+      library_not_found("lapack",name)
     end
     LIBARG.replace _libarg
   end
-#end
+end
 
 sitearchdir = Config::CONFIG["sitearchdir"]
 dir_config("narray", sitearchdir, sitearchdir)

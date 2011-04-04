@@ -54,7 +54,7 @@
     :intent: output
 :substitutions: 
   ldz: "lsame_(&jobz,\"V\") ? MAX(1,n) : 1"
-  n: (int)(sqrt((double)8*ldap+1)-1)/2
+  n: ((int)sqrtf(ldap*8+1.0f)-1)/2
 :fortran_help: "      SUBROUTINE ZHPGV( ITYPE, JOBZ, UPLO, N, AP, BP, W, Z, LDZ, WORK, RWORK, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\

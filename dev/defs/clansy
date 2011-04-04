@@ -1,6 +1,7 @@
 --- 
 :name: clansy
 :md5sum: 9e26445e2edd83a8a270cac207025f26
+:category: :function
 :type: real
 :arguments: 
 - norm: 

@@ -96,8 +96,8 @@
 - params: 
     :type: real
     :intent: input/output
-    :dims: []
-
+    :dims: 
+    - nparams
 - work: 
     :type: real
     :intent: workspace
@@ -113,6 +113,7 @@
     :intent: output
 :substitutions: 
   ldx: MAX(1,n)
+  n_err_bnds: "3"
 :fortran_help: "      SUBROUTINE SSYSVXX( FACT, UPLO, N, NRHS, A, LDA, AF, LDAF, IPIV, EQUED, S, B, LDB, X, LDX, RCOND, RPVGRW, BERR, N_ERR_BNDS, ERR_BNDS_NORM, ERR_BNDS_COMP, NPARAMS, PARAMS, WORK, IWORK, INFO )\n\n\
   *     Purpose\n\
   *     =======\n\

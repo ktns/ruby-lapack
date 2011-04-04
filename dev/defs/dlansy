@@ -1,6 +1,7 @@
 --- 
 :name: dlansy
 :md5sum: 78d7f9a5930b4f926c5af132c0fb33be
+:category: :function
 :type: doublereal
 :arguments: 
 - norm: 

@@ -1,6 +1,7 @@
 --- 
 :name: cla_herpvgrw
 :md5sum: f26107fad597783e3c6c1c2b8110cc14
+:category: :function
 :type: real
 :arguments: 
 - uplo: 

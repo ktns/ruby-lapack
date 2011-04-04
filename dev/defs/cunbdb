@@ -97,6 +97,9 @@
     :intent: output
 :substitutions: 
   p: ldx11
+  ldx12: p
+  ldx21: p
+  ldx22: p
 :fortran_help: "      SUBROUTINE CUNBDB( TRANS, SIGNS, M, P, Q, X11, LDX11, X12, LDX12, X21, LDX21, X22, LDX22, THETA, PHI, TAUP1, TAUP2, TAUQ1, TAUQ2, WORK, LWORK, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\

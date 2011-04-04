@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dlagts_(integer *job, integer *n, doublereal *a, doublereal *b, doublereal *c, doublereal *d, integer *in, doublereal *y, doublereal *tol, integer *info);
+
 static VALUE
 rb_dlagts(int argc, VALUE *argv, VALUE self){
   VALUE rb_job;
@@ -26,7 +28,7 @@ rb_dlagts(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  info, y, tol = NumRu::Lapack.dlagts( job, a, b, c, d, in, y, tol)\n    or\n  NumRu::Lapack.dlagts  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLAGTS( JOB, N, A, B, C, D, IN, Y, TOL, INFO )\n\n*  Purpose\n*  =======\n*\n*  DLAGTS may be used to solve one of the systems of equations\n*\n*     (T - lambda*I)*x = y   or   (T - lambda*I)'*x = y,\n*\n*  where T is an n by n tridiagonal matrix, for x, following the\n*  factorization of (T - lambda*I) as\n*\n*     (T - lambda*I) = P*L*U ,\n*\n*  by routine DLAGTF. The choice of equation to be solved is\n*  controlled by the argument JOB, and in each case there is an option\n*  to perturb zero or very small diagonal elements of U, this option\n*  being intended for use in applications such as inverse iteration.\n*\n\n*  Arguments\n*  =========\n*\n*  JOB     (input) INTEGER\n*          Specifies the job to be performed by DLAGTS as follows:\n*          =  1: The equations  (T - lambda*I)x = y  are to be solved,\n*                but diagonal elements of U are not to be perturbed.\n*          = -1: The equations  (T - lambda*I)x = y  are to be solved\n*                and, if overflow would otherwise occur, the diagonal\n*                elements of U are to be perturbed. See argument TOL\n*                below.\n*          =  2: The equations  (T - lambda*I)'x = y  are to be solved,\n*                but diagonal elements of U are not to be perturbed.\n*          = -2: The equations  (T - lambda*I)'x = y  are to be solved\n*                and, if overflow would otherwise occur, the diagonal\n*                elements of U are to be perturbed. See argument TOL\n*                below.\n*\n*  N       (input) INTEGER\n*          The order of the matrix T.\n*\n*  A       (input) DOUBLE PRECISION array, dimension (N)\n*          On entry, A must contain the diagonal elements of U as\n*          returned from DLAGTF.\n*\n*  B       (input) DOUBLE PRECISION array, dimension (N-1)\n*          On entry, B must contain the first super-diagonal elements of\n*          U as returned from DLAGTF.\n*\n*  C       (input) DOUBLE PRECISION array, dimension (N-1)\n*          On entry, C must contain the sub-diagonal elements of L as\n*          returned from DLAGTF.\n*\n*  D       (input) DOUBLE PRECISION array, dimension (N-2)\n*          On entry, D must contain the second super-diagonal elements\n*          of U as returned from DLAGTF.\n*\n*  IN      (input) INTEGER array, dimension (N)\n*          On entry, IN must contain details of the matrix P as returned\n*          from DLAGTF.\n*\n*  Y       (input/output) DOUBLE PRECISION array, dimension (N)\n*          On entry, the right hand side vector y.\n*          On exit, Y is overwritten by the solution vector x.\n*\n*  TOL     (input/output) DOUBLE PRECISION\n*          On entry, with  JOB .lt. 0, TOL should be the minimum\n*          perturbation to be made to very small diagonal elements of U.\n*          TOL should normally be chosen as about eps*norm(U), where eps\n*          is the relative machine precision, but if TOL is supplied as\n*          non-positive, then it is reset to eps*max( abs( u(i,j) ) ).\n*          If  JOB .gt. 0  then TOL is not referenced.\n*\n*          On exit, TOL is changed as described above, only if TOL is\n*          non-positive on entry. Otherwise TOL is unchanged.\n*\n*  INFO    (output) INTEGER\n*          = 0   : successful exit\n*          .lt. 0: if INFO = -i, the i-th argument had an illegal value\n*          .gt. 0: overflow would occur when computing the INFO(th)\n*                  element of the solution vector x. This can only occur\n*                  when JOB is supplied as positive and either means\n*                  that a diagonal element of U is very small, or that\n*                  the elements of the right-hand side vector y are very\n*                  large.\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  info, y, tol = NumRu::Lapack.dlagts( job, a, b, c, d, in, y, tol)\n    or\n  NumRu::Lapack.dlagts  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 8)
@@ -40,8 +42,6 @@ rb_dlagts(int argc, VALUE *argv, VALUE self){
   rb_y = argv[6];
   rb_tol = argv[7];
 
-  job = NUM2INT(rb_job);
-  tol = NUM2DBL(rb_tol);
   if (!NA_IsNArray(rb_a))
     rb_raise(rb_eArgError, "a (2th argument) must be NArray");
   if (NA_RANK(rb_a) != 1)
@@ -50,42 +50,7 @@ rb_dlagts(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_a) != NA_DFLOAT)
     rb_a = na_change_type(rb_a, NA_DFLOAT);
   a = NA_PTR_TYPE(rb_a, doublereal*);
-  if (!NA_IsNArray(rb_b))
-    rb_raise(rb_eArgError, "b (3th argument) must be NArray");
-  if (NA_RANK(rb_b) != 1)
-    rb_raise(rb_eArgError, "rank of b (3th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_b) != (n-1))
-    rb_raise(rb_eRuntimeError, "shape 0 of b must be %d", n-1);
-  if (NA_TYPE(rb_b) != NA_DFLOAT)
-    rb_b = na_change_type(rb_b, NA_DFLOAT);
-  b = NA_PTR_TYPE(rb_b, doublereal*);
-  if (!NA_IsNArray(rb_c))
-    rb_raise(rb_eArgError, "c (4th argument) must be NArray");
-  if (NA_RANK(rb_c) != 1)
-    rb_raise(rb_eArgError, "rank of c (4th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_c) != (n-1))
-    rb_raise(rb_eRuntimeError, "shape 0 of c must be %d", n-1);
-  if (NA_TYPE(rb_c) != NA_DFLOAT)
-    rb_c = na_change_type(rb_c, NA_DFLOAT);
-  c = NA_PTR_TYPE(rb_c, doublereal*);
-  if (!NA_IsNArray(rb_d))
-    rb_raise(rb_eArgError, "d (5th argument) must be NArray");
-  if (NA_RANK(rb_d) != 1)
-    rb_raise(rb_eArgError, "rank of d (5th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_d) != (n-2))
-    rb_raise(rb_eRuntimeError, "shape 0 of d must be %d", n-2);
-  if (NA_TYPE(rb_d) != NA_DFLOAT)
-    rb_d = na_change_type(rb_d, NA_DFLOAT);
-  d = NA_PTR_TYPE(rb_d, doublereal*);
-  if (!NA_IsNArray(rb_in))
-    rb_raise(rb_eArgError, "in (6th argument) must be NArray");
-  if (NA_RANK(rb_in) != 1)
-    rb_raise(rb_eArgError, "rank of in (6th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_in) != n)
-    rb_raise(rb_eRuntimeError, "shape 0 of in must be the same as shape 0 of a");
-  if (NA_TYPE(rb_in) != NA_LINT)
-    rb_in = na_change_type(rb_in, NA_LINT);
-  in = NA_PTR_TYPE(rb_in, integer*);
+  tol = NUM2DBL(rb_tol);
   if (!NA_IsNArray(rb_y))
     rb_raise(rb_eArgError, "y (7th argument) must be NArray");
   if (NA_RANK(rb_y) != 1)
@@ -95,6 +60,43 @@ rb_dlagts(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_y) != NA_DFLOAT)
     rb_y = na_change_type(rb_y, NA_DFLOAT);
   y = NA_PTR_TYPE(rb_y, doublereal*);
+  if (!NA_IsNArray(rb_in))
+    rb_raise(rb_eArgError, "in (6th argument) must be NArray");
+  if (NA_RANK(rb_in) != 1)
+    rb_raise(rb_eArgError, "rank of in (6th argument) must be %d", 1);
+  if (NA_SHAPE0(rb_in) != n)
+    rb_raise(rb_eRuntimeError, "shape 0 of in must be the same as shape 0 of a");
+  if (NA_TYPE(rb_in) != NA_LINT)
+    rb_in = na_change_type(rb_in, NA_LINT);
+  in = NA_PTR_TYPE(rb_in, integer*);
+  job = NUM2INT(rb_job);
+  if (!NA_IsNArray(rb_c))
+    rb_raise(rb_eArgError, "c (4th argument) must be NArray");
+  if (NA_RANK(rb_c) != 1)
+    rb_raise(rb_eArgError, "rank of c (4th argument) must be %d", 1);
+  if (NA_SHAPE0(rb_c) != (n-1))
+    rb_raise(rb_eRuntimeError, "shape 0 of c must be %d", n-1);
+  if (NA_TYPE(rb_c) != NA_DFLOAT)
+    rb_c = na_change_type(rb_c, NA_DFLOAT);
+  c = NA_PTR_TYPE(rb_c, doublereal*);
+  if (!NA_IsNArray(rb_b))
+    rb_raise(rb_eArgError, "b (3th argument) must be NArray");
+  if (NA_RANK(rb_b) != 1)
+    rb_raise(rb_eArgError, "rank of b (3th argument) must be %d", 1);
+  if (NA_SHAPE0(rb_b) != (n-1))
+    rb_raise(rb_eRuntimeError, "shape 0 of b must be %d", n-1);
+  if (NA_TYPE(rb_b) != NA_DFLOAT)
+    rb_b = na_change_type(rb_b, NA_DFLOAT);
+  b = NA_PTR_TYPE(rb_b, doublereal*);
+  if (!NA_IsNArray(rb_d))
+    rb_raise(rb_eArgError, "d (5th argument) must be NArray");
+  if (NA_RANK(rb_d) != 1)
+    rb_raise(rb_eArgError, "rank of d (5th argument) must be %d", 1);
+  if (NA_SHAPE0(rb_d) != (n-2))
+    rb_raise(rb_eRuntimeError, "shape 0 of d must be %d", n-2);
+  if (NA_TYPE(rb_d) != NA_DFLOAT)
+    rb_d = na_change_type(rb_d, NA_DFLOAT);
+  d = NA_PTR_TYPE(rb_d, doublereal*);
   {
     int shape[1];
     shape[0] = n;

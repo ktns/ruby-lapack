@@ -1,6 +1,7 @@
 --- 
 :name: cla_gbrcond_x
 :md5sum: 752539b13b6724667a3fba3025ec4a6b
+:category: :function
 :type: real
 :arguments: 
 - trans: 

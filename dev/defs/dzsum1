@@ -1,6 +1,7 @@
 --- 
 :name: dzsum1
 :md5sum: 4c611d4aef843b07b606ed1beec14057
+:category: :function
 :type: doublereal
 :arguments: 
 - n: 

@@ -1,6 +1,7 @@
 #include "rb_lapack.h"
 
-extern VOID sla_gercond_(real *__out__, char *trans, integer *n, real *a, integer *lda, real *af, integer *ldaf, integer *ipiv, integer *cmode, real *c, integer *info, real *work, integer *iwork);
+extern real sla_gercond_(char *trans, integer *n, real *a, integer *lda, real *af, integer *ldaf, integer *ipiv, integer *cmode, real *c, integer *info, real *work, integer *iwork);
+
 static VALUE
 rb_sla_gercond(int argc, VALUE *argv, VALUE self){
   VALUE rb_trans;
@@ -29,7 +30,7 @@ rb_sla_gercond(int argc, VALUE *argv, VALUE self){
   integer ldaf;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  info, __out__ = NumRu::Lapack.sla_gercond( trans, a, af, ipiv, cmode, c, work, iwork)\n    or\n  NumRu::Lapack.sla_gercond  # print help\n\n\nFORTRAN MANUAL\n      REAL FUNCTION SLA_GERCOND ( TRANS, N, A, LDA, AF, LDAF, IPIV, CMODE, C, INFO, WORK, IWORK )\n\n*  Purpose\n*  =======\n*\n*     SLA_GERCOND estimates the Skeel condition number of op(A) * op2(C)\n*     where op2 is determined by CMODE as follows\n*     CMODE =  1    op2(C) = C\n*     CMODE =  0    op2(C) = I\n*     CMODE = -1    op2(C) = inv(C)\n*     The Skeel condition number cond(A) = norminf( |inv(A)||A| )\n*     is computed by computing scaling factors R such that\n*     diag(R)*A*op2(C) is row equilibrated and computing the standard\n*     infinity-norm condition number.\n*\n\n*  Arguments\n*  ==========\n*\n*     TRANS   (input) CHARACTER*1\n*     Specifies the form of the system of equations:\n*       = 'N':  A * X = B     (No transpose)\n*       = 'T':  A**T * X = B  (Transpose)\n*       = 'C':  A**H * X = B  (Conjugate Transpose = Transpose)\n*\n*     N       (input) INTEGER\n*     The number of linear equations, i.e., the order of the\n*     matrix A.  N >= 0.\n*\n*     A       (input) REAL array, dimension (LDA,N)\n*     On entry, the N-by-N matrix A.\n*\n*     LDA     (input) INTEGER\n*     The leading dimension of the array A.  LDA >= max(1,N).\n*\n*     AF      (input) REAL array, dimension (LDAF,N)\n*     The factors L and U from the factorization\n*     A = P*L*U as computed by SGETRF.\n*\n*     LDAF    (input) INTEGER\n*     The leading dimension of the array AF.  LDAF >= max(1,N).\n*\n*     IPIV    (input) INTEGER array, dimension (N)\n*     The pivot indices from the factorization A = P*L*U\n*     as computed by SGETRF; row i of the matrix was interchanged\n*     with row IPIV(i).\n*\n*     CMODE   (input) INTEGER\n*     Determines op2(C) in the formula op(A) * op2(C) as follows:\n*     CMODE =  1    op2(C) = C\n*     CMODE =  0    op2(C) = I\n*     CMODE = -1    op2(C) = inv(C)\n*\n*     C       (input) REAL array, dimension (N)\n*     The vector C in the formula op(A) * op2(C).\n*\n*     INFO    (output) INTEGER\n*       = 0:  Successful exit.\n*     i > 0:  The ith argument is invalid.\n*\n*     WORK    (input) REAL array, dimension (3*N).\n*     Workspace.\n*\n*     IWORK   (input) INTEGER array, dimension (N).\n*     Workspace.2\n*\n\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      LOGICAL            NOTRANS\n      INTEGER            KASE, I, J\n      REAL               AINVNM, TMP\n*     ..\n*     .. Local Arrays ..\n      INTEGER            ISAVE( 3 )\n*     ..\n*     .. External Functions ..\n      LOGICAL            LSAME\n      EXTERNAL           LSAME\n*     ..\n*     .. External Subroutines ..\n      EXTERNAL           SLACN2, SGETRS, XERBLA\n*     ..\n*     .. Intrinsic Functions ..\n      INTRINSIC          ABS, MAX\n*     ..\n\n");
+    printf("%s\n", "USAGE:\n  info, __out__ = NumRu::Lapack.sla_gercond( trans, a, af, ipiv, cmode, c, work, iwork)\n    or\n  NumRu::Lapack.sla_gercond  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 8)
@@ -43,45 +44,54 @@ rb_sla_gercond(int argc, VALUE *argv, VALUE self){
   rb_work = argv[6];
   rb_iwork = argv[7];
 
-  trans = StringValueCStr(rb_trans)[0];
-  cmode = NUM2INT(rb_cmode);
-  if (!NA_IsNArray(rb_a))
-    rb_raise(rb_eArgError, "a (2th argument) must be NArray");
-  if (NA_RANK(rb_a) != 2)
-    rb_raise(rb_eArgError, "rank of a (2th argument) must be %d", 2);
-  lda = NA_SHAPE0(rb_a);
-  n = NA_SHAPE1(rb_a);
-  if (NA_TYPE(rb_a) != NA_SFLOAT)
-    rb_a = na_change_type(rb_a, NA_SFLOAT);
-  a = NA_PTR_TYPE(rb_a, real*);
-  if (!NA_IsNArray(rb_af))
-    rb_raise(rb_eArgError, "af (3th argument) must be NArray");
-  if (NA_RANK(rb_af) != 2)
-    rb_raise(rb_eArgError, "rank of af (3th argument) must be %d", 2);
-  ldaf = NA_SHAPE0(rb_af);
-  if (NA_SHAPE1(rb_af) != n)
-    rb_raise(rb_eRuntimeError, "shape 1 of af must be the same as shape 1 of a");
-  if (NA_TYPE(rb_af) != NA_SFLOAT)
-    rb_af = na_change_type(rb_af, NA_SFLOAT);
-  af = NA_PTR_TYPE(rb_af, real*);
   if (!NA_IsNArray(rb_ipiv))
     rb_raise(rb_eArgError, "ipiv (4th argument) must be NArray");
   if (NA_RANK(rb_ipiv) != 1)
     rb_raise(rb_eArgError, "rank of ipiv (4th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_ipiv) != n)
-    rb_raise(rb_eRuntimeError, "shape 0 of ipiv must be the same as shape 1 of a");
+  n = NA_SHAPE0(rb_ipiv);
   if (NA_TYPE(rb_ipiv) != NA_LINT)
     rb_ipiv = na_change_type(rb_ipiv, NA_LINT);
   ipiv = NA_PTR_TYPE(rb_ipiv, integer*);
+  if (!NA_IsNArray(rb_a))
+    rb_raise(rb_eArgError, "a (2th argument) must be NArray");
+  if (NA_RANK(rb_a) != 2)
+    rb_raise(rb_eArgError, "rank of a (2th argument) must be %d", 2);
+  if (NA_SHAPE1(rb_a) != n)
+    rb_raise(rb_eRuntimeError, "shape 1 of a must be the same as shape 0 of ipiv");
+  lda = NA_SHAPE0(rb_a);
+  if (NA_TYPE(rb_a) != NA_SFLOAT)
+    rb_a = na_change_type(rb_a, NA_SFLOAT);
+  a = NA_PTR_TYPE(rb_a, real*);
   if (!NA_IsNArray(rb_c))
     rb_raise(rb_eArgError, "c (6th argument) must be NArray");
   if (NA_RANK(rb_c) != 1)
     rb_raise(rb_eArgError, "rank of c (6th argument) must be %d", 1);
   if (NA_SHAPE0(rb_c) != n)
-    rb_raise(rb_eRuntimeError, "shape 0 of c must be the same as shape 1 of a");
+    rb_raise(rb_eRuntimeError, "shape 0 of c must be the same as shape 0 of ipiv");
   if (NA_TYPE(rb_c) != NA_SFLOAT)
     rb_c = na_change_type(rb_c, NA_SFLOAT);
   c = NA_PTR_TYPE(rb_c, real*);
+  if (!NA_IsNArray(rb_af))
+    rb_raise(rb_eArgError, "af (3th argument) must be NArray");
+  if (NA_RANK(rb_af) != 2)
+    rb_raise(rb_eArgError, "rank of af (3th argument) must be %d", 2);
+  if (NA_SHAPE1(rb_af) != n)
+    rb_raise(rb_eRuntimeError, "shape 1 of af must be the same as shape 0 of ipiv");
+  ldaf = NA_SHAPE0(rb_af);
+  if (NA_TYPE(rb_af) != NA_SFLOAT)
+    rb_af = na_change_type(rb_af, NA_SFLOAT);
+  af = NA_PTR_TYPE(rb_af, real*);
+  trans = StringValueCStr(rb_trans)[0];
+  cmode = NUM2INT(rb_cmode);
+  if (!NA_IsNArray(rb_iwork))
+    rb_raise(rb_eArgError, "iwork (8th argument) must be NArray");
+  if (NA_RANK(rb_iwork) != 1)
+    rb_raise(rb_eArgError, "rank of iwork (8th argument) must be %d", 1);
+  if (NA_SHAPE0(rb_iwork) != n)
+    rb_raise(rb_eRuntimeError, "shape 0 of iwork must be the same as shape 0 of ipiv");
+  if (NA_TYPE(rb_iwork) != NA_LINT)
+    rb_iwork = na_change_type(rb_iwork, NA_LINT);
+  iwork = NA_PTR_TYPE(rb_iwork, integer*);
   if (!NA_IsNArray(rb_work))
     rb_raise(rb_eArgError, "work (7th argument) must be NArray");
   if (NA_RANK(rb_work) != 1)
@@ -91,17 +101,8 @@ rb_sla_gercond(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_work) != NA_SFLOAT)
     rb_work = na_change_type(rb_work, NA_SFLOAT);
   work = NA_PTR_TYPE(rb_work, real*);
-  if (!NA_IsNArray(rb_iwork))
-    rb_raise(rb_eArgError, "iwork (8th argument) must be NArray");
-  if (NA_RANK(rb_iwork) != 1)
-    rb_raise(rb_eArgError, "rank of iwork (8th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_iwork) != n)
-    rb_raise(rb_eRuntimeError, "shape 0 of iwork must be the same as shape 1 of a");
-  if (NA_TYPE(rb_iwork) != NA_LINT)
-    rb_iwork = na_change_type(rb_iwork, NA_LINT);
-  iwork = NA_PTR_TYPE(rb_iwork, integer*);
 
-  sla_gercond_(&__out__, &trans, &n, a, &lda, af, &ldaf, ipiv, &cmode, c, &info, work, iwork);
+  __out__ = sla_gercond_(&trans, &n, a, &lda, af, &ldaf, ipiv, &cmode, c, &info, work, iwork);
 
   rb_info = INT2NUM(info);
   rb___out__ = rb_float_new((double)__out__);

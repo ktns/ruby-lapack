@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID sorgtr_(char *uplo, integer *n, real *a, integer *lda, real *tau, real *work, integer *lwork, integer *info);
+
 static VALUE
 rb_sorgtr(int argc, VALUE *argv, VALUE self){
   VALUE rb_uplo;
@@ -21,7 +23,7 @@ rb_sorgtr(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  work, info, a = NumRu::Lapack.sorgtr( uplo, a, tau, lwork)\n    or\n  NumRu::Lapack.sorgtr  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SORGTR( UPLO, N, A, LDA, TAU, WORK, LWORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  SORGTR generates a real orthogonal matrix Q which is defined as the\n*  product of n-1 elementary reflectors of order N, as returned by\n*  SSYTRD:\n*\n*  if UPLO = 'U', Q = H(n-1) . . . H(2) H(1),\n*\n*  if UPLO = 'L', Q = H(1) H(2) . . . H(n-1).\n*\n\n*  Arguments\n*  =========\n*\n*  UPLO    (input) CHARACTER*1\n*          = 'U': Upper triangle of A contains elementary reflectors\n*                 from SSYTRD;\n*          = 'L': Lower triangle of A contains elementary reflectors\n*                 from SSYTRD.\n*\n*  N       (input) INTEGER\n*          The order of the matrix Q. N >= 0.\n*\n*  A       (input/output) REAL array, dimension (LDA,N)\n*          On entry, the vectors which define the elementary reflectors,\n*          as returned by SSYTRD.\n*          On exit, the N-by-N orthogonal matrix Q.\n*\n*  LDA     (input) INTEGER\n*          The leading dimension of the array A. LDA >= max(1,N).\n*\n*  TAU     (input) REAL array, dimension (N-1)\n*          TAU(i) must contain the scalar factor of the elementary\n*          reflector H(i), as returned by SSYTRD.\n*\n*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))\n*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.\n*\n*  LWORK   (input) INTEGER\n*          The dimension of the array WORK. LWORK >= max(1,N-1).\n*          For optimum performance LWORK >= (N-1)*NB, where NB is\n*          the optimal blocksize.\n*\n*          If LWORK = -1, then a workspace query is assumed; the routine\n*          only calculates the optimal size of the WORK array, returns\n*          this value as the first entry of the WORK array, and no error\n*          message related to LWORK is issued by XERBLA.\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  work, info, a = NumRu::Lapack.sorgtr( uplo, a, tau, lwork)\n    or\n  NumRu::Lapack.sorgtr  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 4)
@@ -31,17 +33,17 @@ rb_sorgtr(int argc, VALUE *argv, VALUE self){
   rb_tau = argv[2];
   rb_lwork = argv[3];
 
-  uplo = StringValueCStr(rb_uplo)[0];
-  lwork = NUM2INT(rb_lwork);
   if (!NA_IsNArray(rb_a))
     rb_raise(rb_eArgError, "a (2th argument) must be NArray");
   if (NA_RANK(rb_a) != 2)
     rb_raise(rb_eArgError, "rank of a (2th argument) must be %d", 2);
-  lda = NA_SHAPE0(rb_a);
   n = NA_SHAPE1(rb_a);
+  lda = NA_SHAPE0(rb_a);
   if (NA_TYPE(rb_a) != NA_SFLOAT)
     rb_a = na_change_type(rb_a, NA_SFLOAT);
   a = NA_PTR_TYPE(rb_a, real*);
+  lwork = NUM2INT(rb_lwork);
+  uplo = StringValueCStr(rb_uplo)[0];
   if (!NA_IsNArray(rb_tau))
     rb_raise(rb_eArgError, "tau (3th argument) must be NArray");
   if (NA_RANK(rb_tau) != 1)

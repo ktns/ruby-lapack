@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dlarrb_(integer *n, doublereal *d, doublereal *lld, integer *ifirst, integer *ilast, doublereal *rtol1, doublereal *rtol2, integer *offset, doublereal *w, doublereal *wgap, doublereal *werr, doublereal *work, integer *iwork, doublereal *pivmin, doublereal *spdiam, integer *twist, integer *info);
+
 static VALUE
 rb_dlarrb(int argc, VALUE *argv, VALUE self){
   VALUE rb_d;
@@ -42,7 +44,7 @@ rb_dlarrb(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  info, w, wgap, werr = NumRu::Lapack.dlarrb( d, lld, ifirst, ilast, rtol1, rtol2, offset, w, wgap, werr, pivmin, spdiam, twist)\n    or\n  NumRu::Lapack.dlarrb  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DLARRB( N, D, LLD, IFIRST, ILAST, RTOL1, RTOL2, OFFSET, W, WGAP, WERR, WORK, IWORK, PIVMIN, SPDIAM, TWIST, INFO )\n\n*  Purpose\n*  =======\n*\n*  Given the relatively robust representation(RRR) L D L^T, DLARRB\n*  does \"limited\" bisection to refine the eigenvalues of L D L^T,\n*  W( IFIRST-OFFSET ) through W( ILAST-OFFSET ), to more accuracy. Initial\n*  guesses for these eigenvalues are input in W, the corresponding estimate\n*  of the error in these guesses and their gaps are input in WERR\n*  and WGAP, respectively. During bisection, intervals\n*  [left, right] are maintained by storing their mid-points and\n*  semi-widths in the arrays W and WERR respectively.\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The order of the matrix.\n*\n*  D       (input) DOUBLE PRECISION array, dimension (N)\n*          The N diagonal elements of the diagonal matrix D.\n*\n*  LLD     (input) DOUBLE PRECISION array, dimension (N-1)\n*          The (N-1) elements L(i)*L(i)*D(i).\n*\n*  IFIRST  (input) INTEGER\n*          The index of the first eigenvalue to be computed.\n*\n*  ILAST   (input) INTEGER\n*          The index of the last eigenvalue to be computed.\n*\n*  RTOL1   (input) DOUBLE PRECISION\n*  RTOL2   (input) DOUBLE PRECISION\n*          Tolerance for the convergence of the bisection intervals.\n*          An interval [LEFT,RIGHT] has converged if\n*          RIGHT-LEFT.LT.MAX( RTOL1*GAP, RTOL2*MAX(|LEFT|,|RIGHT|) )\n*          where GAP is the (estimated) distance to the nearest\n*          eigenvalue.\n*\n*  OFFSET  (input) INTEGER\n*          Offset for the arrays W, WGAP and WERR, i.e., the IFIRST-OFFSET\n*          through ILAST-OFFSET elements of these arrays are to be used.\n*\n*  W       (input/output) DOUBLE PRECISION array, dimension (N)\n*          On input, W( IFIRST-OFFSET ) through W( ILAST-OFFSET ) are\n*          estimates of the eigenvalues of L D L^T indexed IFIRST throug\n*          ILAST.\n*          On output, these estimates are refined.\n*\n*  WGAP    (input/output) DOUBLE PRECISION array, dimension (N-1)\n*          On input, the (estimated) gaps between consecutive\n*          eigenvalues of L D L^T, i.e., WGAP(I-OFFSET) is the gap between\n*          eigenvalues I and I+1. Note that if IFIRST.EQ.ILAST\n*          then WGAP(IFIRST-OFFSET) must be set to ZERO.\n*          On output, these gaps are refined.\n*\n*  WERR    (input/output) DOUBLE PRECISION array, dimension (N)\n*          On input, WERR( IFIRST-OFFSET ) through WERR( ILAST-OFFSET ) are\n*          the errors in the estimates of the corresponding elements in W.\n*          On output, these errors are refined.\n*\n*  WORK    (workspace) DOUBLE PRECISION array, dimension (2*N)\n*          Workspace.\n*\n*  IWORK   (workspace) INTEGER array, dimension (2*N)\n*          Workspace.\n*\n*  PIVMIN  (input) DOUBLE PRECISION\n*          The minimum pivot in the Sturm sequence.\n*\n*  SPDIAM  (input) DOUBLE PRECISION\n*          The spectral diameter of the matrix.\n*\n*  TWIST   (input) INTEGER\n*          The twist index for the twisted factorization that is used\n*          for the negcount.\n*          TWIST = N: Compute negcount from L D L^T - LAMBDA I = L+ D+ L+^T\n*          TWIST = 1: Compute negcount from L D L^T - LAMBDA I = U- D- U-^T\n*          TWIST = R: Compute negcount from L D L^T - LAMBDA I = N(r) D(r) N(r)\n*\n*  INFO    (output) INTEGER\n*          Error flag.\n*\n\n*  Further Details\n*  ===============\n*\n*  Based on contributions by\n*     Beresford Parlett, University of California, Berkeley, USA\n*     Jim Demmel, University of California, Berkeley, USA\n*     Inderjit Dhillon, University of Texas, Austin, USA\n*     Osni Marques, LBNL/NERSC, USA\n*     Christof Voemel, University of California, Berkeley, USA\n*\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  info, w, wgap, werr = NumRu::Lapack.dlarrb( d, lld, ifirst, ilast, rtol1, rtol2, offset, w, wgap, werr, pivmin, spdiam, twist)\n    or\n  NumRu::Lapack.dlarrb  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 13)
@@ -61,22 +63,40 @@ rb_dlarrb(int argc, VALUE *argv, VALUE self){
   rb_spdiam = argv[11];
   rb_twist = argv[12];
 
-  ifirst = NUM2INT(rb_ifirst);
   ilast = NUM2INT(rb_ilast);
-  rtol1 = NUM2DBL(rb_rtol1);
+  if (!NA_IsNArray(rb_w))
+    rb_raise(rb_eArgError, "w (8th argument) must be NArray");
+  if (NA_RANK(rb_w) != 1)
+    rb_raise(rb_eArgError, "rank of w (8th argument) must be %d", 1);
+  n = NA_SHAPE0(rb_w);
+  if (NA_TYPE(rb_w) != NA_DFLOAT)
+    rb_w = na_change_type(rb_w, NA_DFLOAT);
+  w = NA_PTR_TYPE(rb_w, doublereal*);
   rtol2 = NUM2DBL(rb_rtol2);
-  offset = NUM2INT(rb_offset);
-  pivmin = NUM2DBL(rb_pivmin);
   spdiam = NUM2DBL(rb_spdiam);
-  twist = NUM2INT(rb_twist);
+  offset = NUM2INT(rb_offset);
   if (!NA_IsNArray(rb_d))
     rb_raise(rb_eArgError, "d (1th argument) must be NArray");
   if (NA_RANK(rb_d) != 1)
     rb_raise(rb_eArgError, "rank of d (1th argument) must be %d", 1);
-  n = NA_SHAPE0(rb_d);
+  if (NA_SHAPE0(rb_d) != n)
+    rb_raise(rb_eRuntimeError, "shape 0 of d must be the same as shape 0 of w");
   if (NA_TYPE(rb_d) != NA_DFLOAT)
     rb_d = na_change_type(rb_d, NA_DFLOAT);
   d = NA_PTR_TYPE(rb_d, doublereal*);
+  pivmin = NUM2DBL(rb_pivmin);
+  twist = NUM2INT(rb_twist);
+  rtol1 = NUM2DBL(rb_rtol1);
+  ifirst = NUM2INT(rb_ifirst);
+  if (!NA_IsNArray(rb_werr))
+    rb_raise(rb_eArgError, "werr (10th argument) must be NArray");
+  if (NA_RANK(rb_werr) != 1)
+    rb_raise(rb_eArgError, "rank of werr (10th argument) must be %d", 1);
+  if (NA_SHAPE0(rb_werr) != n)
+    rb_raise(rb_eRuntimeError, "shape 0 of werr must be the same as shape 0 of w");
+  if (NA_TYPE(rb_werr) != NA_DFLOAT)
+    rb_werr = na_change_type(rb_werr, NA_DFLOAT);
+  werr = NA_PTR_TYPE(rb_werr, doublereal*);
   if (!NA_IsNArray(rb_lld))
     rb_raise(rb_eArgError, "lld (2th argument) must be NArray");
   if (NA_RANK(rb_lld) != 1)
@@ -86,15 +106,6 @@ rb_dlarrb(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_lld) != NA_DFLOAT)
     rb_lld = na_change_type(rb_lld, NA_DFLOAT);
   lld = NA_PTR_TYPE(rb_lld, doublereal*);
-  if (!NA_IsNArray(rb_w))
-    rb_raise(rb_eArgError, "w (8th argument) must be NArray");
-  if (NA_RANK(rb_w) != 1)
-    rb_raise(rb_eArgError, "rank of w (8th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_w) != n)
-    rb_raise(rb_eRuntimeError, "shape 0 of w must be the same as shape 0 of d");
-  if (NA_TYPE(rb_w) != NA_DFLOAT)
-    rb_w = na_change_type(rb_w, NA_DFLOAT);
-  w = NA_PTR_TYPE(rb_w, doublereal*);
   if (!NA_IsNArray(rb_wgap))
     rb_raise(rb_eArgError, "wgap (9th argument) must be NArray");
   if (NA_RANK(rb_wgap) != 1)
@@ -104,15 +115,6 @@ rb_dlarrb(int argc, VALUE *argv, VALUE self){
   if (NA_TYPE(rb_wgap) != NA_DFLOAT)
     rb_wgap = na_change_type(rb_wgap, NA_DFLOAT);
   wgap = NA_PTR_TYPE(rb_wgap, doublereal*);
-  if (!NA_IsNArray(rb_werr))
-    rb_raise(rb_eArgError, "werr (10th argument) must be NArray");
-  if (NA_RANK(rb_werr) != 1)
-    rb_raise(rb_eArgError, "rank of werr (10th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_werr) != n)
-    rb_raise(rb_eRuntimeError, "shape 0 of werr must be the same as shape 0 of d");
-  if (NA_TYPE(rb_werr) != NA_DFLOAT)
-    rb_werr = na_change_type(rb_werr, NA_DFLOAT);
-  werr = NA_PTR_TYPE(rb_werr, doublereal*);
   {
     int shape[1];
     shape[0] = n;

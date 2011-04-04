@@ -1,6 +1,7 @@
 --- 
 :name: zla_porpvgrw
 :md5sum: e917efebc5e4c9397b6b5953515fb481
+:category: :function
 :type: doublereal
 :arguments: 
 - uplo: 

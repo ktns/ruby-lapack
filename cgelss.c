@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID cgelss_(integer *m, integer *n, integer *nrhs, complex *a, integer *lda, complex *b, integer *ldb, real *s, real *rcond, integer *rank, complex *work, integer *lwork, real *rwork, integer *info);
+
 static VALUE
 rb_cgelss(int argc, VALUE *argv, VALUE self){
   VALUE rb_m;
@@ -32,7 +34,7 @@ rb_cgelss(int argc, VALUE *argv, VALUE self){
   integer nrhs;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  s, rank, work, info, a, b = NumRu::Lapack.cgelss( m, a, b, rcond, lwork)\n    or\n  NumRu::Lapack.cgelss  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE CGELSS( M, N, NRHS, A, LDA, B, LDB, S, RCOND, RANK, WORK, LWORK, RWORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  CGELSS computes the minimum norm solution to a complex linear\n*  least squares problem:\n*\n*  Minimize 2-norm(| b - A*x |).\n*\n*  using the singular value decomposition (SVD) of A. A is an M-by-N\n*  matrix which may be rank-deficient.\n*\n*  Several right hand side vectors b and solution vectors x can be\n*  handled in a single call; they are stored as the columns of the\n*  M-by-NRHS right hand side matrix B and the N-by-NRHS solution matrix\n*  X.\n*\n*  The effective rank of A is determined by treating as zero those\n*  singular values which are less than RCOND times the largest singular\n*  value.\n*\n\n*  Arguments\n*  =========\n*\n*  M       (input) INTEGER\n*          The number of rows of the matrix A. M >= 0.\n*\n*  N       (input) INTEGER\n*          The number of columns of the matrix A. N >= 0.\n*\n*  NRHS    (input) INTEGER\n*          The number of right hand sides, i.e., the number of columns\n*          of the matrices B and X. NRHS >= 0.\n*\n*  A       (input/output) COMPLEX array, dimension (LDA,N)\n*          On entry, the M-by-N matrix A.\n*          On exit, the first min(m,n) rows of A are overwritten with\n*          its right singular vectors, stored rowwise.\n*\n*  LDA     (input) INTEGER\n*          The leading dimension of the array A. LDA >= max(1,M).\n*\n*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)\n*          On entry, the M-by-NRHS right hand side matrix B.\n*          On exit, B is overwritten by the N-by-NRHS solution matrix X.\n*          If m >= n and RANK = n, the residual sum-of-squares for\n*          the solution in the i-th column is given by the sum of\n*          squares of the modulus of elements n+1:m in that column.\n*\n*  LDB     (input) INTEGER\n*          The leading dimension of the array B.  LDB >= max(1,M,N).\n*\n*  S       (output) REAL array, dimension (min(M,N))\n*          The singular values of A in decreasing order.\n*          The condition number of A in the 2-norm = S(1)/S(min(m,n)).\n*\n*  RCOND   (input) REAL\n*          RCOND is used to determine the effective rank of A.\n*          Singular values S(i) <= RCOND*S(1) are treated as zero.\n*          If RCOND < 0, machine precision is used instead.\n*\n*  RANK    (output) INTEGER\n*          The effective rank of A, i.e., the number of singular values\n*          which are greater than RCOND*S(1).\n*\n*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))\n*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.\n*\n*  LWORK   (input) INTEGER\n*          The dimension of the array WORK. LWORK >= 1, and also:\n*          LWORK >=  2*min(M,N) + max(M,N,NRHS)\n*          For good performance, LWORK should generally be larger.\n*\n*          If LWORK = -1, then a workspace query is assumed; the routine\n*          only calculates the optimal size of the WORK array, returns\n*          this value as the first entry of the WORK array, and no error\n*          message related to LWORK is issued by XERBLA.\n*\n*  RWORK   (workspace) REAL array, dimension (5*min(M,N))\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value.\n*          > 0:  the algorithm for computing the SVD failed to converge;\n*                if INFO = i, i off-diagonal elements of an intermediate\n*                bidiagonal form did not converge to zero.\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  s, rank, work, info, a, b = NumRu::Lapack.cgelss( m, a, b, rcond, lwork)\n    or\n  NumRu::Lapack.cgelss  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 5)
@@ -43,15 +45,13 @@ rb_cgelss(int argc, VALUE *argv, VALUE self){
   rb_rcond = argv[3];
   rb_lwork = argv[4];
 
-  m = NUM2INT(rb_m);
   rcond = (real)NUM2DBL(rb_rcond);
-  lwork = NUM2INT(rb_lwork);
   if (!NA_IsNArray(rb_a))
     rb_raise(rb_eArgError, "a (2th argument) must be NArray");
   if (NA_RANK(rb_a) != 2)
     rb_raise(rb_eArgError, "rank of a (2th argument) must be %d", 2);
-  lda = NA_SHAPE0(rb_a);
   n = NA_SHAPE1(rb_a);
+  lda = NA_SHAPE0(rb_a);
   if (NA_TYPE(rb_a) != NA_SCOMPLEX)
     rb_a = na_change_type(rb_a, NA_SCOMPLEX);
   a = NA_PTR_TYPE(rb_a, complex*);
@@ -59,11 +59,13 @@ rb_cgelss(int argc, VALUE *argv, VALUE self){
     rb_raise(rb_eArgError, "b (3th argument) must be NArray");
   if (NA_RANK(rb_b) != 2)
     rb_raise(rb_eArgError, "rank of b (3th argument) must be %d", 2);
-  ldb = NA_SHAPE0(rb_b);
   nrhs = NA_SHAPE1(rb_b);
+  ldb = NA_SHAPE0(rb_b);
   if (NA_TYPE(rb_b) != NA_SCOMPLEX)
     rb_b = na_change_type(rb_b, NA_SCOMPLEX);
   b = NA_PTR_TYPE(rb_b, complex*);
+  m = NUM2INT(rb_m);
+  lwork = NUM2INT(rb_lwork);
   {
     int shape[1];
     shape[0] = MIN(m,n);

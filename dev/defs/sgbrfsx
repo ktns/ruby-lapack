@@ -101,8 +101,8 @@
 - params: 
     :type: real
     :intent: input/output
-    :dims: []
-
+    :dims: 
+    - nparams
 - work: 
     :type: real
     :intent: workspace

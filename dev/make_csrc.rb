@@ -73,8 +73,7 @@ def get_robj(name, type, flag=false)
 end
 
 
-@shape = Hash.new
-def get_input(name, type, dims, i, varset, sub_name)
+def get_input(name, type, dims, i, varset, sub_name, subst)
   if dims.nil?
     return get_cobj(name, type, sub_name)
   else
@@ -87,7 +86,9 @@ def get_input(name, type, dims, i, varset, sub_name)
   if (NA_RANK(#{RBPREFIX}#{name}) != #{dims.length})
     rb_raise(rb_eArgError, "rank of #{name} (#{i+1}th argument) must be %d", #{dims.length});
 EOF
-    dims.each_with_index do |dim,j|
+    ndim = dims.length
+    ndim.times do |jj|
+      j = ndim - jj - 1
       dim = dims[j]
       raise "bug: NA_SHAPE? cannot use {#{dim} in #{name}: #{sub_name}" if j>2
       if varset.include?(dim)
@@ -98,7 +99,7 @@ EOF
       elsif (shape = @shape[dim])
         code << <<"EOF"
   if (NA_SHAPE#{j}(#{RBPREFIX}#{name}) != #{dim})
-    rb_raise(rb_eRuntimeError, "shape #{j} of #{name} must be the same as shape #{shape[:index]} of #{@shape[:name]}");
+    rb_raise(rb_eRuntimeError, "shape #{j} of #{name} must be the same as shape #{shape[:index]} of #{shape[:name]}");
 EOF
       elsif /^[a-z][a-z_\d]*$/ !~ dim
         get_vars(dim).each{|d|
@@ -113,6 +114,16 @@ EOF
       else
         code << "  #{dim} = NA_SHAPE#{j}(#{RBPREFIX}#{name});\n"
         @shape[dim] = {:name => name, :index => j}
+        if s = subst[dim]
+          code << <<EOF
+  if (#{dim} != (#{s}))
+    rb_raise(rb_eRuntimeError, "shape #{j} of #{name} must be %d", #{s});
+EOF
+          if /^[a-z][a-z_\d]*$/ =~ s
+            code << "  #{s} = #{dim};\n"
+            varset.push s
+          end
+        end
       end
     end
     natype =  NATYPES[type] || raise("na type is not deifned (#{type})")
@@ -194,6 +205,18 @@ def create_code(name)
     else
       raise "intent (#{arg[:intent]}) is invalid (#{aname}) #{sub_name}"
     end
+    unless arg[:type]
+      if arg[:intent] == "external procedure"
+        arg[:type] = "L_fp"
+      else
+        raise "type is null (#{aname}) #{sub_name}"
+      end
+    end
+    if d = arg[:dims]
+      if d.length == 0
+        raise "length of dim is 0 #{aname} #{sub_name}"
+      end
+    end
   }
   args.each{|key,arg|
     dims = arg[:dims]
@@ -218,12 +241,19 @@ def create_code(name)
 
   code = ""
 
-  if sub_type == :function
+  case sub_type
+  when :subroutine
+    code << "extern VOID #{sub_name}_(#{arg_names.collect{|an|t = args[an][:type];t+' *'+an}.join(', ')});\n\n"
+  when:function
     outputs.push "__out__"
     args["__out__"] = {:type => func_type}
-#    unless FUNCS.include?(sub_name) || /\A[sdcz]lan[eghts]/ =~ sub_name
-#      code += "extern VOID #{sub_name}_(#{func_type} *__out__, #{arg_names.collect{|an|t = args[an][:type];t+' *'+an}.join(', ')});\n"
-#    end
+    if /complex/ =~ func_type || func_type == "char"
+      code << "extern VOID #{sub_name}_(#{func_type} *__out__, #{arg_names.collect{|an|t = args[an][:type];t+' *'+an}.join(', ')});\n\n"
+    else
+      code << "extern #{func_type} #{sub_name}_(#{arg_names.collect{|an|t = args[an][:type];t+' *'+an}.join(', ')});\n\n"
+    end
+  else
+    raise "category is invalid: #{sub_type} (#{sub_name})"
   end
 
   code << <<"EOF"
@@ -297,7 +327,7 @@ EOF
     block_help = ""
   end
 
-  help =<<"EOF"
+  help_code = <<"EOF"
 USAGE:
   #{(outputs+inouts).join(", ")} = NumRu::Lapack.#{sub_name}( #{inputs.join(", ")})#{block_help}
     or
@@ -310,7 +340,7 @@ EOF
   ilen = inputs.length
   code << <<"EOF"
   if (argc == 0) {
-    printf("%s\\n", "#{help.gsub(/\\/,'\\\\\\').gsub(/\n/,'\n').gsub(/"/,'\"')}");
+    printf("%s\\n", "#{help_code.gsub(/\\/,'\\\\\\').gsub(/\n/,'\n').gsub(/"/,'\"')}");
     return Qnil;
   }
   if (argc != #{ilen})
@@ -389,12 +419,15 @@ EOF
   pp order if @@debug
 
   varset = Array.new
+  @shape = Hash.new
   order.each do |name, v|
     if v[:type] == :input
       arg = args[name]
-      code << get_input(name, arg[:type], arg[:dims], v[:order], varset, sub_name)
+      code << get_input(name, arg[:type], arg[:dims], v[:order], varset, sub_name, subst)
     else
-      code << "  #{name} = #{v[:value]};\n"
+      unless varset.include?(name)
+        code << "  #{name} = #{v[:value]};\n"
+      end
     end
     varset.push name
   end
@@ -471,11 +504,15 @@ EOF
   cargs = arg_names.collect{|name|
     block== name ? RBPREFIX+name : args[name][:dims] ? name : "&"+name
   }
-#  if FUNCS.include?(sub_name) || /\A[sdcz]lan[eghts]/ =~ sub_name
-#    code << "  __out__ = #{sub_name}_(#{cargs.join(", ")});\n\n"
-#  else
-    code << "  #{sub_name}_(#{sub_type==:function ? "&__out__, " : ""}#{cargs.join(", ")});\n\n"
-#  end
+  if sub_type == :function
+    if /complex/ =~ func_type || func_type == "char"
+      code << "  #{sub_name}_(&__out__, #{cargs.join(", ")});\n\n"
+    else
+      code << "  __out__ = #{sub_name}_(#{cargs.join(", ")});\n\n"
+    end
+  else
+    code << "  #{sub_name}_(#{cargs.join(", ")});\n\n"
+  end
 
   workspaces.each{|name|
     arg = args[name]
@@ -589,16 +626,13 @@ def generate_code(fnames)
 #include <math.h>
 #include "ruby.h"
 #include "narray.h"
-#include "f2c.h"
-#include "clapack.h"
+#include "f2c_minimal.h"
 
 #define MAX(a,b) (a > b ? a : b)
 #define MIN(a,b) (a < b ? a : b)
 #define LG(n) ((int)ceil(log((double)n)/log(2.0)))
 
 extern logical lsame_(char *ca, char *cb);
-extern int cunmtr_(char *side, char *uplo, char *trans, integer *m, integer *n, complex *a, integer *lda, complex *tau, complex *c__, integer *ldc, complex *work, integer *lwork, integer *info);
-extern int cunmrz_(char *side, char *trans, integer *m, integer *n, integer *k, integer *l, complex *a, integer *lda, complex *tau, complex *c__, integer *ldc, complex *work, integer *lwork, integer *info);
 EOF
   }
 

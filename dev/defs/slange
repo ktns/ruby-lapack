@@ -1,6 +1,7 @@
 --- 
 :name: slange
 :md5sum: da9734ebe746c544e9ebeed6a02e5f99
+:category: :function
 :type: real
 :arguments: 
 - norm: 

@@ -1,6 +1,7 @@
 --- 
 :name: ilaclr
 :md5sum: 33fda7f2ac92c6aa5768747a408df60f
+:category: :function
 :type: integer
 :arguments: 
 - m: 

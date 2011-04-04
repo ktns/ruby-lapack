@@ -1,6 +1,7 @@
 --- 
 :name: clanhp
 :md5sum: 9dca827973764d6308604a8dd70a8e52
+:category: :function
 :type: real
 :arguments: 
 - norm: 

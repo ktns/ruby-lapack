@@ -911,7 +911,7 @@ SUBSTS["dlasd1"] = {"n" => "nl+nr+1"}
 %w(sggsvd dggsvd cggsvd zggsvd).each{|n| SUBSTS[n] = {"m" => "lda", "p" => "ldb"}}
 SUBSTS["dlansp"] = {"lwork" => '(lsame_(&norm,"I") || lsame_(&norm,"1") || lsame_(&norm,"0")) ? n : 0'}
 %w(ssptrd dsptrd chptrd zhptrd sppequ dppequ cppequ zppequ chpevd zhpevd sspev dspev sspevd dspevd chpev zhpev sspgv chpgvx zhpgvx dspgv sspgvd dspgvd chpgv zhpgv chpgvd zhpgvd chptrf zhptrf ssptrf dsptrf csptrf zsptrf stpcon dtpcon ctpcon ztpcon sppcon dppcon cppcon zppcon).each{|n| SUBSTS[n]  = {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2'}}
-%w(sspgvx dspgvx sspevx dspevx chpevx zhpevx).each{|n| SUBSTS[n] = {"n" => '(int)(sqrt((double)8*ldap+1)-1)/2', "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'}}
+%w(sspgvx dspgvx sspevx dspevx chpevx zhpevx).each{|n| SUBSTS[n] = {"n" => '((int)sqrtf(ldap*8+1.0f)-1)/2', "m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'}}
 %w(sstevr dstevr ssyevr dsyevr dsyevx ssyevx).each{|n| SUBSTS[n] = {"m" => 'lsame_(&range,"I") ? iu-il+1 : n'}}
 %w(ssygvx dsygvx cheevr zheevr chbevx zhbevx sstemr dstemr cstemr zstemr sstegr dstegr cstegr zstegr ssbevx dsbevx cheevx zheevx chegvx zhegvx ssbgvx dsbgvx).each{|n| SUBSTS[n] = {"m" => 'lsame_(&range,"A") ? n : lsame_(&range,"I") ? iu-il+1 : 0'}}
 %w(stgex2 dtgex2).each{|n| SUBSTS[n] = {"lwork" => 'MAX(1,(MAX(n*(n2+n1),(n2+n1)*(n2+n1)*2)))'}}

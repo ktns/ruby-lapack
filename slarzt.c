@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID slarzt_(char *direct, char *storev, integer *n, integer *k, real *v, integer *ldv, real *tau, real *t, integer *ldt);
+
 static VALUE
 rb_slarzt(int argc, VALUE *argv, VALUE self){
   VALUE rb_direct;
@@ -22,7 +24,7 @@ rb_slarzt(int argc, VALUE *argv, VALUE self){
   integer ldt;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  t, v = NumRu::Lapack.slarzt( direct, storev, n, v, tau)\n    or\n  NumRu::Lapack.slarzt  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SLARZT( DIRECT, STOREV, N, K, V, LDV, TAU, T, LDT )\n\n*  Purpose\n*  =======\n*\n*  SLARZT forms the triangular factor T of a real block reflector\n*  H of order > n, which is defined as a product of k elementary\n*  reflectors.\n*\n*  If DIRECT = 'F', H = H(1) H(2) . . . H(k) and T is upper triangular;\n*\n*  If DIRECT = 'B', H = H(k) . . . H(2) H(1) and T is lower triangular.\n*\n*  If STOREV = 'C', the vector which defines the elementary reflector\n*  H(i) is stored in the i-th column of the array V, and\n*\n*     H  =  I - V * T * V'\n*\n*  If STOREV = 'R', the vector which defines the elementary reflector\n*  H(i) is stored in the i-th row of the array V, and\n*\n*     H  =  I - V' * T * V\n*\n*  Currently, only STOREV = 'R' and DIRECT = 'B' are supported.\n*\n\n*  Arguments\n*  =========\n*\n*  DIRECT  (input) CHARACTER*1\n*          Specifies the order in which the elementary reflectors are\n*          multiplied to form the block reflector:\n*          = 'F': H = H(1) H(2) . . . H(k) (Forward, not supported yet)\n*          = 'B': H = H(k) . . . H(2) H(1) (Backward)\n*\n*  STOREV  (input) CHARACTER*1\n*          Specifies how the vectors which define the elementary\n*          reflectors are stored (see also Further Details):\n*          = 'C': columnwise                        (not supported yet)\n*          = 'R': rowwise\n*\n*  N       (input) INTEGER\n*          The order of the block reflector H. N >= 0.\n*\n*  K       (input) INTEGER\n*          The order of the triangular factor T (= the number of\n*          elementary reflectors). K >= 1.\n*\n*  V       (input/output) REAL array, dimension\n*                               (LDV,K) if STOREV = 'C'\n*                               (LDV,N) if STOREV = 'R'\n*          The matrix V. See further details.\n*\n*  LDV     (input) INTEGER\n*          The leading dimension of the array V.\n*          If STOREV = 'C', LDV >= max(1,N); if STOREV = 'R', LDV >= K.\n*\n*  TAU     (input) REAL array, dimension (K)\n*          TAU(i) must contain the scalar factor of the elementary\n*          reflector H(i).\n*\n*  T       (output) REAL array, dimension (LDT,K)\n*          The k by k triangular factor T of the block reflector.\n*          If DIRECT = 'F', T is upper triangular; if DIRECT = 'B', T is\n*          lower triangular. The rest of the array is not used.\n*\n*  LDT     (input) INTEGER\n*          The leading dimension of the array T. LDT >= K.\n*\n\n*  Further Details\n*  ===============\n*\n*  Based on contributions by\n*    A. Petitet, Computer Science Dept., Univ. of Tenn., Knoxville, USA\n*\n*  The shape of the matrix V and the storage of the vectors which define\n*  the H(i) is best illustrated by the following example with n = 5 and\n*  k = 3. The elements equal to 1 are not stored; the corresponding\n*  array elements are modified but restored on exit. The rest of the\n*  array is not used.\n*\n*  DIRECT = 'F' and STOREV = 'C':         DIRECT = 'F' and STOREV = 'R':\n*\n*                                              ______V_____\n*         ( v1 v2 v3 )                        /            \\\n*         ( v1 v2 v3 )                      ( v1 v1 v1 v1 v1 . . . . 1 )\n*     V = ( v1 v2 v3 )                      ( v2 v2 v2 v2 v2 . . . 1   )\n*         ( v1 v2 v3 )                      ( v3 v3 v3 v3 v3 . . 1     )\n*         ( v1 v2 v3 )\n*            .  .  .\n*            .  .  .\n*            1  .  .\n*               1  .\n*                  1\n*\n*  DIRECT = 'B' and STOREV = 'C':         DIRECT = 'B' and STOREV = 'R':\n*\n*                                                        ______V_____\n*            1                                          /            \\\n*            .  1                           ( 1 . . . . v1 v1 v1 v1 v1 )\n*            .  .  1                        ( . 1 . . . v2 v2 v2 v2 v2 )\n*            .  .  .                        ( . . 1 . . v3 v3 v3 v3 v3 )\n*            .  .  .\n*         ( v1 v2 v3 )\n*         ( v1 v2 v3 )\n*     V = ( v1 v2 v3 )\n*         ( v1 v2 v3 )\n*         ( v1 v2 v3 )\n*\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  t, v = NumRu::Lapack.slarzt( direct, storev, n, v, tau)\n    or\n  NumRu::Lapack.slarzt  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 5)
@@ -33,28 +35,28 @@ rb_slarzt(int argc, VALUE *argv, VALUE self){
   rb_v = argv[3];
   rb_tau = argv[4];
 
-  direct = StringValueCStr(rb_direct)[0];
   storev = StringValueCStr(rb_storev)[0];
+  direct = StringValueCStr(rb_direct)[0];
   n = NUM2INT(rb_n);
   if (!NA_IsNArray(rb_tau))
-    rb_raise(rb_eArgError, "tau (4th argument) must be NArray");
+    rb_raise(rb_eArgError, "tau (5th argument) must be NArray");
   if (NA_RANK(rb_tau) != 1)
-    rb_raise(rb_eArgError, "rank of tau (4th argument) must be %d", 1);
+    rb_raise(rb_eArgError, "rank of tau (5th argument) must be %d", 1);
   k = NA_SHAPE0(rb_tau);
   if (NA_TYPE(rb_tau) != NA_SFLOAT)
     rb_tau = na_change_type(rb_tau, NA_SFLOAT);
   tau = NA_PTR_TYPE(rb_tau, real*);
+  ldt = k;
   if (!NA_IsNArray(rb_v))
-    rb_raise(rb_eArgError, "v (5th argument) must be NArray");
+    rb_raise(rb_eArgError, "v (4th argument) must be NArray");
   if (NA_RANK(rb_v) != 2)
-    rb_raise(rb_eArgError, "rank of v (5th argument) must be %d", 2);
-  ldv = NA_SHAPE0(rb_v);
+    rb_raise(rb_eArgError, "rank of v (4th argument) must be %d", 2);
   if (NA_SHAPE1(rb_v) != (lsame_(&storev,"C") ? k : lsame_(&storev,"R") ? n : 0))
     rb_raise(rb_eRuntimeError, "shape 1 of v must be %d", lsame_(&storev,"C") ? k : lsame_(&storev,"R") ? n : 0);
+  ldv = NA_SHAPE0(rb_v);
   if (NA_TYPE(rb_v) != NA_SFLOAT)
     rb_v = na_change_type(rb_v, NA_SFLOAT);
   v = NA_PTR_TYPE(rb_v, real*);
-  ldt = k;
   {
     int shape[2];
     shape[0] = ldt;

@@ -1,6 +1,7 @@
 --- 
 :name: zla_syrcond_x
 :md5sum: 2ee84b2298e93cd97cc2b1f8137a5f05
+:category: :function
 :type: doublereal
 :arguments: 
 - uplo: 

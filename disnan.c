@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern logical disnan_(doublereal *din);
+
 static VALUE
 rb_disnan(int argc, VALUE *argv, VALUE self){
   VALUE rb_din;
@@ -9,7 +11,7 @@ rb_disnan(int argc, VALUE *argv, VALUE self){
 
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.disnan( din)\n    or\n  NumRu::Lapack.disnan  # print help\n\n\nFORTRAN MANUAL\n      LOGICAL FUNCTION DISNAN(DIN)\n\n*  Purpose\n*  =======\n*\n*  DISNAN returns .TRUE. if its argument is NaN, and .FALSE.\n*  otherwise.  To be replaced by the Fortran 2003 intrinsic in the\n*  future.\n*\n\n*  Arguments\n*  =========\n*\n*  DIN      (input) DOUBLE PRECISION\n*          Input to test for NaN.\n*\n\n*  =====================================================================\n*\n*  .. External Functions ..\n      LOGICAL DLAISNAN\n      EXTERNAL DLAISNAN\n*  ..\n\n");
+    printf("%s\n", "USAGE:\n  __out__ = NumRu::Lapack.disnan( din)\n    or\n  NumRu::Lapack.disnan  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 1)

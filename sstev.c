@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID sstev_(char *jobz, integer *n, real *d, real *e, real *z, integer *ldz, real *work, integer *info);
+
 static VALUE
 rb_sstev(int argc, VALUE *argv, VALUE self){
   VALUE rb_jobz;
@@ -22,7 +24,7 @@ rb_sstev(int argc, VALUE *argv, VALUE self){
   integer ldz;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  z, info, d, e = NumRu::Lapack.sstev( jobz, d, e)\n    or\n  NumRu::Lapack.sstev  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SSTEV( JOBZ, N, D, E, Z, LDZ, WORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  SSTEV computes all eigenvalues and, optionally, eigenvectors of a\n*  real symmetric tridiagonal matrix A.\n*\n\n*  Arguments\n*  =========\n*\n*  JOBZ    (input) CHARACTER*1\n*          = 'N':  Compute eigenvalues only;\n*          = 'V':  Compute eigenvalues and eigenvectors.\n*\n*  N       (input) INTEGER\n*          The order of the matrix.  N >= 0.\n*\n*  D       (input/output) REAL array, dimension (N)\n*          On entry, the n diagonal elements of the tridiagonal matrix\n*          A.\n*          On exit, if INFO = 0, the eigenvalues in ascending order.\n*\n*  E       (input/output) REAL array, dimension (N-1)\n*          On entry, the (n-1) subdiagonal elements of the tridiagonal\n*          matrix A, stored in elements 1 to N-1 of E.\n*          On exit, the contents of E are destroyed.\n*\n*  Z       (output) REAL array, dimension (LDZ, N)\n*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal\n*          eigenvectors of the matrix A, with the i-th column of Z\n*          holding the eigenvector associated with D(i).\n*          If JOBZ = 'N', then Z is not referenced.\n*\n*  LDZ     (input) INTEGER\n*          The leading dimension of the array Z.  LDZ >= 1, and if\n*          JOBZ = 'V', LDZ >= max(1,N).\n*\n*  WORK    (workspace) REAL array, dimension (max(1,2*N-2))\n*          If JOBZ = 'N', WORK is not referenced.\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*          > 0:  if INFO = i, the algorithm failed to converge; i\n*                off-diagonal elements of E did not converge to zero.\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  z, info, d, e = NumRu::Lapack.sstev( jobz, d, e)\n    or\n  NumRu::Lapack.sstev  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 3)

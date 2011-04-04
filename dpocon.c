@@ -1,5 +1,7 @@
 #include "rb_lapack.h"
 
+extern VOID dpocon_(char *uplo, integer *n, doublereal *a, integer *lda, doublereal *anorm, doublereal *rcond, doublereal *work, integer *iwork, integer *info);
+
 static VALUE
 rb_dpocon(int argc, VALUE *argv, VALUE self){
   VALUE rb_uplo;
@@ -19,7 +21,7 @@ rb_dpocon(int argc, VALUE *argv, VALUE self){
   integer n;
 
   if (argc == 0) {
-    printf("%s\n", "USAGE:\n  rcond, info = NumRu::Lapack.dpocon( uplo, a, anorm)\n    or\n  NumRu::Lapack.dpocon  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DPOCON( UPLO, N, A, LDA, ANORM, RCOND, WORK, IWORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  DPOCON estimates the reciprocal of the condition number (in the\n*  1-norm) of a real symmetric positive definite matrix using the\n*  Cholesky factorization A = U**T*U or A = L*L**T computed by DPOTRF.\n*\n*  An estimate is obtained for norm(inv(A)), and the reciprocal of the\n*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).\n*\n\n*  Arguments\n*  =========\n*\n*  UPLO    (input) CHARACTER*1\n*          = 'U':  Upper triangle of A is stored;\n*          = 'L':  Lower triangle of A is stored.\n*\n*  N       (input) INTEGER\n*          The order of the matrix A.  N >= 0.\n*\n*  A       (input) DOUBLE PRECISION array, dimension (LDA,N)\n*          The triangular factor U or L from the Cholesky factorization\n*          A = U**T*U or A = L*L**T, as computed by DPOTRF.\n*\n*  LDA     (input) INTEGER\n*          The leading dimension of the array A.  LDA >= max(1,N).\n*\n*  ANORM   (input) DOUBLE PRECISION\n*          The 1-norm (or infinity-norm) of the symmetric matrix A.\n*\n*  RCOND   (output) DOUBLE PRECISION\n*          The reciprocal of the condition number of the matrix A,\n*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an\n*          estimate of the 1-norm of inv(A) computed in this routine.\n*\n*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)\n*\n*  IWORK   (workspace) INTEGER array, dimension (N)\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*\n\n*  =====================================================================\n*\n\n");
+    printf("%s\n", "USAGE:\n  rcond, info = NumRu::Lapack.dpocon( uplo, a, anorm)\n    or\n  NumRu::Lapack.dpocon  # print help\n\n\nFORTRAN MANUAL\n\n");
     return Qnil;
   }
   if (argc != 3)
@@ -28,17 +30,17 @@ rb_dpocon(int argc, VALUE *argv, VALUE self){
   rb_a = argv[1];
   rb_anorm = argv[2];
 
-  uplo = StringValueCStr(rb_uplo)[0];
   anorm = NUM2DBL(rb_anorm);
   if (!NA_IsNArray(rb_a))
     rb_raise(rb_eArgError, "a (2th argument) must be NArray");
   if (NA_RANK(rb_a) != 2)
     rb_raise(rb_eArgError, "rank of a (2th argument) must be %d", 2);
-  lda = NA_SHAPE0(rb_a);
   n = NA_SHAPE1(rb_a);
+  lda = NA_SHAPE0(rb_a);
   if (NA_TYPE(rb_a) != NA_DFLOAT)
     rb_a = na_change_type(rb_a, NA_DFLOAT);
   a = NA_PTR_TYPE(rb_a, doublereal*);
+  uplo = StringValueCStr(rb_uplo)[0];
   work = ALLOC_N(doublereal, (3*n));
   iwork = ALLOC_N(integer, (n));
 

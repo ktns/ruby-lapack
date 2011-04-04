@@ -1,6 +1,7 @@
 --- 
 :name: dlange
 :md5sum: 2fe726b4e4a40bde5dcd4f595a41679e
+:category: :function
 :type: doublereal
 :arguments: 
 - norm: 
