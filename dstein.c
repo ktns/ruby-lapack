@@ -2,23 +2,25 @@
 
 extern VOID dstein_(integer *n, doublereal *d, doublereal *e, integer *m, doublereal *w, integer *iblock, integer *isplit, doublereal *z, integer *ldz, doublereal *work, integer *iwork, integer *ifail, integer *info);
 
+static VALUE sHelp, sUsage;
+
 static VALUE
-rb_dstein(int argc, VALUE *argv, VALUE self){
-  VALUE rb_d;
+rblapack_dstein(int argc, VALUE *argv, VALUE self){
+  VALUE rblapack_d;
   doublereal *d; 
-  VALUE rb_e;
+  VALUE rblapack_e;
   doublereal *e; 
-  VALUE rb_w;
+  VALUE rblapack_w;
   doublereal *w; 
-  VALUE rb_iblock;
+  VALUE rblapack_iblock;
   integer *iblock; 
-  VALUE rb_isplit;
+  VALUE rblapack_isplit;
   integer *isplit; 
-  VALUE rb_z;
+  VALUE rblapack_z;
   doublereal *z; 
-  VALUE rb_ifail;
+  VALUE rblapack_ifail;
   integer *ifail; 
-  VALUE rb_info;
+  VALUE rblapack_info;
   integer info; 
   doublereal *work;
   integer *iwork;
@@ -27,77 +29,89 @@ rb_dstein(int argc, VALUE *argv, VALUE self){
   integer ldz;
   integer m;
 
-  if (argc == 0) {
-    printf("%s\n", "USAGE:\n  z, ifail, info = NumRu::Lapack.dstein( d, e, w, iblock, isplit)\n    or\n  NumRu::Lapack.dstein  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE DSTEIN( N, D, E, M, W, IBLOCK, ISPLIT, Z, LDZ, WORK, IWORK, IFAIL, INFO )\n\n*  Purpose\n*  =======\n*\n*  DSTEIN computes the eigenvectors of a real symmetric tridiagonal\n*  matrix T corresponding to specified eigenvalues, using inverse\n*  iteration.\n*\n*  The maximum number of iterations allowed for each eigenvector is\n*  specified by an internal parameter MAXITS (currently set to 5).\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The order of the matrix.  N >= 0.\n*\n*  D       (input) DOUBLE PRECISION array, dimension (N)\n*          The n diagonal elements of the tridiagonal matrix T.\n*\n*  E       (input) DOUBLE PRECISION array, dimension (N-1)\n*          The (n-1) subdiagonal elements of the tridiagonal matrix\n*          T, in elements 1 to N-1.\n*\n*  M       (input) INTEGER\n*          The number of eigenvectors to be found.  0 <= M <= N.\n*\n*  W       (input) DOUBLE PRECISION array, dimension (N)\n*          The first M elements of W contain the eigenvalues for\n*          which eigenvectors are to be computed.  The eigenvalues\n*          should be grouped by split-off block and ordered from\n*          smallest to largest within the block.  ( The output array\n*          W from DSTEBZ with ORDER = 'B' is expected here. )\n*\n*  IBLOCK  (input) INTEGER array, dimension (N)\n*          The submatrix indices associated with the corresponding\n*          eigenvalues in W; IBLOCK(i)=1 if eigenvalue W(i) belongs to\n*          the first submatrix from the top, =2 if W(i) belongs to\n*          the second submatrix, etc.  ( The output array IBLOCK\n*          from DSTEBZ is expected here. )\n*\n*  ISPLIT  (input) INTEGER array, dimension (N)\n*          The splitting points, at which T breaks up into submatrices.\n*          The first submatrix consists of rows/columns 1 to\n*          ISPLIT( 1 ), the second of rows/columns ISPLIT( 1 )+1\n*          through ISPLIT( 2 ), etc.\n*          ( The output array ISPLIT from DSTEBZ is expected here. )\n*\n*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, M)\n*          The computed eigenvectors.  The eigenvector associated\n*          with the eigenvalue W(i) is stored in the i-th column of\n*          Z.  Any vector which fails to converge is set to its current\n*          iterate after MAXITS iterations.\n*\n*  LDZ     (input) INTEGER\n*          The leading dimension of the array Z.  LDZ >= max(1,N).\n*\n*  WORK    (workspace) DOUBLE PRECISION array, dimension (5*N)\n*\n*  IWORK   (workspace) INTEGER array, dimension (N)\n*\n*  IFAIL   (output) INTEGER array, dimension (M)\n*          On normal exit, all elements of IFAIL are zero.\n*          If one or more eigenvectors fail to converge after\n*          MAXITS iterations, then their indices are stored in\n*          array IFAIL.\n*\n*  INFO    (output) INTEGER\n*          = 0: successful exit.\n*          < 0: if INFO = -i, the i-th argument had an illegal value\n*          > 0: if INFO = i, then i eigenvectors failed to converge\n*               in MAXITS iterations.  Their indices are stored in\n*               array IFAIL.\n*\n*  Internal Parameters\n*  ===================\n*\n*  MAXITS  INTEGER, default = 5\n*          The maximum number of iterations performed.\n*\n*  EXTRA   INTEGER, default = 2\n*          The number of iterations performed after norm growth\n*          criterion is satisfied, should be at least 1.\n*\n\n*  =====================================================================\n*\n\n");
-    return Qnil;
-  }
+  VALUE rb_options;
+  if (argc > 0 && TYPE(argv[argc-1]) == T_HASH) {
+    argc--;
+    rb_options = argv[argc];
+    if (rb_hash_aref(rb_options, sHelp) == Qtrue) {
+      printf("%s\n", "USAGE:\n  z, ifail, info = NumRu::Lapack.dstein( d, e, w, iblock, isplit, [:usage => usage, :help => help])\n\n\nFORTRAN MANUAL\n      SUBROUTINE DSTEIN( N, D, E, M, W, IBLOCK, ISPLIT, Z, LDZ, WORK, IWORK, IFAIL, INFO )\n\n*  Purpose\n*  =======\n*\n*  DSTEIN computes the eigenvectors of a real symmetric tridiagonal\n*  matrix T corresponding to specified eigenvalues, using inverse\n*  iteration.\n*\n*  The maximum number of iterations allowed for each eigenvector is\n*  specified by an internal parameter MAXITS (currently set to 5).\n*\n\n*  Arguments\n*  =========\n*\n*  N       (input) INTEGER\n*          The order of the matrix.  N >= 0.\n*\n*  D       (input) DOUBLE PRECISION array, dimension (N)\n*          The n diagonal elements of the tridiagonal matrix T.\n*\n*  E       (input) DOUBLE PRECISION array, dimension (N-1)\n*          The (n-1) subdiagonal elements of the tridiagonal matrix\n*          T, in elements 1 to N-1.\n*\n*  M       (input) INTEGER\n*          The number of eigenvectors to be found.  0 <= M <= N.\n*\n*  W       (input) DOUBLE PRECISION array, dimension (N)\n*          The first M elements of W contain the eigenvalues for\n*          which eigenvectors are to be computed.  The eigenvalues\n*          should be grouped by split-off block and ordered from\n*          smallest to largest within the block.  ( The output array\n*          W from DSTEBZ with ORDER = 'B' is expected here. )\n*\n*  IBLOCK  (input) INTEGER array, dimension (N)\n*          The submatrix indices associated with the corresponding\n*          eigenvalues in W; IBLOCK(i)=1 if eigenvalue W(i) belongs to\n*          the first submatrix from the top, =2 if W(i) belongs to\n*          the second submatrix, etc.  ( The output array IBLOCK\n*          from DSTEBZ is expected here. )\n*\n*  ISPLIT  (input) INTEGER array, dimension (N)\n*          The splitting points, at which T breaks up into submatrices.\n*          The first submatrix consists of rows/columns 1 to\n*          ISPLIT( 1 ), the second of rows/columns ISPLIT( 1 )+1\n*          through ISPLIT( 2 ), etc.\n*          ( The output array ISPLIT from DSTEBZ is expected here. )\n*\n*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, M)\n*          The computed eigenvectors.  The eigenvector associated\n*          with the eigenvalue W(i) is stored in the i-th column of\n*          Z.  Any vector which fails to converge is set to its current\n*          iterate after MAXITS iterations.\n*\n*  LDZ     (input) INTEGER\n*          The leading dimension of the array Z.  LDZ >= max(1,N).\n*\n*  WORK    (workspace) DOUBLE PRECISION array, dimension (5*N)\n*\n*  IWORK   (workspace) INTEGER array, dimension (N)\n*\n*  IFAIL   (output) INTEGER array, dimension (M)\n*          On normal exit, all elements of IFAIL are zero.\n*          If one or more eigenvectors fail to converge after\n*          MAXITS iterations, then their indices are stored in\n*          array IFAIL.\n*\n*  INFO    (output) INTEGER\n*          = 0: successful exit.\n*          < 0: if INFO = -i, the i-th argument had an illegal value\n*          > 0: if INFO = i, then i eigenvectors failed to converge\n*               in MAXITS iterations.  Their indices are stored in\n*               array IFAIL.\n*\n*  Internal Parameters\n*  ===================\n*\n*  MAXITS  INTEGER, default = 5\n*          The maximum number of iterations performed.\n*\n*  EXTRA   INTEGER, default = 2\n*          The number of iterations performed after norm growth\n*          criterion is satisfied, should be at least 1.\n*\n\n*  =====================================================================\n*\n\n");
+      rb_exit(0);
+    }
+    if (rb_hash_aref(rb_options, sUsage) == Qtrue) {
+      printf("%s\n", "USAGE:\n  z, ifail, info = NumRu::Lapack.dstein( d, e, w, iblock, isplit, [:usage => usage, :help => help])\n");
+      rb_exit(0);
+    } 
+  } else
+    rb_options = Qnil;
   if (argc != 5)
     rb_raise(rb_eArgError,"wrong number of arguments (%d for 5)", argc);
-  rb_d = argv[0];
-  rb_e = argv[1];
-  rb_w = argv[2];
-  rb_iblock = argv[3];
-  rb_isplit = argv[4];
+  rblapack_d = argv[0];
+  rblapack_e = argv[1];
+  rblapack_w = argv[2];
+  rblapack_iblock = argv[3];
+  rblapack_isplit = argv[4];
+  if (rb_options != Qnil) {
+  }
 
-  if (!NA_IsNArray(rb_w))
+  if (!NA_IsNArray(rblapack_w))
     rb_raise(rb_eArgError, "w (3th argument) must be NArray");
-  if (NA_RANK(rb_w) != 1)
+  if (NA_RANK(rblapack_w) != 1)
     rb_raise(rb_eArgError, "rank of w (3th argument) must be %d", 1);
-  n = NA_SHAPE0(rb_w);
-  if (NA_TYPE(rb_w) != NA_DFLOAT)
-    rb_w = na_change_type(rb_w, NA_DFLOAT);
-  w = NA_PTR_TYPE(rb_w, doublereal*);
-  if (!NA_IsNArray(rb_iblock))
+  n = NA_SHAPE0(rblapack_w);
+  if (NA_TYPE(rblapack_w) != NA_DFLOAT)
+    rblapack_w = na_change_type(rblapack_w, NA_DFLOAT);
+  w = NA_PTR_TYPE(rblapack_w, doublereal*);
+  if (!NA_IsNArray(rblapack_iblock))
     rb_raise(rb_eArgError, "iblock (4th argument) must be NArray");
-  if (NA_RANK(rb_iblock) != 1)
+  if (NA_RANK(rblapack_iblock) != 1)
     rb_raise(rb_eArgError, "rank of iblock (4th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_iblock) != n)
+  if (NA_SHAPE0(rblapack_iblock) != n)
     rb_raise(rb_eRuntimeError, "shape 0 of iblock must be the same as shape 0 of w");
-  if (NA_TYPE(rb_iblock) != NA_LINT)
-    rb_iblock = na_change_type(rb_iblock, NA_LINT);
-  iblock = NA_PTR_TYPE(rb_iblock, integer*);
-  if (!NA_IsNArray(rb_isplit))
+  if (NA_TYPE(rblapack_iblock) != NA_LINT)
+    rblapack_iblock = na_change_type(rblapack_iblock, NA_LINT);
+  iblock = NA_PTR_TYPE(rblapack_iblock, integer*);
+  if (!NA_IsNArray(rblapack_isplit))
     rb_raise(rb_eArgError, "isplit (5th argument) must be NArray");
-  if (NA_RANK(rb_isplit) != 1)
+  if (NA_RANK(rblapack_isplit) != 1)
     rb_raise(rb_eArgError, "rank of isplit (5th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_isplit) != n)
+  if (NA_SHAPE0(rblapack_isplit) != n)
     rb_raise(rb_eRuntimeError, "shape 0 of isplit must be the same as shape 0 of w");
-  if (NA_TYPE(rb_isplit) != NA_LINT)
-    rb_isplit = na_change_type(rb_isplit, NA_LINT);
-  isplit = NA_PTR_TYPE(rb_isplit, integer*);
-  if (!NA_IsNArray(rb_d))
+  if (NA_TYPE(rblapack_isplit) != NA_LINT)
+    rblapack_isplit = na_change_type(rblapack_isplit, NA_LINT);
+  isplit = NA_PTR_TYPE(rblapack_isplit, integer*);
+  if (!NA_IsNArray(rblapack_d))
     rb_raise(rb_eArgError, "d (1th argument) must be NArray");
-  if (NA_RANK(rb_d) != 1)
+  if (NA_RANK(rblapack_d) != 1)
     rb_raise(rb_eArgError, "rank of d (1th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_d) != n)
+  if (NA_SHAPE0(rblapack_d) != n)
     rb_raise(rb_eRuntimeError, "shape 0 of d must be the same as shape 0 of w");
-  if (NA_TYPE(rb_d) != NA_DFLOAT)
-    rb_d = na_change_type(rb_d, NA_DFLOAT);
-  d = NA_PTR_TYPE(rb_d, doublereal*);
-  if (!NA_IsNArray(rb_e))
+  if (NA_TYPE(rblapack_d) != NA_DFLOAT)
+    rblapack_d = na_change_type(rblapack_d, NA_DFLOAT);
+  d = NA_PTR_TYPE(rblapack_d, doublereal*);
+  if (!NA_IsNArray(rblapack_e))
     rb_raise(rb_eArgError, "e (2th argument) must be NArray");
-  if (NA_RANK(rb_e) != 1)
+  if (NA_RANK(rblapack_e) != 1)
     rb_raise(rb_eArgError, "rank of e (2th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_e) != (n-1))
+  if (NA_SHAPE0(rblapack_e) != (n-1))
     rb_raise(rb_eRuntimeError, "shape 0 of e must be %d", n-1);
-  if (NA_TYPE(rb_e) != NA_DFLOAT)
-    rb_e = na_change_type(rb_e, NA_DFLOAT);
-  e = NA_PTR_TYPE(rb_e, doublereal*);
+  if (NA_TYPE(rblapack_e) != NA_DFLOAT)
+    rblapack_e = na_change_type(rblapack_e, NA_DFLOAT);
+  e = NA_PTR_TYPE(rblapack_e, doublereal*);
   m = n;
   ldz = MAX(1,n);
   {
     int shape[2];
     shape[0] = ldz;
     shape[1] = m;
-    rb_z = na_make_object(NA_DFLOAT, 2, shape, cNArray);
+    rblapack_z = na_make_object(NA_DFLOAT, 2, shape, cNArray);
   }
-  z = NA_PTR_TYPE(rb_z, doublereal*);
+  z = NA_PTR_TYPE(rblapack_z, doublereal*);
   {
     int shape[1];
     shape[0] = m;
-    rb_ifail = na_make_object(NA_LINT, 1, shape, cNArray);
+    rblapack_ifail = na_make_object(NA_LINT, 1, shape, cNArray);
   }
-  ifail = NA_PTR_TYPE(rb_ifail, integer*);
+  ifail = NA_PTR_TYPE(rblapack_ifail, integer*);
   work = ALLOC_N(doublereal, (5*n));
   iwork = ALLOC_N(integer, (n));
 
@@ -105,11 +119,13 @@ rb_dstein(int argc, VALUE *argv, VALUE self){
 
   free(work);
   free(iwork);
-  rb_info = INT2NUM(info);
-  return rb_ary_new3(3, rb_z, rb_ifail, rb_info);
+  rblapack_info = INT2NUM(info);
+  return rb_ary_new3(3, rblapack_z, rblapack_ifail, rblapack_info);
 }
 
 void
 init_lapack_dstein(VALUE mLapack){
-  rb_define_module_function(mLapack, "dstein", rb_dstein, -1);
+  rb_define_module_function(mLapack, "dstein", rblapack_dstein, -1);
+  sHelp = ID2SYM(rb_intern("help"));
+  sUsage = ID2SYM(rb_intern("usage"));
 }

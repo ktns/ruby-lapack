@@ -2,82 +2,98 @@
 
 extern VOID cla_wwaddw_(integer *n, complex *x, complex *y, complex *w);
 
+static VALUE sHelp, sUsage;
+
 static VALUE
-rb_cla_wwaddw(int argc, VALUE *argv, VALUE self){
-  VALUE rb_x;
+rblapack_cla_wwaddw(int argc, VALUE *argv, VALUE self){
+  VALUE rblapack_x;
   complex *x; 
-  VALUE rb_y;
+  VALUE rblapack_y;
   complex *y; 
-  VALUE rb_w;
+  VALUE rblapack_w;
   complex *w; 
-  VALUE rb_x_out__;
+  VALUE rblapack_x_out__;
   complex *x_out__;
-  VALUE rb_y_out__;
+  VALUE rblapack_y_out__;
   complex *y_out__;
 
   integer n;
 
-  if (argc == 0) {
-    printf("%s\n", "USAGE:\n  x, y = NumRu::Lapack.cla_wwaddw( x, y, w)\n    or\n  NumRu::Lapack.cla_wwaddw  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE CLA_WWADDW( N, X, Y, W )\n\n*     Purpose\n*     =======\n*\n*     CLA_WWADDW adds a vector W into a doubled-single vector (X, Y).\n*\n*     This works for all extant IBM's hex and binary floating point\n*     arithmetics, but not for decimal.\n*\n\n*     Arguments\n*     =========\n*\n*     N      (input) INTEGER\n*            The length of vectors X, Y, and W.\n*\n*     X      (input/output) COMPLEX array, dimension (N)\n*            The first part of the doubled-single accumulation vector.\n*\n*     Y      (input/output) COMPLEX array, dimension (N)\n*            The second part of the doubled-single accumulation vector.\n*\n*     W      (input) COMPLEX array, dimension (N)\n*            The vector to be added.\n*\n\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      COMPLEX            S\n      INTEGER            I\n*     ..\n\n");
-    return Qnil;
-  }
+  VALUE rb_options;
+  if (argc > 0 && TYPE(argv[argc-1]) == T_HASH) {
+    argc--;
+    rb_options = argv[argc];
+    if (rb_hash_aref(rb_options, sHelp) == Qtrue) {
+      printf("%s\n", "USAGE:\n  x, y = NumRu::Lapack.cla_wwaddw( x, y, w, [:usage => usage, :help => help])\n\n\nFORTRAN MANUAL\n      SUBROUTINE CLA_WWADDW( N, X, Y, W )\n\n*     Purpose\n*     =======\n*\n*     CLA_WWADDW adds a vector W into a doubled-single vector (X, Y).\n*\n*     This works for all extant IBM's hex and binary floating point\n*     arithmetics, but not for decimal.\n*\n\n*     Arguments\n*     =========\n*\n*     N      (input) INTEGER\n*            The length of vectors X, Y, and W.\n*\n*     X      (input/output) COMPLEX array, dimension (N)\n*            The first part of the doubled-single accumulation vector.\n*\n*     Y      (input/output) COMPLEX array, dimension (N)\n*            The second part of the doubled-single accumulation vector.\n*\n*     W      (input) COMPLEX array, dimension (N)\n*            The vector to be added.\n*\n\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      COMPLEX            S\n      INTEGER            I\n*     ..\n\n");
+      rb_exit(0);
+    }
+    if (rb_hash_aref(rb_options, sUsage) == Qtrue) {
+      printf("%s\n", "USAGE:\n  x, y = NumRu::Lapack.cla_wwaddw( x, y, w, [:usage => usage, :help => help])\n");
+      rb_exit(0);
+    } 
+  } else
+    rb_options = Qnil;
   if (argc != 3)
     rb_raise(rb_eArgError,"wrong number of arguments (%d for 3)", argc);
-  rb_x = argv[0];
-  rb_y = argv[1];
-  rb_w = argv[2];
+  rblapack_x = argv[0];
+  rblapack_y = argv[1];
+  rblapack_w = argv[2];
+  if (rb_options != Qnil) {
+  }
 
-  if (!NA_IsNArray(rb_w))
+  if (!NA_IsNArray(rblapack_w))
     rb_raise(rb_eArgError, "w (3th argument) must be NArray");
-  if (NA_RANK(rb_w) != 1)
+  if (NA_RANK(rblapack_w) != 1)
     rb_raise(rb_eArgError, "rank of w (3th argument) must be %d", 1);
-  n = NA_SHAPE0(rb_w);
-  if (NA_TYPE(rb_w) != NA_SCOMPLEX)
-    rb_w = na_change_type(rb_w, NA_SCOMPLEX);
-  w = NA_PTR_TYPE(rb_w, complex*);
-  if (!NA_IsNArray(rb_x))
+  n = NA_SHAPE0(rblapack_w);
+  if (NA_TYPE(rblapack_w) != NA_SCOMPLEX)
+    rblapack_w = na_change_type(rblapack_w, NA_SCOMPLEX);
+  w = NA_PTR_TYPE(rblapack_w, complex*);
+  if (!NA_IsNArray(rblapack_x))
     rb_raise(rb_eArgError, "x (1th argument) must be NArray");
-  if (NA_RANK(rb_x) != 1)
+  if (NA_RANK(rblapack_x) != 1)
     rb_raise(rb_eArgError, "rank of x (1th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_x) != n)
+  if (NA_SHAPE0(rblapack_x) != n)
     rb_raise(rb_eRuntimeError, "shape 0 of x must be the same as shape 0 of w");
-  if (NA_TYPE(rb_x) != NA_SCOMPLEX)
-    rb_x = na_change_type(rb_x, NA_SCOMPLEX);
-  x = NA_PTR_TYPE(rb_x, complex*);
-  if (!NA_IsNArray(rb_y))
+  if (NA_TYPE(rblapack_x) != NA_SCOMPLEX)
+    rblapack_x = na_change_type(rblapack_x, NA_SCOMPLEX);
+  x = NA_PTR_TYPE(rblapack_x, complex*);
+  if (!NA_IsNArray(rblapack_y))
     rb_raise(rb_eArgError, "y (2th argument) must be NArray");
-  if (NA_RANK(rb_y) != 1)
+  if (NA_RANK(rblapack_y) != 1)
     rb_raise(rb_eArgError, "rank of y (2th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_y) != n)
+  if (NA_SHAPE0(rblapack_y) != n)
     rb_raise(rb_eRuntimeError, "shape 0 of y must be the same as shape 0 of w");
-  if (NA_TYPE(rb_y) != NA_SCOMPLEX)
-    rb_y = na_change_type(rb_y, NA_SCOMPLEX);
-  y = NA_PTR_TYPE(rb_y, complex*);
+  if (NA_TYPE(rblapack_y) != NA_SCOMPLEX)
+    rblapack_y = na_change_type(rblapack_y, NA_SCOMPLEX);
+  y = NA_PTR_TYPE(rblapack_y, complex*);
   {
     int shape[1];
     shape[0] = n;
-    rb_x_out__ = na_make_object(NA_SCOMPLEX, 1, shape, cNArray);
+    rblapack_x_out__ = na_make_object(NA_SCOMPLEX, 1, shape, cNArray);
   }
-  x_out__ = NA_PTR_TYPE(rb_x_out__, complex*);
-  MEMCPY(x_out__, x, complex, NA_TOTAL(rb_x));
-  rb_x = rb_x_out__;
+  x_out__ = NA_PTR_TYPE(rblapack_x_out__, complex*);
+  MEMCPY(x_out__, x, complex, NA_TOTAL(rblapack_x));
+  rblapack_x = rblapack_x_out__;
   x = x_out__;
   {
     int shape[1];
     shape[0] = n;
-    rb_y_out__ = na_make_object(NA_SCOMPLEX, 1, shape, cNArray);
+    rblapack_y_out__ = na_make_object(NA_SCOMPLEX, 1, shape, cNArray);
   }
-  y_out__ = NA_PTR_TYPE(rb_y_out__, complex*);
-  MEMCPY(y_out__, y, complex, NA_TOTAL(rb_y));
-  rb_y = rb_y_out__;
+  y_out__ = NA_PTR_TYPE(rblapack_y_out__, complex*);
+  MEMCPY(y_out__, y, complex, NA_TOTAL(rblapack_y));
+  rblapack_y = rblapack_y_out__;
   y = y_out__;
 
   cla_wwaddw_(&n, x, y, w);
 
-  return rb_ary_new3(2, rb_x, rb_y);
+  return rb_ary_new3(2, rblapack_x, rblapack_y);
 }
 
 void
 init_lapack_cla_wwaddw(VALUE mLapack){
-  rb_define_module_function(mLapack, "cla_wwaddw", rb_cla_wwaddw, -1);
+  rb_define_module_function(mLapack, "cla_wwaddw", rblapack_cla_wwaddw, -1);
+  sHelp = ID2SYM(rb_intern("help"));
+  sUsage = ID2SYM(rb_intern("usage"));
 }

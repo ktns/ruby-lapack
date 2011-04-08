@@ -21,10 +21,119 @@
   <H2>cspcon</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX routines for symmetric, packed storage matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX routines for symmetric, packed storage matrix</H1>
+    <UL>
+      <LI><A HREF="#cspcon">cspcon</A> : </LI>
+      <LI><A HREF="#cspmv">cspmv</A> : </LI>
+      <LI><A HREF="#cspr">cspr</A> : </LI>
+      <LI><A HREF="#csprfs">csprfs</A> : </LI>
+      <LI><A HREF="#cspsv">cspsv</A> : </LI>
+      <LI><A HREF="#cspsvx">cspsvx</A> : </LI>
+      <LI><A HREF="#csptrf">csptrf</A> : </LI>
+      <LI><A HREF="#csptri">csptri</A> : </LI>
+      <LI><A HREF="#csptrs">csptrs</A> : </LI>
+    </UL>
+
+  <A NAME="cspcon"></A>
+  <H2>cspcon</H2>
+  
+  <PRE>
 USAGE:
-  rcond, info = NumRu::Lapack.cspcon( uplo, ap, ipiv, anorm)
-    or
-  NumRu::Lapack.cspcon  # print help
+  rcond, info = NumRu::Lapack.cspcon( uplo, ap, ipiv, anorm, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE CSPCON( UPLO, N, AP, IPIV, ANORM, RCOND, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CSPCON estimates the reciprocal of the condition number (in the
+*  1-norm) of a complex symmetric packed matrix A using the
+*  factorization A = U*D*U**T or A = L*D*L**T computed by CSPTRF.
+*
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the details of the factorization are stored
+*          as an upper or lower triangular matrix.
+*          = 'U':  Upper triangular, form is A = U*D*U**T;
+*          = 'L':  Lower triangular, form is A = L*D*L**T.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input) COMPLEX array, dimension (N*(N+1)/2)
+*          The block diagonal matrix D and the multipliers used to
+*          obtain the factor U or L as computed by CSPTRF, stored as a
+*          packed triangular matrix.
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D
+*          as determined by CSPTRF.
+*
+*  ANORM   (input) REAL
+*          The 1-norm of the original matrix A.
+*
+*  RCOND   (output) REAL
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
+*          estimate of the 1-norm of inv(A) computed in this routine.
+*
+*  WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cspmv"></A>
+  <H2>cspmv</H2>
+  
+  <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX routines for symmetric, packed storage matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX routines for symmetric, packed storage matrix</H1>
+    <UL>
+      <LI><A HREF="#cspcon">cspcon</A> : </LI>
+      <LI><A HREF="#cspmv">cspmv</A> : </LI>
+      <LI><A HREF="#cspr">cspr</A> : </LI>
+      <LI><A HREF="#csprfs">csprfs</A> : </LI>
+      <LI><A HREF="#cspsv">cspsv</A> : </LI>
+      <LI><A HREF="#cspsvx">cspsvx</A> : </LI>
+      <LI><A HREF="#csptrf">csptrf</A> : </LI>
+      <LI><A HREF="#csptri">csptri</A> : </LI>
+      <LI><A HREF="#csptrs">csptrs</A> : </LI>
+    </UL>
+
+  <A NAME="cspcon"></A>
+  <H2>cspcon</H2>
+  
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.cspcon( uplo, ap, ipiv, anorm, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -89,9 +198,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  y = NumRu::Lapack.cspmv( uplo, n, alpha, ap, x, incx, beta, y, incy)
-    or
-  NumRu::Lapack.cspmv  # print help
+  y = NumRu::Lapack.cspmv( uplo, n, alpha, ap, x, incx, beta, y, incy, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -186,10 +293,58 @@ FORTRAN MANUAL
   <H2>cspr</H2>
   
   <PRE>
+ triangular part of the symmetric matrix
+*           packed sequentially, column by column, so that AP( 1 )
+*           contains a( 1, 1 ), AP( 2 ) and AP( 3 ) contain a( 1, 2 )
+*           and a( 2, 2 ) respectively, and so on.
+*           Before entry, with UPLO = 'L' or 'l', the array AP must
+*           contain the lower triangular part of the symmetric matrix
+*           packed sequentially, column by column, so that AP( 1 )
+*           contains a( 1, 1 ), AP( 2 ) and AP( 3 ) contain a( 2, 1 )
+*           and a( 3, 1 ) respectively, and so on.
+*           Unchanged on exit.
+*
+*  X        (input) COMPLEX array, dimension at least
+*           ( 1 + ( N - 1 )*abs( INCX ) ).
+*           Before entry, the incremented array X must contain the N-
+*           element vector x.
+*           Unchanged on exit.
+*
+*  INCX     (input) INTEGER
+*           On entry, INCX specifies the increment for the elements of
+*           X. INCX must not be zero.
+*           Unchanged on exit.
+*
+*  BETA     (input) COMPLEX
+*           On entry, BETA specifies the scalar beta. When BETA is
+*           supplied as zero then Y need not be set on input.
+*           Unchanged on exit.
+*
+*  Y        (input/output) COMPLEX array, dimension at least 
+*           ( 1 + ( N - 1 )*abs( INCY ) ).
+*           Before entry, the incremented array Y must contain the n
+*           element vector y. On exit, Y is overwritten by the updated
+*           vector y.
+*
+*  INCY     (input) INTEGER
+*           On entry, INCY specifies the increment for the elements of
+*           Y. INCY must not be zero.
+*           Unchanged on exit.
+*
+
+* =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cspr"></A>
+  <H2>cspr</H2>
+  
+  <PRE>
 USAGE:
-  ap = NumRu::Lapack.cspr( uplo, n, alpha, x, incx, ap)
-    or
-  NumRu::Lapack.cspr  # print help
+  ap = NumRu::Lapack.cspr( uplo, n, alpha, x, incx, ap, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -274,10 +429,29 @@ FORTRAN MANUAL
   <H2>csprfs</H2>
   
   <PRE>
+y, column by column, so that AP( 1 )
+*           contains a( 1, 1 ), AP( 2 ) and AP( 3 ) contain a( 2, 1 )
+*           and a( 3, 1 ) respectively, and so on. On exit, the array
+*           AP is overwritten by the lower triangular part of the
+*           updated matrix.
+*           Note that the imaginary parts of the diagonal elements need
+*           not be set, they are assumed to be zero, and on exit they
+*           are set to zero.
+*
+
+* =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="csprfs"></A>
+  <H2>csprfs</H2>
+  
+  <PRE>
 USAGE:
-  ferr, berr, info, x = NumRu::Lapack.csprfs( uplo, ap, afp, ipiv, b, x)
-    or
-  NumRu::Lapack.csprfs  # print help
+  ferr, berr, info, x = NumRu::Lapack.csprfs( uplo, ap, afp, ipiv, b, x, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -377,10 +551,19 @@ FORTRAN MANUAL
   <H2>cspsv</H2>
   
   <PRE>
+============
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cspsv"></A>
+  <H2>cspsv</H2>
+  
+  <PRE>
 USAGE:
-  ipiv, info, ap, b = NumRu::Lapack.cspsv( uplo, ap, b)
-    or
-  NumRu::Lapack.cspsv  # print help
+  ipiv, info, ap, b = NumRu::Lapack.cspsv( uplo, ap, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -496,10 +679,18 @@ FORTRAN MANUAL
   <H2>cspsvx</H2>
   
   <PRE>
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cspsvx"></A>
+  <H2>cspsvx</H2>
+  
+  <PRE>
 USAGE:
-  x, rcond, ferr, berr, info, afp, ipiv = NumRu::Lapack.cspsvx( fact, uplo, ap, afp, ipiv, b)
-    or
-  NumRu::Lapack.cspsvx  # print help
+  x, rcond, ferr, berr, info, afp, ipiv = NumRu::Lapack.cspsvx( fact, uplo, ap, afp, ipiv, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -685,10 +876,103 @@ FORTRAN MANUAL
   <H2>csptrf</H2>
   
   <PRE>
+were
+*          interchanged and D(k,k) is a 1-by-1 diagonal block.
+*          If UPLO = 'U' and IPIV(k) = IPIV(k-1) < 0, then rows and
+*          columns k-1 and -IPIV(k) were interchanged and D(k-1:k,k-1:k)
+*          is a 2-by-2 diagonal block.  If UPLO = 'L' and IPIV(k) =
+*          IPIV(k+1) < 0, then rows and columns k+1 and -IPIV(k) were
+*          interchanged and D(k:k+1,k:k+1) is a 2-by-2 diagonal block.
+*
+*          If FACT = 'N', then IPIV is an output argument and on exit
+*          contains details of the interchanges and the block structure
+*          of D, as determined by CSPTRF.
+*
+*  B       (input) COMPLEX array, dimension (LDB,NRHS)
+*          The N-by-NRHS right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (output) COMPLEX array, dimension (LDX,NRHS)
+*          If INFO = 0 or INFO = N+1, the N-by-NRHS solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  RCOND   (output) REAL
+*          The estimate of the reciprocal condition number of the matrix
+*          A.  If RCOND is less than the machine precision (in
+*          particular, if RCOND = 0), the matrix is singular to working
+*          precision.  This condition is indicated by a return code of
+*          INFO > 0.
+*
+*  FERR    (output) REAL array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) REAL array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*  RWORK   (workspace) REAL array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is
+*                <= N:  D(i,i) is exactly zero.  The factorization
+*                       has been completed but the factor D is exactly
+*                       singular, so the solution and error bounds could
+*                       not be computed. RCOND = 0 is returned.
+*                = N+1: D is nonsingular, but RCOND is less than machine
+*                       precision, meaning that the matrix is singular
+*                       to working precision.  Nevertheless, the
+*                       solution and error bounds are computed because
+*                       there are a number of situations where the
+*                       computed solution can be more accurate than the
+*                       value of RCOND would suggest.
+*
+
+*  Further Details
+*  ===============
+*
+*  The packed storage scheme is illustrated by the following example
+*  when N = 4, UPLO = 'U':
+*
+*  Two-dimensional storage of the symmetric matrix A:
+*
+*     a11 a12 a13 a14
+*         a22 a23 a24
+*             a33 a34     (aij = aji)
+*                 a44
+*
+*  Packed storage of the upper triangle of A:
+*
+*  AP = [ a11, a12, a22, a13, a23, a33, a14, a24, a34, a44 ]
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="csptrf"></A>
+  <H2>csptrf</H2>
+  
+  <PRE>
 USAGE:
-  ipiv, info, ap = NumRu::Lapack.csptrf( uplo, ap)
-    or
-  NumRu::Lapack.csptrf  # print help
+  ipiv, info, ap = NumRu::Lapack.csptrf( uplo, ap, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -799,10 +1083,109 @@ FORTRAN MANUAL
   <H2>csptri</H2>
   
   <PRE>
+Bunch-Kaufman diagonal pivoting
+*  method:
+*
+*     A = U*D*U**T  or  A = L*D*L**T
+*
+*  where U (or L) is a product of permutation and unit upper (lower)
+*  triangular matrices, and D is symmetric and block diagonal with
+*  1-by-1 and 2-by-2 diagonal blocks.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input/output) COMPLEX array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.
+*
+*          On exit, the block diagonal matrix D and the multipliers used
+*          to obtain the factor U or L, stored as a packed triangular
+*          matrix overwriting A (see below for further details).
+*
+*  IPIV    (output) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D.
+*          If IPIV(k) > 0, then rows and columns k and IPIV(k) were
+*          interchanged and D(k,k) is a 1-by-1 diagonal block.
+*          If UPLO = 'U' and IPIV(k) = IPIV(k-1) < 0, then rows and
+*          columns k-1 and -IPIV(k) were interchanged and D(k-1:k,k-1:k)
+*          is a 2-by-2 diagonal block.  If UPLO = 'L' and IPIV(k) =
+*          IPIV(k+1) < 0, then rows and columns k+1 and -IPIV(k) were
+*          interchanged and D(k:k+1,k:k+1) is a 2-by-2 diagonal block.
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, D(i,i) is exactly zero.  The factorization
+*               has been completed, but the block diagonal matrix D is
+*               exactly singular, and division by zero will occur if it
+*               is used to solve a system of equations.
+*
+
+*  Further Details
+*  ===============
+*
+*  5-96 - Based on modifications by J. Lewis, Boeing Computer Services
+*         Company
+*
+*  If UPLO = 'U', then A = U*D*U', where
+*     U = P(n)*U(n)* ... *P(k)U(k)* ...,
+*  i.e., U is a product of terms P(k)*U(k), where k decreases from n to
+*  1 in steps of 1 or 2, and D is a block diagonal matrix with 1-by-1
+*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
+*  defined by IPIV(k), and U(k) is a unit upper triangular matrix, such
+*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
+*
+*             (   I    v    0   )   k-s
+*     U(k) =  (   0    I    0   )   s
+*             (   0    0    I   )   n-k
+*                k-s   s   n-k
+*
+*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(1:k-1,k).
+*  If s = 2, the upper triangle of D(k) overwrites A(k-1,k-1), A(k-1,k),
+*  and A(k,k), and v overwrites A(1:k-2,k-1:k).
+*
+*  If UPLO = 'L', then A = L*D*L', where
+*     L = P(1)*L(1)* ... *P(k)*L(k)* ...,
+*  i.e., L is a product of terms P(k)*L(k), where k increases from 1 to
+*  n in steps of 1 or 2, and D is a block diagonal matrix with 1-by-1
+*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
+*  defined by IPIV(k), and L(k) is a unit lower triangular matrix, such
+*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
+*
+*             (   I    0     0   )  k-1
+*     L(k) =  (   0    I     0   )  s
+*             (   0    v     I   )  n-k-s+1
+*                k-1   s  n-k-s+1
+*
+*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(k+1:n,k).
+*  If s = 2, the lower triangle of D(k) overwrites A(k,k), A(k+1,k),
+*  and A(k+1,k+1), and v overwrites A(k+2:n,k:k+1).
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="csptri"></A>
+  <H2>csptri</H2>
+  
+  <PRE>
 USAGE:
-  info, ap = NumRu::Lapack.csptri( uplo, ap, ipiv)
-    or
-  NumRu::Lapack.csptri  # print help
+  info, ap = NumRu::Lapack.csptri( uplo, ap, ipiv, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -864,10 +1247,66 @@ FORTRAN MANUAL
   <H2>csptrs</H2>
   
   <PRE>
+ SUBROUTINE CSPTRI( UPLO, N, AP, IPIV, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CSPTRI computes the inverse of a complex symmetric indefinite matrix
+*  A in packed storage using the factorization A = U*D*U**T or
+*  A = L*D*L**T computed by CSPTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the details of the factorization are stored
+*          as an upper or lower triangular matrix.
+*          = 'U':  Upper triangular, form is A = U*D*U**T;
+*          = 'L':  Lower triangular, form is A = L*D*L**T.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input/output) COMPLEX array, dimension (N*(N+1)/2)
+*          On entry, the block diagonal matrix D and the multipliers
+*          used to obtain the factor U or L as computed by CSPTRF,
+*          stored as a packed triangular matrix.
+*
+*          On exit, if INFO = 0, the (symmetric) inverse of the original
+*          matrix, stored as a packed triangular matrix. The j-th column
+*          of inv(A) is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = inv(A)(i,j) for 1<=i<=j;
+*          if UPLO = 'L',
+*             AP(i + (j-1)*(2n-j)/2) = inv(A)(i,j) for j<=i<=n.
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D
+*          as determined by CSPTRF.
+*
+*  WORK    (workspace) COMPLEX array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, D(i,i) = 0; the matrix is singular and its
+*               inverse could not be computed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="csptrs"></A>
+  <H2>csptrs</H2>
+  
+  <PRE>
 USAGE:
-  info, b = NumRu::Lapack.csptrs( uplo, ap, ipiv, b)
-    or
-  NumRu::Lapack.csptrs  # print help
+  info, b = NumRu::Lapack.csptrs( uplo, ap, ipiv, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

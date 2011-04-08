@@ -20,10 +20,138 @@
   <H2>chbev</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX routines for (complex) Hermitian band matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX routines for (complex) Hermitian band matrix</H1>
+    <UL>
+      <LI><A HREF="#chbev">chbev</A> : </LI>
+      <LI><A HREF="#chbevd">chbevd</A> : </LI>
+      <LI><A HREF="#chbevx">chbevx</A> : </LI>
+      <LI><A HREF="#chbgst">chbgst</A> : </LI>
+      <LI><A HREF="#chbgv">chbgv</A> : </LI>
+      <LI><A HREF="#chbgvd">chbgvd</A> : </LI>
+      <LI><A HREF="#chbgvx">chbgvx</A> : </LI>
+      <LI><A HREF="#chbtrd">chbtrd</A> : </LI>
+    </UL>
+
+  <A NAME="chbev"></A>
+  <H2>chbev</H2>
+  
+  <PRE>
 USAGE:
-  w, z, info, ab = NumRu::Lapack.chbev( jobz, uplo, kd, ab)
-    or
-  NumRu::Lapack.chbev  # print help
+  w, z, info, ab = NumRu::Lapack.chbev( jobz, uplo, kd, ab, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE CHBEV( JOBZ, UPLO, N, KD, AB, LDAB, W, Z, LDZ, WORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CHBEV computes all the eigenvalues and, optionally, eigenvectors of
+*  a complex Hermitian band matrix A.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  KD      (input) INTEGER
+*          The number of superdiagonals of the matrix A if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.
+*
+*  AB      (input/output) COMPLEX array, dimension (LDAB, N)
+*          On entry, the upper or lower triangle of the Hermitian band
+*          matrix A, stored in the first KD+1 rows of the array.  The
+*          j-th column of A is stored in the j-th column of the array AB
+*          as follows:
+*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
+*
+*          On exit, AB is overwritten by values generated during the
+*          reduction to tridiagonal form.  If UPLO = 'U', the first
+*          superdiagonal and the diagonal of the tridiagonal matrix T
+*          are returned in rows KD and KD+1 of AB, and if UPLO = 'L',
+*          the diagonal and first subdiagonal of T are returned in the
+*          first two rows of AB.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KD + 1.
+*
+*  W       (output) REAL array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) COMPLEX array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
+*          eigenvectors of the matrix A, with the i-th column of Z
+*          holding the eigenvector associated with W(i).
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) COMPLEX array, dimension (N)
+*
+*  RWORK   (workspace) REAL array, dimension (max(1,3*N-2))
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, the algorithm failed to converge; i
+*                off-diagonal elements of an intermediate tridiagonal
+*                form did not converge to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chbevd"></A>
+  <H2>chbevd</H2>
+  
+  <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX routines for (complex) Hermitian band matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX routines for (complex) Hermitian band matrix</H1>
+    <UL>
+      <LI><A HREF="#chbev">chbev</A> : </LI>
+      <LI><A HREF="#chbevd">chbevd</A> : </LI>
+      <LI><A HREF="#chbevx">chbevx</A> : </LI>
+      <LI><A HREF="#chbgst">chbgst</A> : </LI>
+      <LI><A HREF="#chbgv">chbgv</A> : </LI>
+      <LI><A HREF="#chbgvd">chbgvd</A> : </LI>
+      <LI><A HREF="#chbgvx">chbgvx</A> : </LI>
+      <LI><A HREF="#chbtrd">chbtrd</A> : </LI>
+    </UL>
+
+  <A NAME="chbev"></A>
+  <H2>chbev</H2>
+  
+  <PRE>
+USAGE:
+  w, z, info, ab = NumRu::Lapack.chbev( jobz, uplo, kd, ab, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -109,9 +237,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  w, z, work, rwork, iwork, info, ab = NumRu::Lapack.chbevd( jobz, uplo, kd, ab, lwork, lrwork, liwork)
-    or
-  NumRu::Lapack.chbevd  # print help
+  w, z, work, rwork, iwork, info, ab = NumRu::Lapack.chbevd( jobz, uplo, kd, ab, lwork, lrwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -246,10 +372,40 @@ FORTRAN MANUAL
   <H2>chbevx</H2>
   
   <PRE>
+turns the optimal LIWORK.
+*
+*  LIWORK  (input) INTEGER
+*          The dimension of array IWORK.
+*          If JOBZ = 'N' or N <= 1, LIWORK must be at least 1.
+*          If JOBZ = 'V' and N > 1, LIWORK must be at least 3 + 5*N .
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal sizes of the WORK, RWORK
+*          and IWORK arrays, returns these values as the first entries
+*          of the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, the algorithm failed to converge; i
+*                off-diagonal elements of an intermediate tridiagonal
+*                form did not converge to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chbevx"></A>
+  <H2>chbevx</H2>
+  
+  <PRE>
 USAGE:
-  q, m, w, z, ifail, info, ab = NumRu::Lapack.chbevx( jobz, range, uplo, kd, ab, vl, vu, il, iu, abstol)
-    or
-  NumRu::Lapack.chbevx  # print help
+  q, m, w, z, ifail, info, ab = NumRu::Lapack.chbevx( jobz, range, uplo, kd, ab, vl, vu, il, iu, abstol, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -402,10 +558,84 @@ FORTRAN MANUAL
   <H2>chbgst</H2>
   
   <PRE>
+roximate eigenvalue is accepted as converged
+*          when it is determined to lie in an interval [a,b]
+*          of width less than or equal to
+*
+*                  ABSTOL + EPS *   max( |a|,|b| ) ,
+*
+*          where EPS is the machine precision.  If ABSTOL is less than
+*          or equal to zero, then  EPS*|T|  will be used in its place,
+*          where |T| is the 1-norm of the tridiagonal matrix obtained
+*          by reducing AB to tridiagonal form.
+*
+*          Eigenvalues will be computed most accurately when ABSTOL is
+*          set to twice the underflow threshold 2*SLAMCH('S'), not zero.
+*          If this routine returns with INFO>0, indicating that some
+*          eigenvectors did not converge, try setting ABSTOL to
+*          2*SLAMCH('S').
+*
+*          See "Computing Small Singular Values of Bidiagonal Matrices
+*          with Guaranteed High Relative Accuracy," by Demmel and
+*          Kahan, LAPACK Working Note #3.
+*
+*  M       (output) INTEGER
+*          The total number of eigenvalues found.  0 <= M <= N.
+*          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
+*
+*  W       (output) REAL array, dimension (N)
+*          The first M elements contain the selected eigenvalues in
+*          ascending order.
+*
+*  Z       (output) COMPLEX array, dimension (LDZ, max(1,M))
+*          If JOBZ = 'V', then if INFO = 0, the first M columns of Z
+*          contain the orthonormal eigenvectors of the matrix A
+*          corresponding to the selected eigenvalues, with the i-th
+*          column of Z holding the eigenvector associated with W(i).
+*          If an eigenvector fails to converge, then that column of Z
+*          contains the latest approximation to the eigenvector, and the
+*          index of the eigenvector is returned in IFAIL.
+*          If JOBZ = 'N', then Z is not referenced.
+*          Note: the user must ensure that at least max(1,M) columns are
+*          supplied in the array Z; if RANGE = 'V', the exact value of M
+*          is not known in advance and an upper bound must be used.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) COMPLEX array, dimension (N)
+*
+*  RWORK   (workspace) REAL array, dimension (7*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (5*N)
+*
+*  IFAIL   (output) INTEGER array, dimension (N)
+*          If JOBZ = 'V', then if INFO = 0, the first M elements of
+*          IFAIL are zero.  If INFO > 0, then IFAIL contains the
+*          indices of the eigenvectors that failed to converge.
+*          If JOBZ = 'N', then IFAIL is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, then i eigenvectors failed to converge.
+*                Their indices are stored in array IFAIL.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chbgst"></A>
+  <H2>chbgst</H2>
+  
+  <PRE>
 USAGE:
-  x, info, ab = NumRu::Lapack.chbgst( vect, uplo, ka, kb, ab, bb)
-    or
-  NumRu::Lapack.chbgst  # print help
+  x, info, ab = NumRu::Lapack.chbgst( vect, uplo, ka, kb, ab, bb, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -496,10 +726,68 @@ FORTRAN MANUAL
   <H2>chbgv</H2>
   
   <PRE>
+the matrices A and B.  N >= 0.
+*
+*  KA      (input) INTEGER
+*          The number of superdiagonals of the matrix A if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KA >= 0.
+*
+*  KB      (input) INTEGER
+*          The number of superdiagonals of the matrix B if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KA >= KB >= 0.
+*
+*  AB      (input/output) COMPLEX array, dimension (LDAB,N)
+*          On entry, the upper or lower triangle of the Hermitian band
+*          matrix A, stored in the first ka+1 rows of the array.  The
+*          j-th column of A is stored in the j-th column of the array AB
+*          as follows:
+*          if UPLO = 'U', AB(ka+1+i-j,j) = A(i,j) for max(1,j-ka)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+ka).
+*
+*          On exit, the transformed matrix X**H*A*X, stored in the same
+*          format as A.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KA+1.
+*
+*  BB      (input) COMPLEX array, dimension (LDBB,N)
+*          The banded factor S from the split Cholesky factorization of
+*          B, as returned by CPBSTF, stored in the first kb+1 rows of
+*          the array.
+*
+*  LDBB    (input) INTEGER
+*          The leading dimension of the array BB.  LDBB >= KB+1.
+*
+*  X       (output) COMPLEX array, dimension (LDX,N)
+*          If VECT = 'V', the n-by-n matrix X.
+*          If VECT = 'N', the array X is not referenced.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.
+*          LDX >= max(1,N) if VECT = 'V'; LDX >= 1 otherwise.
+*
+*  WORK    (workspace) COMPLEX array, dimension (N)
+*
+*  RWORK   (workspace) REAL array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chbgv"></A>
+  <H2>chbgv</H2>
+  
+  <PRE>
 USAGE:
-  w, z, info, ab, bb = NumRu::Lapack.chbgv( jobz, uplo, ka, kb, ab, bb)
-    or
-  NumRu::Lapack.chbgv  # print help
+  w, z, info, ab, bb = NumRu::Lapack.chbgv( jobz, uplo, ka, kb, ab, bb, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -617,10 +905,73 @@ FORTRAN MANUAL
   <H2>chbgvd</H2>
   
   <PRE>
+-th column of B is stored in the j-th column of the array BB
+*          as follows:
+*          if UPLO = 'U', BB(kb+1+i-j,j) = B(i,j) for max(1,j-kb)<=i<=j;
+*          if UPLO = 'L', BB(1+i-j,j)    = B(i,j) for j<=i<=min(n,j+kb).
+*
+*          On exit, the factor S from the split Cholesky factorization
+*          B = S**H*S, as returned by CPBSTF.
+*
+*  LDBB    (input) INTEGER
+*          The leading dimension of the array BB.  LDBB >= KB+1.
+*
+*  W       (output) REAL array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) COMPLEX array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
+*          eigenvectors, with the i-th column of Z holding the
+*          eigenvector associated with W(i). The eigenvectors are
+*          normalized so that Z**H*B*Z = I.
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= N.
+*
+*  WORK    (workspace) COMPLEX array, dimension (N)
+*
+*  RWORK   (workspace) REAL array, dimension (3*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is:
+*             <= N:  the algorithm failed to converge:
+*                    i off-diagonal elements of an intermediate
+*                    tridiagonal form did not converge to zero;
+*             > N:   if INFO = N + i, for 1 <= i <= N, then CPBSTF
+*                    returned INFO = i: B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            UPPER, WANTZ
+      CHARACTER          VECT
+      INTEGER            IINFO, INDE, INDWRK
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CHBGST, CHBTRD, CPBSTF, CSTEQR, SSTERF, XERBLA
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chbgvd"></A>
+  <H2>chbgvd</H2>
+  
+  <PRE>
 USAGE:
-  w, z, work, rwork, iwork, info, ab, bb = NumRu::Lapack.chbgvd( jobz, uplo, ka, kb, ab, bb, lwork, lrwork, liwork)
-    or
-  NumRu::Lapack.chbgvd  # print help
+  w, z, work, rwork, iwork, info, ab, bb = NumRu::Lapack.chbgvd( jobz, uplo, ka, kb, ab, bb, lwork, lrwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -780,10 +1131,35 @@ FORTRAN MANUAL
   <H2>chbgvx</H2>
   
   <PRE>
+f INFO = i, and i is:
+*             <= N:  the algorithm failed to converge:
+*                    i off-diagonal elements of an intermediate
+*                    tridiagonal form did not converge to zero;
+*             > N:   if INFO = N + i, for 1 <= i <= N, then CPBSTF
+*                    returned INFO = i: B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chbgvx"></A>
+  <H2>chbgvx</H2>
+  
+  <PRE>
 USAGE:
-  q, m, w, z, ifail, info, ab, bb = NumRu::Lapack.chbgvx( jobz, range, uplo, ka, kb, ab, bb, vl, vu, il, iu, abstol)
-    or
-  NumRu::Lapack.chbgvx  # print help
+  q, m, w, z, ifail, info, ab, bb = NumRu::Lapack.chbgvx( jobz, range, uplo, ka, kb, ab, bb, vl, vu, il, iu, abstol, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -956,10 +1332,105 @@ FORTRAN MANUAL
   <H2>chbtrd</H2>
   
   <PRE>
+y Q is not referenced.
+*
+*  LDQ     (input) INTEGER
+*          The leading dimension of the array Q.  If JOBZ = 'N',
+*          LDQ >= 1. If JOBZ = 'V', LDQ >= max(1,N).
+*
+*  VL      (input) REAL
+*  VU      (input) REAL
+*          If RANGE='V', the lower and upper bounds of the interval to
+*          be searched for eigenvalues. VL < VU.
+*          Not referenced if RANGE = 'A' or 'I'.
+*
+*  IL      (input) INTEGER
+*  IU      (input) INTEGER
+*          If RANGE='I', the indices (in ascending order) of the
+*          smallest and largest eigenvalues to be returned.
+*          1 <= IL <= IU <= N, if N > 0; IL = 1 and IU = 0 if N = 0.
+*          Not referenced if RANGE = 'A' or 'V'.
+*
+*  ABSTOL  (input) REAL
+*          The absolute error tolerance for the eigenvalues.
+*          An approximate eigenvalue is accepted as converged
+*          when it is determined to lie in an interval [a,b]
+*          of width less than or equal to
+*
+*                  ABSTOL + EPS *   max( |a|,|b| ) ,
+*
+*          where EPS is the machine precision.  If ABSTOL is less than
+*          or equal to zero, then  EPS*|T|  will be used in its place,
+*          where |T| is the 1-norm of the tridiagonal matrix obtained
+*          by reducing AP to tridiagonal form.
+*
+*          Eigenvalues will be computed most accurately when ABSTOL is
+*          set to twice the underflow threshold 2*SLAMCH('S'), not zero.
+*          If this routine returns with INFO>0, indicating that some
+*          eigenvectors did not converge, try setting ABSTOL to
+*          2*SLAMCH('S').
+*
+*  M       (output) INTEGER
+*          The total number of eigenvalues found.  0 <= M <= N.
+*          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
+*
+*  W       (output) REAL array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) COMPLEX array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
+*          eigenvectors, with the i-th column of Z holding the
+*          eigenvector associated with W(i). The eigenvectors are
+*          normalized so that Z**H*B*Z = I.
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= N.
+*
+*  WORK    (workspace) COMPLEX array, dimension (N)
+*
+*  RWORK   (workspace) REAL array, dimension (7*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (5*N)
+*
+*  IFAIL   (output) INTEGER array, dimension (N)
+*          If JOBZ = 'V', then if INFO = 0, the first M elements of
+*          IFAIL are zero.  If INFO > 0, then IFAIL contains the
+*          indices of the eigenvectors that failed to converge.
+*          If JOBZ = 'N', then IFAIL is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is:
+*             <= N:  then i eigenvectors failed to converge.  Their
+*                    indices are stored in array IFAIL.
+*             > N:   if INFO = N + i, for 1 <= i <= N, then CPBSTF
+*                    returned INFO = i: B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chbtrd"></A>
+  <H2>chbtrd</H2>
+  
+  <PRE>
 USAGE:
-  d, e, info, ab, q = NumRu::Lapack.chbtrd( vect, uplo, kd, ab, q)
-    or
-  NumRu::Lapack.chbtrd  # print help
+  d, e, info, ab, q = NumRu::Lapack.chbtrd( vect, uplo, kd, ab, q, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

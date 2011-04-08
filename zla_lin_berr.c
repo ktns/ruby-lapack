@@ -2,64 +2,80 @@
 
 extern VOID zla_lin_berr_(integer *n, integer *nz, integer *nrhs, doublereal *res, doublereal *ayb, doublecomplex *berr);
 
+static VALUE sHelp, sUsage;
+
 static VALUE
-rb_zla_lin_berr(int argc, VALUE *argv, VALUE self){
-  VALUE rb_nz;
+rblapack_zla_lin_berr(int argc, VALUE *argv, VALUE self){
+  VALUE rblapack_nz;
   integer nz; 
-  VALUE rb_res;
+  VALUE rblapack_res;
   doublereal *res; 
-  VALUE rb_ayb;
+  VALUE rblapack_ayb;
   doublereal *ayb; 
-  VALUE rb_berr;
+  VALUE rblapack_berr;
   doublecomplex *berr; 
 
   integer n;
   integer nrhs;
 
-  if (argc == 0) {
-    printf("%s\n", "USAGE:\n  berr = NumRu::Lapack.zla_lin_berr( nz, res, ayb)\n    or\n  NumRu::Lapack.zla_lin_berr  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE ZLA_LIN_BERR ( N, NZ, NRHS, RES, AYB, BERR )\n\n*  Purpose\n*  =======\n*\n*     ZLA_LIN_BERR computes componentwise relative backward error from\n*     the formula\n*         max(i) ( abs(R(i)) / ( abs(op(A_s))*abs(Y) + abs(B_s) )(i) )\n*     where abs(Z) is the componentwise absolute value of the matrix\n*     or vector Z.\n*\n\n*     N       (input) INTEGER\n*     The number of linear equations, i.e., the order of the\n*     matrix A.  N >= 0.\n*\n*     NZ      (input) INTEGER\n*     We add (NZ+1)*SLAMCH( 'Safe minimum' ) to R(i) in the numerator to\n*     guard against spuriously zero residuals. Default value is N.\n*\n*     NRHS    (input) INTEGER\n*     The number of right hand sides, i.e., the number of columns\n*     of the matrices AYB, RES, and BERR.  NRHS >= 0.\n*\n*     RES    (input) DOUBLE PRECISION array, dimension (N,NRHS)\n*     The residual matrix, i.e., the matrix R in the relative backward\n*     error formula above.\n*\n*     AYB    (input) DOUBLE PRECISION array, dimension (N, NRHS)\n*     The denominator in the relative backward error formula above, i.e.,\n*     the matrix abs(op(A_s))*abs(Y) + abs(B_s). The matrices A, Y, and B\n*     are from iterative refinement (see zla_gerfsx_extended.f).\n*     \n*     BERR   (output) COMPLEX*16 array, dimension (NRHS)\n*     The componentwise relative backward error from the formula above.\n*\n\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      DOUBLE PRECISION   TMP\n      INTEGER            I, J\n      COMPLEX*16         CDUM\n*     ..\n*     .. Intrinsic Functions ..\n      INTRINSIC          ABS, REAL, DIMAG, MAX\n*     ..\n*     .. External Functions ..\n      EXTERNAL           DLAMCH\n      DOUBLE PRECISION   DLAMCH\n      DOUBLE PRECISION   SAFE1\n*     ..\n*     .. Statement Functions ..\n      COMPLEX*16         CABS1\n*     ..\n*     .. Statement Function Definitions ..\n      CABS1( CDUM ) = ABS( DBLE( CDUM ) ) + ABS( DIMAG( CDUM ) )\n*     ..\n\n");
-    return Qnil;
-  }
+  VALUE rb_options;
+  if (argc > 0 && TYPE(argv[argc-1]) == T_HASH) {
+    argc--;
+    rb_options = argv[argc];
+    if (rb_hash_aref(rb_options, sHelp) == Qtrue) {
+      printf("%s\n", "USAGE:\n  berr = NumRu::Lapack.zla_lin_berr( nz, res, ayb, [:usage => usage, :help => help])\n\n\nFORTRAN MANUAL\n      SUBROUTINE ZLA_LIN_BERR ( N, NZ, NRHS, RES, AYB, BERR )\n\n*  Purpose\n*  =======\n*\n*     ZLA_LIN_BERR computes componentwise relative backward error from\n*     the formula\n*         max(i) ( abs(R(i)) / ( abs(op(A_s))*abs(Y) + abs(B_s) )(i) )\n*     where abs(Z) is the componentwise absolute value of the matrix\n*     or vector Z.\n*\n\n*     N       (input) INTEGER\n*     The number of linear equations, i.e., the order of the\n*     matrix A.  N >= 0.\n*\n*     NZ      (input) INTEGER\n*     We add (NZ+1)*SLAMCH( 'Safe minimum' ) to R(i) in the numerator to\n*     guard against spuriously zero residuals. Default value is N.\n*\n*     NRHS    (input) INTEGER\n*     The number of right hand sides, i.e., the number of columns\n*     of the matrices AYB, RES, and BERR.  NRHS >= 0.\n*\n*     RES    (input) DOUBLE PRECISION array, dimension (N,NRHS)\n*     The residual matrix, i.e., the matrix R in the relative backward\n*     error formula above.\n*\n*     AYB    (input) DOUBLE PRECISION array, dimension (N, NRHS)\n*     The denominator in the relative backward error formula above, i.e.,\n*     the matrix abs(op(A_s))*abs(Y) + abs(B_s). The matrices A, Y, and B\n*     are from iterative refinement (see zla_gerfsx_extended.f).\n*     \n*     BERR   (output) COMPLEX*16 array, dimension (NRHS)\n*     The componentwise relative backward error from the formula above.\n*\n\n*  =====================================================================\n*\n*     .. Local Scalars ..\n      DOUBLE PRECISION   TMP\n      INTEGER            I, J\n      COMPLEX*16         CDUM\n*     ..\n*     .. Intrinsic Functions ..\n      INTRINSIC          ABS, REAL, DIMAG, MAX\n*     ..\n*     .. External Functions ..\n      EXTERNAL           DLAMCH\n      DOUBLE PRECISION   DLAMCH\n      DOUBLE PRECISION   SAFE1\n*     ..\n*     .. Statement Functions ..\n      COMPLEX*16         CABS1\n*     ..\n*     .. Statement Function Definitions ..\n      CABS1( CDUM ) = ABS( DBLE( CDUM ) ) + ABS( DIMAG( CDUM ) )\n*     ..\n\n");
+      rb_exit(0);
+    }
+    if (rb_hash_aref(rb_options, sUsage) == Qtrue) {
+      printf("%s\n", "USAGE:\n  berr = NumRu::Lapack.zla_lin_berr( nz, res, ayb, [:usage => usage, :help => help])\n");
+      rb_exit(0);
+    } 
+  } else
+    rb_options = Qnil;
   if (argc != 3)
     rb_raise(rb_eArgError,"wrong number of arguments (%d for 3)", argc);
-  rb_nz = argv[0];
-  rb_res = argv[1];
-  rb_ayb = argv[2];
+  rblapack_nz = argv[0];
+  rblapack_res = argv[1];
+  rblapack_ayb = argv[2];
+  if (rb_options != Qnil) {
+  }
 
-  if (!NA_IsNArray(rb_res))
+  if (!NA_IsNArray(rblapack_res))
     rb_raise(rb_eArgError, "res (2th argument) must be NArray");
-  if (NA_RANK(rb_res) != 2)
+  if (NA_RANK(rblapack_res) != 2)
     rb_raise(rb_eArgError, "rank of res (2th argument) must be %d", 2);
-  nrhs = NA_SHAPE1(rb_res);
-  n = NA_SHAPE0(rb_res);
-  if (NA_TYPE(rb_res) != NA_DFLOAT)
-    rb_res = na_change_type(rb_res, NA_DFLOAT);
-  res = NA_PTR_TYPE(rb_res, doublereal*);
-  nz = NUM2INT(rb_nz);
-  if (!NA_IsNArray(rb_ayb))
+  nrhs = NA_SHAPE1(rblapack_res);
+  n = NA_SHAPE0(rblapack_res);
+  if (NA_TYPE(rblapack_res) != NA_DFLOAT)
+    rblapack_res = na_change_type(rblapack_res, NA_DFLOAT);
+  res = NA_PTR_TYPE(rblapack_res, doublereal*);
+  nz = NUM2INT(rblapack_nz);
+  if (!NA_IsNArray(rblapack_ayb))
     rb_raise(rb_eArgError, "ayb (3th argument) must be NArray");
-  if (NA_RANK(rb_ayb) != 2)
+  if (NA_RANK(rblapack_ayb) != 2)
     rb_raise(rb_eArgError, "rank of ayb (3th argument) must be %d", 2);
-  if (NA_SHAPE1(rb_ayb) != nrhs)
+  if (NA_SHAPE1(rblapack_ayb) != nrhs)
     rb_raise(rb_eRuntimeError, "shape 1 of ayb must be the same as shape 1 of res");
-  if (NA_SHAPE0(rb_ayb) != n)
+  if (NA_SHAPE0(rblapack_ayb) != n)
     rb_raise(rb_eRuntimeError, "shape 0 of ayb must be the same as shape 0 of res");
-  if (NA_TYPE(rb_ayb) != NA_DFLOAT)
-    rb_ayb = na_change_type(rb_ayb, NA_DFLOAT);
-  ayb = NA_PTR_TYPE(rb_ayb, doublereal*);
+  if (NA_TYPE(rblapack_ayb) != NA_DFLOAT)
+    rblapack_ayb = na_change_type(rblapack_ayb, NA_DFLOAT);
+  ayb = NA_PTR_TYPE(rblapack_ayb, doublereal*);
   {
     int shape[1];
     shape[0] = nrhs;
-    rb_berr = na_make_object(NA_DCOMPLEX, 1, shape, cNArray);
+    rblapack_berr = na_make_object(NA_DCOMPLEX, 1, shape, cNArray);
   }
-  berr = NA_PTR_TYPE(rb_berr, doublecomplex*);
+  berr = NA_PTR_TYPE(rblapack_berr, doublecomplex*);
 
   zla_lin_berr_(&n, &nz, &nrhs, res, ayb, berr);
 
-  return rb_berr;
+  return rblapack_berr;
 }
 
 void
 init_lapack_zla_lin_berr(VALUE mLapack){
-  rb_define_module_function(mLapack, "zla_lin_berr", rb_zla_lin_berr, -1);
+  rb_define_module_function(mLapack, "zla_lin_berr", rblapack_zla_lin_berr, -1);
+  sHelp = ID2SYM(rb_intern("help"));
+  sUsage = ID2SYM(rb_intern("usage"));
 }

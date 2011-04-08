@@ -27,10 +27,131 @@
   <H2>chpcon</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX routines for (complex) Hermitian, packed storage matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX routines for (complex) Hermitian, packed storage matrix</H1>
+    <UL>
+      <LI><A HREF="#chpcon">chpcon</A> : </LI>
+      <LI><A HREF="#chpev">chpev</A> : </LI>
+      <LI><A HREF="#chpevd">chpevd</A> : </LI>
+      <LI><A HREF="#chpevx">chpevx</A> : </LI>
+      <LI><A HREF="#chpgst">chpgst</A> : </LI>
+      <LI><A HREF="#chpgv">chpgv</A> : </LI>
+      <LI><A HREF="#chpgvd">chpgvd</A> : </LI>
+      <LI><A HREF="#chpgvx">chpgvx</A> : </LI>
+      <LI><A HREF="#chprfs">chprfs</A> : </LI>
+      <LI><A HREF="#chpsv">chpsv</A> : </LI>
+      <LI><A HREF="#chpsvx">chpsvx</A> : </LI>
+      <LI><A HREF="#chptrd">chptrd</A> : </LI>
+      <LI><A HREF="#chptrf">chptrf</A> : </LI>
+      <LI><A HREF="#chptri">chptri</A> : </LI>
+      <LI><A HREF="#chptrs">chptrs</A> : </LI>
+    </UL>
+
+  <A NAME="chpcon"></A>
+  <H2>chpcon</H2>
+  
+  <PRE>
 USAGE:
-  rcond, info = NumRu::Lapack.chpcon( uplo, ap, ipiv, anorm)
-    or
-  NumRu::Lapack.chpcon  # print help
+  rcond, info = NumRu::Lapack.chpcon( uplo, ap, ipiv, anorm, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE CHPCON( UPLO, N, AP, IPIV, ANORM, RCOND, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CHPCON estimates the reciprocal of the condition number of a complex
+*  Hermitian packed matrix A using the factorization A = U*D*U**H or
+*  A = L*D*L**H computed by CHPTRF.
+*
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the details of the factorization are stored
+*          as an upper or lower triangular matrix.
+*          = 'U':  Upper triangular, form is A = U*D*U**H;
+*          = 'L':  Lower triangular, form is A = L*D*L**H.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input) COMPLEX array, dimension (N*(N+1)/2)
+*          The block diagonal matrix D and the multipliers used to
+*          obtain the factor U or L as computed by CHPTRF, stored as a
+*          packed triangular matrix.
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D
+*          as determined by CHPTRF.
+*
+*  ANORM   (input) REAL
+*          The 1-norm of the original matrix A.
+*
+*  RCOND   (output) REAL
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
+*          estimate of the 1-norm of inv(A) computed in this routine.
+*
+*  WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chpev"></A>
+  <H2>chpev</H2>
+  
+  <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX routines for (complex) Hermitian, packed storage matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX routines for (complex) Hermitian, packed storage matrix</H1>
+    <UL>
+      <LI><A HREF="#chpcon">chpcon</A> : </LI>
+      <LI><A HREF="#chpev">chpev</A> : </LI>
+      <LI><A HREF="#chpevd">chpevd</A> : </LI>
+      <LI><A HREF="#chpevx">chpevx</A> : </LI>
+      <LI><A HREF="#chpgst">chpgst</A> : </LI>
+      <LI><A HREF="#chpgv">chpgv</A> : </LI>
+      <LI><A HREF="#chpgvd">chpgvd</A> : </LI>
+      <LI><A HREF="#chpgvx">chpgvx</A> : </LI>
+      <LI><A HREF="#chprfs">chprfs</A> : </LI>
+      <LI><A HREF="#chpsv">chpsv</A> : </LI>
+      <LI><A HREF="#chpsvx">chpsvx</A> : </LI>
+      <LI><A HREF="#chptrd">chptrd</A> : </LI>
+      <LI><A HREF="#chptrf">chptrf</A> : </LI>
+      <LI><A HREF="#chptri">chptri</A> : </LI>
+      <LI><A HREF="#chptrs">chptrs</A> : </LI>
+    </UL>
+
+  <A NAME="chpcon"></A>
+  <H2>chpcon</H2>
+  
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.chpcon( uplo, ap, ipiv, anorm, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -95,9 +216,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  w, z, info, ap = NumRu::Lapack.chpev( jobz, uplo, ap)
-    or
-  NumRu::Lapack.chpev  # print help
+  w, z, info, ap = NumRu::Lapack.chpev( jobz, uplo, ap, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -174,10 +293,51 @@ FORTRAN MANUAL
   <H2>chpevd</H2>
   
   <PRE>
+xit, AP is overwritten by values generated during the
+*          reduction to tridiagonal form.  If UPLO = 'U', the diagonal
+*          and first superdiagonal of the tridiagonal matrix T overwrite
+*          the corresponding elements of A, and if UPLO = 'L', the
+*          diagonal and first subdiagonal of T overwrite the
+*          corresponding elements of A.
+*
+*  W       (output) REAL array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) COMPLEX array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
+*          eigenvectors of the matrix A, with the i-th column of Z
+*          holding the eigenvector associated with W(i).
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) COMPLEX array, dimension (max(1, 2*N-1))
+*
+*  RWORK   (workspace) REAL array, dimension (max(1, 3*N-2))
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, the algorithm failed to converge; i
+*                off-diagonal elements of an intermediate tridiagonal
+*                form did not converge to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chpevd"></A>
+  <H2>chpevd</H2>
+  
+  <PRE>
 USAGE:
-  w, z, work, rwork, iwork, info, ap = NumRu::Lapack.chpevd( jobz, uplo, ap, lwork, lrwork, liwork)
-    or
-  NumRu::Lapack.chpevd  # print help
+  w, z, work, rwork, iwork, info, ap = NumRu::Lapack.chpevd( jobz, uplo, ap, lwork, lrwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -303,10 +463,74 @@ FORTRAN MANUAL
   <H2>chpevx</H2>
   
   <PRE>
+    JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the required LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of array WORK.
+*          If N <= 1,               LWORK must be at least 1.
+*          If JOBZ = 'N' and N > 1, LWORK must be at least N.
+*          If JOBZ = 'V' and N > 1, LWORK must be at least 2*N.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the required sizes of the WORK, RWORK and
+*          IWORK arrays, returns these values as the first entries of
+*          the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  RWORK   (workspace/output) REAL array, dimension (MAX(1,LRWORK))
+*          On exit, if INFO = 0, RWORK(1) returns the required LRWORK.
+*
+*  LRWORK  (input) INTEGER
+*          The dimension of array RWORK.
+*          If N <= 1,               LRWORK must be at least 1.
+*          If JOBZ = 'N' and N > 1, LRWORK must be at least N.
+*          If JOBZ = 'V' and N > 1, LRWORK must be at least
+*                    1 + 5*N + 2*N**2.
+*
+*          If LRWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the required sizes of the WORK, RWORK
+*          and IWORK arrays, returns these values as the first entries
+*          of the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
+*          On exit, if INFO = 0, IWORK(1) returns the required LIWORK.
+*
+*  LIWORK  (input) INTEGER
+*          The dimension of array IWORK.
+*          If JOBZ  = 'N' or N <= 1, LIWORK must be at least 1.
+*          If JOBZ  = 'V' and N > 1, LIWORK must be at least 3 + 5*N.
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the required sizes of the WORK, RWORK
+*          and IWORK arrays, returns these values as the first entries
+*          of the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, the algorithm failed to converge; i
+*                off-diagonal elements of an intermediate tridiagonal
+*                form did not converge to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chpevx"></A>
+  <H2>chpevx</H2>
+  
+  <PRE>
 USAGE:
-  m, w, z, ifail, info, ap = NumRu::Lapack.chpevx( jobz, range, uplo, ap, vl, vu, il, iu, abstol)
-    or
-  NumRu::Lapack.chpevx  # print help
+  m, w, z, ifail, info, ap = NumRu::Lapack.chpevx( jobz, range, uplo, ap, vl, vu, il, iu, abstol, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -445,10 +669,106 @@ FORTRAN MANUAL
   <H2>chpgst</H2>
   
   <PRE>
+
+*                Their indices are stored in array IFAIL.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chpgst"></A>
+  <H2>chpgst</H2>
+  
+  <PRE>
 USAGE:
-  info, ap = NumRu::Lapack.chpgst( itype, uplo, n, ap, bp)
-    or
-  NumRu::Lapack.chpgst  # print help
+  info, ap = NumRu::Lapack.chpgst( itype, uplo, n, ap, bp, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE CHPGST( ITYPE, UPLO, N, AP, BP, INFO )
+
+*  Purpose
+*  =======
+*
+*  CHPGST reduces a complex Hermitian-definite generalized
+*  eigenproblem to standard form, using packed storage.
+*
+*  If ITYPE = 1, the problem is A*x = lambda*B*x,
+*  and A is overwritten by inv(U**H)*A*inv(U) or inv(L)*A*inv(L**H)
+*
+*  If ITYPE = 2 or 3, the problem is A*B*x = lambda*x or
+*  B*A*x = lambda*x, and A is overwritten by U*A*U**H or L**H*A*L.
+*
+*  B must have been previously factorized as U**H*U or L*L**H by CPPTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  ITYPE   (input) INTEGER
+*          = 1: compute inv(U**H)*A*inv(U) or inv(L)*A*inv(L**H);
+*          = 2 or 3: compute U*A*U**H or L**H*A*L.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored and B is factored as
+*                  U**H*U;
+*          = 'L':  Lower triangle of A is stored and B is factored as
+*                  L*L**H.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  AP      (input/output) COMPLEX array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the Hermitian matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.
+*
+*          On exit, if INFO = 0, the transformed matrix, stored in the
+*          same format as A.
+*
+*  BP      (input) COMPLEX array, dimension (N*(N+1)/2)
+*          The triangular factor from the Cholesky factorization of B,
+*          stored in the same format as A, as returned by CPPTRF.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chpgv"></A>
+  <H2>chpgv</H2>
+  
+  <PRE>
+
+*                Their indices are stored in array IFAIL.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chpgst"></A>
+  <H2>chpgst</H2>
+  
+  <PRE>
+USAGE:
+  info, ap = NumRu::Lapack.chpgst( itype, uplo, n, ap, bp, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -516,9 +836,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  w, z, info, ap, bp = NumRu::Lapack.chpgv( itype, jobz, uplo, ap, bp)
-    or
-  NumRu::Lapack.chpgv  # print help
+  w, z, info, ap, bp = NumRu::Lapack.chpgv( itype, jobz, uplo, ap, bp, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -628,10 +946,72 @@ FORTRAN MANUAL
   <H2>chpgvd</H2>
   
   <PRE>
+ian matrix
+*          B, packed columnwise in a linear array.  The j-th column of B
+*          is stored in the array BP as follows:
+*          if UPLO = 'U', BP(i + (j-1)*j/2) = B(i,j) for 1<=i<=j;
+*          if UPLO = 'L', BP(i + (j-1)*(2*n-j)/2) = B(i,j) for j<=i<=n.
+*
+*          On exit, the triangular factor U or L from the Cholesky
+*          factorization B = U**H*U or B = L*L**H, in the same storage
+*          format as B.
+*
+*  W       (output) REAL array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) COMPLEX array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
+*          eigenvectors.  The eigenvectors are normalized as follows:
+*          if ITYPE = 1 or 2, Z**H*B*Z = I;
+*          if ITYPE = 3, Z**H*inv(B)*Z = I.
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) COMPLEX array, dimension (max(1, 2*N-1))
+*
+*  RWORK   (workspace) REAL array, dimension (max(1, 3*N-2))
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  CPPTRF or CHPEV returned an error code:
+*             <= N:  if INFO = i, CHPEV failed to converge;
+*                    i off-diagonal elements of an intermediate
+*                    tridiagonal form did not convergeto zero;
+*             > N:   if INFO = N + i, for 1 <= i <= n, then the leading
+*                    minor of order i of B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            UPPER, WANTZ
+      CHARACTER          TRANS
+      INTEGER            J, NEIG
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CHPEV, CHPGST, CPPTRF, CTPMV, CTPSV, XERBLA
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chpgvd"></A>
+  <H2>chpgvd</H2>
+  
+  <PRE>
 USAGE:
-  w, z, iwork, info, ap, bp = NumRu::Lapack.chpgvd( itype, jobz, uplo, ap, bp, lwork, lrwork, liwork)
-    or
-  NumRu::Lapack.chpgvd  # print help
+  w, z, iwork, info, ap, bp = NumRu::Lapack.chpgvd( itype, jobz, uplo, ap, bp, lwork, lrwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -798,10 +1178,45 @@ FORTRAN MANUAL
   <H2>chpgvx</H2>
   
   <PRE>
+itive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
+*
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            LQUERY, UPPER, WANTZ
+      CHARACTER          TRANS
+      INTEGER            J, LIWMIN, LRWMIN, LWMIN, NEIG
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CHPEVD, CHPGST, CPPTRF, CTPMV, CTPSV, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX, REAL
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chpgvx"></A>
+  <H2>chpgvx</H2>
+  
+  <PRE>
 USAGE:
-  m, w, z, ifail, info, ap, bp = NumRu::Lapack.chpgvx( itype, jobz, range, uplo, ap, bp, vl, vu, il, iu, abstol, ldz)
-    or
-  NumRu::Lapack.chpgvx  # print help
+  m, w, z, ifail, info, ap, bp = NumRu::Lapack.chpgvx( itype, jobz, range, uplo, ap, bp, vl, vu, il, iu, abstol, ldz, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -983,10 +1398,121 @@ FORTRAN MANUAL
   <H2>chprfs</H2>
   
   <PRE>
+/A>
+
+  <A NAME="chprfs"></A>
+  <H2>chprfs</H2>
+  
+  <PRE>
 USAGE:
-  ferr, berr, info, x = NumRu::Lapack.chprfs( uplo, ap, afp, ipiv, b, x)
-    or
-  NumRu::Lapack.chprfs  # print help
+  ferr, berr, info, x = NumRu::Lapack.chprfs( uplo, ap, afp, ipiv, b, x, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE CHPRFS( UPLO, N, NRHS, AP, AFP, IPIV, B, LDB, X, LDX, FERR, BERR, WORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CHPRFS improves the computed solution to a system of linear
+*  equations when the coefficient matrix is Hermitian indefinite
+*  and packed, and provides error bounds and backward error estimates
+*  for the solution.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrices B and X.  NRHS >= 0.
+*
+*  AP      (input) COMPLEX array, dimension (N*(N+1)/2)
+*          The upper or lower triangle of the Hermitian matrix A, packed
+*          columnwise in a linear array.  The j-th column of A is stored
+*          in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*
+*  AFP     (input) COMPLEX array, dimension (N*(N+1)/2)
+*          The factored form of the matrix A.  AFP contains the block
+*          diagonal matrix D and the multipliers used to obtain the
+*          factor U or L from the factorization A = U*D*U**H or
+*          A = L*D*L**H as computed by CHPTRF, stored as a packed
+*          triangular matrix.
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D
+*          as determined by CHPTRF.
+*
+*  B       (input) COMPLEX array, dimension (LDB,NRHS)
+*          The right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (input/output) COMPLEX array, dimension (LDX,NRHS)
+*          On entry, the solution matrix X, as computed by CHPTRS.
+*          On exit, the improved solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  FERR    (output) REAL array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) REAL array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*  RWORK   (workspace) REAL array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+*  Internal Parameters
+*  ===================
+*
+*  ITMAX is the maximum number of steps of iterative refinement.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chpsv"></A>
+  <H2>chpsv</H2>
+  
+  <PRE>
+/A>
+
+  <A NAME="chprfs"></A>
+  <H2>chprfs</H2>
+  
+  <PRE>
+USAGE:
+  ferr, berr, info, x = NumRu::Lapack.chprfs( uplo, ap, afp, ipiv, b, x, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1087,9 +1613,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  ipiv, info, ap, b = NumRu::Lapack.chpsv( uplo, ap, b)
-    or
-  NumRu::Lapack.chpsv  # print help
+  ipiv, info, ap, b = NumRu::Lapack.chpsv( uplo, ap, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1205,10 +1729,110 @@ FORTRAN MANUAL
   <H2>chpsvx</H2>
   
   <PRE>
+ as
+*     A = U * D * U**H,  if UPLO = 'U', or
+*     A = L * D * L**H,  if UPLO = 'L',
+*  where U (or L) is a product of permutation and unit upper (lower)
+*  triangular matrices, D is Hermitian and block diagonal with 1-by-1
+*  and 2-by-2 diagonal blocks.  The factored form of A is then used to
+*  solve the system of equations A * X = B.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The number of linear equations, i.e., the order of the
+*          matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  AP      (input/output) COMPLEX array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the Hermitian matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.
+*          See below for further details.
+*
+*          On exit, the block diagonal matrix D and the multipliers used
+*          to obtain the factor U or L from the factorization
+*          A = U*D*U**H or A = L*D*L**H as computed by CHPTRF, stored as
+*          a packed triangular matrix in the same storage format as A.
+*
+*  IPIV    (output) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D, as
+*          determined by CHPTRF.  If IPIV(k) > 0, then rows and columns
+*          k and IPIV(k) were interchanged, and D(k,k) is a 1-by-1
+*          diagonal block.  If UPLO = 'U' and IPIV(k) = IPIV(k-1) < 0,
+*          then rows and columns k-1 and -IPIV(k) were interchanged and
+*          D(k-1:k,k-1:k) is a 2-by-2 diagonal block.  If UPLO = 'L' and
+*          IPIV(k) = IPIV(k+1) < 0, then rows and columns k+1 and
+*          -IPIV(k) were interchanged and D(k:k+1,k:k+1) is a 2-by-2
+*          diagonal block.
+*
+*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)
+*          On entry, the N-by-NRHS right hand side matrix B.
+*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, D(i,i) is exactly zero.  The factorization
+*                has been completed, but the block diagonal matrix D is
+*                exactly singular, so the solution could not be
+*                computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  The packed storage scheme is illustrated by the following example
+*  when N = 4, UPLO = 'U':
+*
+*  Two-dimensional storage of the Hermitian matrix A:
+*
+*     a11 a12 a13 a14
+*         a22 a23 a24
+*             a33 a34     (aij = conjg(aji))
+*                 a44
+*
+*  Packed storage of the upper triangle of A:
+*
+*  AP = [ a11, a12, a22, a13, a23, a33, a14, a24, a34, a44 ]
+*
+*  =====================================================================
+*
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CHPTRF, CHPTRS, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chpsvx"></A>
+  <H2>chpsvx</H2>
+  
+  <PRE>
 USAGE:
-  x, rcond, ferr, berr, info, afp, ipiv = NumRu::Lapack.chpsvx( fact, uplo, ap, afp, ipiv, b)
-    or
-  NumRu::Lapack.chpsvx  # print help
+  x, rcond, ferr, berr, info, afp, ipiv = NumRu::Lapack.chpsvx( fact, uplo, ap, afp, ipiv, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1394,10 +2018,93 @@ FORTRAN MANUAL
   <H2>chptrd</H2>
   
   <PRE>
+      of D, as determined by CHPTRF.
+*
+*  B       (input) COMPLEX array, dimension (LDB,NRHS)
+*          The N-by-NRHS right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (output) COMPLEX array, dimension (LDX,NRHS)
+*          If INFO = 0 or INFO = N+1, the N-by-NRHS solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  RCOND   (output) REAL
+*          The estimate of the reciprocal condition number of the matrix
+*          A.  If RCOND is less than the machine precision (in
+*          particular, if RCOND = 0), the matrix is singular to working
+*          precision.  This condition is indicated by a return code of
+*          INFO > 0.
+*
+*  FERR    (output) REAL array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) REAL array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*  RWORK   (workspace) REAL array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is
+*                <= N:  D(i,i) is exactly zero.  The factorization
+*                       has been completed but the factor D is exactly
+*                       singular, so the solution and error bounds could
+*                       not be computed. RCOND = 0 is returned.
+*                = N+1: D is nonsingular, but RCOND is less than machine
+*                       precision, meaning that the matrix is singular
+*                       to working precision.  Nevertheless, the
+*                       solution and error bounds are computed because
+*                       there are a number of situations where the
+*                       computed solution can be more accurate than the
+*                       value of RCOND would suggest.
+*
+
+*  Further Details
+*  ===============
+*
+*  The packed storage scheme is illustrated by the following example
+*  when N = 4, UPLO = 'U':
+*
+*  Two-dimensional storage of the Hermitian matrix A:
+*
+*     a11 a12 a13 a14
+*         a22 a23 a24
+*             a33 a34     (aij = conjg(aji))
+*                 a44
+*
+*  Packed storage of the upper triangle of A:
+*
+*  AP = [ a11, a12, a22, a13, a23, a33, a14, a24, a34, a44 ]
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chptrd"></A>
+  <H2>chptrd</H2>
+  
+  <PRE>
 USAGE:
-  d, e, tau, info, ap = NumRu::Lapack.chptrd( uplo, ap)
-    or
-  NumRu::Lapack.chptrd  # print help
+  d, e, tau, info, ap = NumRu::Lapack.chptrd( uplo, ap, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1495,10 +2202,79 @@ FORTRAN MANUAL
   <H2>chptrf</H2>
   
   <PRE>
+as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*          On exit, if UPLO = 'U', the diagonal and first superdiagonal
+*          of A are overwritten by the corresponding elements of the
+*          tridiagonal matrix T, and the elements above the first
+*          superdiagonal, with the array TAU, represent the unitary
+*          matrix Q as a product of elementary reflectors; if UPLO
+*          = 'L', the diagonal and first subdiagonal of A are over-
+*          written by the corresponding elements of the tridiagonal
+*          matrix T, and the elements below the first subdiagonal, with
+*          the array TAU, represent the unitary matrix Q as a product
+*          of elementary reflectors. See Further Details.
+*
+*  D       (output) REAL array, dimension (N)
+*          The diagonal elements of the tridiagonal matrix T:
+*          D(i) = A(i,i).
+*
+*  E       (output) REAL array, dimension (N-1)
+*          The off-diagonal elements of the tridiagonal matrix T:
+*          E(i) = A(i,i+1) if UPLO = 'U', E(i) = A(i+1,i) if UPLO = 'L'.
+*
+*  TAU     (output) COMPLEX array, dimension (N-1)
+*          The scalar factors of the elementary reflectors (see Further
+*          Details).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  Further Details
+*  ===============
+*
+*  If UPLO = 'U', the matrix Q is represented as a product of elementary
+*  reflectors
+*
+*     Q = H(n-1) . . . H(2) H(1).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a complex scalar, and v is a complex vector with
+*  v(i+1:n) = 0 and v(i) = 1; v(1:i-1) is stored on exit in AP,
+*  overwriting A(1:i-1,i+1), and tau is stored in TAU(i).
+*
+*  If UPLO = 'L', the matrix Q is represented as a product of elementary
+*  reflectors
+*
+*     Q = H(1) H(2) . . . H(n-1).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a complex scalar, and v is a complex vector with
+*  v(1:i) = 0 and v(i+1) = 1; v(i+2:n) is stored on exit in AP,
+*  overwriting A(i+2:n,i), and tau is stored in TAU(i).
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chptrf"></A>
+  <H2>chptrf</H2>
+  
+  <PRE>
 USAGE:
-  ipiv, info, ap = NumRu::Lapack.chptrf( uplo, ap)
-    or
-  NumRu::Lapack.chptrf  # print help
+  ipiv, info, ap = NumRu::Lapack.chptrf( uplo, ap, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1608,10 +2384,74 @@ FORTRAN MANUAL
   <H2>chptri</H2>
   
   <PRE>
+d
+*          columns k-1 and -IPIV(k) were interchanged and D(k-1:k,k-1:k)
+*          is a 2-by-2 diagonal block.  If UPLO = 'L' and IPIV(k) =
+*          IPIV(k+1) < 0, then rows and columns k+1 and -IPIV(k) were
+*          interchanged and D(k:k+1,k:k+1) is a 2-by-2 diagonal block.
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, D(i,i) is exactly zero.  The factorization
+*               has been completed, but the block diagonal matrix D is
+*               exactly singular, and division by zero will occur if it
+*               is used to solve a system of equations.
+*
+
+*  Further Details
+*  ===============
+*
+*  5-96 - Based on modifications by J. Lewis, Boeing Computer Services
+*         Company
+*
+*  If UPLO = 'U', then A = U*D*U', where
+*     U = P(n)*U(n)* ... *P(k)U(k)* ...,
+*  i.e., U is a product of terms P(k)*U(k), where k decreases from n to
+*  1 in steps of 1 or 2, and D is a block diagonal matrix with 1-by-1
+*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
+*  defined by IPIV(k), and U(k) is a unit upper triangular matrix, such
+*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
+*
+*             (   I    v    0   )   k-s
+*     U(k) =  (   0    I    0   )   s
+*             (   0    0    I   )   n-k
+*                k-s   s   n-k
+*
+*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(1:k-1,k).
+*  If s = 2, the upper triangle of D(k) overwrites A(k-1,k-1), A(k-1,k),
+*  and A(k,k), and v overwrites A(1:k-2,k-1:k).
+*
+*  If UPLO = 'L', then A = L*D*L', where
+*     L = P(1)*L(1)* ... *P(k)*L(k)* ...,
+*  i.e., L is a product of terms P(k)*L(k), where k increases from 1 to
+*  n in steps of 1 or 2, and D is a block diagonal matrix with 1-by-1
+*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
+*  defined by IPIV(k), and L(k) is a unit lower triangular matrix, such
+*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
+*
+*             (   I    0     0   )  k-1
+*     L(k) =  (   0    I     0   )  s
+*             (   0    v     I   )  n-k-s+1
+*                k-1   s  n-k-s+1
+*
+*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(k+1:n,k).
+*  If s = 2, the lower triangle of D(k) overwrites A(k,k), A(k+1,k),
+*  and A(k+1,k+1), and v overwrites A(k+2:n,k:k+1).
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chptri"></A>
+  <H2>chptri</H2>
+  
+  <PRE>
 USAGE:
-  info, ap = NumRu::Lapack.chptri( uplo, ap, ipiv)
-    or
-  NumRu::Lapack.chptri  # print help
+  info, ap = NumRu::Lapack.chptri( uplo, ap, ipiv, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1673,10 +2513,28 @@ FORTRAN MANUAL
   <H2>chptrs</H2>
   
   <PRE>
+ace) COMPLEX array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, D(i,i) = 0; the matrix is singular and its
+*               inverse could not be computed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chptrs"></A>
+  <H2>chptrs</H2>
+  
+  <PRE>
 USAGE:
-  info, b = NumRu::Lapack.chptrs( uplo, ap, ipiv, b)
-    or
-  NumRu::Lapack.chptrs  # print help
+  info, b = NumRu::Lapack.chptrs( uplo, ap, ipiv, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

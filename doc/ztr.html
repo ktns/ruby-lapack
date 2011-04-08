@@ -24,10 +24,136 @@
   <H2>ztrcon</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX*16 or DOUBLE COMPLEX routines for triangular (or in some cases quasi-triangular) matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX*16 or DOUBLE COMPLEX routines for triangular (or in some cases quasi-triangular) matrix</H1>
+    <UL>
+      <LI><A HREF="#ztrcon">ztrcon</A> : </LI>
+      <LI><A HREF="#ztrevc">ztrevc</A> : </LI>
+      <LI><A HREF="#ztrexc">ztrexc</A> : </LI>
+      <LI><A HREF="#ztrrfs">ztrrfs</A> : </LI>
+      <LI><A HREF="#ztrsen">ztrsen</A> : </LI>
+      <LI><A HREF="#ztrsna">ztrsna</A> : </LI>
+      <LI><A HREF="#ztrsyl">ztrsyl</A> : </LI>
+      <LI><A HREF="#ztrti2">ztrti2</A> : </LI>
+      <LI><A HREF="#ztrtri">ztrtri</A> : </LI>
+      <LI><A HREF="#ztrtrs">ztrtrs</A> : </LI>
+      <LI><A HREF="#ztrttf">ztrttf</A> : </LI>
+      <LI><A HREF="#ztrttp">ztrttp</A> : </LI>
+    </UL>
+
+  <A NAME="ztrcon"></A>
+  <H2>ztrcon</H2>
+  
+  <PRE>
 USAGE:
-  rcond, info = NumRu::Lapack.ztrcon( norm, uplo, diag, a)
-    or
-  NumRu::Lapack.ztrcon  # print help
+  rcond, info = NumRu::Lapack.ztrcon( norm, uplo, diag, a, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZTRCON( NORM, UPLO, DIAG, N, A, LDA, RCOND, WORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZTRCON estimates the reciprocal of the condition number of a
+*  triangular matrix A, in either the 1-norm or the infinity-norm.
+*
+*  The norm of A is computed and an estimate is obtained for
+*  norm(inv(A)), then the reciprocal of the condition number is
+*  computed as
+*     RCOND = 1 / ( norm(A) * norm(inv(A)) ).
+*
+
+*  Arguments
+*  =========
+*
+*  NORM    (input) CHARACTER*1
+*          Specifies whether the 1-norm condition number or the
+*          infinity-norm condition number is required:
+*          = '1' or 'O':  1-norm;
+*          = 'I':         Infinity-norm.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  A is upper triangular;
+*          = 'L':  A is lower triangular.
+*
+*  DIAG    (input) CHARACTER*1
+*          = 'N':  A is non-unit triangular;
+*          = 'U':  A is unit triangular.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input) COMPLEX*16 array, dimension (LDA,N)
+*          The triangular matrix A.  If UPLO = 'U', the leading N-by-N
+*          upper triangular part of the array A contains the upper
+*          triangular matrix, and the strictly lower triangular part of
+*          A is not referenced.  If UPLO = 'L', the leading N-by-N lower
+*          triangular part of the array A contains the lower triangular
+*          matrix, and the strictly upper triangular part of A is not
+*          referenced.  If DIAG = 'U', the diagonal elements of A are
+*          also not referenced and are assumed to be 1.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  RCOND   (output) DOUBLE PRECISION
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(norm(A) * norm(inv(A))).
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztrevc"></A>
+  <H2>ztrevc</H2>
+  
+  <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX*16 or DOUBLE COMPLEX routines for triangular (or in some cases quasi-triangular) matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX*16 or DOUBLE COMPLEX routines for triangular (or in some cases quasi-triangular) matrix</H1>
+    <UL>
+      <LI><A HREF="#ztrcon">ztrcon</A> : </LI>
+      <LI><A HREF="#ztrevc">ztrevc</A> : </LI>
+      <LI><A HREF="#ztrexc">ztrexc</A> : </LI>
+      <LI><A HREF="#ztrrfs">ztrrfs</A> : </LI>
+      <LI><A HREF="#ztrsen">ztrsen</A> : </LI>
+      <LI><A HREF="#ztrsna">ztrsna</A> : </LI>
+      <LI><A HREF="#ztrsyl">ztrsyl</A> : </LI>
+      <LI><A HREF="#ztrti2">ztrti2</A> : </LI>
+      <LI><A HREF="#ztrtri">ztrtri</A> : </LI>
+      <LI><A HREF="#ztrtrs">ztrtrs</A> : </LI>
+      <LI><A HREF="#ztrttf">ztrttf</A> : </LI>
+      <LI><A HREF="#ztrttp">ztrttp</A> : </LI>
+    </UL>
+
+  <A NAME="ztrcon"></A>
+  <H2>ztrcon</H2>
+  
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.ztrcon( norm, uplo, diag, a, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -103,9 +229,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  m, info, t, vl, vr = NumRu::Lapack.ztrevc( side, howmny, select, t, vl, vr)
-    or
-  NumRu::Lapack.ztrevc  # print help
+  m, info, t, vl, vr = NumRu::Lapack.ztrevc( side, howmny, select, t, vl, vr, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -242,10 +366,128 @@ FORTRAN MANUAL
   <H2>ztrexc</H2>
   
   <PRE>
+nst
+*  possible overflow.
+*
+*  Each eigenvector is normalized so that the element of largest
+*  magnitude has magnitude 1; here the magnitude of a complex number
+*  (x,y) is taken to be |x| + |y|.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztrexc"></A>
+  <H2>ztrexc</H2>
+  
+  <PRE>
 USAGE:
-  info, t, q = NumRu::Lapack.ztrexc( compq, t, q, ifst, ilst)
-    or
-  NumRu::Lapack.ztrexc  # print help
+  info, t, q = NumRu::Lapack.ztrexc( compq, t, q, ifst, ilst, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZTREXC( COMPQ, N, T, LDT, Q, LDQ, IFST, ILST, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZTREXC reorders the Schur factorization of a complex matrix
+*  A = Q*T*Q**H, so that the diagonal element of T with row index IFST
+*  is moved to row ILST.
+*
+*  The Schur form T is reordered by a unitary similarity transformation
+*  Z**H*T*Z, and optionally the matrix Q of Schur vectors is updated by
+*  postmultplying it with Z.
+*
+
+*  Arguments
+*  =========
+*
+*  COMPQ   (input) CHARACTER*1
+*          = 'V':  update the matrix Q of Schur vectors;
+*          = 'N':  do not update Q.
+*
+*  N       (input) INTEGER
+*          The order of the matrix T. N >= 0.
+*
+*  T       (input/output) COMPLEX*16 array, dimension (LDT,N)
+*          On entry, the upper triangular matrix T.
+*          On exit, the reordered upper triangular matrix.
+*
+*  LDT     (input) INTEGER
+*          The leading dimension of the array T. LDT >= max(1,N).
+*
+*  Q       (input/output) COMPLEX*16 array, dimension (LDQ,N)
+*          On entry, if COMPQ = 'V', the matrix Q of Schur vectors.
+*          On exit, if COMPQ = 'V', Q has been postmultiplied by the
+*          unitary transformation matrix Z which reorders T.
+*          If COMPQ = 'N', Q is not referenced.
+*
+*  LDQ     (input) INTEGER
+*          The leading dimension of the array Q.  LDQ >= max(1,N).
+*
+*  IFST    (input) INTEGER
+*  ILST    (input) INTEGER
+*          Specify the reordering of the diagonal elements of T:
+*          The element with row index IFST is moved to row ILST by a
+*          sequence of transpositions between adjacent elements.
+*          1 <= IFST <= N; 1 <= ILST <= N.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            WANTQ
+      INTEGER            K, M1, M2, M3
+      DOUBLE PRECISION   CS
+      COMPLEX*16         SN, T11, T22, TEMP
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           XERBLA, ZLARTG, ZROT
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          DCONJG, MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztrrfs"></A>
+  <H2>ztrrfs</H2>
+  
+  <PRE>
+nst
+*  possible overflow.
+*
+*  Each eigenvector is normalized so that the element of largest
+*  magnitude has magnitude 1; here the magnitude of a complex number
+*  (x,y) is taken to be |x| + |y|.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztrexc"></A>
+  <H2>ztrexc</H2>
+  
+  <PRE>
+USAGE:
+  info, t, q = NumRu::Lapack.ztrexc( compq, t, q, ifst, ilst, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -329,9 +571,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  ferr, berr, info = NumRu::Lapack.ztrrfs( uplo, trans, diag, a, b, x)
-    or
-  NumRu::Lapack.ztrrfs  # print help
+  ferr, berr, info = NumRu::Lapack.ztrrfs( uplo, trans, diag, a, b, x, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -433,10 +673,74 @@ FORTRAN MANUAL
   <H2>ztrsen</H2>
   
   <PRE>
+= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrices B and X.  NRHS >= 0.
+*
+*  A       (input) COMPLEX*16 array, dimension (LDA,N)
+*          The triangular matrix A.  If UPLO = 'U', the leading N-by-N
+*          upper triangular part of the array A contains the upper
+*          triangular matrix, and the strictly lower triangular part of
+*          A is not referenced.  If UPLO = 'L', the leading N-by-N lower
+*          triangular part of the array A contains the lower triangular
+*          matrix, and the strictly upper triangular part of A is not
+*          referenced.  If DIAG = 'U', the diagonal elements of A are
+*          also not referenced and are assumed to be 1.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input) COMPLEX*16 array, dimension (LDB,NRHS)
+*          The right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (input) COMPLEX*16 array, dimension (LDX,NRHS)
+*          The solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztrsen"></A>
+  <H2>ztrsen</H2>
+  
+  <PRE>
 USAGE:
-  w, m, s, sep, work, info, t, q = NumRu::Lapack.ztrsen( job, compq, select, t, q, lwork)
-    or
-  NumRu::Lapack.ztrsen  # print help
+  w, m, s, sep, work, info, t, q = NumRu::Lapack.ztrsen( job, compq, select, t, q, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -620,10 +924,51 @@ FORTRAN MANUAL
   <H2>ztrsna</H2>
   
   <PRE>
+ cannot underestimate 1 / 2-norm(P) by more than a factor of
+*  sqrt(N).
+*
+*  An approximate error bound for the computed average of the
+*  eigenvalues of T11 is
+*
+*                         EPS * norm(T) / S
+*
+*  where EPS is the machine precision.
+*
+*  The reciprocal condition number of the right invariant subspace
+*  spanned by the first n1 columns of Z (or of Q*Z) is returned in SEP.
+*  SEP is defined as the separation of T11 and T22:
+*
+*                     sep( T11, T22 ) = sigma-min( C )
+*
+*  where sigma-min(C) is the smallest singular value of the
+*  n1*n2-by-n1*n2 matrix
+*
+*     C  = kprod( I(n2), T11 ) - kprod( transpose(T22), I(n1) )
+*
+*  I(m) is an m by m identity matrix, and kprod denotes the Kronecker
+*  product. We estimate sigma-min(C) by the reciprocal of an estimate of
+*  the 1-norm of inverse(C). The true reciprocal 1-norm of inverse(C)
+*  cannot differ from sigma-min(C) by more than a factor of sqrt(n1*n2).
+*
+*  When SEP is small, small changes in T can cause large changes in
+*  the invariant subspace. An approximate bound on the maximum angular
+*  error in the computed right invariant subspace is
+*
+*                      EPS * norm(T) / SEP
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztrsna"></A>
+  <H2>ztrsna</H2>
+  
+  <PRE>
 USAGE:
-  s, sep, m, info = NumRu::Lapack.ztrsna( job, howmny, select, t, vl, vr, ldwork)
-    or
-  NumRu::Lapack.ztrsna  # print help
+  s, sep, m, info = NumRu::Lapack.ztrsna( job, howmny, select, t, vl, vr, ldwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -780,10 +1125,97 @@ FORTRAN MANUAL
   <H2>ztrsyl</H2>
   
   <PRE>
+put) DOUBLE PRECISION array, dimension (MM)
+*          If JOB = 'E' or 'B', the reciprocal condition numbers of the
+*          selected eigenvalues, stored in consecutive elements of the
+*          array. Thus S(j), SEP(j), and the j-th columns of VL and VR
+*          all correspond to the same eigenpair (but not in general the
+*          j-th eigenpair, unless all eigenpairs are selected).
+*          If JOB = 'V', S is not referenced.
+*
+*  SEP     (output) DOUBLE PRECISION array, dimension (MM)
+*          If JOB = 'V' or 'B', the estimated reciprocal condition
+*          numbers of the selected eigenvectors, stored in consecutive
+*          elements of the array.
+*          If JOB = 'E', SEP is not referenced.
+*
+*  MM      (input) INTEGER
+*          The number of elements in the arrays S (if JOB = 'E' or 'B')
+*           and/or SEP (if JOB = 'V' or 'B'). MM >= M.
+*
+*  M       (output) INTEGER
+*          The number of elements of the arrays S and/or SEP actually
+*          used to store the estimated condition numbers.
+*          If HOWMNY = 'A', M is set to N.
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (LDWORK,N+6)
+*          If JOB = 'E', WORK is not referenced.
+*
+*  LDWORK  (input) INTEGER
+*          The leading dimension of the array WORK.
+*          LDWORK >= 1; and if JOB = 'V' or 'B', LDWORK >= N.
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)
+*          If JOB = 'E', RWORK is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*
+
+*  Further Details
+*  ===============
+*
+*  The reciprocal of the condition number of an eigenvalue lambda is
+*  defined as
+*
+*          S(lambda) = |v'*u| / (norm(u)*norm(v))
+*
+*  where u and v are the right and left eigenvectors of T corresponding
+*  to lambda; v' denotes the conjugate transpose of v, and norm(u)
+*  denotes the Euclidean norm. These reciprocal condition numbers always
+*  lie between zero (very badly conditioned) and one (very well
+*  conditioned). If n = 1, S(lambda) is defined to be 1.
+*
+*  An approximate error bound for a computed eigenvalue W(i) is given by
+*
+*                      EPS * norm(T) / S(i)
+*
+*  where EPS is the machine precision.
+*
+*  The reciprocal of the condition number of the right eigenvector u
+*  corresponding to lambda is defined as follows. Suppose
+*
+*              T = ( lambda  c  )
+*                  (   0    T22 )
+*
+*  Then the reciprocal condition number is
+*
+*          SEP( lambda, T22 ) = sigma-min( T22 - lambda*I )
+*
+*  where sigma-min denotes the smallest singular value. We approximate
+*  the smallest singular value by the reciprocal of an estimate of the
+*  one-norm of the inverse of T22 - lambda*I. If n = 1, SEP(1) is
+*  defined to be abs(T(1,1)).
+*
+*  An approximate error bound for a computed right eigenvector VR(i)
+*  is given by
+*
+*                      EPS * norm(T) / SEP(i)
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztrsyl"></A>
+  <H2>ztrsyl</H2>
+  
+  <PRE>
 USAGE:
-  scale, info, c = NumRu::Lapack.ztrsyl( trana, tranb, isgn, a, b, c)
-    or
-  NumRu::Lapack.ztrsyl  # print help
+  scale, info, c = NumRu::Lapack.ztrsyl( trana, tranb, isgn, a, b, c, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -870,10 +1302,181 @@ FORTRAN MANUAL
   <H2>ztrti2</H2>
   
   <PRE>
+*  ISGN    (input) INTEGER
+*          Specifies the sign in the equation:
+*          = +1: solve op(A)*X + X*op(B) = scale*C
+*          = -1: solve op(A)*X - X*op(B) = scale*C
+*
+*  M       (input) INTEGER
+*          The order of the matrix A, and the number of rows in the
+*          matrices X and C. M >= 0.
+*
+*  N       (input) INTEGER
+*          The order of the matrix B, and the number of columns in the
+*          matrices X and C. N >= 0.
+*
+*  A       (input) COMPLEX*16 array, dimension (LDA,M)
+*          The upper triangular matrix A.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A. LDA >= max(1,M).
+*
+*  B       (input) COMPLEX*16 array, dimension (LDB,N)
+*          The upper triangular matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B. LDB >= max(1,N).
+*
+*  C       (input/output) COMPLEX*16 array, dimension (LDC,N)
+*          On entry, the M-by-N right hand side matrix C.
+*          On exit, C is overwritten by the solution matrix X.
+*
+*  LDC     (input) INTEGER
+*          The leading dimension of the array C. LDC >= max(1,M)
+*
+*  SCALE   (output) DOUBLE PRECISION
+*          The scale factor, scale, set <= 1 to avoid overflow in X.
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          = 1: A and B have common or very close eigenvalues; perturbed
+*               values were used to solve the equation (but the matrices
+*               A and B are unchanged).
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztrti2"></A>
+  <H2>ztrti2</H2>
+  
+  <PRE>
 USAGE:
-  info, a = NumRu::Lapack.ztrti2( uplo, diag, a)
-    or
-  NumRu::Lapack.ztrti2  # print help
+  info, a = NumRu::Lapack.ztrti2( uplo, diag, a, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZTRTI2( UPLO, DIAG, N, A, LDA, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZTRTI2 computes the inverse of a complex upper or lower triangular
+*  matrix.
+*
+*  This is the Level 2 BLAS version of the algorithm.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the matrix A is upper or lower triangular.
+*          = 'U':  Upper triangular
+*          = 'L':  Lower triangular
+*
+*  DIAG    (input) CHARACTER*1
+*          Specifies whether or not the matrix A is unit triangular.
+*          = 'N':  Non-unit triangular
+*          = 'U':  Unit triangular
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+*          On entry, the triangular matrix A.  If UPLO = 'U', the
+*          leading n by n upper triangular part of the array A contains
+*          the upper triangular matrix, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading n by n lower triangular part of the array A contains
+*          the lower triangular matrix, and the strictly upper
+*          triangular part of A is not referenced.  If DIAG = 'U', the
+*          diagonal elements of A are also not referenced and are
+*          assumed to be 1.
+*
+*          On exit, the (triangular) inverse of the original matrix, in
+*          the same storage format.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztrtri"></A>
+  <H2>ztrtri</H2>
+  
+  <PRE>
+*  ISGN    (input) INTEGER
+*          Specifies the sign in the equation:
+*          = +1: solve op(A)*X + X*op(B) = scale*C
+*          = -1: solve op(A)*X - X*op(B) = scale*C
+*
+*  M       (input) INTEGER
+*          The order of the matrix A, and the number of rows in the
+*          matrices X and C. M >= 0.
+*
+*  N       (input) INTEGER
+*          The order of the matrix B, and the number of columns in the
+*          matrices X and C. N >= 0.
+*
+*  A       (input) COMPLEX*16 array, dimension (LDA,M)
+*          The upper triangular matrix A.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A. LDA >= max(1,M).
+*
+*  B       (input) COMPLEX*16 array, dimension (LDB,N)
+*          The upper triangular matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B. LDB >= max(1,N).
+*
+*  C       (input/output) COMPLEX*16 array, dimension (LDC,N)
+*          On entry, the M-by-N right hand side matrix C.
+*          On exit, C is overwritten by the solution matrix X.
+*
+*  LDC     (input) INTEGER
+*          The leading dimension of the array C. LDC >= max(1,M)
+*
+*  SCALE   (output) DOUBLE PRECISION
+*          The scale factor, scale, set <= 1 to avoid overflow in X.
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          = 1: A and B have common or very close eigenvalues; perturbed
+*               values were used to solve the equation (but the matrices
+*               A and B are unchanged).
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztrti2"></A>
+  <H2>ztrti2</H2>
+  
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.ztrti2( uplo, diag, a, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -938,9 +1541,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  info, a = NumRu::Lapack.ztrtri( uplo, diag, a)
-    or
-  NumRu::Lapack.ztrtri  # print help
+  info, a = NumRu::Lapack.ztrtri( uplo, diag, a, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1003,10 +1604,52 @@ FORTRAN MANUAL
   <H2>ztrtrs</H2>
   
   <PRE>
+;
+*          = 'L':  A is lower triangular.
+*
+*  DIAG    (input) CHARACTER*1
+*          = 'N':  A is non-unit triangular;
+*          = 'U':  A is unit triangular.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX*16 array, dimension (LDA,N)
+*          On entry, the triangular matrix A.  If UPLO = 'U', the
+*          leading N-by-N upper triangular part of the array A contains
+*          the upper triangular matrix, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading N-by-N lower triangular part of the array A contains
+*          the lower triangular matrix, and the strictly upper
+*          triangular part of A is not referenced.  If DIAG = 'U', the
+*          diagonal elements of A are also not referenced and are
+*          assumed to be 1.
+*          On exit, the (triangular) inverse of the original matrix, in
+*          the same storage format.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, A(i,i) is exactly zero.  The triangular
+*               matrix is singular and its inverse can not be computed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztrtrs"></A>
+  <H2>ztrtrs</H2>
+  
+  <PRE>
 USAGE:
-  info, b = NumRu::Lapack.ztrtrs( uplo, trans, diag, a, b)
-    or
-  NumRu::Lapack.ztrtrs  # print help
+  info, b = NumRu::Lapack.ztrtrs( uplo, trans, diag, a, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1086,10 +1729,14 @@ FORTRAN MANUAL
   <H2>ztrttf</H2>
   
   <PRE>
+ HREF="#top">go to the page top</A>
+
+  <A NAME="ztrttf"></A>
+  <H2>ztrttf</H2>
+  
+  <PRE>
 USAGE:
-  arf, info = NumRu::Lapack.ztrttf( transr, uplo, a)
-    or
-  NumRu::Lapack.ztrttf  # print help
+  arf, info = NumRu::Lapack.ztrttf( transr, uplo, a, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1253,10 +1900,54 @@ FORTRAN MANUAL
   <H2>ztrttp</H2>
   
   <PRE>
+PLO = `U' the upper trapezoid A(0:4,0:2) consists of the last
+*  three columns of AP upper. The lower triangle A(3:4,0:1) consists of
+*  conjugate-transpose of the first two   columns of AP upper.
+*  For UPLO = `L' the lower trapezoid A(0:4,0:2) consists of the first
+*  three columns of AP lower. The upper triangle A(0:1,1:2) consists of
+*  conjugate-transpose of the last two   columns of AP lower.
+*  To denote conjugate we place -- above the element. This covers the
+*  case N odd  and TRANSR = `N'.
+*
+*         RFP A                   RFP A
+*
+*                                   -- --
+*        02 03 04                00 33 43
+*                                      --
+*        12 13 14                10 11 44
+*
+*        22 23 24                20 21 22
+*        --
+*        00 33 34                30 31 32
+*        -- --
+*        01 11 44                40 41 42
+*
+*  Now let TRANSR = `C'. RFP A in both UPLO cases is just the conjugate-
+*  transpose of RFP A above. One therefore gets:
+*
+*
+*           RFP A                   RFP A
+*
+*     -- -- --                   -- -- -- -- -- --
+*     02 12 22 00 01             00 10 20 30 40 50
+*     -- -- -- --                   -- -- -- -- --
+*     03 13 23 33 11             33 11 21 31 41 51
+*     -- -- -- -- --                   -- -- -- --
+*     04 14 24 34 44             43 44 22 32 42 52
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztrttp"></A>
+  <H2>ztrttp</H2>
+  
+  <PRE>
 USAGE:
-  ap, info = NumRu::Lapack.ztrttp( uplo, a)
-    or
-  NumRu::Lapack.ztrttp  # print help
+  ap, info = NumRu::Lapack.ztrttp( uplo, a, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

@@ -20,10 +20,136 @@
   <H2>ssbev</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>REAL routines for (real) symmetric band matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>REAL routines for (real) symmetric band matrix</H1>
+    <UL>
+      <LI><A HREF="#ssbev">ssbev</A> : </LI>
+      <LI><A HREF="#ssbevd">ssbevd</A> : </LI>
+      <LI><A HREF="#ssbevx">ssbevx</A> : </LI>
+      <LI><A HREF="#ssbgst">ssbgst</A> : </LI>
+      <LI><A HREF="#ssbgv">ssbgv</A> : </LI>
+      <LI><A HREF="#ssbgvd">ssbgvd</A> : </LI>
+      <LI><A HREF="#ssbgvx">ssbgvx</A> : </LI>
+      <LI><A HREF="#ssbtrd">ssbtrd</A> : </LI>
+    </UL>
+
+  <A NAME="ssbev"></A>
+  <H2>ssbev</H2>
+  
+  <PRE>
 USAGE:
-  w, z, info, ab = NumRu::Lapack.ssbev( jobz, uplo, kd, ab)
-    or
-  NumRu::Lapack.ssbev  # print help
+  w, z, info, ab = NumRu::Lapack.ssbev( jobz, uplo, kd, ab, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE SSBEV( JOBZ, UPLO, N, KD, AB, LDAB, W, Z, LDZ, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SSBEV computes all the eigenvalues and, optionally, eigenvectors of
+*  a real symmetric band matrix A.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  KD      (input) INTEGER
+*          The number of superdiagonals of the matrix A if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.
+*
+*  AB      (input/output) REAL array, dimension (LDAB, N)
+*          On entry, the upper or lower triangle of the symmetric band
+*          matrix A, stored in the first KD+1 rows of the array.  The
+*          j-th column of A is stored in the j-th column of the array AB
+*          as follows:
+*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
+*
+*          On exit, AB is overwritten by values generated during the
+*          reduction to tridiagonal form.  If UPLO = 'U', the first
+*          superdiagonal and the diagonal of the tridiagonal matrix T
+*          are returned in rows KD and KD+1 of AB, and if UPLO = 'L',
+*          the diagonal and first subdiagonal of T are returned in the
+*          first two rows of AB.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KD + 1.
+*
+*  W       (output) REAL array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) REAL array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
+*          eigenvectors of the matrix A, with the i-th column of Z
+*          holding the eigenvector associated with W(i).
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) REAL array, dimension (max(1,3*N-2))
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the algorithm failed to converge; i
+*                off-diagonal elements of an intermediate tridiagonal
+*                form did not converge to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ssbevd"></A>
+  <H2>ssbevd</H2>
+  
+  <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>REAL routines for (real) symmetric band matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>REAL routines for (real) symmetric band matrix</H1>
+    <UL>
+      <LI><A HREF="#ssbev">ssbev</A> : </LI>
+      <LI><A HREF="#ssbevd">ssbevd</A> : </LI>
+      <LI><A HREF="#ssbevx">ssbevx</A> : </LI>
+      <LI><A HREF="#ssbgst">ssbgst</A> : </LI>
+      <LI><A HREF="#ssbgv">ssbgv</A> : </LI>
+      <LI><A HREF="#ssbgvd">ssbgvd</A> : </LI>
+      <LI><A HREF="#ssbgvx">ssbgvx</A> : </LI>
+      <LI><A HREF="#ssbtrd">ssbtrd</A> : </LI>
+    </UL>
+
+  <A NAME="ssbev"></A>
+  <H2>ssbev</H2>
+  
+  <PRE>
+USAGE:
+  w, z, info, ab = NumRu::Lapack.ssbev( jobz, uplo, kd, ab, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -107,9 +233,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  w, z, work, iwork, info, ab = NumRu::Lapack.ssbevd( jobz, uplo, kd, ab, lwork, liwork)
-    or
-  NumRu::Lapack.ssbevd  # print help
+  w, z, work, iwork, info, ab = NumRu::Lapack.ssbevd( jobz, uplo, kd, ab, lwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -229,10 +353,19 @@ FORTRAN MANUAL
   <H2>ssbevx</H2>
   
   <PRE>
+==========================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ssbevx"></A>
+  <H2>ssbevx</H2>
+  
+  <PRE>
 USAGE:
-  q, m, w, z, ifail, info, ab = NumRu::Lapack.ssbevx( jobz, range, uplo, kd, ab, vl, vu, il, iu, abstol)
-    or
-  NumRu::Lapack.ssbevx  # print help
+  q, m, w, z, ifail, info, ab = NumRu::Lapack.ssbevx( jobz, range, uplo, kd, ab, vl, vu, il, iu, abstol, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -387,10 +520,69 @@ FORTRAN MANUAL
   <H2>ssbgst</H2>
   
   <PRE>
+indicating that some
+*          eigenvectors did not converge, try setting ABSTOL to
+*          2*SLAMCH('S').
+*
+*          See "Computing Small Singular Values of Bidiagonal Matrices
+*          with Guaranteed High Relative Accuracy," by Demmel and
+*          Kahan, LAPACK Working Note #3.
+*
+*  M       (output) INTEGER
+*          The total number of eigenvalues found.  0 <= M <= N.
+*          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
+*
+*  W       (output) REAL array, dimension (N)
+*          The first M elements contain the selected eigenvalues in
+*          ascending order.
+*
+*  Z       (output) REAL array, dimension (LDZ, max(1,M))
+*          If JOBZ = 'V', then if INFO = 0, the first M columns of Z
+*          contain the orthonormal eigenvectors of the matrix A
+*          corresponding to the selected eigenvalues, with the i-th
+*          column of Z holding the eigenvector associated with W(i).
+*          If an eigenvector fails to converge, then that column of Z
+*          contains the latest approximation to the eigenvector, and the
+*          index of the eigenvector is returned in IFAIL.
+*          If JOBZ = 'N', then Z is not referenced.
+*          Note: the user must ensure that at least max(1,M) columns are
+*          supplied in the array Z; if RANGE = 'V', the exact value of M
+*          is not known in advance and an upper bound must be used.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) REAL array, dimension (7*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (5*N)
+*
+*  IFAIL   (output) INTEGER array, dimension (N)
+*          If JOBZ = 'V', then if INFO = 0, the first M elements of
+*          IFAIL are zero.  If INFO > 0, then IFAIL contains the
+*          indices of the eigenvectors that failed to converge.
+*          If JOBZ = 'N', then IFAIL is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, then i eigenvectors failed to converge.
+*                Their indices are stored in array IFAIL.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ssbgst"></A>
+  <H2>ssbgst</H2>
+  
+  <PRE>
 USAGE:
-  x, info, ab = NumRu::Lapack.ssbgst( vect, uplo, ka, kb, ab, bb)
-    or
-  NumRu::Lapack.ssbgst  # print help
+  x, info, ab = NumRu::Lapack.ssbgst( vect, uplo, ka, kb, ab, bb, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -479,10 +671,51 @@ FORTRAN MANUAL
   <H2>ssbgv</H2>
   
   <PRE>
+max(1,j-ka)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+ka).
+*
+*          On exit, the transformed matrix X**T*A*X, stored in the same
+*          format as A.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KA+1.
+*
+*  BB      (input) REAL array, dimension (LDBB,N)
+*          The banded factor S from the split Cholesky factorization of
+*          B, as returned by SPBSTF, stored in the first KB+1 rows of
+*          the array.
+*
+*  LDBB    (input) INTEGER
+*          The leading dimension of the array BB.  LDBB >= KB+1.
+*
+*  X       (output) REAL array, dimension (LDX,N)
+*          If VECT = 'V', the n-by-n matrix X.
+*          If VECT = 'N', the array X is not referenced.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.
+*          LDX >= max(1,N) if VECT = 'V'; LDX >= 1 otherwise.
+*
+*  WORK    (workspace) REAL array, dimension (2*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ssbgv"></A>
+  <H2>ssbgv</H2>
+  
+  <PRE>
 USAGE:
-  w, z, info, ab, bb = NumRu::Lapack.ssbgv( jobz, uplo, ka, kb, ab, bb)
-    or
-  NumRu::Lapack.ssbgv  # print help
+  w, z, info, ab, bb = NumRu::Lapack.ssbgv( jobz, uplo, ka, kb, ab, bb, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -598,10 +831,54 @@ FORTRAN MANUAL
   <H2>ssbgvd</H2>
   
   <PRE>
+ors are
+*          normalized so that Z**T*B*Z = I.
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= N.
+*
+*  WORK    (workspace) REAL array, dimension (3*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is:
+*             <= N:  the algorithm failed to converge:
+*                    i off-diagonal elements of an intermediate
+*                    tridiagonal form did not converge to zero;
+*             > N:   if INFO = N + i, for 1 <= i <= N, then SPBSTF
+*                    returned INFO = i: B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            UPPER, WANTZ
+      CHARACTER          VECT
+      INTEGER            IINFO, INDE, INDWRK
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           SPBSTF, SSBGST, SSBTRD, SSTEQR, SSTERF, XERBLA
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ssbgvd"></A>
+  <H2>ssbgvd</H2>
+  
+  <PRE>
 USAGE:
-  w, z, work, iwork, info, ab, bb = NumRu::Lapack.ssbgvd( jobz, uplo, ka, kb, ab, bb, lwork, liwork)
-    or
-  NumRu::Lapack.ssbgvd  # print help
+  w, z, work, iwork, info, ab, bb = NumRu::Lapack.ssbgvd( jobz, uplo, ka, kb, ab, bb, lwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -746,10 +1023,91 @@ FORTRAN MANUAL
   <H2>ssbgvx</H2>
   
   <PRE>
+     as follows:
+*          if UPLO = 'U', BB(ka+1+i-j,j) = B(i,j) for max(1,j-kb)<=i<=j;
+*          if UPLO = 'L', BB(1+i-j,j)    = B(i,j) for j<=i<=min(n,j+kb).
+*
+*          On exit, the factor S from the split Cholesky factorization
+*          B = S**T*S, as returned by SPBSTF.
+*
+*  LDBB    (input) INTEGER
+*          The leading dimension of the array BB.  LDBB >= KB+1.
+*
+*  W       (output) REAL array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) REAL array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
+*          eigenvectors, with the i-th column of Z holding the
+*          eigenvector associated with W(i).  The eigenvectors are
+*          normalized so Z**T*B*Z = I.
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          If N <= 1,               LWORK >= 1.
+*          If JOBZ = 'N' and N > 1, LWORK >= 3*N.
+*          If JOBZ = 'V' and N > 1, LWORK >= 1 + 5*N + 2*N**2.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal sizes of the WORK and IWORK
+*          arrays, returns these values as the first entries of the WORK
+*          and IWORK arrays, and no error message related to LWORK or
+*          LIWORK is issued by XERBLA.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
+*          On exit, if LIWORK > 0, IWORK(1) returns the optimal LIWORK.
+*
+*  LIWORK  (input) INTEGER
+*          The dimension of the array IWORK.
+*          If JOBZ  = 'N' or N <= 1, LIWORK >= 1.
+*          If JOBZ  = 'V' and N > 1, LIWORK >= 3 + 5*N.
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal sizes of the WORK and
+*          IWORK arrays, returns these values as the first entries of
+*          the WORK and IWORK arrays, and no error message related to
+*          LWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is:
+*             <= N:  the algorithm failed to converge:
+*                    i off-diagonal elements of an intermediate
+*                    tridiagonal form did not converge to zero;
+*             > N:   if INFO = N + i, for 1 <= i <= N, then SPBSTF
+*                    returned INFO = i: B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ssbgvx"></A>
+  <H2>ssbgvx</H2>
+  
+  <PRE>
 USAGE:
-  q, m, w, z, work, iwork, ifail, info, ab, bb = NumRu::Lapack.ssbgvx( jobz, range, uplo, ka, kb, ab, bb, vl, vu, il, iu, abstol)
-    or
-  NumRu::Lapack.ssbgvx  # print help
+  q, m, w, z, work, iwork, ifail, info, ab, bb = NumRu::Lapack.ssbgvx( jobz, range, uplo, ka, kb, ab, bb, vl, vu, il, iu, abstol, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -920,10 +1278,64 @@ FORTRAN MANUAL
   <H2>ssbtrd</H2>
   
   <PRE>
+0 <= M <= N.
+*          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
+*
+*  W       (output) REAL array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) REAL array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
+*          eigenvectors, with the i-th column of Z holding the
+*          eigenvector associated with W(i).  The eigenvectors are
+*          normalized so Z**T*B*Z = I.
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace/output) REAL array, dimension (7N)
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (5N)
+*
+*  IFAIL   (output) INTEGER array, dimension (M)
+*          If JOBZ = 'V', then if INFO = 0, the first M elements of
+*          IFAIL are zero.  If INFO > 0, then IFAIL contains the
+*          indices of the eigenvalues that failed to converge.
+*          If JOBZ = 'N', then IFAIL is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0 : successful exit
+*          < 0 : if INFO = -i, the i-th argument had an illegal value
+*          <= N: if INFO = i, then i eigenvectors failed to converge.
+*                  Their indices are stored in IFAIL.
+*          > N : SPBSTF returned an error code; i.e.,
+*                if INFO = N + i, for 1 <= i <= N, then the leading
+*                minor of order i of B is not positive definite.
+*                The factorization of B could not be completed and
+*                no eigenvalues or eigenvectors were computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ssbtrd"></A>
+  <H2>ssbtrd</H2>
+  
+  <PRE>
 USAGE:
-  d, e, info, ab, q = NumRu::Lapack.ssbtrd( vect, uplo, kd, ab, q)
-    or
-  NumRu::Lapack.ssbtrd  # print help
+  d, e, info, ab, q = NumRu::Lapack.ssbtrd( vect, uplo, kd, ab, q, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

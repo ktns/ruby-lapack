@@ -2,33 +2,35 @@
 
 extern VOID slasd1_(integer *nl, integer *nr, integer *sqre, real *d, real *alpha, real *beta, real *u, integer *ldu, real *vt, integer *ldvt, integer *idxq, integer *iwork, real *work, integer *info);
 
+static VALUE sHelp, sUsage;
+
 static VALUE
-rb_slasd1(int argc, VALUE *argv, VALUE self){
-  VALUE rb_nl;
+rblapack_slasd1(int argc, VALUE *argv, VALUE self){
+  VALUE rblapack_nl;
   integer nl; 
-  VALUE rb_nr;
+  VALUE rblapack_nr;
   integer nr; 
-  VALUE rb_sqre;
+  VALUE rblapack_sqre;
   integer sqre; 
-  VALUE rb_d;
+  VALUE rblapack_d;
   real *d; 
-  VALUE rb_alpha;
+  VALUE rblapack_alpha;
   real alpha; 
-  VALUE rb_beta;
+  VALUE rblapack_beta;
   real beta; 
-  VALUE rb_u;
+  VALUE rblapack_u;
   real *u; 
-  VALUE rb_vt;
+  VALUE rblapack_vt;
   real *vt; 
-  VALUE rb_idxq;
+  VALUE rblapack_idxq;
   integer *idxq; 
-  VALUE rb_info;
+  VALUE rblapack_info;
   integer info; 
-  VALUE rb_d_out__;
+  VALUE rblapack_d_out__;
   real *d_out__;
-  VALUE rb_u_out__;
+  VALUE rblapack_u_out__;
   real *u_out__;
-  VALUE rb_vt_out__;
+  VALUE rblapack_vt_out__;
   real *vt_out__;
   integer *iwork;
   real *work;
@@ -38,90 +40,102 @@ rb_slasd1(int argc, VALUE *argv, VALUE self){
   integer ldvt;
   integer m;
 
-  if (argc == 0) {
-    printf("%s\n", "USAGE:\n  idxq, info, d, alpha, beta, u, vt = NumRu::Lapack.slasd1( nl, nr, sqre, d, alpha, beta, u, vt)\n    or\n  NumRu::Lapack.slasd1  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE SLASD1( NL, NR, SQRE, D, ALPHA, BETA, U, LDU, VT, LDVT, IDXQ, IWORK, WORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  SLASD1 computes the SVD of an upper bidiagonal N-by-M matrix B,\n*  where N = NL + NR + 1 and M = N + SQRE. SLASD1 is called from SLASD0.\n*\n*  A related subroutine SLASD7 handles the case in which the singular\n*  values (and the singular vectors in factored form) are desired.\n*\n*  SLASD1 computes the SVD as follows:\n*\n*                ( D1(in)  0    0     0 )\n*    B = U(in) * (   Z1'   a   Z2'    b ) * VT(in)\n*                (   0     0   D2(in) 0 )\n*\n*      = U(out) * ( D(out) 0) * VT(out)\n*\n*  where Z' = (Z1' a Z2' b) = u' VT', and u is a vector of dimension M\n*  with ALPHA and BETA in the NL+1 and NL+2 th entries and zeros\n*  elsewhere; and the entry b is empty if SQRE = 0.\n*\n*  The left singular vectors of the original matrix are stored in U, and\n*  the transpose of the right singular vectors are stored in VT, and the\n*  singular values are in D.  The algorithm consists of three stages:\n*\n*     The first stage consists of deflating the size of the problem\n*     when there are multiple singular values or when there are zeros in\n*     the Z vector.  For each such occurence the dimension of the\n*     secular equation problem is reduced by one.  This stage is\n*     performed by the routine SLASD2.\n*\n*     The second stage consists of calculating the updated\n*     singular values. This is done by finding the square roots of the\n*     roots of the secular equation via the routine SLASD4 (as called\n*     by SLASD3). This routine also calculates the singular vectors of\n*     the current problem.\n*\n*     The final stage consists of computing the updated singular vectors\n*     directly using the updated singular values.  The singular vectors\n*     for the current problem are multiplied with the singular vectors\n*     from the overall problem.\n*\n\n*  Arguments\n*  =========\n*\n*  NL     (input) INTEGER\n*         The row dimension of the upper block.  NL >= 1.\n*\n*  NR     (input) INTEGER\n*         The row dimension of the lower block.  NR >= 1.\n*\n*  SQRE   (input) INTEGER\n*         = 0: the lower block is an NR-by-NR square matrix.\n*         = 1: the lower block is an NR-by-(NR+1) rectangular matrix.\n*\n*         The bidiagonal matrix has row dimension N = NL + NR + 1,\n*         and column dimension M = N + SQRE.\n*\n*  D      (input/output) REAL array, dimension (NL+NR+1).\n*         N = NL+NR+1\n*         On entry D(1:NL,1:NL) contains the singular values of the\n*         upper block; and D(NL+2:N) contains the singular values of\n*         the lower block. On exit D(1:N) contains the singular values\n*         of the modified matrix.\n*\n*  ALPHA  (input/output) REAL\n*         Contains the diagonal element associated with the added row.\n*\n*  BETA   (input/output) REAL\n*         Contains the off-diagonal element associated with the added\n*         row.\n*\n*  U      (input/output) REAL array, dimension (LDU,N)\n*         On entry U(1:NL, 1:NL) contains the left singular vectors of\n*         the upper block; U(NL+2:N, NL+2:N) contains the left singular\n*         vectors of the lower block. On exit U contains the left\n*         singular vectors of the bidiagonal matrix.\n*\n*  LDU    (input) INTEGER\n*         The leading dimension of the array U.  LDU >= max( 1, N ).\n*\n*  VT     (input/output) REAL array, dimension (LDVT,M)\n*         where M = N + SQRE.\n*         On entry VT(1:NL+1, 1:NL+1)' contains the right singular\n*         vectors of the upper block; VT(NL+2:M, NL+2:M)' contains\n*         the right singular vectors of the lower block. On exit\n*         VT' contains the right singular vectors of the\n*         bidiagonal matrix.\n*\n*  LDVT   (input) INTEGER\n*         The leading dimension of the array VT.  LDVT >= max( 1, M ).\n*\n*  IDXQ  (output) INTEGER array, dimension (N)\n*         This contains the permutation which will reintegrate the\n*         subproblem just solved back into sorted order, i.e.\n*         D( IDXQ( I = 1, N ) ) will be in ascending order.\n*\n*  IWORK  (workspace) INTEGER array, dimension (4*N)\n*\n*  WORK   (workspace) REAL array, dimension (3*M**2+2*M)\n*\n*  INFO   (output) INTEGER\n*          = 0:  successful exit.\n*          < 0:  if INFO = -i, the i-th argument had an illegal value.\n*          > 0:  if INFO = 1, a singular value did not converge\n*\n\n*  Further Details\n*  ===============\n*\n*  Based on contributions by\n*     Ming Gu and Huan Ren, Computer Science Division, University of\n*     California at Berkeley, USA\n*\n*  =====================================================================\n*\n\n");
-    return Qnil;
-  }
+  VALUE rb_options;
+  if (argc > 0 && TYPE(argv[argc-1]) == T_HASH) {
+    argc--;
+    rb_options = argv[argc];
+    if (rb_hash_aref(rb_options, sHelp) == Qtrue) {
+      printf("%s\n", "USAGE:\n  idxq, info, d, alpha, beta, u, vt = NumRu::Lapack.slasd1( nl, nr, sqre, d, alpha, beta, u, vt, [:usage => usage, :help => help])\n\n\nFORTRAN MANUAL\n      SUBROUTINE SLASD1( NL, NR, SQRE, D, ALPHA, BETA, U, LDU, VT, LDVT, IDXQ, IWORK, WORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  SLASD1 computes the SVD of an upper bidiagonal N-by-M matrix B,\n*  where N = NL + NR + 1 and M = N + SQRE. SLASD1 is called from SLASD0.\n*\n*  A related subroutine SLASD7 handles the case in which the singular\n*  values (and the singular vectors in factored form) are desired.\n*\n*  SLASD1 computes the SVD as follows:\n*\n*                ( D1(in)  0    0     0 )\n*    B = U(in) * (   Z1'   a   Z2'    b ) * VT(in)\n*                (   0     0   D2(in) 0 )\n*\n*      = U(out) * ( D(out) 0) * VT(out)\n*\n*  where Z' = (Z1' a Z2' b) = u' VT', and u is a vector of dimension M\n*  with ALPHA and BETA in the NL+1 and NL+2 th entries and zeros\n*  elsewhere; and the entry b is empty if SQRE = 0.\n*\n*  The left singular vectors of the original matrix are stored in U, and\n*  the transpose of the right singular vectors are stored in VT, and the\n*  singular values are in D.  The algorithm consists of three stages:\n*\n*     The first stage consists of deflating the size of the problem\n*     when there are multiple singular values or when there are zeros in\n*     the Z vector.  For each such occurence the dimension of the\n*     secular equation problem is reduced by one.  This stage is\n*     performed by the routine SLASD2.\n*\n*     The second stage consists of calculating the updated\n*     singular values. This is done by finding the square roots of the\n*     roots of the secular equation via the routine SLASD4 (as called\n*     by SLASD3). This routine also calculates the singular vectors of\n*     the current problem.\n*\n*     The final stage consists of computing the updated singular vectors\n*     directly using the updated singular values.  The singular vectors\n*     for the current problem are multiplied with the singular vectors\n*     from the overall problem.\n*\n\n*  Arguments\n*  =========\n*\n*  NL     (input) INTEGER\n*         The row dimension of the upper block.  NL >= 1.\n*\n*  NR     (input) INTEGER\n*         The row dimension of the lower block.  NR >= 1.\n*\n*  SQRE   (input) INTEGER\n*         = 0: the lower block is an NR-by-NR square matrix.\n*         = 1: the lower block is an NR-by-(NR+1) rectangular matrix.\n*\n*         The bidiagonal matrix has row dimension N = NL + NR + 1,\n*         and column dimension M = N + SQRE.\n*\n*  D      (input/output) REAL array, dimension (NL+NR+1).\n*         N = NL+NR+1\n*         On entry D(1:NL,1:NL) contains the singular values of the\n*         upper block; and D(NL+2:N) contains the singular values of\n*         the lower block. On exit D(1:N) contains the singular values\n*         of the modified matrix.\n*\n*  ALPHA  (input/output) REAL\n*         Contains the diagonal element associated with the added row.\n*\n*  BETA   (input/output) REAL\n*         Contains the off-diagonal element associated with the added\n*         row.\n*\n*  U      (input/output) REAL array, dimension (LDU,N)\n*         On entry U(1:NL, 1:NL) contains the left singular vectors of\n*         the upper block; U(NL+2:N, NL+2:N) contains the left singular\n*         vectors of the lower block. On exit U contains the left\n*         singular vectors of the bidiagonal matrix.\n*\n*  LDU    (input) INTEGER\n*         The leading dimension of the array U.  LDU >= max( 1, N ).\n*\n*  VT     (input/output) REAL array, dimension (LDVT,M)\n*         where M = N + SQRE.\n*         On entry VT(1:NL+1, 1:NL+1)' contains the right singular\n*         vectors of the upper block; VT(NL+2:M, NL+2:M)' contains\n*         the right singular vectors of the lower block. On exit\n*         VT' contains the right singular vectors of the\n*         bidiagonal matrix.\n*\n*  LDVT   (input) INTEGER\n*         The leading dimension of the array VT.  LDVT >= max( 1, M ).\n*\n*  IDXQ  (output) INTEGER array, dimension (N)\n*         This contains the permutation which will reintegrate the\n*         subproblem just solved back into sorted order, i.e.\n*         D( IDXQ( I = 1, N ) ) will be in ascending order.\n*\n*  IWORK  (workspace) INTEGER array, dimension (4*N)\n*\n*  WORK   (workspace) REAL array, dimension (3*M**2+2*M)\n*\n*  INFO   (output) INTEGER\n*          = 0:  successful exit.\n*          < 0:  if INFO = -i, the i-th argument had an illegal value.\n*          > 0:  if INFO = 1, a singular value did not converge\n*\n\n*  Further Details\n*  ===============\n*\n*  Based on contributions by\n*     Ming Gu and Huan Ren, Computer Science Division, University of\n*     California at Berkeley, USA\n*\n*  =====================================================================\n*\n\n");
+      rb_exit(0);
+    }
+    if (rb_hash_aref(rb_options, sUsage) == Qtrue) {
+      printf("%s\n", "USAGE:\n  idxq, info, d, alpha, beta, u, vt = NumRu::Lapack.slasd1( nl, nr, sqre, d, alpha, beta, u, vt, [:usage => usage, :help => help])\n");
+      rb_exit(0);
+    } 
+  } else
+    rb_options = Qnil;
   if (argc != 8)
     rb_raise(rb_eArgError,"wrong number of arguments (%d for 8)", argc);
-  rb_nl = argv[0];
-  rb_nr = argv[1];
-  rb_sqre = argv[2];
-  rb_d = argv[3];
-  rb_alpha = argv[4];
-  rb_beta = argv[5];
-  rb_u = argv[6];
-  rb_vt = argv[7];
+  rblapack_nl = argv[0];
+  rblapack_nr = argv[1];
+  rblapack_sqre = argv[2];
+  rblapack_d = argv[3];
+  rblapack_alpha = argv[4];
+  rblapack_beta = argv[5];
+  rblapack_u = argv[6];
+  rblapack_vt = argv[7];
+  if (rb_options != Qnil) {
+  }
 
-  alpha = (real)NUM2DBL(rb_alpha);
-  if (!NA_IsNArray(rb_u))
+  alpha = (real)NUM2DBL(rblapack_alpha);
+  if (!NA_IsNArray(rblapack_u))
     rb_raise(rb_eArgError, "u (7th argument) must be NArray");
-  if (NA_RANK(rb_u) != 2)
+  if (NA_RANK(rblapack_u) != 2)
     rb_raise(rb_eArgError, "rank of u (7th argument) must be %d", 2);
-  n = NA_SHAPE1(rb_u);
-  ldu = NA_SHAPE0(rb_u);
-  if (NA_TYPE(rb_u) != NA_SFLOAT)
-    rb_u = na_change_type(rb_u, NA_SFLOAT);
-  u = NA_PTR_TYPE(rb_u, real*);
-  nr = NUM2INT(rb_nr);
-  beta = (real)NUM2DBL(rb_beta);
-  nl = NUM2INT(rb_nl);
-  if (!NA_IsNArray(rb_vt))
+  n = NA_SHAPE1(rblapack_u);
+  ldu = NA_SHAPE0(rblapack_u);
+  if (NA_TYPE(rblapack_u) != NA_SFLOAT)
+    rblapack_u = na_change_type(rblapack_u, NA_SFLOAT);
+  u = NA_PTR_TYPE(rblapack_u, real*);
+  nr = NUM2INT(rblapack_nr);
+  beta = (real)NUM2DBL(rblapack_beta);
+  nl = NUM2INT(rblapack_nl);
+  if (!NA_IsNArray(rblapack_vt))
     rb_raise(rb_eArgError, "vt (8th argument) must be NArray");
-  if (NA_RANK(rb_vt) != 2)
+  if (NA_RANK(rblapack_vt) != 2)
     rb_raise(rb_eArgError, "rank of vt (8th argument) must be %d", 2);
-  m = NA_SHAPE1(rb_vt);
+  m = NA_SHAPE1(rblapack_vt);
   if (m != (n + sqre))
     rb_raise(rb_eRuntimeError, "shape 1 of vt must be %d", n + sqre);
-  ldvt = NA_SHAPE0(rb_vt);
-  if (NA_TYPE(rb_vt) != NA_SFLOAT)
-    rb_vt = na_change_type(rb_vt, NA_SFLOAT);
-  vt = NA_PTR_TYPE(rb_vt, real*);
-  sqre = NUM2INT(rb_sqre);
-  if (!NA_IsNArray(rb_d))
+  ldvt = NA_SHAPE0(rblapack_vt);
+  if (NA_TYPE(rblapack_vt) != NA_SFLOAT)
+    rblapack_vt = na_change_type(rblapack_vt, NA_SFLOAT);
+  vt = NA_PTR_TYPE(rblapack_vt, real*);
+  sqre = NUM2INT(rblapack_sqre);
+  if (!NA_IsNArray(rblapack_d))
     rb_raise(rb_eArgError, "d (4th argument) must be NArray");
-  if (NA_RANK(rb_d) != 1)
+  if (NA_RANK(rblapack_d) != 1)
     rb_raise(rb_eArgError, "rank of d (4th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_d) != (nl+nr+1))
+  if (NA_SHAPE0(rblapack_d) != (nl+nr+1))
     rb_raise(rb_eRuntimeError, "shape 0 of d must be %d", nl+nr+1);
-  if (NA_TYPE(rb_d) != NA_SFLOAT)
-    rb_d = na_change_type(rb_d, NA_SFLOAT);
-  d = NA_PTR_TYPE(rb_d, real*);
+  if (NA_TYPE(rblapack_d) != NA_SFLOAT)
+    rblapack_d = na_change_type(rblapack_d, NA_SFLOAT);
+  d = NA_PTR_TYPE(rblapack_d, real*);
   m = n + sqre;
   {
     int shape[1];
     shape[0] = n;
-    rb_idxq = na_make_object(NA_LINT, 1, shape, cNArray);
+    rblapack_idxq = na_make_object(NA_LINT, 1, shape, cNArray);
   }
-  idxq = NA_PTR_TYPE(rb_idxq, integer*);
+  idxq = NA_PTR_TYPE(rblapack_idxq, integer*);
   {
     int shape[1];
     shape[0] = nl+nr+1;
-    rb_d_out__ = na_make_object(NA_SFLOAT, 1, shape, cNArray);
+    rblapack_d_out__ = na_make_object(NA_SFLOAT, 1, shape, cNArray);
   }
-  d_out__ = NA_PTR_TYPE(rb_d_out__, real*);
-  MEMCPY(d_out__, d, real, NA_TOTAL(rb_d));
-  rb_d = rb_d_out__;
+  d_out__ = NA_PTR_TYPE(rblapack_d_out__, real*);
+  MEMCPY(d_out__, d, real, NA_TOTAL(rblapack_d));
+  rblapack_d = rblapack_d_out__;
   d = d_out__;
   {
     int shape[2];
     shape[0] = ldu;
     shape[1] = n;
-    rb_u_out__ = na_make_object(NA_SFLOAT, 2, shape, cNArray);
+    rblapack_u_out__ = na_make_object(NA_SFLOAT, 2, shape, cNArray);
   }
-  u_out__ = NA_PTR_TYPE(rb_u_out__, real*);
-  MEMCPY(u_out__, u, real, NA_TOTAL(rb_u));
-  rb_u = rb_u_out__;
+  u_out__ = NA_PTR_TYPE(rblapack_u_out__, real*);
+  MEMCPY(u_out__, u, real, NA_TOTAL(rblapack_u));
+  rblapack_u = rblapack_u_out__;
   u = u_out__;
   {
     int shape[2];
     shape[0] = ldvt;
     shape[1] = m;
-    rb_vt_out__ = na_make_object(NA_SFLOAT, 2, shape, cNArray);
+    rblapack_vt_out__ = na_make_object(NA_SFLOAT, 2, shape, cNArray);
   }
-  vt_out__ = NA_PTR_TYPE(rb_vt_out__, real*);
-  MEMCPY(vt_out__, vt, real, NA_TOTAL(rb_vt));
-  rb_vt = rb_vt_out__;
+  vt_out__ = NA_PTR_TYPE(rblapack_vt_out__, real*);
+  MEMCPY(vt_out__, vt, real, NA_TOTAL(rblapack_vt));
+  rblapack_vt = rblapack_vt_out__;
   vt = vt_out__;
   iwork = ALLOC_N(integer, (4*n));
   work = ALLOC_N(real, (3*pow(m,2)+2*m));
@@ -130,13 +144,15 @@ rb_slasd1(int argc, VALUE *argv, VALUE self){
 
   free(iwork);
   free(work);
-  rb_info = INT2NUM(info);
-  rb_alpha = rb_float_new((double)alpha);
-  rb_beta = rb_float_new((double)beta);
-  return rb_ary_new3(7, rb_idxq, rb_info, rb_d, rb_alpha, rb_beta, rb_u, rb_vt);
+  rblapack_info = INT2NUM(info);
+  rblapack_alpha = rb_float_new((double)alpha);
+  rblapack_beta = rb_float_new((double)beta);
+  return rb_ary_new3(7, rblapack_idxq, rblapack_info, rblapack_d, rblapack_alpha, rblapack_beta, rblapack_u, rblapack_vt);
 }
 
 void
 init_lapack_slasd1(VALUE mLapack){
-  rb_define_module_function(mLapack, "slasd1", rb_slasd1, -1);
+  rb_define_module_function(mLapack, "slasd1", rblapack_slasd1, -1);
+  sHelp = ID2SYM(rb_intern("help"));
+  sUsage = ID2SYM(rb_intern("usage"));
 }

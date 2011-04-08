@@ -51,7 +51,7 @@ def parse_html(fname)
       elsif /^,\s+(.*)$/ =~ line
         hash[name] ||= ""
         hash[name] << $1
-      elsif /^gams/ =~ line 
+      elsif /^gams/ =~ line
         name = nil
       end
     end
@@ -71,7 +71,7 @@ desc = Hash.new
   desc.update parse_html(fname)
 }
 
-methods = Lapack.methods
+methods = Lapack.singleton_methods
 DataTypes.each{|cdt, dt|
   cdt = cdt.downcase
   dmethods = Array.new
@@ -117,12 +117,13 @@ EOF
   #{desc[m]}
   <PRE>
 EOF
-          stdout_org = STDOUT.dup
-          STDOUT.flush
-          STDOUT.reopen(file)
-          Lapack.send(m)
-          STDOUT.flush
-          STDOUT.reopen(stdout_org)
+          IO.popen("-") do |io|
+            if io # parent
+              file.print io.read
+            else # child
+              Lapack.send(m, :help => true)
+            end
+          end
           file.print <<"EOF"
     </PRE>
     <A HREF="#top">go to the page top</A>

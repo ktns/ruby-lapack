@@ -20,10 +20,117 @@
   <H2>sppcon</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>REAL routines for symmetric or Hermitian positive definite, packed storage matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>REAL routines for symmetric or Hermitian positive definite, packed storage matrix</H1>
+    <UL>
+      <LI><A HREF="#sppcon">sppcon</A> : </LI>
+      <LI><A HREF="#sppequ">sppequ</A> : </LI>
+      <LI><A HREF="#spprfs">spprfs</A> : </LI>
+      <LI><A HREF="#sppsv">sppsv</A> : </LI>
+      <LI><A HREF="#sppsvx">sppsvx</A> : </LI>
+      <LI><A HREF="#spptrf">spptrf</A> : </LI>
+      <LI><A HREF="#spptri">spptri</A> : </LI>
+      <LI><A HREF="#spptrs">spptrs</A> : </LI>
+    </UL>
+
+  <A NAME="sppcon"></A>
+  <H2>sppcon</H2>
+  
+  <PRE>
 USAGE:
-  rcond, info = NumRu::Lapack.sppcon( uplo, ap, anorm)
-    or
-  NumRu::Lapack.sppcon  # print help
+  rcond, info = NumRu::Lapack.sppcon( uplo, ap, anorm, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE SPPCON( UPLO, N, AP, ANORM, RCOND, WORK, IWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SPPCON estimates the reciprocal of the condition number (in the
+*  1-norm) of a real symmetric positive definite packed matrix using
+*  the Cholesky factorization A = U**T*U or A = L*L**T computed by
+*  SPPTRF.
+*
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input) REAL array, dimension (N*(N+1)/2)
+*          The triangular factor U or L from the Cholesky factorization
+*          A = U**T*U or A = L*L**T, packed columnwise in a linear
+*          array.  The j-th column of U or L is stored in the array AP
+*          as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = U(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = L(i,j) for j<=i<=n.
+*
+*  ANORM   (input) REAL
+*          The 1-norm (or infinity-norm) of the symmetric matrix A.
+*
+*  RCOND   (output) REAL
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
+*          estimate of the 1-norm of inv(A) computed in this routine.
+*
+*  WORK    (workspace) REAL array, dimension (3*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sppequ"></A>
+  <H2>sppequ</H2>
+  
+  <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>REAL routines for symmetric or Hermitian positive definite, packed storage matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>REAL routines for symmetric or Hermitian positive definite, packed storage matrix</H1>
+    <UL>
+      <LI><A HREF="#sppcon">sppcon</A> : </LI>
+      <LI><A HREF="#sppequ">sppequ</A> : </LI>
+      <LI><A HREF="#spprfs">spprfs</A> : </LI>
+      <LI><A HREF="#sppsv">sppsv</A> : </LI>
+      <LI><A HREF="#sppsvx">sppsvx</A> : </LI>
+      <LI><A HREF="#spptrf">spptrf</A> : </LI>
+      <LI><A HREF="#spptri">spptri</A> : </LI>
+      <LI><A HREF="#spptrs">spptrs</A> : </LI>
+    </UL>
+
+  <A NAME="sppcon"></A>
+  <H2>sppcon</H2>
+  
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.sppcon( uplo, ap, anorm, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -88,9 +195,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  s, scond, amax, info = NumRu::Lapack.sppequ( uplo, ap)
-    or
-  NumRu::Lapack.sppequ  # print help
+  s, scond, amax, info = NumRu::Lapack.sppequ( uplo, ap, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -156,10 +261,37 @@ FORTRAN MANUAL
   <H2>spprfs</H2>
   
   <PRE>
+cale factors for A.
+*
+*  SCOND   (output) REAL
+*          If INFO = 0, S contains the ratio of the smallest S(i) to
+*          the largest S(i).  If SCOND >= 0.1 and AMAX is neither too
+*          large nor too small, it is not worth scaling by S.
+*
+*  AMAX    (output) REAL
+*          Absolute value of largest matrix element.  If AMAX is very
+*          close to overflow or very close to underflow, the matrix
+*          should be scaled.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the i-th diagonal element is nonpositive.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="spprfs"></A>
+  <H2>spprfs</H2>
+  
+  <PRE>
 USAGE:
-  ferr, berr, info, x = NumRu::Lapack.spprfs( uplo, ap, afp, b, x)
-    or
-  NumRu::Lapack.spprfs  # print help
+  ferr, berr, info, x = NumRu::Lapack.spprfs( uplo, ap, afp, b, x, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -254,10 +386,123 @@ FORTRAN MANUAL
   <H2>sppsv</H2>
   
   <PRE>
+A HREF="#top">go to the page top</A>
+
+  <A NAME="sppsv"></A>
+  <H2>sppsv</H2>
+  
+  <PRE>
 USAGE:
-  info, ap, b = NumRu::Lapack.sppsv( uplo, n, ap, b)
-    or
-  NumRu::Lapack.sppsv  # print help
+  info, ap, b = NumRu::Lapack.sppsv( uplo, n, ap, b, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE SPPSV( UPLO, N, NRHS, AP, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  SPPSV computes the solution to a real system of linear equations
+*     A * X = B,
+*  where A is an N-by-N symmetric positive definite matrix stored in
+*  packed format and X and B are N-by-NRHS matrices.
+*
+*  The Cholesky decomposition is used to factor A as
+*     A = U**T* U,  if UPLO = 'U', or
+*     A = L * L**T,  if UPLO = 'L',
+*  where U is an upper triangular matrix and L is a lower triangular
+*  matrix.  The factored form of A is then used to solve the system of
+*  equations A * X = B.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The number of linear equations, i.e., the order of the
+*          matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  AP      (input/output) REAL array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.
+*          See below for further details.  
+*
+*          On exit, if INFO = 0, the factor U or L from the Cholesky
+*          factorization A = U**T*U or A = L*L**T, in the same storage
+*          format as A.
+*
+*  B       (input/output) REAL array, dimension (LDB,NRHS)
+*          On entry, the N-by-NRHS right hand side matrix B.
+*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the leading minor of order i of A is not
+*                positive definite, so the factorization could not be
+*                completed, and the solution has not been computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  The packed storage scheme is illustrated by the following example
+*  when N = 4, UPLO = 'U':
+*
+*  Two-dimensional storage of the symmetric matrix A:
+*
+*     a11 a12 a13 a14
+*         a22 a23 a24
+*             a33 a34     (aij = conjg(aji))
+*                 a44
+*
+*  Packed storage of the upper triangle of A:
+*
+*  AP = [ a11, a12, a22, a13, a23, a33, a14, a24, a34, a44 ]
+*
+*  =====================================================================
+*
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           SPPTRF, SPPTRS, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sppsvx"></A>
+  <H2>sppsvx</H2>
+  
+  <PRE>
+A HREF="#top">go to the page top</A>
+
+  <A NAME="sppsv"></A>
+  <H2>sppsv</H2>
+  
+  <PRE>
+USAGE:
+  info, ap, b = NumRu::Lapack.sppsv( uplo, n, ap, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -360,9 +605,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  x, rcond, ferr, berr, info, ap, afp, equed, s, b = NumRu::Lapack.sppsvx( fact, uplo, ap, afp, equed, s, b)
-    or
-  NumRu::Lapack.sppsvx  # print help
+  x, rcond, ferr, berr, info, ap, afp, equed, s, b = NumRu::Lapack.sppsvx( fact, uplo, ap, afp, equed, s, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -580,10 +823,111 @@ FORTRAN MANUAL
   <H2>spptrf</H2>
   
   <PRE>
+22, a13, a23, a33, a14, a24, a34, a44 ]
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="spptrf"></A>
+  <H2>spptrf</H2>
+  
+  <PRE>
 USAGE:
-  info, ap = NumRu::Lapack.spptrf( uplo, n, ap)
-    or
-  NumRu::Lapack.spptrf  # print help
+  info, ap = NumRu::Lapack.spptrf( uplo, n, ap, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE SPPTRF( UPLO, N, AP, INFO )
+
+*  Purpose
+*  =======
+*
+*  SPPTRF computes the Cholesky factorization of a real symmetric
+*  positive definite matrix A stored in packed format.
+*
+*  The factorization has the form
+*     A = U**T * U,  if UPLO = 'U', or
+*     A = L  * L**T,  if UPLO = 'L',
+*  where U is an upper triangular matrix and L is lower triangular.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input/output) REAL array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.
+*          See below for further details.
+*
+*          On exit, if INFO = 0, the triangular factor U or L from the
+*          Cholesky factorization A = U**T*U or A = L*L**T, in the same
+*          storage format as A.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the leading minor of order i is not
+*                positive definite, and the factorization could not be
+*                completed.
+*
+
+*  Further Details
+*  ======= =======
+*
+*  The packed storage scheme is illustrated by the following example
+*  when N = 4, UPLO = 'U':
+*
+*  Two-dimensional storage of the symmetric matrix A:
+*
+*     a11 a12 a13 a14
+*         a22 a23 a24
+*             a33 a34     (aij = aji)
+*                 a44
+*
+*  Packed storage of the upper triangle of A:
+*
+*  AP = [ a11, a12, a22, a13, a23, a33, a14, a24, a34, a44 ]
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="spptri"></A>
+  <H2>spptri</H2>
+  
+  <PRE>
+22, a13, a23, a33, a14, a24, a34, a44 ]
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="spptrf"></A>
+  <H2>spptrf</H2>
+  
+  <PRE>
+USAGE:
+  info, ap = NumRu::Lapack.spptrf( uplo, n, ap, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -660,9 +1004,151 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  info, ap = NumRu::Lapack.spptri( uplo, n, ap)
-    or
-  NumRu::Lapack.spptri  # print help
+  info, ap = NumRu::Lapack.spptri( uplo, n, ap, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE SPPTRI( UPLO, N, AP, INFO )
+
+*  Purpose
+*  =======
+*
+*  SPPTRI computes the inverse of a real symmetric positive definite
+*  matrix A using the Cholesky factorization A = U**T*U or A = L*L**T
+*  computed by SPPTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangular factor is stored in AP;
+*          = 'L':  Lower triangular factor is stored in AP.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input/output) REAL array, dimension (N*(N+1)/2)
+*          On entry, the triangular factor U or L from the Cholesky
+*          factorization A = U**T*U or A = L*L**T, packed columnwise as
+*          a linear array.  The j-th column of U or L is stored in the
+*          array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = U(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = L(i,j) for j<=i<=n.
+*
+*          On exit, the upper or lower triangle of the (symmetric)
+*          inverse of A, overwriting the input factor U or L.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the (i,i) element of the factor U or L is
+*                zero, and the inverse could not be computed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="spptrs"></A>
+  <H2>spptrs</H2>
+  
+  <PRE>
+22, a13, a23, a33, a14, a24, a34, a44 ]
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="spptrf"></A>
+  <H2>spptrf</H2>
+  
+  <PRE>
+USAGE:
+  info, ap = NumRu::Lapack.spptrf( uplo, n, ap, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE SPPTRF( UPLO, N, AP, INFO )
+
+*  Purpose
+*  =======
+*
+*  SPPTRF computes the Cholesky factorization of a real symmetric
+*  positive definite matrix A stored in packed format.
+*
+*  The factorization has the form
+*     A = U**T * U,  if UPLO = 'U', or
+*     A = L  * L**T,  if UPLO = 'L',
+*  where U is an upper triangular matrix and L is lower triangular.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input/output) REAL array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.
+*          See below for further details.
+*
+*          On exit, if INFO = 0, the triangular factor U or L from the
+*          Cholesky factorization A = U**T*U or A = L*L**T, in the same
+*          storage format as A.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the leading minor of order i is not
+*                positive definite, and the factorization could not be
+*                completed.
+*
+
+*  Further Details
+*  ======= =======
+*
+*  The packed storage scheme is illustrated by the following example
+*  when N = 4, UPLO = 'U':
+*
+*  Two-dimensional storage of the symmetric matrix A:
+*
+*     a11 a12 a13 a14
+*         a22 a23 a24
+*             a33 a34     (aij = aji)
+*                 a44
+*
+*  Packed storage of the upper triangle of A:
+*
+*  AP = [ a11, a12, a22, a13, a23, a33, a14, a24, a34, a44 ]
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="spptri"></A>
+  <H2>spptri</H2>
+  
+  <PRE>
+USAGE:
+  info, ap = NumRu::Lapack.spptri( uplo, n, ap, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -716,9 +1202,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  info, b = NumRu::Lapack.spptrs( uplo, n, ap, b)
-    or
-  NumRu::Lapack.spptrs  # print help
+  info, b = NumRu::Lapack.spptrs( uplo, n, ap, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

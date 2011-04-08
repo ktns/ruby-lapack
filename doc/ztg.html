@@ -20,10 +20,30 @@
   <H2>ztgevc</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX*16 or DOUBLE COMPLEX routines for triangular matrices, generalized problem (i.e., a pair of triangular matrices) matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX*16 or DOUBLE COMPLEX routines for triangular matrices, generalized problem (i.e., a pair of triangular matrices) matrix</H1>
+    <UL>
+      <LI><A HREF="#ztgevc">ztgevc</A> : </LI>
+      <LI><A HREF="#ztgex2">ztgex2</A> : </LI>
+      <LI><A HREF="#ztgexc">ztgexc</A> : </LI>
+      <LI><A HREF="#ztgsen">ztgsen</A> : </LI>
+      <LI><A HREF="#ztgsja">ztgsja</A> : </LI>
+      <LI><A HREF="#ztgsna">ztgsna</A> : </LI>
+      <LI><A HREF="#ztgsy2">ztgsy2</A> : </LI>
+      <LI><A HREF="#ztgsyl">ztgsyl</A> : </LI>
+    </UL>
+
+  <A NAME="ztgevc"></A>
+  <H2>ztgevc</H2>
+  
+  <PRE>
 USAGE:
-  m, info, vl, vr = NumRu::Lapack.ztgevc( side, howmny, select, s, p, vl, vr)
-    or
-  NumRu::Lapack.ztgevc  # print help
+  m, info, vl, vr = NumRu::Lapack.ztgevc( side, howmny, select, s, p, vl, vr, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -157,10 +177,61 @@ FORTRAN MANUAL
   <H2>ztgex2</H2>
   
   <PRE>
+P) specified by
+*                      SELECT, stored consecutively in the columns of
+*                      VL, in the same order as their eigenvalues.
+*          Not referenced if SIDE = 'R'.
+*
+*  LDVL    (input) INTEGER
+*          The leading dimension of array VL.  LDVL >= 1, and if
+*          SIDE = 'L' or 'l' or 'B' or 'b', LDVL >= N.
+*
+*  VR      (input/output) COMPLEX*16 array, dimension (LDVR,MM)
+*          On entry, if SIDE = 'R' or 'B' and HOWMNY = 'B', VR must
+*          contain an N-by-N matrix Q (usually the unitary matrix Z
+*          of right Schur vectors returned by ZHGEQZ).
+*          On exit, if SIDE = 'R' or 'B', VR contains:
+*          if HOWMNY = 'A', the matrix X of right eigenvectors of (S,P);
+*          if HOWMNY = 'B', the matrix Z*X;
+*          if HOWMNY = 'S', the right eigenvectors of (S,P) specified by
+*                      SELECT, stored consecutively in the columns of
+*                      VR, in the same order as their eigenvalues.
+*          Not referenced if SIDE = 'L'.
+*
+*  LDVR    (input) INTEGER
+*          The leading dimension of the array VR.  LDVR >= 1, and if
+*          SIDE = 'R' or 'B', LDVR >= N.
+*
+*  MM      (input) INTEGER
+*          The number of columns in the arrays VL and/or VR. MM >= M.
+*
+*  M       (output) INTEGER
+*          The number of columns in the arrays VL and/or VR actually
+*          used to store the eigenvectors.  If HOWMNY = 'A' or 'B', M
+*          is set to N.  Each selected eigenvector occupies one column.
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (2*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztgex2"></A>
+  <H2>ztgex2</H2>
+  
+  <PRE>
 USAGE:
-  info, a, b, q, z = NumRu::Lapack.ztgex2( wantq, wantz, a, b, q, ldq, z, ldz, j1)
-    or
-  NumRu::Lapack.ztgex2  # print help
+  info, a, b, q, z = NumRu::Lapack.ztgex2( wantq, wantz, a, b, q, ldq, z, ldz, j1, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -276,10 +347,60 @@ FORTRAN MANUAL
   <H2>ztgexc</H2>
   
   <PRE>
+NTZ = .FALSE..
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z. LDZ >= 1;
+*          If WANTZ = .TRUE., LDZ >= N.
+*
+*  J1      (input) INTEGER
+*          The index to the first block (A11, B11).
+*
+*  INFO    (output) INTEGER
+*           =0:  Successful exit.
+*           =1:  The transformed matrix pair (A, B) would be too far
+*                from generalized Schur form; the problem is ill-
+*                conditioned. 
+*
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
+*     Umea University, S-901 87 Umea, Sweden.
+*
+*  In the current code both weak and strong stability tests are
+*  performed. The user can omit the strong stability test by changing
+*  the internal logical parameter WANDS to .FALSE.. See ref. [2] for
+*  details.
+*
+*  [1] B. Kagstrom; A Direct Method for Reordering Eigenvalues in the
+*      Generalized Real Schur Form of a Regular Matrix Pair (A, B), in
+*      M.S. Moonen et al (eds), Linear Algebra for Large Scale and
+*      Real-Time Applications, Kluwer Academic Publ. 1993, pp 195-218.
+*
+*  [2] B. Kagstrom and P. Poromaa; Computing Eigenspaces with Specified
+*      Eigenvalues of a Regular Matrix Pair (A, B) and Condition
+*      Estimation: Theory, Algorithms and Software, Report UMINF-94.04,
+*      Department of Computing Science, Umea University, S-901 87 Umea,
+*      Sweden, 1994. Also as LAPACK Working Note 87. To appear in
+*      Numerical Algorithms, 1996.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztgexc"></A>
+  <H2>ztgexc</H2>
+  
+  <PRE>
 USAGE:
-  info, a, b, q, z, ilst = NumRu::Lapack.ztgexc( wantq, wantz, a, b, q, ldq, z, ifst, ilst)
-    or
-  NumRu::Lapack.ztgexc  # print help
+  info, a, b, q, z, ilst = NumRu::Lapack.ztgexc( wantq, wantz, a, b, q, ldq, z, ifst, ilst, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -413,10 +534,75 @@ FORTRAN MANUAL
   <H2>ztgsen</H2>
   
   <PRE>
+LDZ >= 1;
+*          If WANTZ = .TRUE., LDZ >= N.
+*
+*  IFST    (input) INTEGER
+*  ILST    (input/output) INTEGER
+*          Specify the reordering of the diagonal blocks of (A, B).
+*          The block with row index IFST is moved to row ILST, by a
+*          sequence of swapping between adjacent blocks.
+*
+*  INFO    (output) INTEGER
+*           =0:  Successful exit.
+*           <0:  if INFO = -i, the i-th argument had an illegal value.
+*           =1:  The transformed matrix pair (A, B) would be too far
+*                from generalized Schur form; the problem is ill-
+*                conditioned. (A, B) may have been partially reordered,
+*                and ILST points to the first row of the current
+*                position of the block being moved.
+*
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
+*     Umea University, S-901 87 Umea, Sweden.
+*
+*  [1] B. Kagstrom; A Direct Method for Reordering Eigenvalues in the
+*      Generalized Real Schur Form of a Regular Matrix Pair (A, B), in
+*      M.S. Moonen et al (eds), Linear Algebra for Large Scale and
+*      Real-Time Applications, Kluwer Academic Publ. 1993, pp 195-218.
+*
+*  [2] B. Kagstrom and P. Poromaa; Computing Eigenspaces with Specified
+*      Eigenvalues of a Regular Matrix Pair (A, B) and Condition
+*      Estimation: Theory, Algorithms and Software, Report
+*      UMINF - 94.04, Department of Computing Science, Umea University,
+*      S-901 87 Umea, Sweden, 1994. Also as LAPACK Working Note 87.
+*      To appear in Numerical Algorithms, 1996.
+*
+*  [3] B. Kagstrom and P. Poromaa, LAPACK-Style Algorithms and Software
+*      for Solving the Generalized Sylvester Equation and Estimating the
+*      Separation between Regular Matrix Pairs, Report UMINF - 93.23,
+*      Department of Computing Science, Umea University, S-901 87 Umea,
+*      Sweden, December 1993, Revised April 1994, Also as LAPACK working
+*      Note 75. To appear in ACM Trans. on Math. Software, Vol 22, No 1,
+*      1996.
+*
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      INTEGER            HERE
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           XERBLA, ZTGEX2
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztgsen"></A>
+  <H2>ztgsen</H2>
+  
+  <PRE>
 USAGE:
-  alpha, beta, m, pl, pr, dif, work, iwork, info, a, b, q, z = NumRu::Lapack.ztgsen( ijob, wantq, wantz, select, a, b, q, z, lwork, liwork)
-    or
-  NumRu::Lapack.ztgsen  # print help
+  alpha, beta, m, pl, pr, dif, work, iwork, info, a, b, q, z = NumRu::Lapack.ztgsen( ijob, wantq, wantz, select, a, b, q, z, lwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -731,10 +917,94 @@ FORTRAN MANUAL
   <H2>ztgsja</H2>
   
   <PRE>
+PS is the machine precision.
+*
+*  The reciprocal norm of the projectors on the left and right
+*  eigenspaces associated with (A11, B11) may be returned in PL and PR.
+*  They are computed as follows. First we compute L and R so that
+*  P*(A, B)*Q is block diagonal, where
+*
+*       P = ( I -L ) n1           Q = ( I R ) n1
+*           ( 0  I ) n2    and        ( 0 I ) n2
+*             n1 n2                    n1 n2
+*
+*  and (L, R) is the solution to the generalized Sylvester equation
+*
+*       A11*R - L*A22 = -A12
+*       B11*R - L*B22 = -B12
+*
+*  Then PL = (F-norm(L)**2+1)**(-1/2) and PR = (F-norm(R)**2+1)**(-1/2).
+*  An approximate (asymptotic) bound on the average absolute error of
+*  the selected eigenvalues is
+*
+*       EPS * norm((A, B)) / PL.
+*
+*  There are also global error bounds which valid for perturbations up
+*  to a certain restriction:  A lower bound (x) on the smallest
+*  F-norm(E,F) for which an eigenvalue of (A11, B11) may move and
+*  coalesce with an eigenvalue of (A22, B22) under perturbation (E,F),
+*  (i.e. (A + E, B + F), is
+*
+*   x = min(Difu,Difl)/((1/(PL*PL)+1/(PR*PR))**(1/2)+2*max(1/PL,1/PR)).
+*
+*  An approximate bound on x can be computed from DIF(1:2), PL and PR.
+*
+*  If y = ( F-norm(E,F) / x) <= 1, the angles between the perturbed
+*  (L', R') and unperturbed (L, R) left and right deflating subspaces
+*  associated with the selected cluster in the (1,1)-blocks can be
+*  bounded as
+*
+*   max-angle(L, L') <= arctan( y * PL / (1 - y * (1 - PL * PL)**(1/2))
+*   max-angle(R, R') <= arctan( y * PR / (1 - y * (1 - PR * PR)**(1/2))
+*
+*  See LAPACK User's Guide section 4.11 or the following references
+*  for more information.
+*
+*  Note that if the default method for computing the Frobenius-norm-
+*  based estimate DIF is not wanted (see ZLATDF), then the parameter
+*  IDIFJB (see below) should be changed from 3 to 4 (routine ZLATDF
+*  (IJOB = 2 will be used)). See ZTGSYL for more details.
+*
+*  Based on contributions by
+*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
+*     Umea University, S-901 87 Umea, Sweden.
+*
+*  References
+*  ==========
+*
+*  [1] B. Kagstrom; A Direct Method for Reordering Eigenvalues in the
+*      Generalized Real Schur Form of a Regular Matrix Pair (A, B), in
+*      M.S. Moonen et al (eds), Linear Algebra for Large Scale and
+*      Real-Time Applications, Kluwer Academic Publ. 1993, pp 195-218.
+*
+*  [2] B. Kagstrom and P. Poromaa; Computing Eigenspaces with Specified
+*      Eigenvalues of a Regular Matrix Pair (A, B) and Condition
+*      Estimation: Theory, Algorithms and Software, Report
+*      UMINF - 94.04, Department of Computing Science, Umea University,
+*      S-901 87 Umea, Sweden, 1994. Also as LAPACK Working Note 87.
+*      To appear in Numerical Algorithms, 1996.
+*
+*  [3] B. Kagstrom and P. Poromaa, LAPACK-Style Algorithms and Software
+*      for Solving the Generalized Sylvester Equation and Estimating the
+*      Separation between Regular Matrix Pairs, Report UMINF - 93.23,
+*      Department of Computing Science, Umea University, S-901 87 Umea,
+*      Sweden, December 1993, Revised April 1994, Also as LAPACK working
+*      Note 75. To appear in ACM Trans. on Math. Software, Vol 22, No 1,
+*      1996.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztgsja"></A>
+  <H2>ztgsja</H2>
+  
+  <PRE>
 USAGE:
-  alpha, beta, ncycle, info, a, b, u, v, q = NumRu::Lapack.ztgsja( jobu, jobv, jobq, k, l, a, b, tola, tolb, u, v, q)
-    or
-  NumRu::Lapack.ztgsja  # print help
+  alpha, beta, ncycle, info, a, b, u, v, q = NumRu::Lapack.ztgsja( jobu, jobv, jobq, k, l, a, b, tola, tolb, u, v, q, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -991,10 +1261,121 @@ FORTRAN MANUAL
   <H2>ztgsna</H2>
   
   <PRE>
+     On entry, the P-by-N matrix B.
+*          On exit, if necessary, B(M-K+1:L,N+M-K-L+1:N) contains
+*          a part of R.  See Purpose for details.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B. LDB >= max(1,P).
+*
+*  TOLA    (input) DOUBLE PRECISION
+*  TOLB    (input) DOUBLE PRECISION
+*          TOLA and TOLB are the convergence criteria for the Jacobi-
+*          Kogbetliantz iteration procedure. Generally, they are the
+*          same as used in the preprocessing step, say
+*              TOLA = MAX(M,N)*norm(A)*MAZHEPS,
+*              TOLB = MAX(P,N)*norm(B)*MAZHEPS.
+*
+*  ALPHA   (output) DOUBLE PRECISION array, dimension (N)
+*  BETA    (output) DOUBLE PRECISION array, dimension (N)
+*          On exit, ALPHA and BETA contain the generalized singular
+*          value pairs of A and B;
+*            ALPHA(1:K) = 1,
+*            BETA(1:K)  = 0,
+*          and if M-K-L >= 0,
+*            ALPHA(K+1:K+L) = diag(C),
+*            BETA(K+1:K+L)  = diag(S),
+*          or if M-K-L < 0,
+*            ALPHA(K+1:M)= C, ALPHA(M+1:K+L)= 0
+*            BETA(K+1:M) = S, BETA(M+1:K+L) = 1.
+*          Furthermore, if K+L < N,
+*            ALPHA(K+L+1:N) = 0
+*            BETA(K+L+1:N)  = 0.
+*
+*  U       (input/output) COMPLEX*16 array, dimension (LDU,M)
+*          On entry, if JOBU = 'U', U must contain a matrix U1 (usually
+*          the unitary matrix returned by ZGGSVP).
+*          On exit,
+*          if JOBU = 'I', U contains the unitary matrix U;
+*          if JOBU = 'U', U contains the product U1*U.
+*          If JOBU = 'N', U is not referenced.
+*
+*  LDU     (input) INTEGER
+*          The leading dimension of the array U. LDU >= max(1,M) if
+*          JOBU = 'U'; LDU >= 1 otherwise.
+*
+*  V       (input/output) COMPLEX*16 array, dimension (LDV,P)
+*          On entry, if JOBV = 'V', V must contain a matrix V1 (usually
+*          the unitary matrix returned by ZGGSVP).
+*          On exit,
+*          if JOBV = 'I', V contains the unitary matrix V;
+*          if JOBV = 'V', V contains the product V1*V.
+*          If JOBV = 'N', V is not referenced.
+*
+*  LDV     (input) INTEGER
+*          The leading dimension of the array V. LDV >= max(1,P) if
+*          JOBV = 'V'; LDV >= 1 otherwise.
+*
+*  Q       (input/output) COMPLEX*16 array, dimension (LDQ,N)
+*          On entry, if JOBQ = 'Q', Q must contain a matrix Q1 (usually
+*          the unitary matrix returned by ZGGSVP).
+*          On exit,
+*          if JOBQ = 'I', Q contains the unitary matrix Q;
+*          if JOBQ = 'Q', Q contains the product Q1*Q.
+*          If JOBQ = 'N', Q is not referenced.
+*
+*  LDQ     (input) INTEGER
+*          The leading dimension of the array Q. LDQ >= max(1,N) if
+*          JOBQ = 'Q'; LDQ >= 1 otherwise.
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
+*
+*  NCYCLE  (output) INTEGER
+*          The number of cycles required for convergence.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          = 1:  the procedure does not converge after MAXIT cycles.
+*
+*  Internal Parameters
+*  ===================
+*
+*  MAXIT   INTEGER
+*          MAXIT specifies the total loops that the iterative procedure
+*          may take. If after MAXIT cycles, the routine fails to
+*          converge, we return INFO = 1.
+*
+
+*  Further Details
+*  ===============
+*
+*  ZTGSJA essentially uses a variant of Kogbetliantz algorithm to reduce
+*  min(L,M-K)-by-L triangular (or trapezoidal) matrix A23 and L-by-L
+*  matrix B13 to the form:
+*
+*           U1'*A13*Q1 = C1*R1; V1'*B13*Q1 = S1*R1,
+*
+*  where U1, V1 and Q1 are unitary matrix, and Z' is the conjugate
+*  transpose of Z.  C1 and S1 are diagonal matrices satisfying
+*
+*                C1**2 + S1**2 = I,
+*
+*  and R1 is an L-by-L nonsingular upper triangular matrix.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztgsna"></A>
+  <H2>ztgsna</H2>
+  
+  <PRE>
 USAGE:
-  s, dif, m, work, info = NumRu::Lapack.ztgsna( job, howmny, select, a, b, vl, vr, lwork)
-    or
-  NumRu::Lapack.ztgsna  # print help
+  s, dif, m, work, info = NumRu::Lapack.ztgsna( job, howmny, select, a, b, vl, vr, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1201,10 +1582,115 @@ FORTRAN MANUAL
   <H2>ztgsy2</H2>
   
   <PRE>
+output) COMPLEX*16 array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK  (input) INTEGER
+*          The dimension of the array WORK. LWORK >= max(1,N).
+*          If JOB = 'V' or 'B', LWORK >= max(1,2*N*N).
+*
+*  IWORK   (workspace) INTEGER array, dimension (N+2)
+*          If JOB = 'E', IWORK is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0: Successful exit
+*          < 0: If INFO = -i, the i-th argument had an illegal value
+*
+
+*  Further Details
+*  ===============
+*
+*  The reciprocal of the condition number of the i-th generalized
+*  eigenvalue w = (a, b) is defined as
+*
+*          S(I) = (|v'Au|**2 + |v'Bu|**2)**(1/2) / (norm(u)*norm(v))
+*
+*  where u and v are the right and left eigenvectors of (A, B)
+*  corresponding to w; |z| denotes the absolute value of the complex
+*  number, and norm(u) denotes the 2-norm of the vector u. The pair
+*  (a, b) corresponds to an eigenvalue w = a/b (= v'Au/v'Bu) of the
+*  matrix pair (A, B). If both a and b equal zero, then (A,B) is
+*  singular and S(I) = -1 is returned.
+*
+*  An approximate error bound on the chordal distance between the i-th
+*  computed generalized eigenvalue w and the corresponding exact
+*  eigenvalue lambda is
+*
+*          chord(w, lambda) <=   EPS * norm(A, B) / S(I),
+*
+*  where EPS is the machine precision.
+*
+*  The reciprocal of the condition number of the right eigenvector u
+*  and left eigenvector v corresponding to the generalized eigenvalue w
+*  is defined as follows. Suppose
+*
+*                   (A, B) = ( a   *  ) ( b  *  )  1
+*                            ( 0  A22 ),( 0 B22 )  n-1
+*                              1  n-1     1 n-1
+*
+*  Then the reciprocal condition number DIF(I) is
+*
+*          Difl[(a, b), (A22, B22)]  = sigma-min( Zl )
+*
+*  where sigma-min(Zl) denotes the smallest singular value of
+*
+*         Zl = [ kron(a, In-1) -kron(1, A22) ]
+*              [ kron(b, In-1) -kron(1, B22) ].
+*
+*  Here In-1 is the identity matrix of size n-1 and X' is the conjugate
+*  transpose of X. kron(X, Y) is the Kronecker product between the
+*  matrices X and Y.
+*
+*  We approximate the smallest singular value of Zl with an upper
+*  bound. This is done by ZLATDF.
+*
+*  An approximate error bound for a computed eigenvector VL(i) or
+*  VR(i) is given by
+*
+*                      EPS * norm(A, B) / DIF(i).
+*
+*  See ref. [2-3] for more details and further references.
+*
+*  Based on contributions by
+*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
+*     Umea University, S-901 87 Umea, Sweden.
+*
+*  References
+*  ==========
+*
+*  [1] B. Kagstrom; A Direct Method for Reordering Eigenvalues in the
+*      Generalized Real Schur Form of a Regular Matrix Pair (A, B), in
+*      M.S. Moonen et al (eds), Linear Algebra for Large Scale and
+*      Real-Time Applications, Kluwer Academic Publ. 1993, pp 195-218.
+*
+*  [2] B. Kagstrom and P. Poromaa; Computing Eigenspaces with Specified
+*      Eigenvalues of a Regular Matrix Pair (A, B) and Condition
+*      Estimation: Theory, Algorithms and Software, Report
+*      UMINF - 94.04, Department of Computing Science, Umea University,
+*      S-901 87 Umea, Sweden, 1994. Also as LAPACK Working Note 87.
+*      To appear in Numerical Algorithms, 1996.
+*
+*  [3] B. Kagstrom and P. Poromaa, LAPACK-Style Algorithms and Software
+*      for Solving the Generalized Sylvester Equation and Estimating the
+*      Separation between Regular Matrix Pairs, Report UMINF - 93.23,
+*      Department of Computing Science, Umea University, S-901 87 Umea,
+*      Sweden, December 1993, Revised April 1994, Also as LAPACK Working
+*      Note 75.
+*      To appear in ACM Trans. on Math. Software, Vol 22, No 1, 1996.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztgsy2"></A>
+  <H2>ztgsy2</H2>
+  
+  <PRE>
 USAGE:
-  scale, info, c, f, rdsum, rdscal = NumRu::Lapack.ztgsy2( trans, ijob, a, b, c, d, e, f, rdsum, rdscal)
-    or
-  NumRu::Lapack.ztgsy2  # print help
+  scale, info, c, f, rdsum, rdscal = NumRu::Lapack.ztgsy2( trans, ijob, a, b, c, d, e, f, rdsum, rdscal, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1370,10 +1856,63 @@ FORTRAN MANUAL
   <H2>ztgsyl</H2>
   
   <PRE>
+LDF     (input) INTEGER
+*          The leading dimension of the matrix F. LDF >= max(1, M).
+*
+*  SCALE   (output) DOUBLE PRECISION
+*          On exit, 0 <= SCALE <= 1. If 0 < SCALE < 1, the solutions
+*          R and L (C and F on entry) will hold the solutions to a
+*          slightly perturbed system but the input matrices A, B, D and
+*          E have not been changed. If SCALE = 0, R and L will hold the
+*          solutions to the homogeneous system with C = F = 0.
+*          Normally, SCALE = 1.
+*
+*  RDSUM   (input/output) DOUBLE PRECISION
+*          On entry, the sum of squares of computed contributions to
+*          the Dif-estimate under computation by ZTGSYL, where the
+*          scaling factor RDSCAL (see below) has been factored out.
+*          On exit, the corresponding sum of squares updated with the
+*          contributions from the current sub-system.
+*          If TRANS = 'T' RDSUM is not touched.
+*          NOTE: RDSUM only makes sense when ZTGSY2 is called by
+*          ZTGSYL.
+*
+*  RDSCAL  (input/output) DOUBLE PRECISION
+*          On entry, scaling factor used to prevent overflow in RDSUM.
+*          On exit, RDSCAL is updated w.r.t. the current contributions
+*          in RDSUM.
+*          If TRANS = 'T', RDSCAL is not touched.
+*          NOTE: RDSCAL only makes sense when ZTGSY2 is called by
+*          ZTGSYL.
+*
+*  INFO    (output) INTEGER
+*          On exit, if INFO is set to
+*            =0: Successful exit
+*            <0: If INFO = -i, input argument number i is illegal.
+*            >0: The matrix pairs (A, D) and (B, E) have common or very
+*                close eigenvalues.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
+*     Umea University, S-901 87 Umea, Sweden.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="ztgsyl"></A>
+  <H2>ztgsyl</H2>
+  
+  <PRE>
 USAGE:
-  scale, dif, work, info, c, f = NumRu::Lapack.ztgsyl( trans, ijob, a, b, c, d, e, f, lwork)
-    or
-  NumRu::Lapack.ztgsyl  # print help
+  scale, dif, work, info, c, f = NumRu::Lapack.ztgsyl( trans, ijob, a, b, c, d, e, f, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

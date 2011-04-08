@@ -14,10 +14,24 @@
   <H2>sbdsdc</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>REAL routines for bidiagonal matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>REAL routines for bidiagonal matrix</H1>
+    <UL>
+      <LI><A HREF="#sbdsdc">sbdsdc</A> : </LI>
+      <LI><A HREF="#sbdsqr">sbdsqr</A> : </LI>
+    </UL>
+
+  <A NAME="sbdsdc"></A>
+  <H2>sbdsdc</H2>
+  
+  <PRE>
 USAGE:
-  u, vt, q, iq, info, d, e = NumRu::Lapack.sbdsdc( uplo, compq, d, e, ldu, ldvt)
-    or
-  NumRu::Lapack.sbdsdc  # print help
+  u, vt, q, iq, info, d, e = NumRu::Lapack.sbdsdc( uplo, compq, d, e, ldu, ldvt, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -151,10 +165,56 @@ FORTRAN MANUAL
   <H2>sbdsqr</H2>
   
   <PRE>
+OMPQ, Q is not referenced.
+*
+*  IQ      (output) INTEGER array, dimension (LDIQ)
+*          If  COMPQ = 'P', then:
+*             On exit, if INFO = 0, Q and IQ contain the left
+*             and right singular vectors in a compact form,
+*             requiring O(N log N) space instead of 2*N**2.
+*             In particular, IQ contains all INTEGER data in
+*             LDIQ >= N*(3 + 3*INT(LOG_2(N/(SMLSIZ+1))))
+*             words of memory, where SMLSIZ is returned by ILAENV and
+*             is equal to the maximum size of the subproblems at the
+*             bottom of the computation tree (usually about 25).
+*          For other values of COMPQ, IQ is not referenced.
+*
+*  WORK    (workspace) REAL array, dimension (MAX(1,LWORK))
+*          If COMPQ = 'N' then LWORK >= (4 * N).
+*          If COMPQ = 'P' then LWORK >= (6 * N).
+*          If COMPQ = 'I' then LWORK >= (3 * N**2 + 4 * N).
+*
+*  IWORK   (workspace) INTEGER array, dimension (8*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  The algorithm failed to compute a singular value.
+*                The update process of divide and conquer failed.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Ming Gu and Huan Ren, Computer Science Division, University of
+*     California at Berkeley, USA
+*  =====================================================================
+*  Changed dimension statement in comment describing E from (N) to
+*  (N-1).  Sven, 17 Feb 05.
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="sbdsqr"></A>
+  <H2>sbdsqr</H2>
+  
+  <PRE>
 USAGE:
-  info, d, e, vt, u, c = NumRu::Lapack.sbdsqr( uplo, nru, d, e, vt, u, c)
-    or
-  NumRu::Lapack.sbdsqr  # print help
+  info, d, e, vt, u, c = NumRu::Lapack.sbdsqr( uplo, nru, d, e, vt, u, c, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

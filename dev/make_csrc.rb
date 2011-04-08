@@ -4,7 +4,7 @@ require "yaml"
 require "pp"
 require "common"
 
-RBPREFIX = "rb_"
+RBPREFIX = "rblapack_"
 
 NATYPES = {
   "integer" => "NA_LINT",
@@ -80,11 +80,16 @@ def get_input(name, type, dims, i, varset, sub_name, subst)
     if type == "char"
       return "  #{name} = StringValueCStr(#{RBPREFIX}#{name});\n"
     end
+    if i.kind_of?(Integer)
+      arg = "#{i+1}th argument"
+    else
+      arg = "option"
+    end
     code =<<"EOF"
   if (!NA_IsNArray(#{RBPREFIX}#{name}))
-    rb_raise(rb_eArgError, "#{name} (#{i+1}th argument) must be NArray");
+    rb_raise(rb_eArgError, "#{name} (#{arg}) must be NArray");
   if (NA_RANK(#{RBPREFIX}#{name}) != #{dims.length})
-    rb_raise(rb_eArgError, "rank of #{name} (#{i+1}th argument) must be %d", #{dims.length});
+    rb_raise(rb_eArgError, "rank of #{name} (#{arg}) must be %d", #{dims.length});
 EOF
     ndim = dims.length
     ndim.times do |jj|
@@ -181,6 +186,7 @@ def create_code(name)
   outputs = Array.new
   inouts = Array.new
   workspaces = Array.new
+  options = Array.new
   block = nil
   arg_names.each{|aname|
     arg = args[aname]
@@ -189,11 +195,19 @@ def create_code(name)
     end
     case arg[:intent]
     when "input"
-      inputs.push aname
+      if arg[:option]
+        options.push aname
+      else
+        inputs.push aname
+      end
     when "output"
       outputs.push aname
     when "input/output"
-      inputs.push aname
+      if arg[:option]
+        options.push aname
+      else
+        inputs.push aname
+      end
       inouts.push aname
     when "workspace"
       workspaces.push aname
@@ -235,6 +249,8 @@ def create_code(name)
     p inouts
     p "workspaces"
     p workspaces
+    p "options"
+    p options
     p "block"
     p block
   end
@@ -257,12 +273,14 @@ def create_code(name)
   end
 
   code << <<"EOF"
+static VALUE sHelp, sUsage;
+
 static VALUE
 #{RBPREFIX}#{sub_name}(int argc, VALUE *argv, VALUE self){
 EOF
 
   dimdefs = Array.new
-  (inputs+outputs).each{|aname|
+  (inputs+options+outputs).each{|aname|
     arg = args[aname]
     code << <<"EOF"
   VALUE #{RBPREFIX}#{aname};
@@ -291,7 +309,7 @@ EOF
     code << "  #{arg[:type]} #{arg[:dims] ? "*" : ""}#{aname};\n"
   }
   code << "\n"
-  (inputs+outputs+workspaces).each{|aname|
+  (inputs+options+outputs+workspaces).each{|aname|
     arg = args[aname]
     if dims = arg[:dims]
       dims.each{|dim|
@@ -327,28 +345,45 @@ EOF
     block_help = ""
   end
 
-  help_code = <<"EOF"
+  usage_code = <<"EOF"
 USAGE:
-  #{(outputs+inouts).join(", ")} = NumRu::Lapack.#{sub_name}( #{inputs.join(", ")})#{block_help}
-    or
-  NumRu::Lapack.#{sub_name}  # print help
+  #{(outputs+inouts).join(", ")} = NumRu::Lapack.#{sub_name}( #{inputs.join(", ")}, [#{(options+["usage","help"]).map{|on| ":"+on+" => "+on}.join(", ")}])#{block_help}
+EOF
 
+  help_code = <<"EOF"
+#{usage_code}
 
 FORTRAN MANUAL
 #{help}
 EOF
   ilen = inputs.length
   code << <<"EOF"
-  if (argc == 0) {
-    printf("%s\\n", "#{help_code.gsub(/\\/,'\\\\\\').gsub(/\n/,'\n').gsub(/"/,'\"')}");
-    return Qnil;
-  }
+  VALUE rb_options;
+  if (argc > 0 && TYPE(argv[argc-1]) == T_HASH) {
+    argc--;
+    rb_options = argv[argc];
+    if (rb_hash_aref(rb_options, sHelp) == Qtrue) {
+      printf("%s\\n", "#{help_code.gsub(/\\/,'\\\\\\').gsub(/\n/,'\n').gsub(/"/,'\"')}");
+      rb_exit(0);
+    }
+    if (rb_hash_aref(rb_options, sUsage) == Qtrue) {
+      printf("%s\\n", "#{usage_code.gsub(/\\/,'\\\\\\').gsub(/\n/,'\n').gsub(/"/,'\"')}");
+      rb_exit(0);
+    } 
+  } else
+    rb_options = Qnil;
   if (argc != #{ilen})
     rb_raise(rb_eArgError,"wrong number of arguments (%d for #{ilen})", argc);
 EOF
   inputs.each_with_index{|arg,i|
     code << "  #{RBPREFIX}#{arg} = argv[#{i}];\n"
   }
+  code << "  if (rb_options != Qnil) {\n"
+  options.each_with_index do |opt|
+    code << "    #{RBPREFIX}#{opt} = rb_hash_aref(rb_options, ID2SYM(rb_intern(\"#{opt}\")));\n"
+  end
+  code << "  }\n"
+
   code << "\n"
 
   order = Hash.new
@@ -430,6 +465,16 @@ EOF
       end
     end
     varset.push name
+  end
+
+  options.each do |name|
+    arg = args[name]
+    code << <<EOF
+  if (rb_options == Qnil || rb_#{name} == Qnil)
+    #{name} = NULL;
+  else
+#{get_input(name, arg[:type], arg[:dims], :option, varset, subst)}
+EOF
   end
 
   outputs.each{|name|
@@ -559,10 +604,12 @@ EOF
 void
 init_lapack_#{sub_name}(VALUE mLapack){
   rb_define_module_function(mLapack, \"#{sub_name}\", #{RBPREFIX}#{sub_name}, -1);
+  sHelp = ID2SYM(rb_intern("help"));
+  sUsage = ID2SYM(rb_intern("usage"));
 }
 EOF
 
-  code_all = "#include \"#{RBPREFIX}lapack.h\"\n\n"
+  code_all = "#include \"rb_lapack.h\"\n\n"
 
   if block
     arg = args[block]
@@ -589,7 +636,7 @@ EOF
     }
     code_all << <<EOF
 
-  rb_ret = rb_yield_values(#{anum}, #{ras.join(", ")});
+  #{RBPREFIX}ret = rb_yield_values(#{anum}, #{ras.join(", ")});
 
 EOF
     code_all << get_cobj("ret", type, sub_name)
@@ -620,7 +667,7 @@ def generate_code(fnames)
     end
   }
 
-  File.open("#{RBPREFIX}lapack.h","w"){|file|
+  File.open("rb_lapack.h","w"){|file|
     file.print <<"EOF"
 #include <string.h>
 #include <math.h>

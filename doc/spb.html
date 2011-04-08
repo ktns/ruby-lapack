@@ -21,10 +21,125 @@
   <H2>spbcon</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>REAL routines for symmetric or Hermitian positive definite band matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>REAL routines for symmetric or Hermitian positive definite band matrix</H1>
+    <UL>
+      <LI><A HREF="#spbcon">spbcon</A> : </LI>
+      <LI><A HREF="#spbequ">spbequ</A> : </LI>
+      <LI><A HREF="#spbrfs">spbrfs</A> : </LI>
+      <LI><A HREF="#spbstf">spbstf</A> : </LI>
+      <LI><A HREF="#spbsv">spbsv</A> : </LI>
+      <LI><A HREF="#spbsvx">spbsvx</A> : </LI>
+      <LI><A HREF="#spbtf2">spbtf2</A> : </LI>
+      <LI><A HREF="#spbtrf">spbtrf</A> : </LI>
+      <LI><A HREF="#spbtrs">spbtrs</A> : </LI>
+    </UL>
+
+  <A NAME="spbcon"></A>
+  <H2>spbcon</H2>
+  
+  <PRE>
 USAGE:
-  rcond, info = NumRu::Lapack.spbcon( uplo, kd, ab, anorm)
-    or
-  NumRu::Lapack.spbcon  # print help
+  rcond, info = NumRu::Lapack.spbcon( uplo, kd, ab, anorm, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE SPBCON( UPLO, N, KD, AB, LDAB, ANORM, RCOND, WORK, IWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  SPBCON estimates the reciprocal of the condition number (in the
+*  1-norm) of a real symmetric positive definite band matrix using the
+*  Cholesky factorization A = U**T*U or A = L*L**T computed by SPBTRF.
+*
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangular factor stored in AB;
+*          = 'L':  Lower triangular factor stored in AB.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  KD      (input) INTEGER
+*          The number of superdiagonals of the matrix A if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.
+*
+*  AB      (input) REAL array, dimension (LDAB,N)
+*          The triangular factor U or L from the Cholesky factorization
+*          A = U**T*U or A = L*L**T of the band matrix A, stored in the
+*          first KD+1 rows of the array.  The j-th column of U or L is
+*          stored in the j-th column of the array AB as follows:
+*          if UPLO ='U', AB(kd+1+i-j,j) = U(i,j) for max(1,j-kd)<=i<=j;
+*          if UPLO ='L', AB(1+i-j,j)    = L(i,j) for j<=i<=min(n,j+kd).
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KD+1.
+*
+*  ANORM   (input) REAL
+*          The 1-norm (or infinity-norm) of the symmetric band matrix A.
+*
+*  RCOND   (output) REAL
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
+*          estimate of the 1-norm of inv(A) computed in this routine.
+*
+*  WORK    (workspace) REAL array, dimension (3*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="spbequ"></A>
+  <H2>spbequ</H2>
+  
+  <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>REAL routines for symmetric or Hermitian positive definite band matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>REAL routines for symmetric or Hermitian positive definite band matrix</H1>
+    <UL>
+      <LI><A HREF="#spbcon">spbcon</A> : </LI>
+      <LI><A HREF="#spbequ">spbequ</A> : </LI>
+      <LI><A HREF="#spbrfs">spbrfs</A> : </LI>
+      <LI><A HREF="#spbstf">spbstf</A> : </LI>
+      <LI><A HREF="#spbsv">spbsv</A> : </LI>
+      <LI><A HREF="#spbsvx">spbsvx</A> : </LI>
+      <LI><A HREF="#spbtf2">spbtf2</A> : </LI>
+      <LI><A HREF="#spbtrf">spbtrf</A> : </LI>
+      <LI><A HREF="#spbtrs">spbtrs</A> : </LI>
+    </UL>
+
+  <A NAME="spbcon"></A>
+  <H2>spbcon</H2>
+  
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.spbcon( uplo, kd, ab, anorm, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -95,9 +210,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  s, scond, amax, info = NumRu::Lapack.spbequ( uplo, kd, ab)
-    or
-  NumRu::Lapack.spbequ  # print help
+  s, scond, amax, info = NumRu::Lapack.spbequ( uplo, kd, ab, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -170,10 +283,51 @@ FORTRAN MANUAL
   <H2>spbrfs</H2>
   
   <PRE>
+O = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.
+*
+*  AB      (input) REAL array, dimension (LDAB,N)
+*          The upper or lower triangle of the symmetric band matrix A,
+*          stored in the first KD+1 rows of the array.  The j-th column
+*          of A is stored in the j-th column of the array AB as follows:
+*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
+*
+*  LDAB     (input) INTEGER
+*          The leading dimension of the array A.  LDAB >= KD+1.
+*
+*  S       (output) REAL array, dimension (N)
+*          If INFO = 0, S contains the scale factors for A.
+*
+*  SCOND   (output) REAL
+*          If INFO = 0, S contains the ratio of the smallest S(i) to
+*          the largest S(i).  If SCOND >= 0.1 and AMAX is neither too
+*          large nor too small, it is not worth scaling by S.
+*
+*  AMAX    (output) REAL
+*          Absolute value of largest matrix element.  If AMAX is very
+*          close to overflow or very close to underflow, the matrix
+*          should be scaled.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, the i-th diagonal element is nonpositive.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="spbrfs"></A>
+  <H2>spbrfs</H2>
+  
+  <PRE>
 USAGE:
-  ferr, berr, info, x = NumRu::Lapack.spbrfs( uplo, kd, ab, afb, b, x)
-    or
-  NumRu::Lapack.spbrfs  # print help
+  ferr, berr, info, x = NumRu::Lapack.spbrfs( uplo, kd, ab, afb, b, x, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -277,10 +431,45 @@ FORTRAN MANUAL
   <H2>spbstf</H2>
   
   <PRE>
+lution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) REAL array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) REAL array, dimension (3*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+*  Internal Parameters
+*  ===================
+*
+*  ITMAX is the maximum number of steps of iterative refinement.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="spbstf"></A>
+  <H2>spbstf</H2>
+  
+  <PRE>
 USAGE:
-  info, ab = NumRu::Lapack.spbstf( uplo, kd, ab)
-    or
-  NumRu::Lapack.spbstf  # print help
+  info, ab = NumRu::Lapack.spbstf( uplo, kd, ab, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -383,10 +572,24 @@ FORTRAN MANUAL
   <H2>spbsv</H2>
   
   <PRE>
+ a21  a32  a43  a54  a65  a76   *   s12  s23  s34  s54  s65  s76   *
+*  a31  a42  a53  a64  a64   *    *   s13  s24  s53  s64  s75   *    *
+*
+*  Array elements marked * are not used by the routine.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="spbsv"></A>
+  <H2>spbsv</H2>
+  
+  <PRE>
 USAGE:
-  info, ab, b = NumRu::Lapack.spbsv( uplo, kd, ab, b)
-    or
-  NumRu::Lapack.spbsv  # print help
+  info, ab, b = NumRu::Lapack.spbsv( uplo, kd, ab, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -502,10 +705,23 @@ FORTRAN MANUAL
   <H2>spbsvx</H2>
   
   <PRE>
+. External Subroutines ..
+      EXTERNAL           SPBTRF, SPBTRS, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="spbsvx"></A>
+  <H2>spbsvx</H2>
+  
+  <PRE>
 USAGE:
-  x, rcond, ferr, berr, info, ab, afb, equed, s, b = NumRu::Lapack.spbsvx( fact, uplo, kd, ab, afb, equed, s, b)
-    or
-  NumRu::Lapack.spbsvx  # print help
+  x, rcond, ferr, berr, info, ab, afb, equed, s, b = NumRu::Lapack.spbsvx( fact, uplo, kd, ab, afb, equed, s, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -743,10 +959,69 @@ FORTRAN MANUAL
   <H2>spbtf2</H2>
   
   <PRE>
+N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is
+*                <= N:  the leading minor of order i of A is
+*                       not positive definite, so the factorization
+*                       could not be completed, and the solution has not
+*                       been computed. RCOND = 0 is returned.
+*                = N+1: U is nonsingular, but RCOND is less than machine
+*                       precision, meaning that the matrix is singular
+*                       to working precision.  Nevertheless, the
+*                       solution and error bounds are computed because
+*                       there are a number of situations where the
+*                       computed solution can be more accurate than the
+*                       value of RCOND would suggest.
+*
+
+*  Further Details
+*  ===============
+*
+*  The band storage scheme is illustrated by the following example, when
+*  N = 6, KD = 2, and UPLO = 'U':
+*
+*  Two-dimensional storage of the symmetric matrix A:
+*
+*     a11  a12  a13
+*          a22  a23  a24
+*               a33  a34  a35
+*                    a44  a45  a46
+*                         a55  a56
+*     (aij=conjg(aji))         a66
+*
+*  Band storage of the upper triangle of A:
+*
+*      *    *   a13  a24  a35  a46
+*      *   a12  a23  a34  a45  a56
+*     a11  a22  a33  a44  a55  a66
+*
+*  Similarly, if UPLO = 'L' the format of A is as follows:
+*
+*     a11  a22  a33  a44  a55  a66
+*     a21  a32  a43  a54  a65   *
+*     a31  a42  a53  a64   *    *
+*
+*  Array elements marked * are not used by the routine.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="spbtf2"></A>
+  <H2>spbtf2</H2>
+  
+  <PRE>
 USAGE:
-  info, ab = NumRu::Lapack.spbtf2( uplo, kd, ab)
-    or
-  NumRu::Lapack.spbtf2  # print help
+  info, ab = NumRu::Lapack.spbtf2( uplo, kd, ab, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -839,10 +1114,160 @@ FORTRAN MANUAL
   <H2>spbtrf</H2>
   
   <PRE>
+lowing example, when
+*  N = 6, KD = 2, and UPLO = 'U':
+*
+*  On entry:                       On exit:
+*
+*      *    *   a13  a24  a35  a46      *    *   u13  u24  u35  u46
+*      *   a12  a23  a34  a45  a56      *   u12  u23  u34  u45  u56
+*     a11  a22  a33  a44  a55  a66     u11  u22  u33  u44  u55  u66
+*
+*  Similarly, if UPLO = 'L' the format of A is as follows:
+*
+*  On entry:                       On exit:
+*
+*     a11  a22  a33  a44  a55  a66     l11  l22  l33  l44  l55  l66
+*     a21  a32  a43  a54  a65   *      l21  l32  l43  l54  l65   *
+*     a31  a42  a53  a64   *    *      l31  l42  l53  l64   *    *
+*
+*  Array elements marked * are not used by the routine.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="spbtrf"></A>
+  <H2>spbtrf</H2>
+  
+  <PRE>
 USAGE:
-  info, ab = NumRu::Lapack.spbtrf( uplo, kd, ab)
-    or
-  NumRu::Lapack.spbtrf  # print help
+  info, ab = NumRu::Lapack.spbtrf( uplo, kd, ab, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE SPBTRF( UPLO, N, KD, AB, LDAB, INFO )
+
+*  Purpose
+*  =======
+*
+*  SPBTRF computes the Cholesky factorization of a real symmetric
+*  positive definite band matrix A.
+*
+*  The factorization has the form
+*     A = U**T * U,  if UPLO = 'U', or
+*     A = L  * L**T,  if UPLO = 'L',
+*  where U is an upper triangular matrix and L is lower triangular.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  KD      (input) INTEGER
+*          The number of superdiagonals of the matrix A if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.
+*
+*  AB      (input/output) REAL array, dimension (LDAB,N)
+*          On entry, the upper or lower triangle of the symmetric band
+*          matrix A, stored in the first KD+1 rows of the array.  The
+*          j-th column of A is stored in the j-th column of the array AB
+*          as follows:
+*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
+*
+*          On exit, if INFO = 0, the triangular factor U or L from the
+*          Cholesky factorization A = U**T*U or A = L*L**T of the band
+*          matrix A, in the same storage format as A.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KD+1.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the leading minor of order i is not
+*                positive definite, and the factorization could not be
+*                completed.
+*
+
+*  Further Details
+*  ===============
+*
+*  The band storage scheme is illustrated by the following example, when
+*  N = 6, KD = 2, and UPLO = 'U':
+*
+*  On entry:                       On exit:
+*
+*      *    *   a13  a24  a35  a46      *    *   u13  u24  u35  u46
+*      *   a12  a23  a34  a45  a56      *   u12  u23  u34  u45  u56
+*     a11  a22  a33  a44  a55  a66     u11  u22  u33  u44  u55  u66
+*
+*  Similarly, if UPLO = 'L' the format of A is as follows:
+*
+*  On entry:                       On exit:
+*
+*     a11  a22  a33  a44  a55  a66     l11  l22  l33  l44  l55  l66
+*     a21  a32  a43  a54  a65   *      l21  l32  l43  l54  l65   *
+*     a31  a42  a53  a64   *    *      l31  l42  l53  l64   *    *
+*
+*  Array elements marked * are not used by the routine.
+*
+*  Contributed by
+*  Peter Mayes and Giuseppe Radicati, IBM ECSEC, Rome, March 23, 1989
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="spbtrs"></A>
+  <H2>spbtrs</H2>
+  
+  <PRE>
+lowing example, when
+*  N = 6, KD = 2, and UPLO = 'U':
+*
+*  On entry:                       On exit:
+*
+*      *    *   a13  a24  a35  a46      *    *   u13  u24  u35  u46
+*      *   a12  a23  a34  a45  a56      *   u12  u23  u34  u45  u56
+*     a11  a22  a33  a44  a55  a66     u11  u22  u33  u44  u55  u66
+*
+*  Similarly, if UPLO = 'L' the format of A is as follows:
+*
+*  On entry:                       On exit:
+*
+*     a11  a22  a33  a44  a55  a66     l11  l22  l33  l44  l55  l66
+*     a21  a32  a43  a54  a65   *      l21  l32  l43  l54  l65   *
+*     a31  a42  a53  a64   *    *      l31  l42  l53  l64   *    *
+*
+*  Array elements marked * are not used by the routine.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="spbtrf"></A>
+  <H2>spbtrf</H2>
+  
+  <PRE>
+USAGE:
+  info, ab = NumRu::Lapack.spbtrf( uplo, kd, ab, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -934,9 +1359,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  info, b = NumRu::Lapack.spbtrs( uplo, kd, ab, b)
-    or
-  NumRu::Lapack.spbtrs  # print help
+  info, b = NumRu::Lapack.spbtrs( uplo, kd, ab, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

@@ -24,10 +24,123 @@
   <H2>dpocon</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>DOUBLE PRECISION routines for symmetric or Hermitian positive definite matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>DOUBLE PRECISION routines for symmetric or Hermitian positive definite matrix</H1>
+    <UL>
+      <LI><A HREF="#dpocon">dpocon</A> : </LI>
+      <LI><A HREF="#dpoequ">dpoequ</A> : </LI>
+      <LI><A HREF="#dpoequb">dpoequb</A> : </LI>
+      <LI><A HREF="#dporfs">dporfs</A> : </LI>
+      <LI><A HREF="#dporfsx">dporfsx</A> : </LI>
+      <LI><A HREF="#dposv">dposv</A> : </LI>
+      <LI><A HREF="#dposvx">dposvx</A> : </LI>
+      <LI><A HREF="#dposvxx">dposvxx</A> : </LI>
+      <LI><A HREF="#dpotf2">dpotf2</A> : </LI>
+      <LI><A HREF="#dpotrf">dpotrf</A> : </LI>
+      <LI><A HREF="#dpotri">dpotri</A> : </LI>
+      <LI><A HREF="#dpotrs">dpotrs</A> : </LI>
+    </UL>
+
+  <A NAME="dpocon"></A>
+  <H2>dpocon</H2>
+  
+  <PRE>
 USAGE:
-  rcond, info = NumRu::Lapack.dpocon( uplo, a, anorm)
-    or
-  NumRu::Lapack.dpocon  # print help
+  rcond, info = NumRu::Lapack.dpocon( uplo, a, anorm, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE DPOCON( UPLO, N, A, LDA, ANORM, RCOND, WORK, IWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  DPOCON estimates the reciprocal of the condition number (in the
+*  1-norm) of a real symmetric positive definite matrix using the
+*  Cholesky factorization A = U**T*U or A = L*L**T computed by DPOTRF.
+*
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input) DOUBLE PRECISION array, dimension (LDA,N)
+*          The triangular factor U or L from the Cholesky factorization
+*          A = U**T*U or A = L*L**T, as computed by DPOTRF.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  ANORM   (input) DOUBLE PRECISION
+*          The 1-norm (or infinity-norm) of the symmetric matrix A.
+*
+*  RCOND   (output) DOUBLE PRECISION
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
+*          estimate of the 1-norm of inv(A) computed in this routine.
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dpoequ"></A>
+  <H2>dpoequ</H2>
+  
+  <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>DOUBLE PRECISION routines for symmetric or Hermitian positive definite matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>DOUBLE PRECISION routines for symmetric or Hermitian positive definite matrix</H1>
+    <UL>
+      <LI><A HREF="#dpocon">dpocon</A> : </LI>
+      <LI><A HREF="#dpoequ">dpoequ</A> : </LI>
+      <LI><A HREF="#dpoequb">dpoequb</A> : </LI>
+      <LI><A HREF="#dporfs">dporfs</A> : </LI>
+      <LI><A HREF="#dporfsx">dporfsx</A> : </LI>
+      <LI><A HREF="#dposv">dposv</A> : </LI>
+      <LI><A HREF="#dposvx">dposvx</A> : </LI>
+      <LI><A HREF="#dposvxx">dposvxx</A> : </LI>
+      <LI><A HREF="#dpotf2">dpotf2</A> : </LI>
+      <LI><A HREF="#dpotrf">dpotrf</A> : </LI>
+      <LI><A HREF="#dpotri">dpotri</A> : </LI>
+      <LI><A HREF="#dpotrs">dpotrs</A> : </LI>
+    </UL>
+
+  <A NAME="dpocon"></A>
+  <H2>dpocon</H2>
+  
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.dpocon( uplo, a, anorm, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -90,9 +203,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  s, scond, amax, info = NumRu::Lapack.dpoequ( a)
-    or
-  NumRu::Lapack.dpoequ  # print help
+  s, scond, amax, info = NumRu::Lapack.dpoequ( a, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -155,10 +266,124 @@ FORTRAN MANUAL
   <H2>dpoequb</H2>
   
   <PRE>
+ smallest S(i) to
+*          the largest S(i).  If SCOND >= 0.1 and AMAX is neither too
+*          large nor too small, it is not worth scaling by S.
+*
+*  AMAX    (output) DOUBLE PRECISION
+*          Absolute value of largest matrix element.  If AMAX is very
+*          close to overflow or very close to underflow, the matrix
+*          should be scaled.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the i-th diagonal element is nonpositive.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dpoequb"></A>
+  <H2>dpoequb</H2>
+  
+  <PRE>
 USAGE:
-  s, scond, amax, info = NumRu::Lapack.dpoequb( a)
-    or
-  NumRu::Lapack.dpoequb  # print help
+  s, scond, amax, info = NumRu::Lapack.dpoequb( a, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE DPOEQUB( N, A, LDA, S, SCOND, AMAX, INFO )
+
+*  Purpose
+*  =======
+*
+*  DPOEQU computes row and column scalings intended to equilibrate a
+*  symmetric positive definite matrix A and reduce its condition number
+*  (with respect to the two-norm).  S contains the scale factors,
+*  S(i) = 1/sqrt(A(i,i)), chosen so that the scaled matrix B with
+*  elements B(i,j) = S(i)*A(i,j)*S(j) has ones on the diagonal.  This
+*  choice of S puts the condition number of B within a factor N of the
+*  smallest possible condition number over all possible diagonal
+*  scalings.
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input) DOUBLE PRECISION array, dimension (LDA,N)
+*          The N-by-N symmetric positive definite matrix whose scaling
+*          factors are to be computed.  Only the diagonal elements of A
+*          are referenced.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  S       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, S contains the scale factors for A.
+*
+*  SCOND   (output) DOUBLE PRECISION
+*          If INFO = 0, S contains the ratio of the smallest S(i) to
+*          the largest S(i).  If SCOND >= 0.1 and AMAX is neither too
+*          large nor too small, it is not worth scaling by S.
+*
+*  AMAX    (output) DOUBLE PRECISION
+*          Absolute value of largest matrix element.  If AMAX is very
+*          close to overflow or very close to underflow, the matrix
+*          should be scaled.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the i-th diagonal element is nonpositive.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dporfs"></A>
+  <H2>dporfs</H2>
+  
+  <PRE>
+ smallest S(i) to
+*          the largest S(i).  If SCOND >= 0.1 and AMAX is neither too
+*          large nor too small, it is not worth scaling by S.
+*
+*  AMAX    (output) DOUBLE PRECISION
+*          Absolute value of largest matrix element.  If AMAX is very
+*          close to overflow or very close to underflow, the matrix
+*          should be scaled.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the i-th diagonal element is nonpositive.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dpoequb"></A>
+  <H2>dpoequb</H2>
+  
+  <PRE>
+USAGE:
+  s, scond, amax, info = NumRu::Lapack.dpoequb( a, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -222,9 +447,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  ferr, berr, info, x = NumRu::Lapack.dporfs( uplo, a, af, b, x)
-    or
-  NumRu::Lapack.dporfs  # print help
+  ferr, berr, info, x = NumRu::Lapack.dporfs( uplo, a, af, b, x, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -325,10 +548,75 @@ FORTRAN MANUAL
   <H2>dporfsx</H2>
   
   <PRE>
+rt of
+*          the matrix A, and the strictly upper triangular part of A is
+*          not referenced.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  AF      (input) DOUBLE PRECISION array, dimension (LDAF,N)
+*          The triangular factor U or L from the Cholesky factorization
+*          A = U**T*U or A = L*L**T, as computed by DPOTRF.
+*
+*  LDAF    (input) INTEGER
+*          The leading dimension of the array AF.  LDAF >= max(1,N).
+*
+*  B       (input) DOUBLE PRECISION array, dimension (LDB,NRHS)
+*          The right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (input/output) DOUBLE PRECISION array, dimension (LDX,NRHS)
+*          On entry, the solution matrix X, as computed by DPOTRS.
+*          On exit, the improved solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+*  Internal Parameters
+*  ===================
+*
+*  ITMAX is the maximum number of steps of iterative refinement.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dporfsx"></A>
+  <H2>dporfsx</H2>
+  
+  <PRE>
 USAGE:
-  rcond, berr, err_bnds_norm, err_bnds_comp, info, s, x, params = NumRu::Lapack.dporfsx( uplo, equed, a, af, s, b, x, params)
-    or
-  NumRu::Lapack.dporfsx  # print help
+  rcond, berr, err_bnds_norm, err_bnds_comp, info, s, x, params = NumRu::Lapack.dporfsx( uplo, equed, a, af, s, b, x, params, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -610,10 +898,81 @@ FORTRAN MANUAL
   <H2>dposv</H2>
   
   <PRE>
+ON array, dimension (NPARAMS)
+*     Specifies algorithm parameters.  If an entry is .LT. 0.0, then
+*     that entry will be filled with default value used for that
+*     parameter.  Only positions up to NPARAMS are accessed; defaults
+*     are used for higher-numbered parameters.
+*
+*       PARAMS(LA_LINRX_ITREF_I = 1) : Whether to perform iterative
+*            refinement or not.
+*         Default: 1.0D+0
+*            = 0.0 : No refinement is performed, and no error bounds are
+*                    computed.
+*            = 1.0 : Use the double-precision refinement algorithm,
+*                    possibly with doubled-single computations if the
+*                    compilation environment does not support DOUBLE
+*                    PRECISION.
+*              (other values are reserved for future use)
+*
+*       PARAMS(LA_LINRX_ITHRESH_I = 2) : Maximum number of residual
+*            computations allowed for refinement.
+*         Default: 10
+*         Aggressive: Set to 100 to permit convergence using approximate
+*                     factorizations or factorizations other than LU. If
+*                     the factorization uses a technique other than
+*                     Gaussian elimination, the guarantees in
+*                     err_bnds_norm and err_bnds_comp may no longer be
+*                     trustworthy.
+*
+*       PARAMS(LA_LINRX_CWISE_I = 3) : Flag determining if the code
+*            will attempt to find a solution with small componentwise
+*            relative error in the double-precision algorithm.  Positive
+*            is true, 0.0 is false.
+*         Default: 1.0 (attempt componentwise convergence)
+*
+*     WORK    (workspace) DOUBLE PRECISION array, dimension (4*N)
+*
+*     IWORK   (workspace) INTEGER array, dimension (N)
+*
+*     INFO    (output) INTEGER
+*       = 0:  Successful exit. The solution to every right-hand side is
+*         guaranteed.
+*       < 0:  If INFO = -i, the i-th argument had an illegal value
+*       > 0 and <= N:  U(INFO,INFO) is exactly zero.  The factorization
+*         has been completed, but the factor U is exactly singular, so
+*         the solution and error bounds could not be computed. RCOND = 0
+*         is returned.
+*       = N+J: The solution corresponding to the Jth right-hand side is
+*         not guaranteed. The solutions corresponding to other right-
+*         hand sides K with K > J may not be guaranteed as well, but
+*         only the first such right-hand side is reported. If a small
+*         componentwise error is not requested (PARAMS(3) = 0.0) then
+*         the Jth right-hand side is the first with a normwise error
+*         bound that is not guaranteed (the smallest J such
+*         that ERR_BNDS_NORM(J,1) = 0.0). By default (PARAMS(3) = 1.0)
+*         the Jth right-hand side is the first with either a normwise or
+*         componentwise error bound that is not guaranteed (the smallest
+*         J such that either ERR_BNDS_NORM(J,1) = 0.0 or
+*         ERR_BNDS_COMP(J,1) = 0.0). See the definition of
+*         ERR_BNDS_NORM(:,1) and ERR_BNDS_COMP(:,1). To get information
+*         about all of the right-hand sides check ERR_BNDS_NORM or
+*         ERR_BNDS_COMP.
+*
+
+*     ==================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dposv"></A>
+  <H2>dposv</H2>
+  
+  <PRE>
 USAGE:
-  info, a, b = NumRu::Lapack.dposv( uplo, a, b)
-    or
-  NumRu::Lapack.dposv  # print help
+  info, a, b = NumRu::Lapack.dposv( uplo, a, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -701,10 +1060,70 @@ FORTRAN MANUAL
   <H2>dposvx</H2>
   
   <PRE>
+        = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The number of linear equations, i.e., the order of the
+*          matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  A       (input/output) DOUBLE PRECISION array, dimension (LDA,N)
+*          On entry, the symmetric matrix A.  If UPLO = 'U', the leading
+*          N-by-N upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading N-by-N lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*
+*          On exit, if INFO = 0, the factor U or L from the Cholesky
+*          factorization A = U**T*U or A = L*L**T.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+*          On entry, the N-by-NRHS right hand side matrix B.
+*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the leading minor of order i of A is not
+*                positive definite, so the factorization could not be
+*                completed, and the solution has not been computed.
+*
+
+*  =====================================================================
+*
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           DPOTRF, DPOTRS, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dposvx"></A>
+  <H2>dposvx</H2>
+  
+  <PRE>
 USAGE:
-  x, rcond, ferr, berr, info, a, af, equed, s, b = NumRu::Lapack.dposvx( fact, uplo, a, af, equed, s, b)
-    or
-  NumRu::Lapack.dposvx  # print help
+  x, rcond, ferr, berr, info, a, af, equed, s, b = NumRu::Lapack.dposvx( fact, uplo, a, af, equed, s, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -912,10 +1331,79 @@ FORTRAN MANUAL
   <H2>dposvxx</H2>
   
   <PRE>
+LE PRECISION array, dimension (LDB,NRHS)
+*          On entry, the N-by-NRHS right hand side matrix B.
+*          On exit, if EQUED = 'N', B is not modified; if EQUED = 'Y',
+*          B is overwritten by diag(S) * B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (output) DOUBLE PRECISION array, dimension (LDX,NRHS)
+*          If INFO = 0 or INFO = N+1, the N-by-NRHS solution matrix X to
+*          the original system of equations.  Note that if EQUED = 'Y',
+*          A and B are modified on exit, and the solution to the
+*          equilibrated system is inv(diag(S))*X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  RCOND   (output) DOUBLE PRECISION
+*          The estimate of the reciprocal condition number of the matrix
+*          A after equilibration (if done).  If RCOND is less than the
+*          machine precision (in particular, if RCOND = 0), the matrix
+*          is singular to working precision.  This condition is
+*          indicated by a return code of INFO > 0.
+*
+*  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, and i is
+*                <= N:  the leading minor of order i of A is
+*                       not positive definite, so the factorization
+*                       could not be completed, and the solution has not
+*                       been computed. RCOND = 0 is returned.
+*                = N+1: U is nonsingular, but RCOND is less than machine
+*                       precision, meaning that the matrix is singular
+*                       to working precision.  Nevertheless, the
+*                       solution and error bounds are computed because
+*                       there are a number of situations where the
+*                       computed solution can be more accurate than the
+*                       value of RCOND would suggest.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dposvxx"></A>
+  <H2>dposvxx</H2>
+  
+  <PRE>
 USAGE:
-  x, rcond, rpvgrw, berr, err_bnds_norm, err_bnds_comp, info, a, af, equed, s, b, params = NumRu::Lapack.dposvxx( fact, uplo, a, af, equed, s, b, params)
-    or
-  NumRu::Lapack.dposvxx  # print help
+  x, rcond, rpvgrw, berr, err_bnds_norm, err_bnds_comp, info, a, af, equed, s, b, params = NumRu::Lapack.dposvxx( fact, uplo, a, af, equed, s, b, params, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1288,10 +1776,107 @@ FORTRAN MANUAL
   <H2>dpotf2</H2>
   
   <PRE>
+NDS_COMP(:,1). To get information
+*         about all of the right-hand sides check ERR_BNDS_NORM or
+*         ERR_BNDS_COMP.
+*
+
+*     ==================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dpotf2"></A>
+  <H2>dpotf2</H2>
+  
+  <PRE>
 USAGE:
-  info, a = NumRu::Lapack.dpotf2( uplo, a)
-    or
-  NumRu::Lapack.dpotf2  # print help
+  info, a = NumRu::Lapack.dpotf2( uplo, a, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE DPOTF2( UPLO, N, A, LDA, INFO )
+
+*  Purpose
+*  =======
+*
+*  DPOTF2 computes the Cholesky factorization of a real symmetric
+*  positive definite matrix A.
+*
+*  The factorization has the form
+*     A = U' * U ,  if UPLO = 'U', or
+*     A = L  * L',  if UPLO = 'L',
+*  where U is an upper triangular matrix and L is lower triangular.
+*
+*  This is the unblocked version of the algorithm, calling Level 2 BLAS.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the upper or lower triangular part of the
+*          symmetric matrix A is stored.
+*          = 'U':  Upper triangular
+*          = 'L':  Lower triangular
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) DOUBLE PRECISION array, dimension (LDA,N)
+*          On entry, the symmetric matrix A.  If UPLO = 'U', the leading
+*          n by n upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading n by n lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*
+*          On exit, if INFO = 0, the factor U or L from the Cholesky
+*          factorization A = U'*U  or A = L*L'.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*          > 0: if INFO = k, the leading minor of order k is not
+*               positive definite, and the factorization could not be
+*               completed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dpotrf"></A>
+  <H2>dpotrf</H2>
+  
+  <PRE>
+NDS_COMP(:,1). To get information
+*         about all of the right-hand sides check ERR_BNDS_NORM or
+*         ERR_BNDS_COMP.
+*
+
+*     ==================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dpotf2"></A>
+  <H2>dpotf2</H2>
+  
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.dpotf2( uplo, a, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1358,9 +1943,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  info, a = NumRu::Lapack.dpotrf( uplo, a)
-    or
-  NumRu::Lapack.dpotrf  # print help
+  info, a = NumRu::Lapack.dpotrf( uplo, a, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1424,10 +2007,103 @@ FORTRAN MANUAL
   <H2>dpotri</H2>
   
   <PRE>
+s not
+*                positive definite, and the factorization could not be
+*                completed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dpotri"></A>
+  <H2>dpotri</H2>
+  
+  <PRE>
 USAGE:
-  info, a = NumRu::Lapack.dpotri( uplo, a)
-    or
-  NumRu::Lapack.dpotri  # print help
+  info, a = NumRu::Lapack.dpotri( uplo, a, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE DPOTRI( UPLO, N, A, LDA, INFO )
+
+*  Purpose
+*  =======
+*
+*  DPOTRI computes the inverse of a real symmetric positive definite
+*  matrix A using the Cholesky factorization A = U**T*U or A = L*L**T
+*  computed by DPOTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) DOUBLE PRECISION array, dimension (LDA,N)
+*          On entry, the triangular factor U or L from the Cholesky
+*          factorization A = U**T*U or A = L*L**T, as computed by
+*          DPOTRF.
+*          On exit, the upper or lower triangle of the (symmetric)
+*          inverse of A, overwriting the input factor U or L.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the (i,i) element of the factor U or L is
+*                zero, and the inverse could not be computed.
+*
+
+*  =====================================================================
+*
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           DLAUUM, DTRTRI, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dpotrs"></A>
+  <H2>dpotrs</H2>
+  
+  <PRE>
+s not
+*                positive definite, and the factorization could not be
+*                completed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dpotri"></A>
+  <H2>dpotri</H2>
+  
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.dpotri( uplo, a, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1490,9 +2166,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  info, b = NumRu::Lapack.dpotrs( uplo, a, b)
-    or
-  NumRu::Lapack.dpotrs  # print help
+  info, b = NumRu::Lapack.dpotrs( uplo, a, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

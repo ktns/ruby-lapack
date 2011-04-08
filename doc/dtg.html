@@ -20,10 +20,30 @@
   <H2>dtgevc</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>DOUBLE PRECISION routines for triangular matrices, generalized problem (i.e., a pair of triangular matrices) matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>DOUBLE PRECISION routines for triangular matrices, generalized problem (i.e., a pair of triangular matrices) matrix</H1>
+    <UL>
+      <LI><A HREF="#dtgevc">dtgevc</A> : </LI>
+      <LI><A HREF="#dtgex2">dtgex2</A> : </LI>
+      <LI><A HREF="#dtgexc">dtgexc</A> : </LI>
+      <LI><A HREF="#dtgsen">dtgsen</A> : </LI>
+      <LI><A HREF="#dtgsja">dtgsja</A> : </LI>
+      <LI><A HREF="#dtgsna">dtgsna</A> : </LI>
+      <LI><A HREF="#dtgsy2">dtgsy2</A> : </LI>
+      <LI><A HREF="#dtgsyl">dtgsyl</A> : </LI>
+    </UL>
+
+  <A NAME="dtgevc"></A>
+  <H2>dtgevc</H2>
+  
+  <PRE>
 USAGE:
-  m, info, vl, vr = NumRu::Lapack.dtgevc( side, howmny, select, s, p, vl, vr)
-    or
-  NumRu::Lapack.dtgevc  # print help
+  m, info, vl, vr = NumRu::Lapack.dtgevc( side, howmny, select, s, p, vl, vr, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -233,10 +253,35 @@ FORTRAN MANUAL
   <H2>dtgex2</H2>
   
   <PRE>
+ the j-th row and the portion of the eigenvector
+*  that has been computed so far.
+*
+*  The "columnwise" method consists basically in doing the sums
+*  for all the rows in parallel.  As each v(j) is computed, the
+*  contribution of v(j) times the j-th column of C is added to the
+*  partial sums.  Since FORTRAN arrays are stored columnwise, this has
+*  the advantage that at each step, the elements of C that are accessed
+*  are adjacent to one another, whereas with the rowwise method, the
+*  elements accessed at a step are spaced LDS (and LDP) words apart.
+*
+*  When finding left eigenvectors, the matrix in question is the
+*  transpose of the one in storage, so the rowwise method then
+*  actually accesses columns of A and B at each step, and so is the
+*  preferred method.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dtgex2"></A>
+  <H2>dtgex2</H2>
+  
+  <PRE>
 USAGE:
-  info, a, b, q, z = NumRu::Lapack.dtgex2( wantq, wantz, a, b, q, z, j1, n1, n2)
-    or
-  NumRu::Lapack.dtgex2  # print help
+  info, a, b, q, z = NumRu::Lapack.dtgex2( wantq, wantz, a, b, q, z, j1, n1, n2, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -369,10 +414,52 @@ FORTRAN MANUAL
   <H2>dtgexc</H2>
   
   <PRE>
+orm; the blocks are
+*                not swapped and (A, B) and (Q, Z) are unchanged.
+*                The problem of swapping is too ill-conditioned.
+*            <0: If INFO = -16: LWORK is too small. Appropriate value
+*                for LWORK is returned in WORK(1).
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
+*     Umea University, S-901 87 Umea, Sweden.
+*
+*  In the current code both weak and strong stability tests are
+*  performed. The user can omit the strong stability test by changing
+*  the internal logical parameter WANDS to .FALSE.. See ref. [2] for
+*  details.
+*
+*  [1] B. Kagstrom; A Direct Method for Reordering Eigenvalues in the
+*      Generalized Real Schur Form of a Regular Matrix Pair (A, B), in
+*      M.S. Moonen et al (eds), Linear Algebra for Large Scale and
+*      Real-Time Applications, Kluwer Academic Publ. 1993, pp 195-218.
+*
+*  [2] B. Kagstrom and P. Poromaa; Computing Eigenspaces with Specified
+*      Eigenvalues of a Regular Matrix Pair (A, B) and Condition
+*      Estimation: Theory, Algorithms and Software,
+*      Report UMINF - 94.04, Department of Computing Science, Umea
+*      University, S-901 87 Umea, Sweden, 1994. Also as LAPACK Working
+*      Note 87. To appear in Numerical Algorithms, 1996.
+*
+*  =====================================================================
+*  Replaced various illegal calls to DCOPY by calls to DLASET, or by DO
+*  loops. Sven Hammarling, 1/5/02.
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dtgexc"></A>
+  <H2>dtgexc</H2>
+  
+  <PRE>
 USAGE:
-  work, info, a, b, q, z, ifst, ilst = NumRu::Lapack.dtgexc( wantq, wantz, a, b, q, z, ifst, ilst, lwork)
-    or
-  NumRu::Lapack.dtgexc  # print help
+  work, info, a, b, q, z, ifst, ilst = NumRu::Lapack.dtgexc( wantq, wantz, a, b, q, z, ifst, ilst, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -507,10 +594,73 @@ FORTRAN MANUAL
   <H2>dtgsen</H2>
   
   <PRE>
+ension (LDZ,N)
+*          On entry, if WANTZ = .TRUE., the orthogonal matrix Z.
+*          On exit, the updated matrix Z.
+*          If WANTZ = .FALSE., Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z. LDZ >= 1.
+*          If WANTZ = .TRUE., LDZ >= N.
+*
+*  IFST    (input/output) INTEGER
+*  ILST    (input/output) INTEGER
+*          Specify the reordering of the diagonal blocks of (A, B).
+*          The block with row index IFST is moved to row ILST, by a
+*          sequence of swapping between adjacent blocks.
+*          On exit, if IFST pointed on entry to the second row of
+*          a 2-by-2 block, it is changed to point to the first row;
+*          ILST always points to the first row of the block in its
+*          final position (which may differ from its input value by
+*          +1 or -1). 1 <= IFST, ILST <= N.
+*
+*  WORK    (workspace/output) DOUBLE PRECISION array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          LWORK >= 1 when N <= 1, otherwise LWORK >= 4*N + 16.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*           =0:  successful exit.
+*           <0:  if INFO = -i, the i-th argument had an illegal value.
+*           =1:  The transformed matrix pair (A, B) would be too far
+*                from generalized Schur form; the problem is ill-
+*                conditioned. (A, B) may have been partially reordered,
+*                and ILST points to the first row of the current
+*                position of the block being moved.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
+*     Umea University, S-901 87 Umea, Sweden.
+*
+*  [1] B. Kagstrom; A Direct Method for Reordering Eigenvalues in the
+*      Generalized Real Schur Form of a Regular Matrix Pair (A, B), in
+*      M.S. Moonen et al (eds), Linear Algebra for Large Scale and
+*      Real-Time Applications, Kluwer Academic Publ. 1993, pp 195-218.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dtgsen"></A>
+  <H2>dtgsen</H2>
+  
+  <PRE>
 USAGE:
-  alphar, alphai, beta, m, pl, pr, dif, work, iwork, info, a, b, q, z = NumRu::Lapack.dtgsen( ijob, wantq, wantz, select, a, b, q, z, lwork, liwork)
-    or
-  NumRu::Lapack.dtgsen  # print help
+  alphar, alphai, beta, m, pl, pr, dif, work, iwork, info, a, b, q, z = NumRu::Lapack.dtgsen( ijob, wantq, wantz, select, a, b, q, z, lwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -836,10 +986,25 @@ FORTRAN MANUAL
   <H2>dtgsja</H2>
   
   <PRE>
+Pairs, Report UMINF - 93.23,
+*      Department of Computing Science, Umea University, S-901 87 Umea,
+*      Sweden, December 1993, Revised April 1994, Also as LAPACK Working
+*      Note 75. To appear in ACM Trans. on Math. Software, Vol 22, No 1,
+*      1996.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dtgsja"></A>
+  <H2>dtgsja</H2>
+  
+  <PRE>
 USAGE:
-  alpha, beta, ncycle, info, a, b, u, v, q = NumRu::Lapack.dtgsja( jobu, jobv, jobq, k, l, a, b, tola, tolb, u, v, q)
-    or
-  NumRu::Lapack.dtgsja  # print help
+  alpha, beta, ncycle, info, a, b, u, v, q = NumRu::Lapack.dtgsja( jobu, jobv, jobq, k, l, a, b, tola, tolb, u, v, q, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1095,10 +1260,51 @@ FORTRAN MANUAL
   <H2>dtgsna</H2>
   
   <PRE>
+
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          = 1:  the procedure does not converge after MAXIT cycles.
+*
+*  Internal Parameters
+*  ===================
+*
+*  MAXIT   INTEGER
+*          MAXIT specifies the total loops that the iterative procedure
+*          may take. If after MAXIT cycles, the routine fails to
+*          converge, we return INFO = 1.
+*
+
+*  Further Details
+*  ===============
+*
+*  DTGSJA essentially uses a variant of Kogbetliantz algorithm to reduce
+*  min(L,M-K)-by-L triangular (or trapezoidal) matrix A23 and L-by-L
+*  matrix B13 to the form:
+*
+*           U1'*A13*Q1 = C1*R1; V1'*B13*Q1 = S1*R1,
+*
+*  where U1, V1 and Q1 are orthogonal matrix, and Z' is the transpose
+*  of Z.  C1 and S1 are diagonal matrices satisfying
+*
+*                C1**2 + S1**2 = I,
+*
+*  and R1 is an L-by-L nonsingular upper triangular matrix.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dtgsna"></A>
+  <H2>dtgsna</H2>
+  
+  <PRE>
 USAGE:
-  s, dif, m, work, info = NumRu::Lapack.dtgsna( job, howmny, select, a, b, vl, vr, lwork)
-    or
-  NumRu::Lapack.dtgsna  # print help
+  s, dif, m, work, info = NumRu::Lapack.dtgsna( job, howmny, select, a, b, vl, vr, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1377,10 +1583,19 @@ FORTRAN MANUAL
   <H2>dtgsy2</H2>
   
   <PRE>
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dtgsy2"></A>
+  <H2>dtgsy2</H2>
+  
+  <PRE>
 USAGE:
-  scale, pq, info, c, f, rdsum, rdscal = NumRu::Lapack.dtgsy2( trans, ijob, a, b, c, d, e, f, rdsum, rdscal)
-    or
-  NumRu::Lapack.dtgsy2  # print help
+  scale, pq, info, c, f, rdsum, rdscal = NumRu::Lapack.dtgsy2( trans, ijob, a, b, c, d, e, f, rdsum, rdscal, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1555,10 +1770,87 @@ FORTRAN MANUAL
   <H2>dtgsyl</H2>
   
   <PRE>
+ontains an upper triangular matrix.
+*
+*  LDD     (input) INTEGER
+*          The leading dimension of the matrix D. LDD >= max(1, M).
+*
+*  E       (input) DOUBLE PRECISION array, dimension (LDE, N)
+*          On entry, E contains an upper triangular matrix.
+*
+*  LDE     (input) INTEGER
+*          The leading dimension of the matrix E. LDE >= max(1, N).
+*
+*  F       (input/output) DOUBLE PRECISION array, dimension (LDF, N)
+*          On entry, F contains the right-hand-side of the second matrix
+*          equation in (1).
+*          On exit, if IJOB = 0, F has been overwritten by the
+*          solution L.
+*
+*  LDF     (input) INTEGER
+*          The leading dimension of the matrix F. LDF >= max(1, M).
+*
+*  SCALE   (output) DOUBLE PRECISION
+*          On exit, 0 <= SCALE <= 1. If 0 < SCALE < 1, the solutions
+*          R and L (C and F on entry) will hold the solutions to a
+*          slightly perturbed system but the input matrices A, B, D and
+*          E have not been changed. If SCALE = 0, R and L will hold the
+*          solutions to the homogeneous system with C = F = 0. Normally,
+*          SCALE = 1.
+*
+*  RDSUM   (input/output) DOUBLE PRECISION
+*          On entry, the sum of squares of computed contributions to
+*          the Dif-estimate under computation by DTGSYL, where the
+*          scaling factor RDSCAL (see below) has been factored out.
+*          On exit, the corresponding sum of squares updated with the
+*          contributions from the current sub-system.
+*          If TRANS = 'T' RDSUM is not touched.
+*          NOTE: RDSUM only makes sense when DTGSY2 is called by DTGSYL.
+*
+*  RDSCAL  (input/output) DOUBLE PRECISION
+*          On entry, scaling factor used to prevent overflow in RDSUM.
+*          On exit, RDSCAL is updated w.r.t. the current contributions
+*          in RDSUM.
+*          If TRANS = 'T', RDSCAL is not touched.
+*          NOTE: RDSCAL only makes sense when DTGSY2 is called by
+*                DTGSYL.
+*
+*  IWORK   (workspace) INTEGER array, dimension (M+N+2)
+*
+*  PQ      (output) INTEGER
+*          On exit, the number of subsystems (of size 2-by-2, 4-by-4 and
+*          8-by-8) solved by this routine.
+*
+*  INFO    (output) INTEGER
+*          On exit, if INFO is set to
+*            =0: Successful exit
+*            <0: If INFO = -i, the i-th argument had an illegal value.
+*            >0: The matrix pairs (A, D) and (B, E) have common or very
+*                close eigenvalues.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
+*     Umea University, S-901 87 Umea, Sweden.
+*
+*  =====================================================================
+*  Replaced various illegal calls to DCOPY by calls to DLASET.
+*  Sven Hammarling, 27/5/02.
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dtgsyl"></A>
+  <H2>dtgsyl</H2>
+  
+  <PRE>
 USAGE:
-  scale, dif, work, info, c, f = NumRu::Lapack.dtgsyl( trans, ijob, a, b, c, d, e, f, lwork)
-    or
-  NumRu::Lapack.dtgsyl  # print help
+  scale, dif, work, info, c, f = NumRu::Lapack.dtgsyl( trans, ijob, a, b, c, d, e, f, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

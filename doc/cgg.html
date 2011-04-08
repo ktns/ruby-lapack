@@ -25,10 +25,157 @@
   <H2>cggbak</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX routines for general matrices, generalized problem (i.e., a pair of general matrices) matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX routines for general matrices, generalized problem (i.e., a pair of general matrices) matrix</H1>
+    <UL>
+      <LI><A HREF="#cggbak">cggbak</A> : </LI>
+      <LI><A HREF="#cggbal">cggbal</A> : </LI>
+      <LI><A HREF="#cgges">cgges</A> : </LI>
+      <LI><A HREF="#cggesx">cggesx</A> : </LI>
+      <LI><A HREF="#cggev">cggev</A> : </LI>
+      <LI><A HREF="#cggevx">cggevx</A> : </LI>
+      <LI><A HREF="#cggglm">cggglm</A> : </LI>
+      <LI><A HREF="#cgghrd">cgghrd</A> : </LI>
+      <LI><A HREF="#cgglse">cgglse</A> : </LI>
+      <LI><A HREF="#cggqrf">cggqrf</A> : </LI>
+      <LI><A HREF="#cggrqf">cggrqf</A> : </LI>
+      <LI><A HREF="#cggsvd">cggsvd</A> : </LI>
+      <LI><A HREF="#cggsvp">cggsvp</A> : </LI>
+    </UL>
+
+  <A NAME="cggbak"></A>
+  <H2>cggbak</H2>
+  
+  <PRE>
 USAGE:
-  info, v = NumRu::Lapack.cggbak( job, side, ilo, ihi, lscale, rscale, v)
-    or
-  NumRu::Lapack.cggbak  # print help
+  info, v = NumRu::Lapack.cggbak( job, side, ilo, ihi, lscale, rscale, v, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE CGGBAK( JOB, SIDE, N, ILO, IHI, LSCALE, RSCALE, M, V, LDV, INFO )
+
+*  Purpose
+*  =======
+*
+*  CGGBAK forms the right or left eigenvectors of a complex generalized
+*  eigenvalue problem A*x = lambda*B*x, by backward transformation on
+*  the computed eigenvectors of the balanced pair of matrices output by
+*  CGGBAL.
+*
+
+*  Arguments
+*  =========
+*
+*  JOB     (input) CHARACTER*1
+*          Specifies the type of backward transformation required:
+*          = 'N':  do nothing, return immediately;
+*          = 'P':  do backward transformation for permutation only;
+*          = 'S':  do backward transformation for scaling only;
+*          = 'B':  do backward transformations for both permutation and
+*                  scaling.
+*          JOB must be the same as the argument JOB supplied to CGGBAL.
+*
+*  SIDE    (input) CHARACTER*1
+*          = 'R':  V contains right eigenvectors;
+*          = 'L':  V contains left eigenvectors.
+*
+*  N       (input) INTEGER
+*          The number of rows of the matrix V.  N >= 0.
+*
+*  ILO     (input) INTEGER
+*  IHI     (input) INTEGER
+*          The integers ILO and IHI determined by CGGBAL.
+*          1 <= ILO <= IHI <= N, if N > 0; ILO=1 and IHI=0, if N=0.
+*
+*  LSCALE  (input) REAL array, dimension (N)
+*          Details of the permutations and/or scaling factors applied
+*          to the left side of A and B, as returned by CGGBAL.
+*
+*  RSCALE  (input) REAL array, dimension (N)
+*          Details of the permutations and/or scaling factors applied
+*          to the right side of A and B, as returned by CGGBAL.
+*
+*  M       (input) INTEGER
+*          The number of columns of the matrix V.  M >= 0.
+*
+*  V       (input/output) COMPLEX array, dimension (LDV,M)
+*          On entry, the matrix of right or left eigenvectors to be
+*          transformed, as returned by CTGEVC.
+*          On exit, V is overwritten by the transformed eigenvectors.
+*
+*  LDV     (input) INTEGER
+*          The leading dimension of the matrix V. LDV >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*
+
+*  Further Details
+*  ===============
+*
+*  See R.C. Ward, Balancing the generalized eigenvalue problem,
+*                 SIAM J. Sci. Stat. Comp. 2 (1981), 141-152.
+*
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            LEFTV, RIGHTV
+      INTEGER            I, K
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CSSCAL, CSWAP, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cggbal"></A>
+  <H2>cggbal</H2>
+  
+  <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX routines for general matrices, generalized problem (i.e., a pair of general matrices) matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX routines for general matrices, generalized problem (i.e., a pair of general matrices) matrix</H1>
+    <UL>
+      <LI><A HREF="#cggbak">cggbak</A> : </LI>
+      <LI><A HREF="#cggbal">cggbal</A> : </LI>
+      <LI><A HREF="#cgges">cgges</A> : </LI>
+      <LI><A HREF="#cggesx">cggesx</A> : </LI>
+      <LI><A HREF="#cggev">cggev</A> : </LI>
+      <LI><A HREF="#cggevx">cggevx</A> : </LI>
+      <LI><A HREF="#cggglm">cggglm</A> : </LI>
+      <LI><A HREF="#cgghrd">cgghrd</A> : </LI>
+      <LI><A HREF="#cgglse">cgglse</A> : </LI>
+      <LI><A HREF="#cggqrf">cggqrf</A> : </LI>
+      <LI><A HREF="#cggrqf">cggrqf</A> : </LI>
+      <LI><A HREF="#cggsvd">cggsvd</A> : </LI>
+      <LI><A HREF="#cggsvp">cggsvp</A> : </LI>
+    </UL>
+
+  <A NAME="cggbak"></A>
+  <H2>cggbak</H2>
+  
+  <PRE>
+USAGE:
+  info, v = NumRu::Lapack.cggbak( job, side, ilo, ihi, lscale, rscale, v, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -123,9 +270,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  ilo, ihi, lscale, rscale, info, a, b = NumRu::Lapack.cggbal( job, a, b)
-    or
-  NumRu::Lapack.cggbal  # print help
+  ilo, ihi, lscale, rscale, info, a, b = NumRu::Lapack.cggbal( job, a, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -231,10 +376,111 @@ FORTRAN MANUAL
   <H2>cgges</H2>
   
   <PRE>
+L
+      SUBROUTINE CGGBAL( JOB, N, A, LDA, B, LDB, ILO, IHI, LSCALE, RSCALE, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CGGBAL balances a pair of general complex matrices (A,B).  This
+*  involves, first, permuting A and B by similarity transformations to
+*  isolate eigenvalues in the first 1 to ILO$-$1 and last IHI+1 to N
+*  elements on the diagonal; and second, applying a diagonal similarity
+*  transformation to rows and columns ILO to IHI to make the rows
+*  and columns as close in norm as possible. Both steps are optional.
+*
+*  Balancing may reduce the 1-norm of the matrices, and improve the
+*  accuracy of the computed eigenvalues and/or eigenvectors in the
+*  generalized eigenvalue problem A*x = lambda*B*x.
+*
+
+*  Arguments
+*  =========
+*
+*  JOB     (input) CHARACTER*1
+*          Specifies the operations to be performed on A and B:
+*          = 'N':  none:  simply set ILO = 1, IHI = N, LSCALE(I) = 1.0
+*                  and RSCALE(I) = 1.0 for i=1,...,N;
+*          = 'P':  permute only;
+*          = 'S':  scale only;
+*          = 'B':  both permute and scale.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the input matrix A.
+*          On exit, A is overwritten by the balanced matrix.
+*          If JOB = 'N', A is not referenced.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A. LDA >= max(1,N).
+*
+*  B       (input/output) COMPLEX array, dimension (LDB,N)
+*          On entry, the input matrix B.
+*          On exit, B is overwritten by the balanced matrix.
+*          If JOB = 'N', B is not referenced.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B. LDB >= max(1,N).
+*
+*  ILO     (output) INTEGER
+*  IHI     (output) INTEGER
+*          ILO and IHI are set to integers such that on exit
+*          A(i,j) = 0 and B(i,j) = 0 if i > j and
+*          j = 1,...,ILO-1 or i = IHI+1,...,N.
+*          If JOB = 'N' or 'S', ILO = 1 and IHI = N.
+*
+*  LSCALE  (output) REAL array, dimension (N)
+*          Details of the permutations and scaling factors applied
+*          to the left side of A and B.  If P(j) is the index of the
+*          row interchanged with row j, and D(j) is the scaling factor
+*          applied to row j, then
+*            LSCALE(j) = P(j)    for J = 1,...,ILO-1
+*                      = D(j)    for J = ILO,...,IHI
+*                      = P(j)    for J = IHI+1,...,N.
+*          The order in which the interchanges are made is N to IHI+1,
+*          then 1 to ILO-1.
+*
+*  RSCALE  (output) REAL array, dimension (N)
+*          Details of the permutations and scaling factors applied
+*          to the right side of A and B.  If P(j) is the index of the
+*          column interchanged with column j, and D(j) is the scaling
+*          factor applied to column j, then
+*            RSCALE(j) = P(j)    for J = 1,...,ILO-1
+*                      = D(j)    for J = ILO,...,IHI
+*                      = P(j)    for J = IHI+1,...,N.
+*          The order in which the interchanges are made is N to IHI+1,
+*          then 1 to ILO-1.
+*
+*  WORK    (workspace) REAL array, dimension (lwork)
+*          lwork must be at least max(1,6*N) when JOB = 'S' or 'B', and
+*          at least 1 when JOB = 'N' or 'P'.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*
+
+*  Further Details
+*  ===============
+*
+*  See R.C. WARD, Balancing the generalized eigenvalue problem,
+*                 SIAM J. Sci. Stat. Comp. 2 (1981), 141-152.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cgges"></A>
+  <H2>cgges</H2>
+  
+  <PRE>
 USAGE:
-  sdim, alpha, beta, vsl, vsr, work, info, a, b = NumRu::Lapack.cgges( jobvsl, jobvsr, sort, a, b, lwork){|a,b| ... }
-    or
-  NumRu::Lapack.cgges  # print help
+  sdim, alpha, beta, vsl, vsr, work, info, a, b = NumRu::Lapack.cgges( jobvsl, jobvsr, sort, a, b, lwork, [:usage => usage, :help => help]){|a,b| ... }
 
 
 FORTRAN MANUAL
@@ -400,10 +646,72 @@ FORTRAN MANUAL
   <H2>cggesx</H2>
   
   <PRE>
+      However, ALPHA will be always less than and usually
+*          comparable with norm(A) in magnitude, and BETA always less
+*          than and usually comparable with norm(B).
+*
+*  VSL     (output) COMPLEX array, dimension (LDVSL,N)
+*          If JOBVSL = 'V', VSL will contain the left Schur vectors.
+*          Not referenced if JOBVSL = 'N'.
+*
+*  LDVSL   (input) INTEGER
+*          The leading dimension of the matrix VSL. LDVSL >= 1, and
+*          if JOBVSL = 'V', LDVSL >= N.
+*
+*  VSR     (output) COMPLEX array, dimension (LDVSR,N)
+*          If JOBVSR = 'V', VSR will contain the right Schur vectors.
+*          Not referenced if JOBVSR = 'N'.
+*
+*  LDVSR   (input) INTEGER
+*          The leading dimension of the matrix VSR. LDVSR >= 1, and
+*          if JOBVSR = 'V', LDVSR >= N.
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.  LWORK >= max(1,2*N).
+*          For good performance, LWORK must generally be larger.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  RWORK   (workspace) REAL array, dimension (8*N)
+*
+*  BWORK   (workspace) LOGICAL array, dimension (N)
+*          Not referenced if SORT = 'N'.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          =1,...,N:
+*                The QZ iteration failed.  (A,B) are not in Schur
+*                form, but ALPHA(j) and BETA(j) should be correct for
+*                j=INFO+1,...,N.
+*          > N:  =N+1: other than QZ iteration failed in CHGEQZ
+*                =N+2: after reordering, roundoff changed values of
+*                      some complex eigenvalues so that leading
+*                      eigenvalues in the Generalized Schur form no
+*                      longer satisfy SELCTG=.TRUE.  This could also
+*                      be caused due to scaling.
+*                =N+3: reordering falied in CTGSEN.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cggesx"></A>
+  <H2>cggesx</H2>
+  
+  <PRE>
 USAGE:
-  sdim, alpha, beta, vsl, vsr, rconde, rcondv, work, iwork, info, a, b = NumRu::Lapack.cggesx( jobvsl, jobvsr, sort, sense, a, b, lwork, liwork){|a,b| ... }
-    or
-  NumRu::Lapack.cggesx  # print help
+  sdim, alpha, beta, vsl, vsr, rconde, rcondv, work, iwork, info, a, b = NumRu::Lapack.cggesx( jobvsl, jobvsr, sort, sense, a, b, lwork, liwork, [:usage => usage, :help => help]){|a,b| ... }
 
 
 FORTRAN MANUAL
@@ -610,10 +918,85 @@ FORTRAN MANUAL
   <H2>cggev</H2>
   
   <PRE>
+          reciprocal condition numbers for the average of the selected
+*          eigenvalues.
+*          Not referenced if SENSE = 'N' or 'V'.
+*
+*  RCONDV  (output) REAL array, dimension ( 2 )
+*          If SENSE = 'V' or 'B', RCONDV(1) and RCONDV(2) contain the
+*          reciprocal condition number for the selected deflating
+*          subspaces.
+*          Not referenced if SENSE = 'N' or 'E'.
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          If N = 0, LWORK >= 1, else if SENSE = 'E', 'V', or 'B',
+*          LWORK >= MAX(1,2*N,2*SDIM*(N-SDIM)), else
+*          LWORK >= MAX(1,2*N).  Note that 2*SDIM*(N-SDIM) <= N*N/2.
+*          Note also that an error is only returned if
+*          LWORK < MAX(1,2*N), but if SENSE = 'E' or 'V' or 'B' this may
+*          not be large enough.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the bound on the optimal size of the WORK
+*          array and the minimum size of the IWORK array, returns these
+*          values as the first entries of the WORK and IWORK arrays, and
+*          no error message related to LWORK or LIWORK is issued by
+*          XERBLA.
+*
+*  RWORK   (workspace) REAL array, dimension ( 8*N )
+*          Real workspace.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
+*          On exit, if INFO = 0, IWORK(1) returns the minimum LIWORK.
+*
+*  LIWORK  (input) INTEGER
+*          The dimension of the array WORK.
+*          If SENSE = 'N' or N = 0, LIWORK >= 1, otherwise
+*          LIWORK >= N+2.
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the bound on the optimal size of the
+*          WORK array and the minimum size of the IWORK array, returns
+*          these values as the first entries of the WORK and IWORK
+*          arrays, and no error message related to LWORK or LIWORK is
+*          issued by XERBLA.
+*
+*  BWORK   (workspace) LOGICAL array, dimension (N)
+*          Not referenced if SORT = 'N'.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          = 1,...,N:
+*                The QZ iteration failed.  (A,B) are not in Schur
+*                form, but ALPHA(j) and BETA(j) should be correct for
+*                j=INFO+1,...,N.
+*          > N:  =N+1: other than QZ iteration failed in CHGEQZ
+*                =N+2: after reordering, roundoff changed values of
+*                      some complex eigenvalues so that leading
+*                      eigenvalues in the Generalized Schur form no
+*                      longer satisfy SELCTG=.TRUE.  This could also
+*                      be caused due to scaling.
+*                =N+3: reordering failed in CTGSEN.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cggev"></A>
+  <H2>cggev</H2>
+  
+  <PRE>
 USAGE:
-  alpha, beta, vl, vr, work, rwork, info, a, b = NumRu::Lapack.cggev( jobvl, jobvr, a, b, lwork)
-    or
-  NumRu::Lapack.cggev  # print help
+  alpha, beta, vl, vr, work, rwork, info, a, b = NumRu::Lapack.cggev( jobvl, jobvr, a, b, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -745,10 +1128,116 @@ FORTRAN MANUAL
   <H2>cggevx</H2>
   
   <PRE>
+ed eigenvector u(j) corresponding to the
+*  generalized eigenvalues lambda(j) of (A,B) satisfies
+*
+*               u(j)**H * A = lambda(j) * u(j)**H * B
+*
+*  where u(j)**H is the conjugate-transpose of u(j).
+*
+
+*  Arguments
+*  =========
+*
+*  JOBVL   (input) CHARACTER*1
+*          = 'N':  do not compute the left generalized eigenvectors;
+*          = 'V':  compute the left generalized eigenvectors.
+*
+*  JOBVR   (input) CHARACTER*1
+*          = 'N':  do not compute the right generalized eigenvectors;
+*          = 'V':  compute the right generalized eigenvectors.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A, B, VL, and VR.  N >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA, N)
+*          On entry, the matrix A in the pair (A,B).
+*          On exit, A has been overwritten.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of A.  LDA >= max(1,N).
+*
+*  B       (input/output) COMPLEX array, dimension (LDB, N)
+*          On entry, the matrix B in the pair (A,B).
+*          On exit, B has been overwritten.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of B.  LDB >= max(1,N).
+*
+*  ALPHA   (output) COMPLEX array, dimension (N)
+*  BETA    (output) COMPLEX array, dimension (N)
+*          On exit, ALPHA(j)/BETA(j), j=1,...,N, will be the
+*          generalized eigenvalues.
+*
+*          Note: the quotients ALPHA(j)/BETA(j) may easily over- or
+*          underflow, and BETA(j) may even be zero.  Thus, the user
+*          should avoid naively computing the ratio alpha/beta.
+*          However, ALPHA will be always less than and usually
+*          comparable with norm(A) in magnitude, and BETA always less
+*          than and usually comparable with norm(B).
+*
+*  VL      (output) COMPLEX array, dimension (LDVL,N)
+*          If JOBVL = 'V', the left generalized eigenvectors u(j) are
+*          stored one after another in the columns of VL, in the same
+*          order as their eigenvalues.
+*          Each eigenvector is scaled so the largest component has
+*          abs(real part) + abs(imag. part) = 1.
+*          Not referenced if JOBVL = 'N'.
+*
+*  LDVL    (input) INTEGER
+*          The leading dimension of the matrix VL. LDVL >= 1, and
+*          if JOBVL = 'V', LDVL >= N.
+*
+*  VR      (output) COMPLEX array, dimension (LDVR,N)
+*          If JOBVR = 'V', the right generalized eigenvectors v(j) are
+*          stored one after another in the columns of VR, in the same
+*          order as their eigenvalues.
+*          Each eigenvector is scaled so the largest component has
+*          abs(real part) + abs(imag. part) = 1.
+*          Not referenced if JOBVR = 'N'.
+*
+*  LDVR    (input) INTEGER
+*          The leading dimension of the matrix VR. LDVR >= 1, and
+*          if JOBVR = 'V', LDVR >= N.
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.  LWORK >= max(1,2*N).
+*          For good performance, LWORK must generally be larger.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  RWORK   (workspace/output) REAL array, dimension (8*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          =1,...,N:
+*                The QZ iteration failed.  No eigenvectors have been
+*                calculated, but ALPHA(j) and BETA(j) should be
+*                correct for j=INFO+1,...,N.
+*          > N:  =N+1: other then QZ iteration failed in SHGEQZ,
+*                =N+2: error return from STGEVC.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cggevx"></A>
+  <H2>cggevx</H2>
+  
+  <PRE>
 USAGE:
-  alpha, beta, vl, vr, ilo, ihi, lscale, rscale, abnrm, bbnrm, rconde, rcondv, work, info, a, b = NumRu::Lapack.cggevx( balanc, jobvl, jobvr, sense, a, b, lwork)
-    or
-  NumRu::Lapack.cggevx  # print help
+  alpha, beta, vl, vr, ilo, ihi, lscale, rscale, abnrm, bbnrm, rconde, rcondv, work, info, a, b = NumRu::Lapack.cggevx( balanc, jobvl, jobvr, sense, a, b, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -987,10 +1476,64 @@ FORTRAN MANUAL
   <H2>cggglm</H2>
   
   <PRE>
+st max(1,6*N) if BALANC = 'S' or 'B',
+*          and at least max(1,2*N) otherwise.
+*          Real workspace.
+*
+*  IWORK   (workspace) INTEGER array, dimension (N+2)
+*          If SENSE = 'E', IWORK is not referenced.
+*
+*  BWORK   (workspace) LOGICAL array, dimension (N)
+*          If SENSE = 'N', BWORK is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          = 1,...,N:
+*                The QZ iteration failed.  No eigenvectors have been
+*                calculated, but ALPHA(j) and BETA(j) should be correct
+*                for j=INFO+1,...,N.
+*          > N:  =N+1: other than QZ iteration failed in CHGEQZ.
+*                =N+2: error return from CTGEVC.
+*
+
+*  Further Details
+*  ===============
+*
+*  Balancing a matrix pair (A,B) includes, first, permuting rows and
+*  columns to isolate eigenvalues, second, applying diagonal similarity
+*  transformation to the rows and columns to make the rows and columns
+*  as close in norm as possible. The computed reciprocal condition
+*  numbers correspond to the balanced matrix. Permuting rows and columns
+*  will not change the condition numbers (in exact arithmetic) but
+*  diagonal scaling will.  For further explanation of balancing, see
+*  section 4.11.1.2 of LAPACK Users' Guide.
+*
+*  An approximate error bound on the chordal distance between the i-th
+*  computed generalized eigenvalue w and the corresponding exact
+*  eigenvalue lambda is
+*
+*       chord(w, lambda) <= EPS * norm(ABNRM, BBNRM) / RCONDE(I)
+*
+*  An approximate error bound for the angle between the i-th computed
+*  eigenvector VL(i) or VR(i) is given by
+*
+*       EPS * norm(ABNRM, BBNRM) / DIF(i).
+*
+*  For further explanation of the reciprocal condition numbers RCONDE
+*  and RCONDV, see section 4.11 of LAPACK User's Guide.
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cggglm"></A>
+  <H2>cggglm</H2>
+  
+  <PRE>
 USAGE:
-  x, y, work, info, a, b, d = NumRu::Lapack.cggglm( a, b, d, lwork)
-    or
-  NumRu::Lapack.cggglm  # print help
+  x, y, work, info, a, b, d = NumRu::Lapack.cggglm( a, b, d, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1104,10 +1647,58 @@ FORTRAN MANUAL
   <H2>cgghrd</H2>
   
   <PRE>
+t) INTEGER
+*          The leading dimension of the array B. LDB >= max(1,N).
+*
+*  D       (input/output) COMPLEX array, dimension (N)
+*          On entry, D is the left hand side of the GLM equation.
+*          On exit, D is destroyed.
+*
+*  X       (output) COMPLEX array, dimension (M)
+*  Y       (output) COMPLEX array, dimension (P)
+*          On exit, X and Y are the solutions of the GLM problem.
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK. LWORK >= max(1,N+M+P).
+*          For optimum performance, LWORK >= M+min(N,P)+max(N,P)*NB,
+*          where NB is an upper bound for the optimal blocksizes for
+*          CGEQRF, CGERQF, CUNMQR and CUNMRQ.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          = 1:  the upper triangular factor R associated with A in the
+*                generalized QR factorization of the pair (A, B) is
+*                singular, so that rank(A) < M; the least squares
+*                solution could not be computed.
+*          = 2:  the bottom (N-M) by (N-M) part of the upper trapezoidal
+*                factor T associated with B in the generalized QR
+*                factorization of the pair (A, B) is singular, so that
+*                rank( A B ) < N; the least squares solution could not
+*                be computed.
+*
+
+*  ===================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cgghrd"></A>
+  <H2>cgghrd</H2>
+  
+  <PRE>
 USAGE:
-  info, a, b, q, z = NumRu::Lapack.cgghrd( compq, compz, ilo, ihi, a, b, q, z)
-    or
-  NumRu::Lapack.cgghrd  # print help
+  info, a, b, q, z = NumRu::Lapack.cgghrd( compq, compz, ilo, ihi, a, b, q, z, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1233,10 +1824,78 @@ FORTRAN MANUAL
   <H2>cgglse</H2>
   
   <PRE>
+ILO     (input) INTEGER
+*  IHI     (input) INTEGER
+*          ILO and IHI mark the rows and columns of A which are to be
+*          reduced.  It is assumed that A is already upper triangular
+*          in rows and columns 1:ILO-1 and IHI+1:N.  ILO and IHI are
+*          normally set by a previous call to CGGBAL; otherwise they
+*          should be set to 1 and N respectively.
+*          1 <= ILO <= IHI <= N, if N > 0; ILO=1 and IHI=0, if N=0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA, N)
+*          On entry, the N-by-N general matrix to be reduced.
+*          On exit, the upper triangle and the first subdiagonal of A
+*          are overwritten with the upper Hessenberg matrix H, and the
+*          rest is set to zero.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input/output) COMPLEX array, dimension (LDB, N)
+*          On entry, the N-by-N upper triangular matrix B.
+*          On exit, the upper triangular matrix T = Q**H B Z.  The
+*          elements below the diagonal are set to zero.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  Q       (input/output) COMPLEX array, dimension (LDQ, N)
+*          On entry, if COMPQ = 'V', the unitary matrix Q1, typically
+*          from the QR factorization of B.
+*          On exit, if COMPQ='I', the unitary matrix Q, and if
+*          COMPQ = 'V', the product Q1*Q.
+*          Not referenced if COMPQ='N'.
+*
+*  LDQ     (input) INTEGER
+*          The leading dimension of the array Q.
+*          LDQ >= N if COMPQ='V' or 'I'; LDQ >= 1 otherwise.
+*
+*  Z       (input/output) COMPLEX array, dimension (LDZ, N)
+*          On entry, if COMPZ = 'V', the unitary matrix Z1.
+*          On exit, if COMPZ='I', the unitary matrix Z, and if
+*          COMPZ = 'V', the product Z1*Z.
+*          Not referenced if COMPZ='N'.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.
+*          LDZ >= N if COMPZ='V' or 'I'; LDZ >= 1 otherwise.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*
+
+*  Further Details
+*  ===============
+*
+*  This routine reduces A to Hessenberg and B to triangular form by
+*  an unblocked reduction, as described in _Matrix_Computations_,
+*  by Golub and van Loan (Johns Hopkins Press).
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cgglse"></A>
+  <H2>cgglse</H2>
+  
+  <PRE>
 USAGE:
-  x, work, info, a, b, c, d = NumRu::Lapack.cgglse( a, b, c, d, lwork)
-    or
-  NumRu::Lapack.cgglse  # print help
+  x, work, info, a, b, c, d = NumRu::Lapack.cgglse( a, b, c, d, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1347,10 +2006,71 @@ FORTRAN MANUAL
   <H2>cggqrf</H2>
   
   <PRE>
+n (LDB,N)
+*          On entry, the P-by-N matrix B.
+*          On exit, the upper triangle of the subarray B(1:P,N-P+1:N)
+*          contains the P-by-P upper triangular matrix R.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B. LDB >= max(1,P).
+*
+*  C       (input/output) COMPLEX array, dimension (M)
+*          On entry, C contains the right hand side vector for the
+*          least squares part of the LSE problem.
+*          On exit, the residual sum of squares for the solution
+*          is given by the sum of squares of elements N-P+1 to M of
+*          vector C.
+*
+*  D       (input/output) COMPLEX array, dimension (P)
+*          On entry, D contains the right hand side vector for the
+*          constrained equation.
+*          On exit, D is destroyed.
+*
+*  X       (output) COMPLEX array, dimension (N)
+*          On exit, X is the solution of the LSE problem.
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK. LWORK >= max(1,M+N+P).
+*          For optimum performance LWORK >= P+min(M,N)+max(M,N)*NB,
+*          where NB is an upper bound for the optimal blocksizes for
+*          CGEQRF, CGERQF, CUNMQR and CUNMRQ.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          = 1:  the upper triangular factor R associated with B in the
+*                generalized RQ factorization of the pair (B, A) is
+*                singular, so that rank(B) < P; the least squares
+*                solution could not be computed.
+*          = 2:  the (N-P) by (N-P) part of the upper trapezoidal factor
+*                T associated with A in the generalized RQ factorization
+*                of the pair (B, A) is singular, so that
+*                rank( (A) ) < N; the least squares solution could not
+*                    ( (B) )
+*                be computed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cggqrf"></A>
+  <H2>cggqrf</H2>
+  
+  <PRE>
 USAGE:
-  taua, taub, work, info, a, b = NumRu::Lapack.cggqrf( n, a, b, lwork)
-    or
-  NumRu::Lapack.cggqrf  # print help
+  taua, taub, work, info, a, b = NumRu::Lapack.cggqrf( n, a, b, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1510,10 +2230,117 @@ FORTRAN MANUAL
   <H2>cggrqf</H2>
   
   <PRE>
+try, the N-by-M matrix A.
+*          On exit, the elements on and above the diagonal of the array
+*          contain the min(N,M)-by-M upper trapezoidal matrix R (R is
+*          upper triangular if N >= M); the elements below the diagonal,
+*          with the array TAUA, represent the unitary matrix Q as a
+*          product of min(N,M) elementary reflectors (see Further
+*          Details).
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A. LDA >= max(1,N).
+*
+*  TAUA    (output) COMPLEX array, dimension (min(N,M))
+*          The scalar factors of the elementary reflectors which
+*          represent the unitary matrix Q (see Further Details).
+*
+*  B       (input/output) COMPLEX array, dimension (LDB,P)
+*          On entry, the N-by-P matrix B.
+*          On exit, if N <= P, the upper triangle of the subarray
+*          B(1:N,P-N+1:P) contains the N-by-N upper triangular matrix T;
+*          if N > P, the elements on and above the (N-P)-th subdiagonal
+*          contain the N-by-P upper trapezoidal matrix T; the remaining
+*          elements, with the array TAUB, represent the unitary
+*          matrix Z as a product of elementary reflectors (see Further
+*          Details).
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B. LDB >= max(1,N).
+*
+*  TAUB    (output) COMPLEX array, dimension (min(N,P))
+*          The scalar factors of the elementary reflectors which
+*          represent the unitary matrix Z (see Further Details).
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK. LWORK >= max(1,N,M,P).
+*          For optimum performance LWORK >= max(N,M,P)*max(NB1,NB2,NB3),
+*          where NB1 is the optimal blocksize for the QR factorization
+*          of an N-by-M matrix, NB2 is the optimal blocksize for the
+*          RQ factorization of an N-by-P matrix, and NB3 is the optimal
+*          blocksize for a call of CUNMQR.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*           = 0:  successful exit
+*           < 0:  if INFO = -i, the i-th argument had an illegal value.
+*
+
+*  Further Details
+*  ===============
+*
+*  The matrix Q is represented as a product of elementary reflectors
+*
+*     Q = H(1) H(2) . . . H(k), where k = min(n,m).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - taua * v * v'
+*
+*  where taua is a complex scalar, and v is a complex vector with
+*  v(1:i-1) = 0 and v(i) = 1; v(i+1:n) is stored on exit in A(i+1:n,i),
+*  and taua in TAUA(i).
+*  To form Q explicitly, use LAPACK subroutine CUNGQR.
+*  To use Q to update another matrix, use LAPACK subroutine CUNMQR.
+*
+*  The matrix Z is represented as a product of elementary reflectors
+*
+*     Z = H(1) H(2) . . . H(k), where k = min(n,p).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - taub * v * v'
+*
+*  where taub is a complex scalar, and v is a complex vector with
+*  v(p-k+i+1:p) = 0 and v(p-k+i) = 1; v(1:p-k+i-1) is stored on exit in
+*  B(n-k+i,1:p-k+i-1), and taub in TAUB(i).
+*  To form Z explicitly, use LAPACK subroutine CUNGRQ.
+*  To use Z to update another matrix, use LAPACK subroutine CUNMRQ.
+*
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            LQUERY
+      INTEGER            LOPT, LWKOPT, NB, NB1, NB2, NB3
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CGEQRF, CGERQF, CUNMQR, XERBLA
+*     ..
+*     .. External Functions ..
+      INTEGER            ILAENV 
+      EXTERNAL           ILAENV
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          INT, MAX, MIN
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cggrqf"></A>
+  <H2>cggrqf</H2>
+  
+  <PRE>
 USAGE:
-  taua, taub, work, info, a, b = NumRu::Lapack.cggrqf( m, p, a, b, lwork)
-    or
-  NumRu::Lapack.cggrqf  # print help
+  taua, taub, work, info, a, b = NumRu::Lapack.cggrqf( m, p, a, b, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1672,10 +2499,61 @@ FORTRAN MANUAL
   <H2>cggsvd</H2>
   
   <PRE>
+ented as a product of elementary reflectors
+*
+*     Q = H(1) H(2) . . . H(k), where k = min(m,n).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - taua * v * v'
+*
+*  where taua is a complex scalar, and v is a complex vector with
+*  v(n-k+i+1:n) = 0 and v(n-k+i) = 1; v(1:n-k+i-1) is stored on exit in
+*  A(m-k+i,1:n-k+i-1), and taua in TAUA(i).
+*  To form Q explicitly, use LAPACK subroutine CUNGRQ.
+*  To use Q to update another matrix, use LAPACK subroutine CUNMRQ.
+*
+*  The matrix Z is represented as a product of elementary reflectors
+*
+*     Z = H(1) H(2) . . . H(k), where k = min(p,n).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - taub * v * v'
+*
+*  where taub is a complex scalar, and v is a complex vector with
+*  v(1:i-1) = 0 and v(i) = 1; v(i+1:p) is stored on exit in B(i+1:p,i),
+*  and taub in TAUB(i).
+*  To form Z explicitly, use LAPACK subroutine CUNGQR.
+*  To use Z to update another matrix, use LAPACK subroutine CUNMQR.
+*
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            LQUERY
+      INTEGER            LOPT, LWKOPT, NB, NB1, NB2, NB3
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CGEQRF, CGERQF, CUNMRQ, XERBLA
+*     ..
+*     .. External Functions ..
+      INTEGER            ILAENV 
+      EXTERNAL           ILAENV
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          INT, MAX, MIN
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cggsvd"></A>
+  <H2>cggsvd</H2>
+  
+  <PRE>
 USAGE:
-  k, l, alpha, beta, u, v, q, iwork, info, a, b = NumRu::Lapack.cggsvd( jobu, jobv, jobq, a, b)
-    or
-  NumRu::Lapack.cggsvd  # print help
+  k, l, alpha, beta, u, v, q, iwork, info, a, b = NumRu::Lapack.cggsvd( jobu, jobv, jobq, a, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1914,10 +2792,57 @@ FORTRAN MANUAL
   <H2>cggsvp</H2>
   
   <PRE>
+ further details, see subroutine CTGSJA.
+*
+*  Internal Parameters
+*  ===================
+*
+*  TOLA    REAL
+*  TOLB    REAL
+*          TOLA and TOLB are the thresholds to determine the effective
+*          rank of (A',B')'. Generally, they are set to
+*                   TOLA = MAX(M,N)*norm(A)*MACHEPS,
+*                   TOLB = MAX(P,N)*norm(B)*MACHEPS.
+*          The size of TOLA and TOLB may affect the size of backward
+*          errors of the decomposition.
+*
+
+*  Further Details
+*  ===============
+*
+*  2-96 Based on modifications by
+*     Ming Gu and Huan Ren, Computer Science Division, University of
+*     California at Berkeley, USA
+*
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            WANTQ, WANTU, WANTV
+      INTEGER            I, IBND, ISUB, J, NCYCLE
+      REAL               ANORM, BNORM, SMAX, TEMP, TOLA, TOLB, ULP, UNFL
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      REAL               CLANGE, SLAMCH
+      EXTERNAL           LSAME, CLANGE, SLAMCH
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CGGSVP, CTGSJA, SCOPY, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX, MIN
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cggsvp"></A>
+  <H2>cggsvp</H2>
+  
+  <PRE>
 USAGE:
-  k, l, u, v, q, info, a, b = NumRu::Lapack.cggsvp( jobu, jobv, jobq, a, b, tola, tolb)
-    or
-  NumRu::Lapack.cggsvp  # print help
+  k, l, u, v, q, info, a, b = NumRu::Lapack.cggsvp( jobu, jobv, jobq, a, b, tola, tolb, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

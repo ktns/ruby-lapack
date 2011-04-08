@@ -14,10 +14,24 @@
   <H2>dhsein</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>DOUBLE PRECISION routines for upper Hessenberg matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>DOUBLE PRECISION routines for upper Hessenberg matrix</H1>
+    <UL>
+      <LI><A HREF="#dhsein">dhsein</A> : </LI>
+      <LI><A HREF="#dhseqr">dhseqr</A> : </LI>
+    </UL>
+
+  <A NAME="dhsein"></A>
+  <H2>dhsein</H2>
+  
+  <PRE>
 USAGE:
-  m, ifaill, ifailr, info, select, wr, vl, vr = NumRu::Lapack.dhsein( side, eigsrc, initv, select, h, wr, wi, vl, vr)
-    or
-  NumRu::Lapack.dhsein  # print help
+  m, ifaill, ifailr, info, select, wr, vl, vr = NumRu::Lapack.dhsein( side, eigsrc, initv, select, h, wr, wi, vl, vr, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -182,10 +196,91 @@ FORTRAN MANUAL
   <H2>dhseqr</H2>
   
   <PRE>
+
+*          complex eigenvector corresponding to a complex eigenvalue is
+*          stored in two consecutive columns, the first holding the real
+*          part and the second the imaginary part.
+*          If SIDE = 'R', VL is not referenced.
+*
+*  LDVL    (input) INTEGER
+*          The leading dimension of the array VL.
+*          LDVL >= max(1,N) if SIDE = 'L' or 'B'; LDVL >= 1 otherwise.
+*
+*  VR      (input/output) DOUBLE PRECISION array, dimension (LDVR,MM)
+*          On entry, if INITV = 'U' and SIDE = 'R' or 'B', VR must
+*          contain starting vectors for the inverse iteration for the
+*          right eigenvectors; the starting vector for each eigenvector
+*          must be in the same column(s) in which the eigenvector will
+*          be stored.
+*          On exit, if SIDE = 'R' or 'B', the right eigenvectors
+*          specified by SELECT will be stored consecutively in the
+*          columns of VR, in the same order as their eigenvalues. A
+*          complex eigenvector corresponding to a complex eigenvalue is
+*          stored in two consecutive columns, the first holding the real
+*          part and the second the imaginary part.
+*          If SIDE = 'L', VR is not referenced.
+*
+*  LDVR    (input) INTEGER
+*          The leading dimension of the array VR.
+*          LDVR >= max(1,N) if SIDE = 'R' or 'B'; LDVR >= 1 otherwise.
+*
+*  MM      (input) INTEGER
+*          The number of columns in the arrays VL and/or VR. MM >= M.
+*
+*  M       (output) INTEGER
+*          The number of columns in the arrays VL and/or VR required to
+*          store the eigenvectors; each selected real eigenvector
+*          occupies one column and each selected complex eigenvector
+*          occupies two columns.
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension ((N+2)*N)
+*
+*  IFAILL  (output) INTEGER array, dimension (MM)
+*          If SIDE = 'L' or 'B', IFAILL(i) = j > 0 if the left
+*          eigenvector in the i-th column of VL (corresponding to the
+*          eigenvalue w(j)) failed to converge; IFAILL(i) = 0 if the
+*          eigenvector converged satisfactorily. If the i-th and (i+1)th
+*          columns of VL hold a complex eigenvector, then IFAILL(i) and
+*          IFAILL(i+1) are set to the same value.
+*          If SIDE = 'R', IFAILL is not referenced.
+*
+*  IFAILR  (output) INTEGER array, dimension (MM)
+*          If SIDE = 'R' or 'B', IFAILR(i) = j > 0 if the right
+*          eigenvector in the i-th column of VR (corresponding to the
+*          eigenvalue w(j)) failed to converge; IFAILR(i) = 0 if the
+*          eigenvector converged satisfactorily. If the i-th and (i+1)th
+*          columns of VR hold a complex eigenvector, then IFAILR(i) and
+*          IFAILR(i+1) are set to the same value.
+*          If SIDE = 'L', IFAILR is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, i is the number of eigenvectors which
+*                failed to converge; see IFAILL and IFAILR for further
+*                details.
+*
+
+*  Further Details
+*  ===============
+*
+*  Each eigenvector is normalized so that the element of largest
+*  magnitude has magnitude 1; here the magnitude of a complex number
+*  (x,y) is taken to be |x|+|y|.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dhseqr"></A>
+  <H2>dhseqr</H2>
+  
+  <PRE>
 USAGE:
-  wr, wi, work, info, h, z = NumRu::Lapack.dhseqr( job, compz, ilo, ihi, h, z, ldz, lwork)
-    or
-  NumRu::Lapack.dhseqr  # print help
+  wr, wi, work, info, h, z = NumRu::Lapack.dhseqr( job, compz, ilo, ihi, h, z, ldz, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

@@ -35,10 +35,149 @@
   <H2>checon</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX routines for (complex) Hermitian matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX routines for (complex) Hermitian matrix</H1>
+    <UL>
+      <LI><A HREF="#checon">checon</A> : </LI>
+      <LI><A HREF="#cheequb">cheequb</A> : </LI>
+      <LI><A HREF="#cheev">cheev</A> : </LI>
+      <LI><A HREF="#cheevd">cheevd</A> : </LI>
+      <LI><A HREF="#cheevr">cheevr</A> : </LI>
+      <LI><A HREF="#cheevx">cheevx</A> : </LI>
+      <LI><A HREF="#chegs2">chegs2</A> : </LI>
+      <LI><A HREF="#chegst">chegst</A> : </LI>
+      <LI><A HREF="#chegv">chegv</A> : </LI>
+      <LI><A HREF="#chegvd">chegvd</A> : </LI>
+      <LI><A HREF="#chegvx">chegvx</A> : </LI>
+      <LI><A HREF="#cherfs">cherfs</A> : </LI>
+      <LI><A HREF="#cherfsx">cherfsx</A> : </LI>
+      <LI><A HREF="#chesv">chesv</A> : </LI>
+      <LI><A HREF="#chesvx">chesvx</A> : </LI>
+      <LI><A HREF="#chesvxx">chesvxx</A> : </LI>
+      <LI><A HREF="#chetd2">chetd2</A> : </LI>
+      <LI><A HREF="#chetf2">chetf2</A> : </LI>
+      <LI><A HREF="#chetrd">chetrd</A> : </LI>
+      <LI><A HREF="#chetrf">chetrf</A> : </LI>
+      <LI><A HREF="#chetri">chetri</A> : </LI>
+      <LI><A HREF="#chetrs">chetrs</A> : </LI>
+      <LI><A HREF="#chetrs2">chetrs2</A> : </LI>
+    </UL>
+
+  <A NAME="checon"></A>
+  <H2>checon</H2>
+  
+  <PRE>
 USAGE:
-  rcond, info = NumRu::Lapack.checon( uplo, a, ipiv, anorm)
-    or
-  NumRu::Lapack.checon  # print help
+  rcond, info = NumRu::Lapack.checon( uplo, a, ipiv, anorm, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE CHECON( UPLO, N, A, LDA, IPIV, ANORM, RCOND, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CHECON estimates the reciprocal of the condition number of a complex
+*  Hermitian matrix A using the factorization A = U*D*U**H or
+*  A = L*D*L**H computed by CHETRF.
+*
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the details of the factorization are stored
+*          as an upper or lower triangular matrix.
+*          = 'U':  Upper triangular, form is A = U*D*U**H;
+*          = 'L':  Lower triangular, form is A = L*D*L**H.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input) COMPLEX array, dimension (LDA,N)
+*          The block diagonal matrix D and the multipliers used to
+*          obtain the factor U or L as computed by CHETRF.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D
+*          as determined by CHETRF.
+*
+*  ANORM   (input) REAL
+*          The 1-norm of the original matrix A.
+*
+*  RCOND   (output) REAL
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
+*          estimate of the 1-norm of inv(A) computed in this routine.
+*
+*  WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cheequb"></A>
+  <H2>cheequb</H2>
+  
+  <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX routines for (complex) Hermitian matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX routines for (complex) Hermitian matrix</H1>
+    <UL>
+      <LI><A HREF="#checon">checon</A> : </LI>
+      <LI><A HREF="#cheequb">cheequb</A> : </LI>
+      <LI><A HREF="#cheev">cheev</A> : </LI>
+      <LI><A HREF="#cheevd">cheevd</A> : </LI>
+      <LI><A HREF="#cheevr">cheevr</A> : </LI>
+      <LI><A HREF="#cheevx">cheevx</A> : </LI>
+      <LI><A HREF="#chegs2">chegs2</A> : </LI>
+      <LI><A HREF="#chegst">chegst</A> : </LI>
+      <LI><A HREF="#chegv">chegv</A> : </LI>
+      <LI><A HREF="#chegvd">chegvd</A> : </LI>
+      <LI><A HREF="#chegvx">chegvx</A> : </LI>
+      <LI><A HREF="#cherfs">cherfs</A> : </LI>
+      <LI><A HREF="#cherfsx">cherfsx</A> : </LI>
+      <LI><A HREF="#chesv">chesv</A> : </LI>
+      <LI><A HREF="#chesvx">chesvx</A> : </LI>
+      <LI><A HREF="#chesvxx">chesvxx</A> : </LI>
+      <LI><A HREF="#chetd2">chetd2</A> : </LI>
+      <LI><A HREF="#chetf2">chetf2</A> : </LI>
+      <LI><A HREF="#chetrd">chetrd</A> : </LI>
+      <LI><A HREF="#chetrf">chetrf</A> : </LI>
+      <LI><A HREF="#chetri">chetri</A> : </LI>
+      <LI><A HREF="#chetrs">chetrs</A> : </LI>
+      <LI><A HREF="#chetrs2">chetrs2</A> : </LI>
+    </UL>
+
+  <A NAME="checon"></A>
+  <H2>checon</H2>
+  
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.checon( uplo, a, ipiv, anorm, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -105,9 +244,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  s, scond, amax, info = NumRu::Lapack.cheequb( uplo, a)
-    or
-  NumRu::Lapack.cheequb  # print help
+  s, scond, amax, info = NumRu::Lapack.cheequb( uplo, a, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -169,10 +306,168 @@ FORTRAN MANUAL
   <H2>cheev</H2>
   
   <PRE>
+   (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input) COMPLEX array, dimension (LDA,N)
+*          The N-by-N symmetric matrix whose scaling
+*          factors are to be computed.  Only the diagonal elements of A
+*          are referenced.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  S       (output) REAL array, dimension (N)
+*          If INFO = 0, S contains the scale factors for A.
+*
+*  SCOND   (output) REAL
+*          If INFO = 0, S contains the ratio of the smallest S(i) to
+*          the largest S(i).  If SCOND >= 0.1 and AMAX is neither too
+*          large nor too small, it is not worth scaling by S.
+*
+*  AMAX    (output) REAL
+*          Absolute value of largest matrix element.  If AMAX is very
+*          close to overflow or very close to underflow, the matrix
+*          should be scaled.
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the i-th diagonal element is nonpositive.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cheev"></A>
+  <H2>cheev</H2>
+  
+  <PRE>
 USAGE:
-  w, work, info, a = NumRu::Lapack.cheev( jobz, uplo, a, lwork)
-    or
-  NumRu::Lapack.cheev  # print help
+  w, work, info, a = NumRu::Lapack.cheev( jobz, uplo, a, lwork, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE CHEEV( JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CHEEV computes all eigenvalues and, optionally, eigenvectors of a
+*  complex Hermitian matrix A.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA, N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the
+*          leading N-by-N upper triangular part of A contains the
+*          upper triangular part of the matrix A.  If UPLO = 'L',
+*          the leading N-by-N lower triangular part of A contains
+*          the lower triangular part of the matrix A.
+*          On exit, if JOBZ = 'V', then if INFO = 0, A contains the
+*          orthonormal eigenvectors of the matrix A.
+*          If JOBZ = 'N', then on exit the lower triangle (if UPLO='L')
+*          or the upper triangle (if UPLO='U') of A, including the
+*          diagonal, is destroyed.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  W       (output) REAL array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The length of the array WORK.  LWORK >= max(1,2*N-1).
+*          For optimal efficiency, LWORK >= (NB+1)*N,
+*          where NB is the blocksize for CHETRD returned by ILAENV.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  RWORK   (workspace) REAL array, dimension (max(1, 3*N-2))
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the algorithm failed to converge; i
+*                off-diagonal elements of an intermediate tridiagonal
+*                form did not converge to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cheevd"></A>
+  <H2>cheevd</H2>
+  
+  <PRE>
+   (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input) COMPLEX array, dimension (LDA,N)
+*          The N-by-N symmetric matrix whose scaling
+*          factors are to be computed.  Only the diagonal elements of A
+*          are referenced.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  S       (output) REAL array, dimension (N)
+*          If INFO = 0, S contains the scale factors for A.
+*
+*  SCOND   (output) REAL
+*          If INFO = 0, S contains the ratio of the smallest S(i) to
+*          the largest S(i).  If SCOND >= 0.1 and AMAX is neither too
+*          large nor too small, it is not worth scaling by S.
+*
+*  AMAX    (output) REAL
+*          Absolute value of largest matrix element.  If AMAX is very
+*          close to overflow or very close to underflow, the matrix
+*          should be scaled.
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the i-th diagonal element is nonpositive.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cheev"></A>
+  <H2>cheev</H2>
+  
+  <PRE>
+USAGE:
+  w, work, info, a = NumRu::Lapack.cheev( jobz, uplo, a, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -252,9 +547,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  w, work, rwork, iwork, info, a = NumRu::Lapack.cheevd( jobz, uplo, a, lwork, lrwork, liwork)
-    or
-  NumRu::Lapack.cheevd  # print help
+  w, work, rwork, iwork, info, a = NumRu::Lapack.cheevd( jobz, uplo, a, lwork, lrwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -385,10 +678,45 @@ FORTRAN MANUAL
   <H2>cheevr</H2>
   
   <PRE>
+1, then a workspace query is assumed; the
+*          routine only calculates the optimal sizes of the WORK, RWORK
+*          and IWORK arrays, returns these values as the first entries
+*          of the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i and JOBZ = 'N', then the algorithm failed
+*                to converge; i off-diagonal elements of an intermediate
+*                tridiagonal form did not converge to zero;
+*                if INFO = i and JOBZ = 'V', then the algorithm failed
+*                to compute an eigenvalue while working on the submatrix
+*                lying in rows and columns INFO/(N+1) through
+*                mod(INFO,N+1).
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Jeff Rutter, Computer Science Division, University of California
+*     at Berkeley, USA
+*
+*  Modified description of INFO. Sven, 16 Feb 05.
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cheevr"></A>
+  <H2>cheevr</H2>
+  
+  <PRE>
 USAGE:
-  m, w, z, isuppz, work, rwork, iwork, info, a = NumRu::Lapack.cheevr( jobz, range, uplo, a, vl, vu, il, iu, abstol, lwork, lrwork, liwork)
-    or
-  NumRu::Lapack.cheevr  # print help
+  m, w, z, isuppz, work, rwork, iwork, info, a = NumRu::Lapack.cheevr( jobz, range, uplo, a, vl, vu, il, iu, abstol, lwork, lrwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -630,10 +958,104 @@ FORTRAN MANUAL
   <H2>cheevx</H2>
   
   <PRE>
+          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
+*
+*  W       (output) REAL array, dimension (N)
+*          The first M elements contain the selected eigenvalues in
+*          ascending order.
+*
+*  Z       (output) COMPLEX array, dimension (LDZ, max(1,M))
+*          If JOBZ = 'V', then if INFO = 0, the first M columns of Z
+*          contain the orthonormal eigenvectors of the matrix A
+*          corresponding to the selected eigenvalues, with the i-th
+*          column of Z holding the eigenvector associated with W(i).
+*          If JOBZ = 'N', then Z is not referenced.
+*          Note: the user must ensure that at least max(1,M) columns are
+*          supplied in the array Z; if RANGE = 'V', the exact value of M
+*          is not known in advance and an upper bound must be used.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  ISUPPZ  (output) INTEGER array, dimension ( 2*max(1,M) )
+*          The support of the eigenvectors in Z, i.e., the indices
+*          indicating the nonzero elements in Z. The i-th eigenvector
+*          is nonzero only in elements ISUPPZ( 2*i-1 ) through
+*          ISUPPZ( 2*i ).
+********** Implemented only for RANGE = 'A' or 'I' and IU - IL = N - 1
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The length of the array WORK.  LWORK >= max(1,2*N).
+*          For optimal efficiency, LWORK >= (NB+1)*N,
+*          where NB is the max of the blocksize for CHETRD and for
+*          CUNMTR as returned by ILAENV.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal sizes of the WORK, RWORK and
+*          IWORK arrays, returns these values as the first entries of
+*          the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  RWORK   (workspace/output) REAL array, dimension (MAX(1,LRWORK))
+*          On exit, if INFO = 0, RWORK(1) returns the optimal
+*          (and minimal) LRWORK.
+*
+* LRWORK   (input) INTEGER
+*          The length of the array RWORK.  LRWORK >= max(1,24*N).
+*
+*          If LRWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal sizes of the WORK, RWORK
+*          and IWORK arrays, returns these values as the first entries
+*          of the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
+*          On exit, if INFO = 0, IWORK(1) returns the optimal
+*          (and minimal) LIWORK.
+*
+* LIWORK   (input) INTEGER
+*          The dimension of the array IWORK.  LIWORK >= max(1,10*N).
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal sizes of the WORK, RWORK
+*          and IWORK arrays, returns these values as the first entries
+*          of the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  Internal error
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Inderjit Dhillon, IBM Almaden, USA
+*     Osni Marques, LBNL/NERSC, USA
+*     Ken Stanley, Computer Science Division, University of
+*       California at Berkeley, USA
+*     Jason Riedy, Computer Science Division, University of
+*       California at Berkeley, USA
+*
+* =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cheevx"></A>
+  <H2>cheevx</H2>
+  
+  <PRE>
 USAGE:
-  m, w, z, work, ifail, info, a = NumRu::Lapack.cheevx( jobz, range, uplo, a, vl, vu, il, iu, abstol, lwork)
-    or
-  NumRu::Lapack.cheevx  # print help
+  m, w, z, work, ifail, info, a = NumRu::Lapack.cheevx( jobz, range, uplo, a, vl, vu, il, iu, abstol, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -785,10 +1207,61 @@ FORTRAN MANUAL
   <H2>chegs2</H2>
   
   <PRE>
+r is returned in IFAIL.
+*          If JOBZ = 'N', then Z is not referenced.
+*          Note: the user must ensure that at least max(1,M) columns are
+*          supplied in the array Z; if RANGE = 'V', the exact value of M
+*          is not known in advance and an upper bound must be used.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The length of the array WORK.  LWORK >= 1, when N <= 1;
+*          otherwise 2*N.
+*          For optimal efficiency, LWORK >= (NB+1)*N,
+*          where NB is the max of the blocksize for CHETRD and for
+*          CUNMTR as returned by ILAENV.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  RWORK   (workspace) REAL array, dimension (7*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (5*N)
+*
+*  IFAIL   (output) INTEGER array, dimension (N)
+*          If JOBZ = 'V', then if INFO = 0, the first M elements of
+*          IFAIL are zero.  If INFO > 0, then IFAIL contains the
+*          indices of the eigenvectors that failed to converge.
+*          If JOBZ = 'N', then IFAIL is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, then i eigenvectors failed to converge.
+*                Their indices are stored in array IFAIL.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chegs2"></A>
+  <H2>chegs2</H2>
+  
+  <PRE>
 USAGE:
-  info, a = NumRu::Lapack.chegs2( itype, uplo, a, b)
-    or
-  NumRu::Lapack.chegs2  # print help
+  info, a = NumRu::Lapack.chegs2( itype, uplo, a, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -863,10 +1336,116 @@ FORTRAN MANUAL
   <H2>chegst</H2>
   
   <PRE>
+
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chegst"></A>
+  <H2>chegst</H2>
+  
+  <PRE>
 USAGE:
-  info, a = NumRu::Lapack.chegst( itype, uplo, a, b)
-    or
-  NumRu::Lapack.chegst  # print help
+  info, a = NumRu::Lapack.chegst( itype, uplo, a, b, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE CHEGST( ITYPE, UPLO, N, A, LDA, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  CHEGST reduces a complex Hermitian-definite generalized
+*  eigenproblem to standard form.
+*
+*  If ITYPE = 1, the problem is A*x = lambda*B*x,
+*  and A is overwritten by inv(U**H)*A*inv(U) or inv(L)*A*inv(L**H)
+*
+*  If ITYPE = 2 or 3, the problem is A*B*x = lambda*x or
+*  B*A*x = lambda*x, and A is overwritten by U*A*U**H or L**H*A*L.
+*
+*  B must have been previously factorized as U**H*U or L*L**H by CPOTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  ITYPE   (input) INTEGER
+*          = 1: compute inv(U**H)*A*inv(U) or inv(L)*A*inv(L**H);
+*          = 2 or 3: compute U*A*U**H or L**H*A*L.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored and B is factored as
+*                  U**H*U;
+*          = 'L':  Lower triangle of A is stored and B is factored as
+*                  L*L**H.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
+*          N-by-N upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading N-by-N lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*
+*          On exit, if INFO = 0, the transformed matrix, stored in the
+*          same format as A.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input) COMPLEX array, dimension (LDB,N)
+*          The triangular factor from the Cholesky factorization of B,
+*          as returned by CPOTRF.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chegv"></A>
+  <H2>chegv</H2>
+  
+  <PRE>
+
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chegst"></A>
+  <H2>chegst</H2>
+  
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.chegst( itype, uplo, a, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -942,9 +1521,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  w, work, info, a, b = NumRu::Lapack.chegv( itype, jobz, uplo, a, b, lwork)
-    or
-  NumRu::Lapack.chegv  # print help
+  w, work, info, a, b = NumRu::Lapack.chegv( itype, jobz, uplo, a, b, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1055,10 +1632,79 @@ FORTRAN MANUAL
   <H2>chegvd</H2>
   
   <PRE>
+N-by-N lower triangular part of A contains
+*          the lower triangular part of the matrix A.
+*
+*          On exit, if JOBZ = 'V', then if INFO = 0, A contains the
+*          matrix Z of eigenvectors.  The eigenvectors are normalized
+*          as follows:
+*          if ITYPE = 1 or 2, Z**H*B*Z = I;
+*          if ITYPE = 3, Z**H*inv(B)*Z = I.
+*          If JOBZ = 'N', then on exit the upper triangle (if UPLO='U')
+*          or the lower triangle (if UPLO='L') of A, including the
+*          diagonal, is destroyed.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input/output) COMPLEX array, dimension (LDB, N)
+*          On entry, the Hermitian positive definite matrix B.
+*          If UPLO = 'U', the leading N-by-N upper triangular part of B
+*          contains the upper triangular part of the matrix B.
+*          If UPLO = 'L', the leading N-by-N lower triangular part of B
+*          contains the lower triangular part of the matrix B.
+*
+*          On exit, if INFO <= N, the part of B containing the matrix is
+*          overwritten by the triangular factor U or L from the Cholesky
+*          factorization B = U**H*U or B = L*L**H.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  W       (output) REAL array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The length of the array WORK.  LWORK >= max(1,2*N-1).
+*          For optimal efficiency, LWORK >= (NB+1)*N,
+*          where NB is the blocksize for CHETRD returned by ILAENV.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  RWORK   (workspace) REAL array, dimension (max(1, 3*N-2))
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  CPOTRF or CHEEV returned an error code:
+*             <= N:  if INFO = i, CHEEV failed to converge;
+*                    i off-diagonal elements of an intermediate
+*                    tridiagonal form did not converge to zero;
+*             > N:   if INFO = N + i, for 1 <= i <= N, then the leading
+*                    minor of order i of B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chegvd"></A>
+  <H2>chegvd</H2>
+  
+  <PRE>
 USAGE:
-  w, work, rwork, iwork, info, a, b = NumRu::Lapack.chegvd( itype, jobz, uplo, a, b, lwork, lrwork, liwork)
-    or
-  NumRu::Lapack.chegvd  # print help
+  w, work, rwork, iwork, info, a, b = NumRu::Lapack.chegvd( itype, jobz, uplo, a, b, lwork, lrwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1221,10 +1867,52 @@ FORTRAN MANUAL
   <H2>chegvx</H2>
   
   <PRE>
+y calculates the optimal sizes of the WORK, RWORK
+*          and IWORK arrays, returns these values as the first entries
+*          of the WORK, RWORK and IWORK arrays, and no error message
+*          related to LWORK or LRWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  CPOTRF or CHEEVD returned an error code:
+*             <= N:  if INFO = i and JOBZ = 'N', then the algorithm
+*                    failed to converge; i off-diagonal elements of an
+*                    intermediate tridiagonal form did not converge to
+*                    zero;
+*                    if INFO = i and JOBZ = 'V', then the algorithm
+*                    failed to compute an eigenvalue while working on
+*                    the submatrix lying in rows and columns INFO/(N+1)
+*                    through mod(INFO,N+1);
+*             > N:   if INFO = N + i, for 1 <= i <= N, then the leading
+*                    minor of order i of B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
+*
+*  Modified so that no backsubstitution is performed if CHEEVD fails to
+*  converge (NEIG in old code could be greater than N causing out of
+*  bounds reference to A - reported by Ralf Meyer).  Also corrected the
+*  description of INFO and the test on ITYPE. Sven, 16 Feb 05.
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chegvx"></A>
+  <H2>chegvx</H2>
+  
+  <PRE>
 USAGE:
-  m, w, z, work, ifail, info, a, b = NumRu::Lapack.chegvx( itype, jobz, range, uplo, a, b, vl, vu, il, iu, abstol, ldz, lwork)
-    or
-  NumRu::Lapack.chegvx  # print help
+  m, w, z, work, ifail, info, a, b = NumRu::Lapack.chegvx( itype, jobz, range, uplo, a, b, vl, vu, il, iu, abstol, ldz, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1409,10 +2097,48 @@ FORTRAN MANUAL
   <H2>cherfs</H2>
   
   <PRE>
+ dimension (7*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (5*N)
+*
+*  IFAIL   (output) INTEGER array, dimension (N)
+*          If JOBZ = 'V', then if INFO = 0, the first M elements of
+*          IFAIL are zero.  If INFO > 0, then IFAIL contains the
+*          indices of the eigenvectors that failed to converge.
+*          If JOBZ = 'N', then IFAIL is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  CPOTRF or CHEEVX returned an error code:
+*             <= N:  if INFO = i, CHEEVX failed to converge;
+*                    i eigenvectors failed to converge.  Their indices
+*                    are stored in array IFAIL.
+*             > N:   if INFO = N + i, for 1 <= i <= N, then the leading
+*                    minor of order i of B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cherfs"></A>
+  <H2>cherfs</H2>
+  
+  <PRE>
 USAGE:
-  ferr, berr, info, x = NumRu::Lapack.cherfs( uplo, a, af, ipiv, b, x)
-    or
-  NumRu::Lapack.cherfs  # print help
+  ferr, berr, info, x = NumRu::Lapack.cherfs( uplo, a, af, ipiv, b, x, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1518,10 +2244,44 @@ FORTRAN MANUAL
   <H2>cherfsx</H2>
   
   <PRE>
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) REAL array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*  RWORK   (workspace) REAL array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+*  Internal Parameters
+*  ===================
+*
+*  ITMAX is the maximum number of steps of iterative refinement.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cherfsx"></A>
+  <H2>cherfsx</H2>
+  
+  <PRE>
 USAGE:
-  rcond, berr, err_bnds_norm, err_bnds_comp, info, s, x, params = NumRu::Lapack.cherfsx( uplo, equed, a, af, ipiv, s, b, x, params)
-    or
-  NumRu::Lapack.cherfsx  # print help
+  rcond, berr, err_bnds_norm, err_bnds_comp, info, s, x, params = NumRu::Lapack.cherfsx( uplo, equed, a, af, ipiv, s, b, x, params, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1808,10 +2568,59 @@ FORTRAN MANUAL
   <H2>chesv</H2>
   
   <PRE>
+es a technique other than
+*                     Gaussian elimination, the guarantees in
+*                     err_bnds_norm and err_bnds_comp may no longer be
+*                     trustworthy.
+*
+*       PARAMS(LA_LINRX_CWISE_I = 3) : Flag determining if the code
+*            will attempt to find a solution with small componentwise
+*            relative error in the double-precision algorithm.  Positive
+*            is true, 0.0 is false.
+*         Default: 1.0 (attempt componentwise convergence)
+*
+*     WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*     RWORK   (workspace) REAL array, dimension (2*N)
+*
+*     INFO    (output) INTEGER
+*       = 0:  Successful exit. The solution to every right-hand side is
+*         guaranteed.
+*       < 0:  If INFO = -i, the i-th argument had an illegal value
+*       > 0 and <= N:  U(INFO,INFO) is exactly zero.  The factorization
+*         has been completed, but the factor U is exactly singular, so
+*         the solution and error bounds could not be computed. RCOND = 0
+*         is returned.
+*       = N+J: The solution corresponding to the Jth right-hand side is
+*         not guaranteed. The solutions corresponding to other right-
+*         hand sides K with K > J may not be guaranteed as well, but
+*         only the first such right-hand side is reported. If a small
+*         componentwise error is not requested (PARAMS(3) = 0.0) then
+*         the Jth right-hand side is the first with a normwise error
+*         bound that is not guaranteed (the smallest J such
+*         that ERR_BNDS_NORM(J,1) = 0.0). By default (PARAMS(3) = 1.0)
+*         the Jth right-hand side is the first with either a normwise or
+*         componentwise error bound that is not guaranteed (the smallest
+*         J such that either ERR_BNDS_NORM(J,1) = 0.0 or
+*         ERR_BNDS_COMP(J,1) = 0.0). See the definition of
+*         ERR_BNDS_NORM(:,1) and ERR_BNDS_COMP(:,1). To get information
+*         about all of the right-hand sides check ERR_BNDS_NORM or
+*         ERR_BNDS_COMP.
+*
+
+*     ==================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chesv"></A>
+  <H2>chesv</H2>
+  
+  <PRE>
 USAGE:
-  ipiv, work, info, a, b = NumRu::Lapack.chesv( uplo, a, b, lwork)
-    or
-  NumRu::Lapack.chesv  # print help
+  ipiv, work, info, a, b = NumRu::Lapack.chesv( uplo, a, b, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1931,10 +2740,80 @@ FORTRAN MANUAL
   <H2>chesvx</H2>
   
   <PRE>
+he
+*          factorization A = U*D*U**H or A = L*D*L**H as computed by
+*          CHETRF.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  IPIV    (output) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D, as
+*          determined by CHETRF.  If IPIV(k) > 0, then rows and columns
+*          k and IPIV(k) were interchanged, and D(k,k) is a 1-by-1
+*          diagonal block.  If UPLO = 'U' and IPIV(k) = IPIV(k-1) < 0,
+*          then rows and columns k-1 and -IPIV(k) were interchanged and
+*          D(k-1:k,k-1:k) is a 2-by-2 diagonal block.  If UPLO = 'L' and
+*          IPIV(k) = IPIV(k+1) < 0, then rows and columns k+1 and
+*          -IPIV(k) were interchanged and D(k:k+1,k:k+1) is a 2-by-2
+*          diagonal block.
+*
+*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)
+*          On entry, the N-by-NRHS right hand side matrix B.
+*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The length of WORK.  LWORK >= 1, and for best performance
+*          LWORK >= max(1,N*NB), where NB is the optimal blocksize for
+*          CHETRF.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, D(i,i) is exactly zero.  The factorization
+*               has been completed, but the block diagonal matrix D is
+*               exactly singular, so the solution could not be computed.
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            LQUERY
+      INTEGER            LWKOPT, NB
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      INTEGER            ILAENV
+      EXTERNAL           ILAENV, LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CHETRF, CHETRS2, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chesvx"></A>
+  <H2>chesvx</H2>
+  
+  <PRE>
 USAGE:
-  x, rcond, ferr, berr, work, info, af, ipiv = NumRu::Lapack.chesvx( fact, uplo, a, af, ipiv, b, lwork)
-    or
-  NumRu::Lapack.chesvx  # print help
+  x, rcond, ferr, berr, work, info, af, ipiv = NumRu::Lapack.chesvx( fact, uplo, a, af, ipiv, b, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -2120,10 +2999,65 @@ FORTRAN MANUAL
   <H2>chesvxx</H2>
   
   <PRE>
+ each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) REAL array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace/output) COMPLEX array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The length of WORK.  LWORK >= max(1,2*N), and for best
+*          performance, when FACT = 'N', LWORK >= max(1,2*N,N*NB), where
+*          NB is the optimal blocksize for CHETRF.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  RWORK   (workspace) REAL array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, and i is
+*                <= N:  D(i,i) is exactly zero.  The factorization
+*                       has been completed but the factor D is exactly
+*                       singular, so the solution and error bounds could
+*                       not be computed. RCOND = 0 is returned.
+*                = N+1: D is nonsingular, but RCOND is less than machine
+*                       precision, meaning that the matrix is singular
+*                       to working precision.  Nevertheless, the
+*                       solution and error bounds are computed because
+*                       there are a number of situations where the
+*                       computed solution can be more accurate than the
+*                       value of RCOND would suggest.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chesvxx"></A>
+  <H2>chesvxx</H2>
+  
+  <PRE>
 USAGE:
-  x, rcond, rpvgrw, berr, err_bnds_norm, err_bnds_comp, info, a, af, ipiv, equed, s, b, params = NumRu::Lapack.chesvxx( fact, uplo, a, af, ipiv, equed, s, b, params)
-    or
-  NumRu::Lapack.chesvxx  # print help
+  x, rcond, rpvgrw, berr, err_bnds_norm, err_bnds_comp, info, a, af, ipiv, equed, s, b, params = NumRu::Lapack.chesvxx( fact, uplo, a, af, ipiv, equed, s, b, params, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -2504,10 +3438,215 @@ FORTRAN MANUAL
   <H2>chetd2</H2>
   
   <PRE>
+s "guaranteed". These reciprocal condition
+*              numbers are 1 / (norm(Z^{-1},inf) * norm(Z,inf)) for some
+*              appropriately scaled matrix Z.
+*              Let Z = S*(A*diag(x)), where x is the solution for the
+*              current right-hand side and S scales each row of
+*              A*diag(x) by a power of the radix so all absolute row
+*              sums of Z are approximately 1.
+*
+*     See Lapack Working Note 165 for further details and extra
+*     cautions.
+*
+*     NPARAMS (input) INTEGER
+*     Specifies the number of parameters set in PARAMS.  If .LE. 0, the
+*     PARAMS array is never referenced and default values are used.
+*
+*     PARAMS  (input / output) REAL array, dimension NPARAMS
+*     Specifies algorithm parameters.  If an entry is .LT. 0.0, then
+*     that entry will be filled with default value used for that
+*     parameter.  Only positions up to NPARAMS are accessed; defaults
+*     are used for higher-numbered parameters.
+*
+*       PARAMS(LA_LINRX_ITREF_I = 1) : Whether to perform iterative
+*            refinement or not.
+*         Default: 1.0
+*            = 0.0 : No refinement is performed, and no error bounds are
+*                    computed.
+*            = 1.0 : Use the double-precision refinement algorithm,
+*                    possibly with doubled-single computations if the
+*                    compilation environment does not support DOUBLE
+*                    PRECISION.
+*              (other values are reserved for future use)
+*
+*       PARAMS(LA_LINRX_ITHRESH_I = 2) : Maximum number of residual
+*            computations allowed for refinement.
+*         Default: 10
+*         Aggressive: Set to 100 to permit convergence using approximate
+*                     factorizations or factorizations other than LU. If
+*                     the factorization uses a technique other than
+*                     Gaussian elimination, the guarantees in
+*                     err_bnds_norm and err_bnds_comp may no longer be
+*                     trustworthy.
+*
+*       PARAMS(LA_LINRX_CWISE_I = 3) : Flag determining if the code
+*            will attempt to find a solution with small componentwise
+*            relative error in the double-precision algorithm.  Positive
+*            is true, 0.0 is false.
+*         Default: 1.0 (attempt componentwise convergence)
+*
+*     WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*     RWORK   (workspace) REAL array, dimension (2*N)
+*
+*     INFO    (output) INTEGER
+*       = 0:  Successful exit. The solution to every right-hand side is
+*         guaranteed.
+*       < 0:  If INFO = -i, the i-th argument had an illegal value
+*       > 0 and <= N:  U(INFO,INFO) is exactly zero.  The factorization
+*         has been completed, but the factor U is exactly singular, so
+*         the solution and error bounds could not be computed. RCOND = 0
+*         is returned.
+*       = N+J: The solution corresponding to the Jth right-hand side is
+*         not guaranteed. The solutions corresponding to other right-
+*         hand sides K with K > J may not be guaranteed as well, but
+*         only the first such right-hand side is reported. If a small
+*         componentwise error is not requested (PARAMS(3) = 0.0) then
+*         the Jth right-hand side is the first with a normwise error
+*         bound that is not guaranteed (the smallest J such
+*         that ERR_BNDS_NORM(J,1) = 0.0). By default (PARAMS(3) = 1.0)
+*         the Jth right-hand side is the first with either a normwise or
+*         componentwise error bound that is not guaranteed (the smallest
+*         J such that either ERR_BNDS_NORM(J,1) = 0.0 or
+*         ERR_BNDS_COMP(J,1) = 0.0). See the definition of
+*         ERR_BNDS_NORM(:,1) and ERR_BNDS_COMP(:,1). To get information
+*         about all of the right-hand sides check ERR_BNDS_NORM or
+*         ERR_BNDS_COMP.
+*
+
+*     ==================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chetd2"></A>
+  <H2>chetd2</H2>
+  
+  <PRE>
 USAGE:
-  d, e, tau, info, a = NumRu::Lapack.chetd2( uplo, a)
-    or
-  NumRu::Lapack.chetd2  # print help
+  d, e, tau, info, a = NumRu::Lapack.chetd2( uplo, a, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE CHETD2( UPLO, N, A, LDA, D, E, TAU, INFO )
+
+*  Purpose
+*  =======
+*
+*  CHETD2 reduces a complex Hermitian matrix A to real symmetric
+*  tridiagonal form T by a unitary similarity transformation:
+*  Q' * A * Q = T.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the upper or lower triangular part of the
+*          Hermitian matrix A is stored:
+*          = 'U':  Upper triangular
+*          = 'L':  Lower triangular
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
+*          n-by-n upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading n-by-n lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*          On exit, if UPLO = 'U', the diagonal and first superdiagonal
+*          of A are overwritten by the corresponding elements of the
+*          tridiagonal matrix T, and the elements above the first
+*          superdiagonal, with the array TAU, represent the unitary
+*          matrix Q as a product of elementary reflectors; if UPLO
+*          = 'L', the diagonal and first subdiagonal of A are over-
+*          written by the corresponding elements of the tridiagonal
+*          matrix T, and the elements below the first subdiagonal, with
+*          the array TAU, represent the unitary matrix Q as a product
+*          of elementary reflectors. See Further Details.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  D       (output) REAL array, dimension (N)
+*          The diagonal elements of the tridiagonal matrix T:
+*          D(i) = A(i,i).
+*
+*  E       (output) REAL array, dimension (N-1)
+*          The off-diagonal elements of the tridiagonal matrix T:
+*          E(i) = A(i,i+1) if UPLO = 'U', E(i) = A(i+1,i) if UPLO = 'L'.
+*
+*  TAU     (output) COMPLEX array, dimension (N-1)
+*          The scalar factors of the elementary reflectors (see Further
+*          Details).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*
+
+*  Further Details
+*  ===============
+*
+*  If UPLO = 'U', the matrix Q is represented as a product of elementary
+*  reflectors
+*
+*     Q = H(n-1) . . . H(2) H(1).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a complex scalar, and v is a complex vector with
+*  v(i+1:n) = 0 and v(i) = 1; v(1:i-1) is stored on exit in
+*  A(1:i-1,i+1), and tau in TAU(i).
+*
+*  If UPLO = 'L', the matrix Q is represented as a product of elementary
+*  reflectors
+*
+*     Q = H(1) H(2) . . . H(n-1).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a complex scalar, and v is a complex vector with
+*  v(1:i) = 0 and v(i+1) = 1; v(i+2:n) is stored on exit in A(i+2:n,i),
+*  and tau in TAU(i).
+*
+*  The contents of A on exit are illustrated by the following examples
+*  with n = 5:
+*
+*  if UPLO = 'U':                       if UPLO = 'L':
+*
+*    (  d   e   v2  v3  v4 )              (  d                  )
+*    (      d   e   v3  v4 )              (  e   d              )
+*    (          d   e   v4 )              (  v1  e   d          )
+*    (              d   e  )              (  v1  v2  e   d      )
+*    (                  d  )              (  v1  v2  v3  e   d  )
+*
+*  where d and e denote diagonal and off-diagonal elements of T, and vi
+*  denotes an element of the vector defining H(i).
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chetf2"></A>
+  <H2>chetf2</H2>
+  
+  <PRE>
+td2( uplo, a, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -2627,9 +3766,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  ipiv, info, a = NumRu::Lapack.chetf2( uplo, a)
-    or
-  NumRu::Lapack.chetf2  # print help
+  ipiv, info, a = NumRu::Lapack.chetf2( uplo, a, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -2756,10 +3893,33 @@ FORTRAN MANUAL
   <H2>chetrd</H2>
   
   <PRE>
+1
+*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
+*  defined by IPIV(k), and L(k) is a unit lower triangular matrix, such
+*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
+*
+*             (   I    0     0   )  k-1
+*     L(k) =  (   0    I     0   )  s
+*             (   0    v     I   )  n-k-s+1
+*                k-1   s  n-k-s+1
+*
+*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(k+1:n,k).
+*  If s = 2, the lower triangle of D(k) overwrites A(k,k), A(k+1,k),
+*  and A(k+1,k+1), and v overwrites A(k+2:n,k:k+1).
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chetrd"></A>
+  <H2>chetrd</H2>
+  
+  <PRE>
 USAGE:
-  d, e, tau, work, info, a = NumRu::Lapack.chetrd( uplo, a, lwork)
-    or
-  NumRu::Lapack.chetrd  # print help
+  d, e, tau, work, info, a = NumRu::Lapack.chetrd( uplo, a, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -2889,10 +4049,50 @@ FORTRAN MANUAL
   <H2>chetrf</H2>
   
   <PRE>
+is a complex scalar, and v is a complex vector with
+*  v(i+1:n) = 0 and v(i) = 1; v(1:i-1) is stored on exit in
+*  A(1:i-1,i+1), and tau in TAU(i).
+*
+*  If UPLO = 'L', the matrix Q is represented as a product of elementary
+*  reflectors
+*
+*     Q = H(1) H(2) . . . H(n-1).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a complex scalar, and v is a complex vector with
+*  v(1:i) = 0 and v(i+1) = 1; v(i+2:n) is stored on exit in A(i+2:n,i),
+*  and tau in TAU(i).
+*
+*  The contents of A on exit are illustrated by the following examples
+*  with n = 5:
+*
+*  if UPLO = 'U':                       if UPLO = 'L':
+*
+*    (  d   e   v2  v3  v4 )              (  d                  )
+*    (      d   e   v3  v4 )              (  e   d              )
+*    (          d   e   v4 )              (  v1  e   d          )
+*    (              d   e  )              (  v1  v2  e   d      )
+*    (                  d  )              (  v1  v2  v3  e   d  )
+*
+*  where d and e denote diagonal and off-diagonal elements of T, and vi
+*  denotes an element of the vector defining H(i).
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chetrf"></A>
+  <H2>chetrf</H2>
+  
+  <PRE>
 USAGE:
-  ipiv, work, info, a = NumRu::Lapack.chetrf( uplo, a, lwork)
-    or
-  NumRu::Lapack.chetrf  # print help
+  ipiv, work, info, a = NumRu::Lapack.chetrf( uplo, a, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -3028,10 +4228,76 @@ FORTRAN MANUAL
   <H2>chetri</H2>
   
   <PRE>
+ted, but the block diagonal matrix D is
+*                exactly singular, and division by zero will occur if it
+*                is used to solve a system of equations.
+*
+
+*  Further Details
+*  ===============
+*
+*  If UPLO = 'U', then A = U*D*U', where
+*     U = P(n)*U(n)* ... *P(k)U(k)* ...,
+*  i.e., U is a product of terms P(k)*U(k), where k decreases from n to
+*  1 in steps of 1 or 2, and D is a block diagonal matrix with 1-by-1
+*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
+*  defined by IPIV(k), and U(k) is a unit upper triangular matrix, such
+*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
+*
+*             (   I    v    0   )   k-s
+*     U(k) =  (   0    I    0   )   s
+*             (   0    0    I   )   n-k
+*                k-s   s   n-k
+*
+*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(1:k-1,k).
+*  If s = 2, the upper triangle of D(k) overwrites A(k-1,k-1), A(k-1,k),
+*  and A(k,k), and v overwrites A(1:k-2,k-1:k).
+*
+*  If UPLO = 'L', then A = L*D*L', where
+*     L = P(1)*L(1)* ... *P(k)*L(k)* ...,
+*  i.e., L is a product of terms P(k)*L(k), where k increases from 1 to
+*  n in steps of 1 or 2, and D is a block diagonal matrix with 1-by-1
+*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
+*  defined by IPIV(k), and L(k) is a unit lower triangular matrix, such
+*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
+*
+*             (   I    0     0   )  k-1
+*     L(k) =  (   0    I     0   )  s
+*             (   0    v     I   )  n-k-s+1
+*                k-1   s  n-k-s+1
+*
+*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(k+1:n,k).
+*  If s = 2, the lower triangle of D(k) overwrites A(k,k), A(k+1,k),
+*  and A(k+1,k+1), and v overwrites A(k+2:n,k:k+1).
+*
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            LQUERY, UPPER
+      INTEGER            IINFO, IWS, J, K, KB, LDWORK, LWKOPT, NB, NBMIN
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      INTEGER            ILAENV
+      EXTERNAL           LSAME, ILAENV
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CHETF2, CLAHEF, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chetri"></A>
+  <H2>chetri</H2>
+  
+  <PRE>
 USAGE:
-  info, a = NumRu::Lapack.chetri( uplo, a, ipiv)
-    or
-  NumRu::Lapack.chetri  # print help
+  info, a = NumRu::Lapack.chetri( uplo, a, ipiv, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -3095,10 +4361,105 @@ FORTRAN MANUAL
   <H2>chetrs</H2>
   
   <PRE>
+FO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, D(i,i) = 0; the matrix is singular and its
+*               inverse could not be computed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chetrs"></A>
+  <H2>chetrs</H2>
+  
+  <PRE>
 USAGE:
-  info, b = NumRu::Lapack.chetrs( uplo, a, ipiv, b)
-    or
-  NumRu::Lapack.chetrs  # print help
+  info, b = NumRu::Lapack.chetrs( uplo, a, ipiv, b, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE CHETRS( UPLO, N, NRHS, A, LDA, IPIV, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  CHETRS solves a system of linear equations A*X = B with a complex
+*  Hermitian matrix A using the factorization A = U*D*U**H or
+*  A = L*D*L**H computed by CHETRF.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the details of the factorization are stored
+*          as an upper or lower triangular matrix.
+*          = 'U':  Upper triangular, form is A = U*D*U**H;
+*          = 'L':  Lower triangular, form is A = L*D*L**H.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  A       (input) COMPLEX array, dimension (LDA,N)
+*          The block diagonal matrix D and the multipliers used to
+*          obtain the factor U or L as computed by CHETRF.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D
+*          as determined by CHETRF.
+*
+*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)
+*          On entry, the right hand side matrix B.
+*          On exit, the solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chetrs2"></A>
+  <H2>chetrs2</H2>
+  
+  <PRE>
+FO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, D(i,i) = 0; the matrix is singular and its
+*               inverse could not be computed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chetrs"></A>
+  <H2>chetrs</H2>
+  
+  <PRE>
+USAGE:
+  info, b = NumRu::Lapack.chetrs( uplo, a, ipiv, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -3163,9 +4524,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  info, b = NumRu::Lapack.chetrs2( uplo, a, ipiv, b)
-    or
-  NumRu::Lapack.chetrs2  # print help
+  info, b = NumRu::Lapack.chetrs2( uplo, a, ipiv, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

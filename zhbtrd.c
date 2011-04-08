@@ -2,27 +2,29 @@
 
 extern VOID zhbtrd_(char *vect, char *uplo, integer *n, integer *kd, doublecomplex *ab, integer *ldab, doublereal *d, doublereal *e, doublecomplex *q, integer *ldq, doublecomplex *work, integer *info);
 
+static VALUE sHelp, sUsage;
+
 static VALUE
-rb_zhbtrd(int argc, VALUE *argv, VALUE self){
-  VALUE rb_vect;
+rblapack_zhbtrd(int argc, VALUE *argv, VALUE self){
+  VALUE rblapack_vect;
   char vect; 
-  VALUE rb_uplo;
+  VALUE rblapack_uplo;
   char uplo; 
-  VALUE rb_kd;
+  VALUE rblapack_kd;
   integer kd; 
-  VALUE rb_ab;
+  VALUE rblapack_ab;
   doublecomplex *ab; 
-  VALUE rb_q;
+  VALUE rblapack_q;
   doublecomplex *q; 
-  VALUE rb_d;
+  VALUE rblapack_d;
   doublereal *d; 
-  VALUE rb_e;
+  VALUE rblapack_e;
   doublereal *e; 
-  VALUE rb_info;
+  VALUE rblapack_info;
   integer info; 
-  VALUE rb_ab_out__;
+  VALUE rblapack_ab_out__;
   doublecomplex *ab_out__;
-  VALUE rb_q_out__;
+  VALUE rblapack_q_out__;
   doublecomplex *q_out__;
   doublecomplex *work;
 
@@ -30,82 +32,96 @@ rb_zhbtrd(int argc, VALUE *argv, VALUE self){
   integer n;
   integer ldq;
 
-  if (argc == 0) {
-    printf("%s\n", "USAGE:\n  d, e, info, ab, q = NumRu::Lapack.zhbtrd( vect, uplo, kd, ab, q)\n    or\n  NumRu::Lapack.zhbtrd  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE ZHBTRD( VECT, UPLO, N, KD, AB, LDAB, D, E, Q, LDQ, WORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  ZHBTRD reduces a complex Hermitian band matrix A to real symmetric\n*  tridiagonal form T by a unitary similarity transformation:\n*  Q**H * A * Q = T.\n*\n\n*  Arguments\n*  =========\n*\n*  VECT    (input) CHARACTER*1\n*          = 'N':  do not form Q;\n*          = 'V':  form Q;\n*          = 'U':  update a matrix X, by forming X*Q.\n*\n*  UPLO    (input) CHARACTER*1\n*          = 'U':  Upper triangle of A is stored;\n*          = 'L':  Lower triangle of A is stored.\n*\n*  N       (input) INTEGER\n*          The order of the matrix A.  N >= 0.\n*\n*  KD      (input) INTEGER\n*          The number of superdiagonals of the matrix A if UPLO = 'U',\n*          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.\n*\n*  AB      (input/output) COMPLEX*16 array, dimension (LDAB,N)\n*          On entry, the upper or lower triangle of the Hermitian band\n*          matrix A, stored in the first KD+1 rows of the array.  The\n*          j-th column of A is stored in the j-th column of the array AB\n*          as follows:\n*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;\n*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).\n*          On exit, the diagonal elements of AB are overwritten by the\n*          diagonal elements of the tridiagonal matrix T; if KD > 0, the\n*          elements on the first superdiagonal (if UPLO = 'U') or the\n*          first subdiagonal (if UPLO = 'L') are overwritten by the\n*          off-diagonal elements of T; the rest of AB is overwritten by\n*          values generated during the reduction.\n*\n*  LDAB    (input) INTEGER\n*          The leading dimension of the array AB.  LDAB >= KD+1.\n*\n*  D       (output) DOUBLE PRECISION array, dimension (N)\n*          The diagonal elements of the tridiagonal matrix T.\n*\n*  E       (output) DOUBLE PRECISION array, dimension (N-1)\n*          The off-diagonal elements of the tridiagonal matrix T:\n*          E(i) = T(i,i+1) if UPLO = 'U'; E(i) = T(i+1,i) if UPLO = 'L'.\n*\n*  Q       (input/output) COMPLEX*16 array, dimension (LDQ,N)\n*          On entry, if VECT = 'U', then Q must contain an N-by-N\n*          matrix X; if VECT = 'N' or 'V', then Q need not be set.\n*\n*          On exit:\n*          if VECT = 'V', Q contains the N-by-N unitary matrix Q;\n*          if VECT = 'U', Q contains the product X*Q;\n*          if VECT = 'N', the array Q is not referenced.\n*\n*  LDQ     (input) INTEGER\n*          The leading dimension of the array Q.\n*          LDQ >= 1, and LDQ >= N if VECT = 'V' or 'U'.\n*\n*  WORK    (workspace) COMPLEX*16 array, dimension (N)\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*\n\n*  Further Details\n*  ===============\n*\n*  Modified by Linda Kaufman, Bell Labs.\n*\n*  =====================================================================\n*\n\n");
-    return Qnil;
-  }
+  VALUE rb_options;
+  if (argc > 0 && TYPE(argv[argc-1]) == T_HASH) {
+    argc--;
+    rb_options = argv[argc];
+    if (rb_hash_aref(rb_options, sHelp) == Qtrue) {
+      printf("%s\n", "USAGE:\n  d, e, info, ab, q = NumRu::Lapack.zhbtrd( vect, uplo, kd, ab, q, [:usage => usage, :help => help])\n\n\nFORTRAN MANUAL\n      SUBROUTINE ZHBTRD( VECT, UPLO, N, KD, AB, LDAB, D, E, Q, LDQ, WORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  ZHBTRD reduces a complex Hermitian band matrix A to real symmetric\n*  tridiagonal form T by a unitary similarity transformation:\n*  Q**H * A * Q = T.\n*\n\n*  Arguments\n*  =========\n*\n*  VECT    (input) CHARACTER*1\n*          = 'N':  do not form Q;\n*          = 'V':  form Q;\n*          = 'U':  update a matrix X, by forming X*Q.\n*\n*  UPLO    (input) CHARACTER*1\n*          = 'U':  Upper triangle of A is stored;\n*          = 'L':  Lower triangle of A is stored.\n*\n*  N       (input) INTEGER\n*          The order of the matrix A.  N >= 0.\n*\n*  KD      (input) INTEGER\n*          The number of superdiagonals of the matrix A if UPLO = 'U',\n*          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.\n*\n*  AB      (input/output) COMPLEX*16 array, dimension (LDAB,N)\n*          On entry, the upper or lower triangle of the Hermitian band\n*          matrix A, stored in the first KD+1 rows of the array.  The\n*          j-th column of A is stored in the j-th column of the array AB\n*          as follows:\n*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;\n*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).\n*          On exit, the diagonal elements of AB are overwritten by the\n*          diagonal elements of the tridiagonal matrix T; if KD > 0, the\n*          elements on the first superdiagonal (if UPLO = 'U') or the\n*          first subdiagonal (if UPLO = 'L') are overwritten by the\n*          off-diagonal elements of T; the rest of AB is overwritten by\n*          values generated during the reduction.\n*\n*  LDAB    (input) INTEGER\n*          The leading dimension of the array AB.  LDAB >= KD+1.\n*\n*  D       (output) DOUBLE PRECISION array, dimension (N)\n*          The diagonal elements of the tridiagonal matrix T.\n*\n*  E       (output) DOUBLE PRECISION array, dimension (N-1)\n*          The off-diagonal elements of the tridiagonal matrix T:\n*          E(i) = T(i,i+1) if UPLO = 'U'; E(i) = T(i+1,i) if UPLO = 'L'.\n*\n*  Q       (input/output) COMPLEX*16 array, dimension (LDQ,N)\n*          On entry, if VECT = 'U', then Q must contain an N-by-N\n*          matrix X; if VECT = 'N' or 'V', then Q need not be set.\n*\n*          On exit:\n*          if VECT = 'V', Q contains the N-by-N unitary matrix Q;\n*          if VECT = 'U', Q contains the product X*Q;\n*          if VECT = 'N', the array Q is not referenced.\n*\n*  LDQ     (input) INTEGER\n*          The leading dimension of the array Q.\n*          LDQ >= 1, and LDQ >= N if VECT = 'V' or 'U'.\n*\n*  WORK    (workspace) COMPLEX*16 array, dimension (N)\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*\n\n*  Further Details\n*  ===============\n*\n*  Modified by Linda Kaufman, Bell Labs.\n*\n*  =====================================================================\n*\n\n");
+      rb_exit(0);
+    }
+    if (rb_hash_aref(rb_options, sUsage) == Qtrue) {
+      printf("%s\n", "USAGE:\n  d, e, info, ab, q = NumRu::Lapack.zhbtrd( vect, uplo, kd, ab, q, [:usage => usage, :help => help])\n");
+      rb_exit(0);
+    } 
+  } else
+    rb_options = Qnil;
   if (argc != 5)
     rb_raise(rb_eArgError,"wrong number of arguments (%d for 5)", argc);
-  rb_vect = argv[0];
-  rb_uplo = argv[1];
-  rb_kd = argv[2];
-  rb_ab = argv[3];
-  rb_q = argv[4];
+  rblapack_vect = argv[0];
+  rblapack_uplo = argv[1];
+  rblapack_kd = argv[2];
+  rblapack_ab = argv[3];
+  rblapack_q = argv[4];
+  if (rb_options != Qnil) {
+  }
 
-  if (!NA_IsNArray(rb_ab))
+  if (!NA_IsNArray(rblapack_ab))
     rb_raise(rb_eArgError, "ab (4th argument) must be NArray");
-  if (NA_RANK(rb_ab) != 2)
+  if (NA_RANK(rblapack_ab) != 2)
     rb_raise(rb_eArgError, "rank of ab (4th argument) must be %d", 2);
-  n = NA_SHAPE1(rb_ab);
-  ldab = NA_SHAPE0(rb_ab);
-  if (NA_TYPE(rb_ab) != NA_DCOMPLEX)
-    rb_ab = na_change_type(rb_ab, NA_DCOMPLEX);
-  ab = NA_PTR_TYPE(rb_ab, doublecomplex*);
-  vect = StringValueCStr(rb_vect)[0];
-  kd = NUM2INT(rb_kd);
-  if (!NA_IsNArray(rb_q))
+  n = NA_SHAPE1(rblapack_ab);
+  ldab = NA_SHAPE0(rblapack_ab);
+  if (NA_TYPE(rblapack_ab) != NA_DCOMPLEX)
+    rblapack_ab = na_change_type(rblapack_ab, NA_DCOMPLEX);
+  ab = NA_PTR_TYPE(rblapack_ab, doublecomplex*);
+  vect = StringValueCStr(rblapack_vect)[0];
+  kd = NUM2INT(rblapack_kd);
+  if (!NA_IsNArray(rblapack_q))
     rb_raise(rb_eArgError, "q (5th argument) must be NArray");
-  if (NA_RANK(rb_q) != 2)
+  if (NA_RANK(rblapack_q) != 2)
     rb_raise(rb_eArgError, "rank of q (5th argument) must be %d", 2);
-  if (NA_SHAPE1(rb_q) != n)
+  if (NA_SHAPE1(rblapack_q) != n)
     rb_raise(rb_eRuntimeError, "shape 1 of q must be the same as shape 1 of ab");
-  ldq = NA_SHAPE0(rb_q);
-  if (NA_TYPE(rb_q) != NA_DCOMPLEX)
-    rb_q = na_change_type(rb_q, NA_DCOMPLEX);
-  q = NA_PTR_TYPE(rb_q, doublecomplex*);
-  uplo = StringValueCStr(rb_uplo)[0];
+  ldq = NA_SHAPE0(rblapack_q);
+  if (NA_TYPE(rblapack_q) != NA_DCOMPLEX)
+    rblapack_q = na_change_type(rblapack_q, NA_DCOMPLEX);
+  q = NA_PTR_TYPE(rblapack_q, doublecomplex*);
+  uplo = StringValueCStr(rblapack_uplo)[0];
   {
     int shape[1];
     shape[0] = n;
-    rb_d = na_make_object(NA_DFLOAT, 1, shape, cNArray);
+    rblapack_d = na_make_object(NA_DFLOAT, 1, shape, cNArray);
   }
-  d = NA_PTR_TYPE(rb_d, doublereal*);
+  d = NA_PTR_TYPE(rblapack_d, doublereal*);
   {
     int shape[1];
     shape[0] = n-1;
-    rb_e = na_make_object(NA_DFLOAT, 1, shape, cNArray);
+    rblapack_e = na_make_object(NA_DFLOAT, 1, shape, cNArray);
   }
-  e = NA_PTR_TYPE(rb_e, doublereal*);
+  e = NA_PTR_TYPE(rblapack_e, doublereal*);
   {
     int shape[2];
     shape[0] = ldab;
     shape[1] = n;
-    rb_ab_out__ = na_make_object(NA_DCOMPLEX, 2, shape, cNArray);
+    rblapack_ab_out__ = na_make_object(NA_DCOMPLEX, 2, shape, cNArray);
   }
-  ab_out__ = NA_PTR_TYPE(rb_ab_out__, doublecomplex*);
-  MEMCPY(ab_out__, ab, doublecomplex, NA_TOTAL(rb_ab));
-  rb_ab = rb_ab_out__;
+  ab_out__ = NA_PTR_TYPE(rblapack_ab_out__, doublecomplex*);
+  MEMCPY(ab_out__, ab, doublecomplex, NA_TOTAL(rblapack_ab));
+  rblapack_ab = rblapack_ab_out__;
   ab = ab_out__;
   {
     int shape[2];
     shape[0] = ldq;
     shape[1] = n;
-    rb_q_out__ = na_make_object(NA_DCOMPLEX, 2, shape, cNArray);
+    rblapack_q_out__ = na_make_object(NA_DCOMPLEX, 2, shape, cNArray);
   }
-  q_out__ = NA_PTR_TYPE(rb_q_out__, doublecomplex*);
-  MEMCPY(q_out__, q, doublecomplex, NA_TOTAL(rb_q));
-  rb_q = rb_q_out__;
+  q_out__ = NA_PTR_TYPE(rblapack_q_out__, doublecomplex*);
+  MEMCPY(q_out__, q, doublecomplex, NA_TOTAL(rblapack_q));
+  rblapack_q = rblapack_q_out__;
   q = q_out__;
   work = ALLOC_N(doublecomplex, (n));
 
   zhbtrd_(&vect, &uplo, &n, &kd, ab, &ldab, d, e, q, &ldq, work, &info);
 
   free(work);
-  rb_info = INT2NUM(info);
-  return rb_ary_new3(5, rb_d, rb_e, rb_info, rb_ab, rb_q);
+  rblapack_info = INT2NUM(info);
+  return rb_ary_new3(5, rblapack_d, rblapack_e, rblapack_info, rblapack_ab, rblapack_q);
 }
 
 void
 init_lapack_zhbtrd(VALUE mLapack){
-  rb_define_module_function(mLapack, "zhbtrd", rb_zhbtrd, -1);
+  rb_define_module_function(mLapack, "zhbtrd", rblapack_zhbtrd, -1);
+  sHelp = ID2SYM(rb_intern("help"));
+  sUsage = ID2SYM(rb_intern("usage"));
 }

@@ -21,10 +21,126 @@
   <H2>zpbcon</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX*16 or DOUBLE COMPLEX routines for symmetric or Hermitian positive definite band matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX*16 or DOUBLE COMPLEX routines for symmetric or Hermitian positive definite band matrix</H1>
+    <UL>
+      <LI><A HREF="#zpbcon">zpbcon</A> : </LI>
+      <LI><A HREF="#zpbequ">zpbequ</A> : </LI>
+      <LI><A HREF="#zpbrfs">zpbrfs</A> : </LI>
+      <LI><A HREF="#zpbstf">zpbstf</A> : </LI>
+      <LI><A HREF="#zpbsv">zpbsv</A> : </LI>
+      <LI><A HREF="#zpbsvx">zpbsvx</A> : </LI>
+      <LI><A HREF="#zpbtf2">zpbtf2</A> : </LI>
+      <LI><A HREF="#zpbtrf">zpbtrf</A> : </LI>
+      <LI><A HREF="#zpbtrs">zpbtrs</A> : </LI>
+    </UL>
+
+  <A NAME="zpbcon"></A>
+  <H2>zpbcon</H2>
+  
+  <PRE>
 USAGE:
-  rcond, info = NumRu::Lapack.zpbcon( uplo, kd, ab, anorm)
-    or
-  NumRu::Lapack.zpbcon  # print help
+  rcond, info = NumRu::Lapack.zpbcon( uplo, kd, ab, anorm, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZPBCON( UPLO, N, KD, AB, LDAB, ANORM, RCOND, WORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZPBCON estimates the reciprocal of the condition number (in the
+*  1-norm) of a complex Hermitian positive definite band matrix using
+*  the Cholesky factorization A = U**H*U or A = L*L**H computed by
+*  ZPBTRF.
+*
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangular factor stored in AB;
+*          = 'L':  Lower triangular factor stored in AB.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  KD      (input) INTEGER
+*          The number of superdiagonals of the matrix A if UPLO = 'U',
+*          or the number of sub-diagonals if UPLO = 'L'.  KD >= 0.
+*
+*  AB      (input) COMPLEX*16 array, dimension (LDAB,N)
+*          The triangular factor U or L from the Cholesky factorization
+*          A = U**H*U or A = L*L**H of the band matrix A, stored in the
+*          first KD+1 rows of the array.  The j-th column of U or L is
+*          stored in the j-th column of the array AB as follows:
+*          if UPLO ='U', AB(kd+1+i-j,j) = U(i,j) for max(1,j-kd)<=i<=j;
+*          if UPLO ='L', AB(1+i-j,j)    = L(i,j) for j<=i<=min(n,j+kd).
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KD+1.
+*
+*  ANORM   (input) DOUBLE PRECISION
+*          The 1-norm (or infinity-norm) of the Hermitian band matrix A.
+*
+*  RCOND   (output) DOUBLE PRECISION
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
+*          estimate of the 1-norm of inv(A) computed in this routine.
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zpbequ"></A>
+  <H2>zpbequ</H2>
+  
+  <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX*16 or DOUBLE COMPLEX routines for symmetric or Hermitian positive definite band matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX*16 or DOUBLE COMPLEX routines for symmetric or Hermitian positive definite band matrix</H1>
+    <UL>
+      <LI><A HREF="#zpbcon">zpbcon</A> : </LI>
+      <LI><A HREF="#zpbequ">zpbequ</A> : </LI>
+      <LI><A HREF="#zpbrfs">zpbrfs</A> : </LI>
+      <LI><A HREF="#zpbstf">zpbstf</A> : </LI>
+      <LI><A HREF="#zpbsv">zpbsv</A> : </LI>
+      <LI><A HREF="#zpbsvx">zpbsvx</A> : </LI>
+      <LI><A HREF="#zpbtf2">zpbtf2</A> : </LI>
+      <LI><A HREF="#zpbtrf">zpbtrf</A> : </LI>
+      <LI><A HREF="#zpbtrs">zpbtrs</A> : </LI>
+    </UL>
+
+  <A NAME="zpbcon"></A>
+  <H2>zpbcon</H2>
+  
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.zpbcon( uplo, kd, ab, anorm, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -96,9 +212,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  s, scond, amax, info = NumRu::Lapack.zpbequ( uplo, kd, ab)
-    or
-  NumRu::Lapack.zpbequ  # print help
+  s, scond, amax, info = NumRu::Lapack.zpbequ( uplo, kd, ab, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -171,10 +285,54 @@ FORTRAN MANUAL
   <H2>zpbrfs</H2>
   
   <PRE>
+ N >= 0.
+*
+*  KD      (input) INTEGER
+*          The number of superdiagonals of the matrix A if UPLO = 'U',
+*          or the number of subdiagonals if UPLO = 'L'.  KD >= 0.
+*
+*  AB      (input) COMPLEX*16 array, dimension (LDAB,N)
+*          The upper or lower triangle of the Hermitian band matrix A,
+*          stored in the first KD+1 rows of the array.  The j-th column
+*          of A is stored in the j-th column of the array AB as follows:
+*          if UPLO = 'U', AB(kd+1+i-j,j) = A(i,j) for max(1,j-kd)<=i<=j;
+*          if UPLO = 'L', AB(1+i-j,j)    = A(i,j) for j<=i<=min(n,j+kd).
+*
+*  LDAB     (input) INTEGER
+*          The leading dimension of the array A.  LDAB >= KD+1.
+*
+*  S       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, S contains the scale factors for A.
+*
+*  SCOND   (output) DOUBLE PRECISION
+*          If INFO = 0, S contains the ratio of the smallest S(i) to
+*          the largest S(i).  If SCOND >= 0.1 and AMAX is neither too
+*          large nor too small, it is not worth scaling by S.
+*
+*  AMAX    (output) DOUBLE PRECISION
+*          Absolute value of largest matrix element.  If AMAX is very
+*          close to overflow or very close to underflow, the matrix
+*          should be scaled.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, the i-th diagonal element is nonpositive.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zpbrfs"></A>
+  <H2>zpbrfs</H2>
+  
+  <PRE>
 USAGE:
-  ferr, berr, info, x = NumRu::Lapack.zpbrfs( uplo, kd, ab, afb, b, x)
-    or
-  NumRu::Lapack.zpbrfs  # print help
+  ferr, berr, info, x = NumRu::Lapack.zpbrfs( uplo, kd, ab, afb, b, x, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -278,10 +436,48 @@ FORTRAN MANUAL
   <H2>zpbstf</H2>
   
   <PRE>
+y, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+*  Internal Parameters
+*  ===================
+*
+*  ITMAX is the maximum number of steps of iterative refinement.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zpbstf"></A>
+  <H2>zpbstf</H2>
+  
+  <PRE>
 USAGE:
-  info, ab = NumRu::Lapack.zpbstf( uplo, kd, ab)
-    or
-  NumRu::Lapack.zpbstf  # print help
+  info, ab = NumRu::Lapack.zpbstf( uplo, kd, ab, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -385,10 +581,32 @@ FORTRAN MANUAL
   <H2>zpbsv</H2>
   
   <PRE>
+3  a44  a55  a66  a77  s11  s22  s33  s44  s55  s66  s77
+*
+*  If UPLO = 'L', the array AB holds:
+*
+*  on entry:                          on exit:
+*
+*  a11  a22  a33  a44  a55  a66  a77  s11  s22  s33  s44  s55  s66  s77
+*  a21  a32  a43  a54  a65  a76   *   s12' s23' s34' s54  s65  s76   *
+*  a31  a42  a53  a64  a64   *    *   s13' s24' s53  s64  s75   *    *
+*
+*  Array elements marked * are not used by the routine; s12' denotes
+*  conjg(s12); the diagonal elements of S are real.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zpbsv"></A>
+  <H2>zpbsv</H2>
+  
+  <PRE>
 USAGE:
-  info, ab, b = NumRu::Lapack.zpbsv( uplo, kd, ab, b)
-    or
-  NumRu::Lapack.zpbsv  # print help
+  info, ab, b = NumRu::Lapack.zpbsv( uplo, kd, ab, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -504,10 +722,33 @@ FORTRAN MANUAL
   <H2>zpbsvx</H2>
   
   <PRE>
+  a42  a53  a64   *    *      l31  l42  l53  l64   *    *
+*
+*  Array elements marked * are not used by the routine.
+*
+*  =====================================================================
+*
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           XERBLA, ZPBTRF, ZPBTRS
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zpbsvx"></A>
+  <H2>zpbsvx</H2>
+  
+  <PRE>
 USAGE:
-  x, rcond, ferr, berr, info, ab, afb, equed, s, b = NumRu::Lapack.zpbsvx( fact, uplo, kd, ab, afb, equed, s, b)
-    or
-  NumRu::Lapack.zpbsvx  # print help
+  x, rcond, ferr, berr, info, ab, afb, equed, s, b = NumRu::Lapack.zpbsvx( fact, uplo, kd, ab, afb, equed, s, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -745,10 +986,77 @@ FORTRAN MANUAL
   <H2>zpbtf2</H2>
   
   <PRE>
+ost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (2*N)
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, and i is
+*                <= N:  the leading minor of order i of A is
+*                       not positive definite, so the factorization
+*                       could not be completed, and the solution has not
+*                       been computed. RCOND = 0 is returned.
+*                = N+1: U is nonsingular, but RCOND is less than machine
+*                       precision, meaning that the matrix is singular
+*                       to working precision.  Nevertheless, the
+*                       solution and error bounds are computed because
+*                       there are a number of situations where the
+*                       computed solution can be more accurate than the
+*                       value of RCOND would suggest.
+*
+
+*  Further Details
+*  ===============
+*
+*  The band storage scheme is illustrated by the following example, when
+*  N = 6, KD = 2, and UPLO = 'U':
+*
+*  Two-dimensional storage of the Hermitian matrix A:
+*
+*     a11  a12  a13
+*          a22  a23  a24
+*               a33  a34  a35
+*                    a44  a45  a46
+*                         a55  a56
+*     (aij=conjg(aji))         a66
+*
+*  Band storage of the upper triangle of A:
+*
+*      *    *   a13  a24  a35  a46
+*      *   a12  a23  a34  a45  a56
+*     a11  a22  a33  a44  a55  a66
+*
+*  Similarly, if UPLO = 'L' the format of A is as follows:
+*
+*     a11  a22  a33  a44  a55  a66
+*     a21  a32  a43  a54  a65   *
+*     a31  a42  a53  a64   *    *
+*
+*  Array elements marked * are not used by the routine.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zpbtf2"></A>
+  <H2>zpbtf2</H2>
+  
+  <PRE>
 USAGE:
-  info, ab = NumRu::Lapack.zpbtf2( uplo, kd, ab)
-    or
-  NumRu::Lapack.zpbtf2  # print help
+  info, ab = NumRu::Lapack.zpbtf2( uplo, kd, ab, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -841,10 +1149,51 @@ FORTRAN MANUAL
   <H2>zpbtrf</H2>
   
   <PRE>
+ AB.  LDAB >= KD+1.
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*          > 0: if INFO = k, the leading minor of order k is not
+*               positive definite, and the factorization could not be
+*               completed.
+*
+
+*  Further Details
+*  ===============
+*
+*  The band storage scheme is illustrated by the following example, when
+*  N = 6, KD = 2, and UPLO = 'U':
+*
+*  On entry:                       On exit:
+*
+*      *    *   a13  a24  a35  a46      *    *   u13  u24  u35  u46
+*      *   a12  a23  a34  a45  a56      *   u12  u23  u34  u45  u56
+*     a11  a22  a33  a44  a55  a66     u11  u22  u33  u44  u55  u66
+*
+*  Similarly, if UPLO = 'L' the format of A is as follows:
+*
+*  On entry:                       On exit:
+*
+*     a11  a22  a33  a44  a55  a66     l11  l22  l33  l44  l55  l66
+*     a21  a32  a43  a54  a65   *      l21  l32  l43  l54  l65   *
+*     a31  a42  a53  a64   *    *      l31  l42  l53  l64   *    *
+*
+*  Array elements marked * are not used by the routine.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zpbtrf"></A>
+  <H2>zpbtrf</H2>
+  
+  <PRE>
 USAGE:
-  info, ab = NumRu::Lapack.zpbtrf( uplo, kd, ab)
-    or
-  NumRu::Lapack.zpbtrf  # print help
+  info, ab = NumRu::Lapack.zpbtrf( uplo, kd, ab, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -935,10 +1284,19 @@ FORTRAN MANUAL
   <H2>zpbtrs</H2>
   
   <PRE>
+=======================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zpbtrs"></A>
+  <H2>zpbtrs</H2>
+  
+  <PRE>
 USAGE:
-  info, b = NumRu::Lapack.zpbtrs( uplo, kd, ab, b)
-    or
-  NumRu::Lapack.zpbtrs  # print help
+  info, b = NumRu::Lapack.zpbtrs( uplo, kd, ab, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

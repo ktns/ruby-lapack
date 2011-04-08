@@ -24,10 +24,34 @@
   <H2>dgbbrd</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>DOUBLE PRECISION routines for general band matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>DOUBLE PRECISION routines for general band matrix</H1>
+    <UL>
+      <LI><A HREF="#dgbbrd">dgbbrd</A> : </LI>
+      <LI><A HREF="#dgbcon">dgbcon</A> : </LI>
+      <LI><A HREF="#dgbequ">dgbequ</A> : </LI>
+      <LI><A HREF="#dgbequb">dgbequb</A> : </LI>
+      <LI><A HREF="#dgbrfs">dgbrfs</A> : </LI>
+      <LI><A HREF="#dgbrfsx">dgbrfsx</A> : </LI>
+      <LI><A HREF="#dgbsv">dgbsv</A> : </LI>
+      <LI><A HREF="#dgbsvx">dgbsvx</A> : </LI>
+      <LI><A HREF="#dgbsvxx">dgbsvxx</A> : </LI>
+      <LI><A HREF="#dgbtf2">dgbtf2</A> : </LI>
+      <LI><A HREF="#dgbtrf">dgbtrf</A> : </LI>
+      <LI><A HREF="#dgbtrs">dgbtrs</A> : </LI>
+    </UL>
+
+  <A NAME="dgbbrd"></A>
+  <H2>dgbbrd</H2>
+  
+  <PRE>
 USAGE:
-  d, e, q, pt, info, ab, c = NumRu::Lapack.dgbbrd( vect, kl, ku, ab, c)
-    or
-  NumRu::Lapack.dgbbrd  # print help
+  d, e, q, pt, info, ab, c = NumRu::Lapack.dgbbrd( vect, kl, ku, ab, c, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -129,10 +153,109 @@ FORTRAN MANUAL
   <H2>dgbcon</H2>
   
   <PRE>
+=================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dgbcon"></A>
+  <H2>dgbcon</H2>
+  
+  <PRE>
 USAGE:
-  rcond, info = NumRu::Lapack.dgbcon( norm, kl, ku, ab, ipiv, anorm)
-    or
-  NumRu::Lapack.dgbcon  # print help
+  rcond, info = NumRu::Lapack.dgbcon( norm, kl, ku, ab, ipiv, anorm, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE DGBCON( NORM, N, KL, KU, AB, LDAB, IPIV, ANORM, RCOND, WORK, IWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  DGBCON estimates the reciprocal of the condition number of a real
+*  general band matrix A, in either the 1-norm or the infinity-norm,
+*  using the LU factorization computed by DGBTRF.
+*
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as
+*     RCOND = 1 / ( norm(A) * norm(inv(A)) ).
+*
+
+*  Arguments
+*  =========
+*
+*  NORM    (input) CHARACTER*1
+*          Specifies whether the 1-norm condition number or the
+*          infinity-norm condition number is required:
+*          = '1' or 'O':  1-norm;
+*          = 'I':         Infinity-norm.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  KL      (input) INTEGER
+*          The number of subdiagonals within the band of A.  KL >= 0.
+*
+*  KU      (input) INTEGER
+*          The number of superdiagonals within the band of A.  KU >= 0.
+*
+*  AB      (input) DOUBLE PRECISION array, dimension (LDAB,N)
+*          Details of the LU factorization of the band matrix A, as
+*          computed by DGBTRF.  U is stored as an upper triangular band
+*          matrix with KL+KU superdiagonals in rows 1 to KL+KU+1, and
+*          the multipliers used during the factorization are stored in
+*          rows KL+KU+2 to 2*KL+KU+1.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= 2*KL+KU+1.
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          The pivot indices; for 1 <= i <= N, row i of the matrix was
+*          interchanged with row IPIV(i).
+*
+*  ANORM   (input) DOUBLE PRECISION
+*          If NORM = '1' or 'O', the 1-norm of the original matrix A.
+*          If NORM = 'I', the infinity-norm of the original matrix A.
+*
+*  RCOND   (output) DOUBLE PRECISION
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(norm(A) * norm(inv(A))).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dgbequ"></A>
+  <H2>dgbequ</H2>
+  
+  <PRE>
+=================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dgbcon"></A>
+  <H2>dgbcon</H2>
+  
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.dgbcon( norm, kl, ku, ab, ipiv, anorm, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -211,9 +334,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  r, c, rowcnd, colcnd, amax, info = NumRu::Lapack.dgbequ( m, kl, ku, ab)
-    or
-  NumRu::Lapack.dgbequ  # print help
+  r, c, rowcnd, colcnd, amax, info = NumRu::Lapack.dgbequ( m, kl, ku, ab, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -300,10 +421,57 @@ FORTRAN MANUAL
   <H2>dgbequb</H2>
   
   <PRE>
+the array AB as
+*          follows:
+*          AB(ku+1+i-j,j) = A(i,j) for max(1,j-ku)<=i<=min(m,j+kl).
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= KL+KU+1.
+*
+*  R       (output) DOUBLE PRECISION array, dimension (M)
+*          If INFO = 0, or INFO > M, R contains the row scale factors
+*          for A.
+*
+*  C       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, C contains the column scale factors for A.
+*
+*  ROWCND  (output) DOUBLE PRECISION
+*          If INFO = 0 or INFO > M, ROWCND contains the ratio of the
+*          smallest R(i) to the largest R(i).  If ROWCND >= 0.1 and
+*          AMAX is neither too large nor too small, it is not worth
+*          scaling by R.
+*
+*  COLCND  (output) DOUBLE PRECISION
+*          If INFO = 0, COLCND contains the ratio of the smallest
+*          C(i) to the largest C(i).  If COLCND >= 0.1, it is not
+*          worth scaling by C.
+*
+*  AMAX    (output) DOUBLE PRECISION
+*          Absolute value of largest matrix element.  If AMAX is very
+*          close to overflow or very close to underflow, the matrix
+*          should be scaled.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is
+*                <= M:  the i-th row of A is exactly zero
+*                >  M:  the (i-M)-th column of A is exactly zero
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dgbequb"></A>
+  <H2>dgbequb</H2>
+  
+  <PRE>
 USAGE:
-  r, c, rowcnd, colcnd, amax, info = NumRu::Lapack.dgbequb( kl, ku, ab)
-    or
-  NumRu::Lapack.dgbequb  # print help
+  r, c, rowcnd, colcnd, amax, info = NumRu::Lapack.dgbequb( kl, ku, ab, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -397,10 +565,40 @@ FORTRAN MANUAL
   <H2>dgbrfs</H2>
   
   <PRE>
+her too large nor too small, it is not worth
+*          scaling by R.
+*
+*  COLCND  (output) DOUBLE PRECISION
+*          If INFO = 0, COLCND contains the ratio of the smallest
+*          C(i) to the largest C(i).  If COLCND >= 0.1, it is not
+*          worth scaling by C.
+*
+*  AMAX    (output) DOUBLE PRECISION
+*          Absolute value of largest matrix element.  If AMAX is very
+*          close to overflow or very close to underflow, the matrix
+*          should be scaled.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i,  and i is
+*                <= M:  the i-th row of A is exactly zero
+*                >  M:  the (i-M)-th column of A is exactly zero
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dgbrfs"></A>
+  <H2>dgbrfs</H2>
+  
+  <PRE>
 USAGE:
-  ferr, berr, info, x = NumRu::Lapack.dgbrfs( trans, kl, ku, ab, afb, ipiv, b, x)
-    or
-  NumRu::Lapack.dgbrfs  # print help
+  ferr, berr, info, x = NumRu::Lapack.dgbrfs( trans, kl, ku, ab, afb, ipiv, b, x, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -512,10 +710,42 @@ FORTRAN MANUAL
   <H2>dgbrfsx</H2>
   
   <PRE>
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+*  Internal Parameters
+*  ===================
+*
+*  ITMAX is the maximum number of steps of iterative refinement.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dgbrfsx"></A>
+  <H2>dgbrfsx</H2>
+  
+  <PRE>
 USAGE:
-  rcond, berr, err_bnds_norm, err_bnds_comp, info, r, c, x, params = NumRu::Lapack.dgbrfsx( trans, equed, kl, ku, ab, afb, ipiv, r, c, b, x, params)
-    or
-  NumRu::Lapack.dgbrfsx  # print help
+  rcond, berr, err_bnds_norm, err_bnds_comp, info, r, c, x, params = NumRu::Lapack.dgbrfsx( trans, equed, kl, ku, ab, afb, ipiv, r, c, b, x, params, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -829,10 +1059,84 @@ FORTRAN MANUAL
   <H2>dgbsv</H2>
   
   <PRE>
+f parameters set in PARAMS.  If .LE. 0, the
+*     PARAMS array is never referenced and default values are used.
+*
+*     PARAMS  (input / output) DOUBLE PRECISION array, dimension (NPARAMS)
+*     Specifies algorithm parameters.  If an entry is .LT. 0.0, then
+*     that entry will be filled with default value used for that
+*     parameter.  Only positions up to NPARAMS are accessed; defaults
+*     are used for higher-numbered parameters.
+*
+*       PARAMS(LA_LINRX_ITREF_I = 1) : Whether to perform iterative
+*            refinement or not.
+*         Default: 1.0D+0
+*            = 0.0 : No refinement is performed, and no error bounds are
+*                    computed.
+*            = 1.0 : Use the double-precision refinement algorithm,
+*                    possibly with doubled-single computations if the
+*                    compilation environment does not support DOUBLE
+*                    PRECISION.
+*              (other values are reserved for future use)
+*
+*       PARAMS(LA_LINRX_ITHRESH_I = 2) : Maximum number of residual
+*            computations allowed for refinement.
+*         Default: 10
+*         Aggressive: Set to 100 to permit convergence using approximate
+*                     factorizations or factorizations other than LU. If
+*                     the factorization uses a technique other than
+*                     Gaussian elimination, the guarantees in
+*                     err_bnds_norm and err_bnds_comp may no longer be
+*                     trustworthy.
+*
+*       PARAMS(LA_LINRX_CWISE_I = 3) : Flag determining if the code
+*            will attempt to find a solution with small componentwise
+*            relative error in the double-precision algorithm.  Positive
+*            is true, 0.0 is false.
+*         Default: 1.0 (attempt componentwise convergence)
+*
+*     WORK    (workspace) DOUBLE PRECISION array, dimension (4*N)
+*
+*     IWORK   (workspace) INTEGER array, dimension (N)
+*
+*     INFO    (output) INTEGER
+*       = 0:  Successful exit. The solution to every right-hand side is
+*         guaranteed.
+*       < 0:  If INFO = -i, the i-th argument had an illegal value
+*       > 0 and <= N:  U(INFO,INFO) is exactly zero.  The factorization
+*         has been completed, but the factor U is exactly singular, so
+*         the solution and error bounds could not be computed. RCOND = 0
+*         is returned.
+*       = N+J: The solution corresponding to the Jth right-hand side is
+*         not guaranteed. The solutions corresponding to other right-
+*         hand sides K with K > J may not be guaranteed as well, but
+*         only the first such right-hand side is reported. If a small
+*         componentwise error is not requested (PARAMS(3) = 0.0) then
+*         the Jth right-hand side is the first with a normwise error
+*         bound that is not guaranteed (the smallest J such
+*         that ERR_BNDS_NORM(J,1) = 0.0). By default (PARAMS(3) = 1.0)
+*         the Jth right-hand side is the first with either a normwise or
+*         componentwise error bound that is not guaranteed (the smallest
+*         J such that either ERR_BNDS_NORM(J,1) = 0.0 or
+*         ERR_BNDS_COMP(J,1) = 0.0). See the definition of
+*         ERR_BNDS_NORM(:,1) and ERR_BNDS_COMP(:,1). To get information
+*         about all of the right-hand sides check ERR_BNDS_NORM or
+*         ERR_BNDS_COMP.
+*
+
+*     ==================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dgbsv"></A>
+  <H2>dgbsv</H2>
+  
+  <PRE>
 USAGE:
-  ipiv, info, ab, b = NumRu::Lapack.dgbsv( kl, ku, ab, b)
-    or
-  NumRu::Lapack.dgbsv  # print help
+  ipiv, info, ab, b = NumRu::Lapack.dgbsv( kl, ku, ab, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -939,10 +1243,100 @@ FORTRAN MANUAL
   <H2>dgbsvx</H2>
   
   <PRE>
+riangular matrices with KL subdiagonals, and U is
+*  upper triangular with KL+KU superdiagonals.  The factored form of A
+*  is then used to solve the system of equations A * X = B.
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The number of linear equations, i.e., the order of the
+*          matrix A.  N >= 0.
+*
+*  KL      (input) INTEGER
+*          The number of subdiagonals within the band of A.  KL >= 0.
+*
+*  KU      (input) INTEGER
+*          The number of superdiagonals within the band of A.  KU >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  AB      (input/output) DOUBLE PRECISION array, dimension (LDAB,N)
+*          On entry, the matrix A in band storage, in rows KL+1 to
+*          2*KL+KU+1; rows 1 to KL of the array need not be set.
+*          The j-th column of A is stored in the j-th column of the
+*          array AB as follows:
+*          AB(KL+KU+1+i-j,j) = A(i,j) for max(1,j-KU)<=i<=min(N,j+KL)
+*          On exit, details of the factorization: U is stored as an
+*          upper triangular band matrix with KL+KU superdiagonals in
+*          rows 1 to KL+KU+1, and the multipliers used during the
+*          factorization are stored in rows KL+KU+2 to 2*KL+KU+1.
+*          See below for further details.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= 2*KL+KU+1.
+*
+*  IPIV    (output) INTEGER array, dimension (N)
+*          The pivot indices that define the permutation matrix P;
+*          row i of the matrix was interchanged with row IPIV(i).
+*
+*  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+*          On entry, the N-by-NRHS right hand side matrix B.
+*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, U(i,i) is exactly zero.  The factorization
+*                has been completed, but the factor U is exactly
+*                singular, and the solution has not been computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  The band storage scheme is illustrated by the following example, when
+*  M = N = 6, KL = 2, KU = 1:
+*
+*  On entry:                       On exit:
+*
+*      *    *    *    +    +    +       *    *    *   u14  u25  u36
+*      *    *    +    +    +    +       *    *   u13  u24  u35  u46
+*      *   a12  a23  a34  a45  a56      *   u12  u23  u34  u45  u56
+*     a11  a22  a33  a44  a55  a66     u11  u22  u33  u44  u55  u66
+*     a21  a32  a43  a54  a65   *      m21  m32  m43  m54  m65   *
+*     a31  a42  a53  a64   *    *      m31  m42  m53  m64   *    *
+*
+*  Array elements marked * are not used by the routine; elements marked
+*  + need not be set on entry, but are required by the routine to store
+*  elements of U because of fill-in resulting from the row interchanges.
+*
+*  =====================================================================
+*
+*     .. External Subroutines ..
+      EXTERNAL           DGBTRF, DGBTRS, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dgbsvx"></A>
+  <H2>dgbsvx</H2>
+  
+  <PRE>
 USAGE:
-  x, rcond, ferr, berr, work, info, ab, afb, ipiv, equed, r, c, b = NumRu::Lapack.dgbsvx( fact, trans, kl, ku, ab, afb, ipiv, equed, r, c, b)
-    or
-  NumRu::Lapack.dgbsvx  # print help
+  x, rcond, ferr, berr, work, info, ab, afb, ipiv, equed, r, c, b = NumRu::Lapack.dgbsvx( fact, trans, kl, ku, ab, afb, ipiv, equed, r, c, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1200,10 +1594,74 @@ FORTRAN MANUAL
   <H2>dgbsvxx</H2>
   
   <PRE>
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  RCOND   (output) DOUBLE PRECISION
+*          The estimate of the reciprocal condition number of the matrix
+*          A after equilibration (if done).  If RCOND is less than the
+*          machine precision (in particular, if RCOND = 0), the matrix
+*          is singular to working precision.  This condition is
+*          indicated by a return code of INFO > 0.
+*
+*  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace/output) DOUBLE PRECISION array, dimension (3*N)
+*          On exit, WORK(1) contains the reciprocal pivot growth
+*          factor norm(A)/norm(U). The "max absolute element" norm is
+*          used. If WORK(1) is much less than 1, then the stability
+*          of the LU factorization of the (equilibrated) matrix A
+*          could be poor. This also means that the solution X, condition
+*          estimator RCOND, and forward error bound FERR could be
+*          unreliable. If factorization fails with 0<INFO<=N, then
+*          WORK(1) contains the reciprocal pivot growth factor for the
+*          leading INFO columns of A.
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is
+*                <= N:  U(i,i) is exactly zero.  The factorization
+*                       has been completed, but the factor U is exactly
+*                       singular, so the solution and error bounds
+*                       could not be computed. RCOND = 0 is returned.
+*                = N+1: U is nonsingular, but RCOND is less than machine
+*                       precision, meaning that the matrix is singular
+*                       to working precision.  Nevertheless, the
+*                       solution and error bounds are computed because
+*                       there are a number of situations where the
+*                       computed solution can be more accurate than the
+*                       value of RCOND would suggest.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dgbsvxx"></A>
+  <H2>dgbsvxx</H2>
+  
+  <PRE>
 USAGE:
-  x, rcond, rpvgrw, berr, err_bnds_norm, err_bnds_comp, info, ab, afb, ipiv, equed, r, c, b, params = NumRu::Lapack.dgbsvxx( fact, trans, kl, ku, ab, afb, ipiv, equed, r, c, b, params)
-    or
-  NumRu::Lapack.dgbsvxx  # print help
+  x, rcond, rpvgrw, berr, err_bnds_norm, err_bnds_comp, info, ab, afb, ipiv, equed, r, c, b, params = NumRu::Lapack.dgbsvxx( fact, trans, kl, ku, ab, afb, ipiv, equed, r, c, b, params, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1628,10 +2086,71 @@ FORTRAN MANUAL
   <H2>dgbtf2</H2>
   
   <PRE>
+t.
+*         Default: 1.0D+0
+*            = 0.0 : No refinement is performed, and no error bounds are
+*                    computed.
+*            = 1.0 : Use the extra-precise refinement algorithm.
+*              (other values are reserved for future use)
+*
+*       PARAMS(LA_LINRX_ITHRESH_I = 2) : Maximum number of residual
+*            computations allowed for refinement.
+*         Default: 10
+*         Aggressive: Set to 100 to permit convergence using approximate
+*                     factorizations or factorizations other than LU. If
+*                     the factorization uses a technique other than
+*                     Gaussian elimination, the guarantees in
+*                     err_bnds_norm and err_bnds_comp may no longer be
+*                     trustworthy.
+*
+*       PARAMS(LA_LINRX_CWISE_I = 3) : Flag determining if the code
+*            will attempt to find a solution with small componentwise
+*            relative error in the double-precision algorithm.  Positive
+*            is true, 0.0 is false.
+*         Default: 1.0 (attempt componentwise convergence)
+*
+*     WORK    (workspace) DOUBLE PRECISION array, dimension (4*N)
+*
+*     IWORK   (workspace) INTEGER array, dimension (N)
+*
+*     INFO    (output) INTEGER
+*       = 0:  Successful exit. The solution to every right-hand side is
+*         guaranteed.
+*       < 0:  If INFO = -i, the i-th argument had an illegal value
+*       > 0 and <= N:  U(INFO,INFO) is exactly zero.  The factorization
+*         has been completed, but the factor U is exactly singular, so
+*         the solution and error bounds could not be computed. RCOND = 0
+*         is returned.
+*       = N+J: The solution corresponding to the Jth right-hand side is
+*         not guaranteed. The solutions corresponding to other right-
+*         hand sides K with K > J may not be guaranteed as well, but
+*         only the first such right-hand side is reported. If a small
+*         componentwise error is not requested (PARAMS(3) = 0.0) then
+*         the Jth right-hand side is the first with a normwise error
+*         bound that is not guaranteed (the smallest J such
+*         that ERR_BNDS_NORM(J,1) = 0.0). By default (PARAMS(3) = 1.0)
+*         the Jth right-hand side is the first with either a normwise or
+*         componentwise error bound that is not guaranteed (the smallest
+*         J such that either ERR_BNDS_NORM(J,1) = 0.0 or
+*         ERR_BNDS_COMP(J,1) = 0.0). See the definition of
+*         ERR_BNDS_NORM(:,1) and ERR_BNDS_COMP(:,1). To get information
+*         about all of the right-hand sides check ERR_BNDS_NORM or
+*         ERR_BNDS_COMP.
+*
+
+*     ==================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dgbtf2"></A>
+  <H2>dgbtf2</H2>
+  
+  <PRE>
 USAGE:
-  ipiv, info, ab = NumRu::Lapack.dgbtf2( m, kl, ku, ab)
-    or
-  NumRu::Lapack.dgbtf2  # print help
+  ipiv, info, ab = NumRu::Lapack.dgbtf2( m, kl, ku, ab, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1721,10 +2240,60 @@ FORTRAN MANUAL
   <H2>dgbtrf</H2>
   
   <PRE>
+L+KU superdiagonals in
+*          rows 1 to KL+KU+1, and the multipliers used during the
+*          factorization are stored in rows KL+KU+2 to 2*KL+KU+1.
+*          See below for further details.
+*
+*  LDAB    (input) INTEGER
+*          The leading dimension of the array AB.  LDAB >= 2*KL+KU+1.
+*
+*  IPIV    (output) INTEGER array, dimension (min(M,N))
+*          The pivot indices; for 1 <= i <= min(M,N), row i of the
+*          matrix was interchanged with row IPIV(i).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = +i, U(i,i) is exactly zero. The factorization
+*               has been completed, but the factor U is exactly
+*               singular, and division by zero will occur if it is used
+*               to solve a system of equations.
+*
+
+*  Further Details
+*  ===============
+*
+*  The band storage scheme is illustrated by the following example, when
+*  M = N = 6, KL = 2, KU = 1:
+*
+*  On entry:                       On exit:
+*
+*      *    *    *    +    +    +       *    *    *   u14  u25  u36
+*      *    *    +    +    +    +       *    *   u13  u24  u35  u46
+*      *   a12  a23  a34  a45  a56      *   u12  u23  u34  u45  u56
+*     a11  a22  a33  a44  a55  a66     u11  u22  u33  u44  u55  u66
+*     a21  a32  a43  a54  a65   *      m21  m32  m43  m54  m65   *
+*     a31  a42  a53  a64   *    *      m31  m42  m53  m64   *    *
+*
+*  Array elements marked * are not used by the routine; elements marked
+*  + need not be set on entry, but are required by the routine to store
+*  elements of U, because of fill-in resulting from the row
+*  interchanges.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dgbtrf"></A>
+  <H2>dgbtrf</H2>
+  
+  <PRE>
 USAGE:
-  ipiv, info, ab = NumRu::Lapack.dgbtrf( m, kl, ku, ab)
-    or
-  NumRu::Lapack.dgbtrf  # print help
+  ipiv, info, ab = NumRu::Lapack.dgbtrf( m, kl, ku, ab, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1813,10 +2382,35 @@ FORTRAN MANUAL
   <H2>dgbtrs</H2>
   
   <PRE>
+ted by the following example, when
+*  M = N = 6, KL = 2, KU = 1:
+*
+*  On entry:                       On exit:
+*
+*      *    *    *    +    +    +       *    *    *   u14  u25  u36
+*      *    *    +    +    +    +       *    *   u13  u24  u35  u46
+*      *   a12  a23  a34  a45  a56      *   u12  u23  u34  u45  u56
+*     a11  a22  a33  a44  a55  a66     u11  u22  u33  u44  u55  u66
+*     a21  a32  a43  a54  a65   *      m21  m32  m43  m54  m65   *
+*     a31  a42  a53  a64   *    *      m31  m42  m53  m64   *    *
+*
+*  Array elements marked * are not used by the routine; elements marked
+*  + need not be set on entry, but are required by the routine to store
+*  elements of U because of fill-in resulting from the row interchanges.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dgbtrs"></A>
+  <H2>dgbtrs</H2>
+  
+  <PRE>
 USAGE:
-  info, b = NumRu::Lapack.dgbtrs( trans, kl, ku, ab, ipiv, b)
-    or
-  NumRu::Lapack.dgbtrs  # print help
+  info, b = NumRu::Lapack.dgbtrs( trans, kl, ku, ab, ipiv, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

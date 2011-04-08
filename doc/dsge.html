@@ -13,10 +13,23 @@
   <H2>dsgesv</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>Data type in double but solving problem using single precision routines for general (i.e., unsymmetric, in some cases rectangular) matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>Data type in double but solving problem using single precision routines for general (i.e., unsymmetric, in some cases rectangular) matrix</H1>
+    <UL>
+      <LI><A HREF="#dsgesv">dsgesv</A> : </LI>
+    </UL>
+
+  <A NAME="dsgesv"></A>
+  <H2>dsgesv</H2>
+  
+  <PRE>
 USAGE:
-  ipiv, x, iter, info, a = NumRu::Lapack.dsgesv( a, b)
-    or
-  NumRu::Lapack.dsgesv  # print help
+  ipiv, x, iter, info, a = NumRu::Lapack.dsgesv( a, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

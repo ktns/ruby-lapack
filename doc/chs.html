@@ -14,10 +14,24 @@
   <H2>chsein</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX routines for upper Hessenberg matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX routines for upper Hessenberg matrix</H1>
+    <UL>
+      <LI><A HREF="#chsein">chsein</A> : </LI>
+      <LI><A HREF="#chseqr">chseqr</A> : </LI>
+    </UL>
+
+  <A NAME="chsein"></A>
+  <H2>chsein</H2>
+  
+  <PRE>
 USAGE:
-  m, ifaill, ifailr, info, w, vl, vr = NumRu::Lapack.chsein( side, eigsrc, initv, select, h, w, vl, vr)
-    or
-  NumRu::Lapack.chsein  # print help
+  m, ifaill, ifailr, info, w, vl, vr = NumRu::Lapack.chsein( side, eigsrc, initv, select, h, w, vl, vr, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -165,10 +179,69 @@ FORTRAN MANUAL
   <H2>chseqr</H2>
   
   <PRE>
+xit, if SIDE = 'R' or 'B', the right eigenvectors
+*          specified by SELECT will be stored consecutively in the
+*          columns of VR, in the same order as their eigenvalues.
+*          If SIDE = 'L', VR is not referenced.
+*
+*  LDVR    (input) INTEGER
+*          The leading dimension of the array VR.
+*          LDVR >= max(1,N) if SIDE = 'R' or 'B'; LDVR >= 1 otherwise.
+*
+*  MM      (input) INTEGER
+*          The number of columns in the arrays VL and/or VR. MM >= M.
+*
+*  M       (output) INTEGER
+*          The number of columns in the arrays VL and/or VR required to
+*          store the eigenvectors (= the number of .TRUE. elements in
+*          SELECT).
+*
+*  WORK    (workspace) COMPLEX array, dimension (N*N)
+*
+*  RWORK   (workspace) REAL array, dimension (N)
+*
+*  IFAILL  (output) INTEGER array, dimension (MM)
+*          If SIDE = 'L' or 'B', IFAILL(i) = j > 0 if the left
+*          eigenvector in the i-th column of VL (corresponding to the
+*          eigenvalue w(j)) failed to converge; IFAILL(i) = 0 if the
+*          eigenvector converged satisfactorily.
+*          If SIDE = 'R', IFAILL is not referenced.
+*
+*  IFAILR  (output) INTEGER array, dimension (MM)
+*          If SIDE = 'R' or 'B', IFAILR(i) = j > 0 if the right
+*          eigenvector in the i-th column of VR (corresponding to the
+*          eigenvalue w(j)) failed to converge; IFAILR(i) = 0 if the
+*          eigenvector converged satisfactorily.
+*          If SIDE = 'L', IFAILR is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, i is the number of eigenvectors which
+*                failed to converge; see IFAILL and IFAILR for further
+*                details.
+*
+
+*  Further Details
+*  ===============
+*
+*  Each eigenvector is normalized so that the element of largest
+*  magnitude has magnitude 1; here the magnitude of a complex number
+*  (x,y) is taken to be |x|+|y|.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="chseqr"></A>
+  <H2>chseqr</H2>
+  
+  <PRE>
 USAGE:
-  w, work, info, h, z = NumRu::Lapack.chseqr( job, compz, ilo, ihi, h, z, ldz, lwork)
-    or
-  NumRu::Lapack.chseqr  # print help
+  w, work, info, h, z = NumRu::Lapack.chseqr( job, compz, ilo, ihi, h, z, ldz, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

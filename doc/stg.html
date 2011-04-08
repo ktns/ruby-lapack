@@ -20,10 +20,30 @@
   <H2>stgevc</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>REAL routines for triangular matrices, generalized problem (i.e., a pair of triangular matrices) matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>REAL routines for triangular matrices, generalized problem (i.e., a pair of triangular matrices) matrix</H1>
+    <UL>
+      <LI><A HREF="#stgevc">stgevc</A> : </LI>
+      <LI><A HREF="#stgex2">stgex2</A> : </LI>
+      <LI><A HREF="#stgexc">stgexc</A> : </LI>
+      <LI><A HREF="#stgsen">stgsen</A> : </LI>
+      <LI><A HREF="#stgsja">stgsja</A> : </LI>
+      <LI><A HREF="#stgsna">stgsna</A> : </LI>
+      <LI><A HREF="#stgsy2">stgsy2</A> : </LI>
+      <LI><A HREF="#stgsyl">stgsyl</A> : </LI>
+    </UL>
+
+  <A NAME="stgevc"></A>
+  <H2>stgevc</H2>
+  
+  <PRE>
 USAGE:
-  m, info, vl, vr = NumRu::Lapack.stgevc( side, howmny, select, s, p, vl, vr)
-    or
-  NumRu::Lapack.stgevc  # print help
+  m, info, vl, vr = NumRu::Lapack.stgevc( side, howmny, select, s, p, vl, vr, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -233,10 +253,33 @@ FORTRAN MANUAL
   <H2>stgex2</H2>
   
   <PRE>
+
+*  The "columnwise" method consists basically in doing the sums
+*  for all the rows in parallel.  As each v(j) is computed, the
+*  contribution of v(j) times the j-th column of C is added to the
+*  partial sums.  Since FORTRAN arrays are stored columnwise, this has
+*  the advantage that at each step, the elements of C that are accessed
+*  are adjacent to one another, whereas with the rowwise method, the
+*  elements accessed at a step are spaced LDS (and LDP) words apart.
+*
+*  When finding left eigenvectors, the matrix in question is the
+*  transpose of the one in storage, so the rowwise method then
+*  actually accesses columns of A and B at each step, and so is the
+*  preferred method.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="stgex2"></A>
+  <H2>stgex2</H2>
+  
+  <PRE>
 USAGE:
-  info, a, b, q, z = NumRu::Lapack.stgex2( wantq, wantz, a, b, q, ldq, z, j1, n1, n2)
-    or
-  NumRu::Lapack.stgex2  # print help
+  info, a, b, q, z = NumRu::Lapack.stgex2( wantq, wantz, a, b, q, ldq, z, j1, n1, n2, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -369,10 +412,50 @@ FORTRAN MANUAL
   <H2>stgexc</H2>
   
   <PRE>
+nditioned.
+*            <0: If INFO = -16: LWORK is too small. Appropriate value
+*                for LWORK is returned in WORK(1).
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
+*     Umea University, S-901 87 Umea, Sweden.
+*
+*  In the current code both weak and strong stability tests are
+*  performed. The user can omit the strong stability test by changing
+*  the internal logical parameter WANDS to .FALSE.. See ref. [2] for
+*  details.
+*
+*  [1] B. Kagstrom; A Direct Method for Reordering Eigenvalues in the
+*      Generalized Real Schur Form of a Regular Matrix Pair (A, B), in
+*      M.S. Moonen et al (eds), Linear Algebra for Large Scale and
+*      Real-Time Applications, Kluwer Academic Publ. 1993, pp 195-218.
+*
+*  [2] B. Kagstrom and P. Poromaa; Computing Eigenspaces with Specified
+*      Eigenvalues of a Regular Matrix Pair (A, B) and Condition
+*      Estimation: Theory, Algorithms and Software,
+*      Report UMINF - 94.04, Department of Computing Science, Umea
+*      University, S-901 87 Umea, Sweden, 1994. Also as LAPACK Working
+*      Note 87. To appear in Numerical Algorithms, 1996.
+*
+*  =====================================================================
+*  Replaced various illegal calls to SCOPY by calls to SLASET, or by DO
+*  loops. Sven Hammarling, 1/5/02.
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="stgexc"></A>
+  <H2>stgexc</H2>
+  
+  <PRE>
 USAGE:
-  work, info, a, b, q, z, ifst, ilst = NumRu::Lapack.stgexc( wantq, wantz, a, b, q, ldq, z, ifst, ilst, lwork)
-    or
-  NumRu::Lapack.stgexc  # print help
+  work, info, a, b, q, z, ifst, ilst = NumRu::Lapack.stgexc( wantq, wantz, a, b, q, ldq, z, ifst, ilst, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -507,10 +590,68 @@ FORTRAN MANUAL
   <H2>stgsen</H2>
   
   <PRE>
+Z     (input) INTEGER
+*          The leading dimension of the array Z. LDZ >= 1.
+*          If WANTZ = .TRUE., LDZ >= N.
+*
+*  IFST    (input/output) INTEGER
+*  ILST    (input/output) INTEGER
+*          Specify the reordering of the diagonal blocks of (A, B).
+*          The block with row index IFST is moved to row ILST, by a
+*          sequence of swapping between adjacent blocks.
+*          On exit, if IFST pointed on entry to the second row of
+*          a 2-by-2 block, it is changed to point to the first row;
+*          ILST always points to the first row of the block in its
+*          final position (which may differ from its input value by
+*          +1 or -1). 1 <= IFST, ILST <= N.
+*
+*  WORK    (workspace/output) REAL array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          LWORK >= 1 when N <= 1, otherwise LWORK >= 4*N + 16.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*           =0:  successful exit.
+*           <0:  if INFO = -i, the i-th argument had an illegal value.
+*           =1:  The transformed matrix pair (A, B) would be too far
+*                from generalized Schur form; the problem is ill-
+*                conditioned. (A, B) may have been partially reordered,
+*                and ILST points to the first row of the current
+*                position of the block being moved.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
+*     Umea University, S-901 87 Umea, Sweden.
+*
+*  [1] B. Kagstrom; A Direct Method for Reordering Eigenvalues in the
+*      Generalized Real Schur Form of a Regular Matrix Pair (A, B), in
+*      M.S. Moonen et al (eds), Linear Algebra for Large Scale and
+*      Real-Time Applications, Kluwer Academic Publ. 1993, pp 195-218.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="stgsen"></A>
+  <H2>stgsen</H2>
+  
+  <PRE>
 USAGE:
-  alphar, alphai, beta, m, pl, pr, dif, work, iwork, info, a, b, q, z = NumRu::Lapack.stgsen( ijob, wantq, wantz, select, a, b, q, z, lwork, liwork)
-    or
-  NumRu::Lapack.stgsen  # print help
+  alphar, alphai, beta, m, pl, pr, dif, work, iwork, info, a, b, q, z = NumRu::Lapack.stgsen( ijob, wantq, wantz, select, a, b, q, z, lwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -835,10 +976,17 @@ FORTRAN MANUAL
   <H2>stgsja</H2>
   
   <PRE>
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="stgsja"></A>
+  <H2>stgsja</H2>
+  
+  <PRE>
 USAGE:
-  alpha, beta, ncycle, info, a, b, u, v, q = NumRu::Lapack.stgsja( jobu, jobv, jobq, k, l, a, b, tola, tolb, u, v, q)
-    or
-  NumRu::Lapack.stgsja  # print help
+  alpha, beta, ncycle, info, a, b, u, v, q = NumRu::Lapack.stgsja( jobu, jobv, jobq, k, l, a, b, tola, tolb, u, v, q, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1094,10 +1242,35 @@ FORTRAN MANUAL
   <H2>stgsna</H2>
   
   <PRE>
+Further Details
+*  ===============
+*
+*  STGSJA essentially uses a variant of Kogbetliantz algorithm to reduce
+*  min(L,M-K)-by-L triangular (or trapezoidal) matrix A23 and L-by-L
+*  matrix B13 to the form:
+*
+*           U1'*A13*Q1 = C1*R1; V1'*B13*Q1 = S1*R1,
+*
+*  where U1, V1 and Q1 are orthogonal matrix, and Z' is the transpose
+*  of Z.  C1 and S1 are diagonal matrices satisfying
+*
+*                C1**2 + S1**2 = I,
+*
+*  and R1 is an L-by-L nonsingular upper triangular matrix.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="stgsna"></A>
+  <H2>stgsna</H2>
+  
+  <PRE>
 USAGE:
-  s, dif, m, work, info = NumRu::Lapack.stgsna( job, howmny, select, a, b, vl, vr, lwork)
-    or
-  NumRu::Lapack.stgsna  # print help
+  s, dif, m, work, info = NumRu::Lapack.stgsna( job, howmny, select, a, b, vl, vr, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1376,10 +1549,105 @@ FORTRAN MANUAL
   <H2>stgsy2</H2>
   
   <PRE>
+hod for computing DIF(i) is wanted
+*     (see SLATDF), then the parameter DIFDRI (see below) should be
+*     changed from 3 to 4 (routine SLATDF(IJOB = 2 will be used)).
+*     See STGSYL for more details.
+*
+*  b) If the i-th and (i+1)-th eigenvalues are complex conjugate pair,
+*
+*     Suppose U and V are orthogonal transformations such that
+*
+*                U'*(A, B)*V = (S, T) = ( S11  *   ) ( T11  *  )  2
+*                                       ( 0    S22 ),( 0    T22) n-2
+*                                         2    n-2     2    n-2
+*
+*     and (S11, T11) corresponds to the complex conjugate eigenvalue
+*     pair (w, conjg(w)). There exist unitary matrices U1 and V1 such
+*     that
+*
+*         U1'*S11*V1 = ( s11 s12 )   and U1'*T11*V1 = ( t11 t12 )
+*                      (  0  s22 )                    (  0  t22 )
+*
+*     where the generalized eigenvalues w = s11/t11 and
+*     conjg(w) = s22/t22.
+*
+*     Then the reciprocal condition number DIF(i) is bounded by
+*
+*         min( d1, max( 1, |real(s11)/real(s22)| )*d2 )
+*
+*     where, d1 = Difl((s11, t11), (s22, t22)) = sigma-min(Z1), where
+*     Z1 is the complex 2-by-2 matrix
+*
+*              Z1 =  [ s11  -s22 ]
+*                    [ t11  -t22 ],
+*
+*     This is done by computing (using real arithmetic) the
+*     roots of the characteristical polynomial det(Z1' * Z1 - lambda I),
+*     where Z1' denotes the conjugate transpose of Z1 and det(X) denotes
+*     the determinant of X.
+*
+*     and d2 is an upper bound on Difl((S11, T11), (S22, T22)), i.e. an
+*     upper bound on sigma-min(Z2), where Z2 is (2n-2)-by-(2n-2)
+*
+*              Z2 = [ kron(S11', In-2)  -kron(I2, S22) ]
+*                   [ kron(T11', In-2)  -kron(I2, T22) ]
+*
+*     Note that if the default method for computing DIF is wanted (see
+*     SLATDF), then the parameter DIFDRI (see below) should be changed
+*     from 3 to 4 (routine SLATDF(IJOB = 2 will be used)). See STGSYL
+*     for more details.
+*
+*  For each eigenvalue/vector specified by SELECT, DIF stores a
+*  Frobenius norm-based estimate of Difl.
+*
+*  An approximate error bound for the i-th computed eigenvector VL(i) or
+*  VR(i) is given by
+*
+*             EPS * norm(A, B) / DIF(i).
+*
+*  See ref. [2-3] for more details and further references.
+*
+*  Based on contributions by
+*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
+*     Umea University, S-901 87 Umea, Sweden.
+*
+*  References
+*  ==========
+*
+*  [1] B. Kagstrom; A Direct Method for Reordering Eigenvalues in the
+*      Generalized Real Schur Form of a Regular Matrix Pair (A, B), in
+*      M.S. Moonen et al (eds), Linear Algebra for Large Scale and
+*      Real-Time Applications, Kluwer Academic Publ. 1993, pp 195-218.
+*
+*  [2] B. Kagstrom and P. Poromaa; Computing Eigenspaces with Specified
+*      Eigenvalues of a Regular Matrix Pair (A, B) and Condition
+*      Estimation: Theory, Algorithms and Software,
+*      Report UMINF - 94.04, Department of Computing Science, Umea
+*      University, S-901 87 Umea, Sweden, 1994. Also as LAPACK Working
+*      Note 87. To appear in Numerical Algorithms, 1996.
+*
+*  [3] B. Kagstrom and P. Poromaa, LAPACK-Style Algorithms and Software
+*      for Solving the Generalized Sylvester Equation and Estimating the
+*      Separation between Regular Matrix Pairs, Report UMINF - 93.23,
+*      Department of Computing Science, Umea University, S-901 87 Umea,
+*      Sweden, December 1993, Revised April 1994, Also as LAPACK Working
+*      Note 75.  To appear in ACM Trans. on Math. Software, Vol 22,
+*      No 1, 1996.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="stgsy2"></A>
+  <H2>stgsy2</H2>
+  
+  <PRE>
 USAGE:
-  scale, pq, info, c, f, rdsum, rdscal = NumRu::Lapack.stgsy2( trans, ijob, a, b, c, d, e, f, rdsum, rdscal)
-    or
-  NumRu::Lapack.stgsy2  # print help
+  scale, pq, info, c, f, rdsum, rdscal = NumRu::Lapack.stgsy2( trans, ijob, a, b, c, d, e, f, rdsum, rdscal, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1554,10 +1822,71 @@ FORTRAN MANUAL
   <H2>stgsyl</H2>
   
   <PRE>
+
+*  LDF     (input) INTEGER
+*          The leading dimension of the matrix F. LDF >= max(1, M).
+*
+*  SCALE   (output) REAL
+*          On exit, 0 <= SCALE <= 1. If 0 < SCALE < 1, the solutions
+*          R and L (C and F on entry) will hold the solutions to a
+*          slightly perturbed system but the input matrices A, B, D and
+*          E have not been changed. If SCALE = 0, R and L will hold the
+*          solutions to the homogeneous system with C = F = 0. Normally,
+*          SCALE = 1.
+*
+*  RDSUM   (input/output) REAL
+*          On entry, the sum of squares of computed contributions to
+*          the Dif-estimate under computation by STGSYL, where the
+*          scaling factor RDSCAL (see below) has been factored out.
+*          On exit, the corresponding sum of squares updated with the
+*          contributions from the current sub-system.
+*          If TRANS = 'T' RDSUM is not touched.
+*          NOTE: RDSUM only makes sense when STGSY2 is called by STGSYL.
+*
+*  RDSCAL  (input/output) REAL
+*          On entry, scaling factor used to prevent overflow in RDSUM.
+*          On exit, RDSCAL is updated w.r.t. the current contributions
+*          in RDSUM.
+*          If TRANS = 'T', RDSCAL is not touched.
+*          NOTE: RDSCAL only makes sense when STGSY2 is called by
+*                STGSYL.
+*
+*  IWORK   (workspace) INTEGER array, dimension (M+N+2)
+*
+*  PQ      (output) INTEGER
+*          On exit, the number of subsystems (of size 2-by-2, 4-by-4 and
+*          8-by-8) solved by this routine.
+*
+*  INFO    (output) INTEGER
+*          On exit, if INFO is set to
+*            =0: Successful exit
+*            <0: If INFO = -i, the i-th argument had an illegal value.
+*            >0: The matrix pairs (A, D) and (B, E) have common or very
+*                close eigenvalues.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Bo Kagstrom and Peter Poromaa, Department of Computing Science,
+*     Umea University, S-901 87 Umea, Sweden.
+*
+*  =====================================================================
+*  Replaced various illegal calls to SCOPY by calls to SLASET.
+*  Sven Hammarling, 27/5/02.
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="stgsyl"></A>
+  <H2>stgsyl</H2>
+  
+  <PRE>
 USAGE:
-  scale, dif, work, info, c, f = NumRu::Lapack.stgsyl( trans, ijob, a, b, c, d, e, f, lwork)
-    or
-  NumRu::Lapack.stgsyl  # print help
+  scale, dif, work, info, c, f = NumRu::Lapack.stgsyl( trans, ijob, a, b, c, d, e, f, lwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

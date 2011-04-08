@@ -28,10 +28,135 @@
   <H2>dspcon</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>DOUBLE PRECISION routines for symmetric, packed storage matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>DOUBLE PRECISION routines for symmetric, packed storage matrix</H1>
+    <UL>
+      <LI><A HREF="#dspcon">dspcon</A> : </LI>
+      <LI><A HREF="#dspev">dspev</A> : </LI>
+      <LI><A HREF="#dspevd">dspevd</A> : </LI>
+      <LI><A HREF="#dspevx">dspevx</A> : </LI>
+      <LI><A HREF="#dspgst">dspgst</A> : </LI>
+      <LI><A HREF="#dspgv">dspgv</A> : </LI>
+      <LI><A HREF="#dspgvd">dspgvd</A> : </LI>
+      <LI><A HREF="#dspgvx">dspgvx</A> : </LI>
+      <LI><A HREF="#dsposv">dsposv</A> : </LI>
+      <LI><A HREF="#dsprfs">dsprfs</A> : </LI>
+      <LI><A HREF="#dspsv">dspsv</A> : </LI>
+      <LI><A HREF="#dspsvx">dspsvx</A> : </LI>
+      <LI><A HREF="#dsptrd">dsptrd</A> : </LI>
+      <LI><A HREF="#dsptrf">dsptrf</A> : </LI>
+      <LI><A HREF="#dsptri">dsptri</A> : </LI>
+      <LI><A HREF="#dsptrs">dsptrs</A> : </LI>
+    </UL>
+
+  <A NAME="dspcon"></A>
+  <H2>dspcon</H2>
+  
+  <PRE>
 USAGE:
-  rcond, info = NumRu::Lapack.dspcon( uplo, ap, ipiv, anorm)
-    or
-  NumRu::Lapack.dspcon  # print help
+  rcond, info = NumRu::Lapack.dspcon( uplo, ap, ipiv, anorm, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSPCON( UPLO, N, AP, IPIV, ANORM, RCOND, WORK, IWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSPCON estimates the reciprocal of the condition number (in the
+*  1-norm) of a real symmetric packed matrix A using the factorization
+*  A = U*D*U**T or A = L*D*L**T computed by DSPTRF.
+*
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the details of the factorization are stored
+*          as an upper or lower triangular matrix.
+*          = 'U':  Upper triangular, form is A = U*D*U**T;
+*          = 'L':  Lower triangular, form is A = L*D*L**T.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+*          The block diagonal matrix D and the multipliers used to
+*          obtain the factor U or L as computed by DSPTRF, stored as a
+*          packed triangular matrix.
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D
+*          as determined by DSPTRF.
+*
+*  ANORM   (input) DOUBLE PRECISION
+*          The 1-norm of the original matrix A.
+*
+*  RCOND   (output) DOUBLE PRECISION
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
+*          estimate of the 1-norm of inv(A) computed in this routine.
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (2*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dspev"></A>
+  <H2>dspev</H2>
+  
+  <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>DOUBLE PRECISION routines for symmetric, packed storage matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>DOUBLE PRECISION routines for symmetric, packed storage matrix</H1>
+    <UL>
+      <LI><A HREF="#dspcon">dspcon</A> : </LI>
+      <LI><A HREF="#dspev">dspev</A> : </LI>
+      <LI><A HREF="#dspevd">dspevd</A> : </LI>
+      <LI><A HREF="#dspevx">dspevx</A> : </LI>
+      <LI><A HREF="#dspgst">dspgst</A> : </LI>
+      <LI><A HREF="#dspgv">dspgv</A> : </LI>
+      <LI><A HREF="#dspgvd">dspgvd</A> : </LI>
+      <LI><A HREF="#dspgvx">dspgvx</A> : </LI>
+      <LI><A HREF="#dsposv">dsposv</A> : </LI>
+      <LI><A HREF="#dsprfs">dsprfs</A> : </LI>
+      <LI><A HREF="#dspsv">dspsv</A> : </LI>
+      <LI><A HREF="#dspsvx">dspsvx</A> : </LI>
+      <LI><A HREF="#dsptrd">dsptrd</A> : </LI>
+      <LI><A HREF="#dsptrf">dsptrf</A> : </LI>
+      <LI><A HREF="#dsptri">dsptri</A> : </LI>
+      <LI><A HREF="#dsptrs">dsptrs</A> : </LI>
+    </UL>
+
+  <A NAME="dspcon"></A>
+  <H2>dspcon</H2>
+  
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.dspcon( uplo, ap, ipiv, anorm, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -98,9 +223,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  w, z, info, ap = NumRu::Lapack.dspev( jobz, uplo, ap)
-    or
-  NumRu::Lapack.dspev  # print help
+  w, z, info, ap = NumRu::Lapack.dspev( jobz, uplo, ap, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -175,10 +298,53 @@ FORTRAN MANUAL
   <H2>dspevd</H2>
   
   <PRE>
+llows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*
+*          On exit, AP is overwritten by values generated during the
+*          reduction to tridiagonal form.  If UPLO = 'U', the diagonal
+*          and first superdiagonal of the tridiagonal matrix T overwrite
+*          the corresponding elements of A, and if UPLO = 'L', the
+*          diagonal and first subdiagonal of T overwrite the
+*          corresponding elements of A.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
+*          eigenvectors of the matrix A, with the i-th column of Z
+*          holding the eigenvector associated with W(i).
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, the algorithm failed to converge; i
+*                off-diagonal elements of an intermediate tridiagonal
+*                form did not converge to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dspevd"></A>
+  <H2>dspevd</H2>
+  
+  <PRE>
 USAGE:
-  w, z, work, iwork, info, ap = NumRu::Lapack.dspevd( jobz, uplo, ap, lwork, liwork)
-    or
-  NumRu::Lapack.dspevd  # print help
+  w, z, work, iwork, info, ap = NumRu::Lapack.dspevd( jobz, uplo, ap, lwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -290,10 +456,64 @@ FORTRAN MANUAL
   <H2>dspevx</H2>
   
   <PRE>
+referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace/output) DOUBLE PRECISION array,
+*                                         dimension (LWORK)
+*          On exit, if INFO = 0, WORK(1) returns the required LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          If N <= 1,               LWORK must be at least 1.
+*          If JOBZ = 'N' and N > 1, LWORK must be at least 2*N.
+*          If JOBZ = 'V' and N > 1, LWORK must be at least
+*                                                 1 + 6*N + N**2.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the required sizes of the WORK and IWORK
+*          arrays, returns these values as the first entries of the WORK
+*          and IWORK arrays, and no error message related to LWORK or
+*          LIWORK is issued by XERBLA.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
+*          On exit, if INFO = 0, IWORK(1) returns the required LIWORK.
+*
+*  LIWORK  (input) INTEGER
+*          The dimension of the array IWORK.
+*          If JOBZ  = 'N' or N <= 1, LIWORK must be at least 1.
+*          If JOBZ  = 'V' and N > 1, LIWORK must be at least 3 + 5*N.
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the required sizes of the WORK and
+*          IWORK arrays, returns these values as the first entries of
+*          the WORK and IWORK arrays, and no error message related to
+*          LWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, the algorithm failed to converge; i
+*                off-diagonal elements of an intermediate tridiagonal
+*                form did not converge to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dspevx"></A>
+  <H2>dspevx</H2>
+  
+  <PRE>
 USAGE:
-  m, w, z, ifail, info, ap = NumRu::Lapack.dspevx( jobz, range, uplo, ap, vl, vu, il, iu, abstol)
-    or
-  NumRu::Lapack.dspevx  # print help
+  m, w, z, ifail, info, ap = NumRu::Lapack.dspevx( jobz, range, uplo, ap, vl, vu, il, iu, abstol, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -430,10 +650,98 @@ FORTRAN MANUAL
   <H2>dspgst</H2>
   
   <PRE>
+      corresponding elements of A.
+*
+*  VL      (input) DOUBLE PRECISION
+*  VU      (input) DOUBLE PRECISION
+*          If RANGE='V', the lower and upper bounds of the interval to
+*          be searched for eigenvalues. VL < VU.
+*          Not referenced if RANGE = 'A' or 'I'.
+*
+*  IL      (input) INTEGER
+*  IU      (input) INTEGER
+*          If RANGE='I', the indices (in ascending order) of the
+*          smallest and largest eigenvalues to be returned.
+*          1 <= IL <= IU <= N, if N > 0; IL = 1 and IU = 0 if N = 0.
+*          Not referenced if RANGE = 'A' or 'V'.
+*
+*  ABSTOL  (input) DOUBLE PRECISION
+*          The absolute error tolerance for the eigenvalues.
+*          An approximate eigenvalue is accepted as converged
+*          when it is determined to lie in an interval [a,b]
+*          of width less than or equal to
+*
+*                  ABSTOL + EPS *   max( |a|,|b| ) ,
+*
+*          where EPS is the machine precision.  If ABSTOL is less than
+*          or equal to zero, then  EPS*|T|  will be used in its place,
+*          where |T| is the 1-norm of the tridiagonal matrix obtained
+*          by reducing AP to tridiagonal form.
+*
+*          Eigenvalues will be computed most accurately when ABSTOL is
+*          set to twice the underflow threshold 2*DLAMCH('S'), not zero.
+*          If this routine returns with INFO>0, indicating that some
+*          eigenvectors did not converge, try setting ABSTOL to
+*          2*DLAMCH('S').
+*
+*          See "Computing Small Singular Values of Bidiagonal Matrices
+*          with Guaranteed High Relative Accuracy," by Demmel and
+*          Kahan, LAPACK Working Note #3.
+*
+*  M       (output) INTEGER
+*          The total number of eigenvalues found.  0 <= M <= N.
+*          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, the selected eigenvalues in ascending order.
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, max(1,M))
+*          If JOBZ = 'V', then if INFO = 0, the first M columns of Z
+*          contain the orthonormal eigenvectors of the matrix A
+*          corresponding to the selected eigenvalues, with the i-th
+*          column of Z holding the eigenvector associated with W(i).
+*          If an eigenvector fails to converge, then that column of Z
+*          contains the latest approximation to the eigenvector, and the
+*          index of the eigenvector is returned in IFAIL.
+*          If JOBZ = 'N', then Z is not referenced.
+*          Note: the user must ensure that at least max(1,M) columns are
+*          supplied in the array Z; if RANGE = 'V', the exact value of M
+*          is not known in advance and an upper bound must be used.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (8*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (5*N)
+*
+*  IFAIL   (output) INTEGER array, dimension (N)
+*          If JOBZ = 'V', then if INFO = 0, the first M elements of
+*          IFAIL are zero.  If INFO > 0, then IFAIL contains the
+*          indices of the eigenvectors that failed to converge.
+*          If JOBZ = 'N', then IFAIL is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, then i eigenvectors failed to converge.
+*                Their indices are stored in array IFAIL.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dspgst"></A>
+  <H2>dspgst</H2>
+  
+  <PRE>
 USAGE:
-  info, ap = NumRu::Lapack.dspgst( itype, uplo, n, ap, bp)
-    or
-  NumRu::Lapack.dspgst  # print help
+  info, ap = NumRu::Lapack.dspgst( itype, uplo, n, ap, bp, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -500,10 +808,63 @@ FORTRAN MANUAL
   <H2>dspgv</H2>
   
   <PRE>
+*x = lambda*B*x,
+*  and A is overwritten by inv(U**T)*A*inv(U) or inv(L)*A*inv(L**T)
+*
+*  If ITYPE = 2 or 3, the problem is A*B*x = lambda*x or
+*  B*A*x = lambda*x, and A is overwritten by U*A*U**T or L**T*A*L.
+*
+*  B must have been previously factorized as U**T*U or L*L**T by DPPTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  ITYPE   (input) INTEGER
+*          = 1: compute inv(U**T)*A*inv(U) or inv(L)*A*inv(L**T);
+*          = 2 or 3: compute U*A*U**T or L**T*A*L.
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored and B is factored as
+*                  U**T*U;
+*          = 'L':  Lower triangle of A is stored and B is factored as
+*                  L*L**T.
+*
+*  N       (input) INTEGER
+*          The order of the matrices A and B.  N >= 0.
+*
+*  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.
+*
+*          On exit, if INFO = 0, the transformed matrix, stored in the
+*          same format as A.
+*
+*  BP      (input) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+*          The triangular factor from the Cholesky factorization of B,
+*          stored in the same format as A, as returned by DPPTRF.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dspgv"></A>
+  <H2>dspgv</H2>
+  
+  <PRE>
 USAGE:
-  w, z, info, ap, bp = NumRu::Lapack.dspgv( itype, jobz, uplo, ap, bp)
-    or
-  NumRu::Lapack.dspgv  # print help
+  w, z, info, ap, bp = NumRu::Lapack.dspgv( itype, jobz, uplo, ap, bp, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -612,10 +973,59 @@ FORTRAN MANUAL
   <H2>dspgvd</H2>
   
   <PRE>
+scending order.
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
+*          eigenvectors.  The eigenvectors are normalized as follows:
+*          if ITYPE = 1 or 2, Z**T*B*Z = I;
+*          if ITYPE = 3, Z**T*inv(B)*Z = I.
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  DPPTRF or DSPEV returned an error code:
+*             <= N:  if INFO = i, DSPEV failed to converge;
+*                    i off-diagonal elements of an intermediate
+*                    tridiagonal form did not converge to zero.
+*             > N:   if INFO = n + i, for 1 <= i <= n, then the leading
+*                    minor of order i of B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            UPPER, WANTZ
+      CHARACTER          TRANS
+      INTEGER            J, NEIG
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           DPPTRF, DSPEV, DSPGST, DTPMV, DTPSV, XERBLA
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dspgvd"></A>
+  <H2>dspgvd</H2>
+  
+  <PRE>
 USAGE:
-  w, z, work, iwork, info, ap, bp = NumRu::Lapack.dspgvd( itype, jobz, uplo, ap, bp, lwork, liwork)
-    or
-  NumRu::Lapack.dspgvd  # print help
+  w, z, work, iwork, info, ap, bp = NumRu::Lapack.dspgvd( itype, jobz, uplo, ap, bp, lwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -752,10 +1162,89 @@ FORTRAN MANUAL
   <H2>dspgvx</H2>
   
   <PRE>
+    is stored in the array BP as follows:
+*          if UPLO = 'U', BP(i + (j-1)*j/2) = B(i,j) for 1<=i<=j;
+*          if UPLO = 'L', BP(i + (j-1)*(2*n-j)/2) = B(i,j) for j<=i<=n.
+*
+*          On exit, the triangular factor U or L from the Cholesky
+*          factorization B = U**T*U or B = L*L**T, in the same storage
+*          format as B.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the matrix Z of
+*          eigenvectors.  The eigenvectors are normalized as follows:
+*          if ITYPE = 1 or 2, Z**T*B*Z = I;
+*          if ITYPE = 3, Z**T*inv(B)*Z = I.
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace/output) DOUBLE PRECISION array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the required LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          If N <= 1,               LWORK >= 1.
+*          If JOBZ = 'N' and N > 1, LWORK >= 2*N.
+*          If JOBZ = 'V' and N > 1, LWORK >= 1 + 6*N + 2*N**2.
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the required sizes of the WORK and IWORK
+*          arrays, returns these values as the first entries of the WORK
+*          and IWORK arrays, and no error message related to LWORK or
+*          LIWORK is issued by XERBLA.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
+*          On exit, if INFO = 0, IWORK(1) returns the required LIWORK.
+*
+*  LIWORK  (input) INTEGER
+*          The dimension of the array IWORK.
+*          If JOBZ  = 'N' or N <= 1, LIWORK >= 1.
+*          If JOBZ  = 'V' and N > 1, LIWORK >= 3 + 5*N.
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the required sizes of the WORK and
+*          IWORK arrays, returns these values as the first entries of
+*          the WORK and IWORK arrays, and no error message related to
+*          LWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  DPPTRF or DSPEVD returned an error code:
+*             <= N:  if INFO = i, DSPEVD failed to converge;
+*                    i off-diagonal elements of an intermediate
+*                    tridiagonal form did not converge to zero;
+*             > N:   if INFO = N + i, for 1 <= i <= N, then the leading
+*                    minor of order i of B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dspgvx"></A>
+  <H2>dspgvx</H2>
+  
+  <PRE>
 USAGE:
-  m, w, z, ifail, info, ap, bp = NumRu::Lapack.dspgvx( itype, jobz, range, uplo, ap, bp, vl, vu, il, iu, abstol, ldz)
-    or
-  NumRu::Lapack.dspgvx  # print help
+  m, w, z, ifail, info, ap, bp = NumRu::Lapack.dspgvx( itype, jobz, range, uplo, ap, bp, vl, vu, il, iu, abstol, ldz, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -935,10 +1424,77 @@ FORTRAN MANUAL
   <H2>dsposv</H2>
   
   <PRE>
+;
+*          if ITYPE = 3, Z**T*inv(B)*Z = I.
+*
+*          If an eigenvector fails to converge, then that column of Z
+*          contains the latest approximation to the eigenvector, and the
+*          index of the eigenvector is returned in IFAIL.
+*          Note: the user must ensure that at least max(1,M) columns are
+*          supplied in the array Z; if RANGE = 'V', the exact value of M
+*          is not known in advance and an upper bound must be used.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (8*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (5*N)
+*
+*  IFAIL   (output) INTEGER array, dimension (N)
+*          If JOBZ = 'V', then if INFO = 0, the first M elements of
+*          IFAIL are zero.  If INFO > 0, then IFAIL contains the
+*          indices of the eigenvectors that failed to converge.
+*          If JOBZ = 'N', then IFAIL is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  DPPTRF or DSPEVX returned an error code:
+*             <= N:  if INFO = i, DSPEVX failed to converge;
+*                    i eigenvectors failed to converge.  Their indices
+*                    are stored in array IFAIL.
+*             > N:   if INFO = N + i, for 1 <= i <= N, then the leading
+*                    minor of order i of B is not positive definite.
+*                    The factorization of B could not be completed and
+*                    no eigenvalues or eigenvectors were computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Mark Fahey, Department of Mathematics, Univ. of Kentucky, USA
+*
+* =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            ALLEIG, INDEIG, UPPER, VALEIG, WANTZ
+      CHARACTER          TRANS
+      INTEGER            J
+*     ..
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           DPPTRF, DSPEVX, DSPGST, DTPMV, DTPSV, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MIN
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dsposv"></A>
+  <H2>dsposv</H2>
+  
+  <PRE>
 USAGE:
-  x, iter, info, a = NumRu::Lapack.dsposv( uplo, a, b)
-    or
-  NumRu::Lapack.dsposv  # print help
+  x, iter, info, a = NumRu::Lapack.dsposv( uplo, a, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1066,10 +1622,98 @@ FORTRAN MANUAL
   <H2>dsprfs</H2>
   
   <PRE>
+1.0D+00
+*  respectively.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The number of linear equations, i.e., the order of the
+*          matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  A       (input/output) DOUBLE PRECISION array,
+*          dimension (LDA,N)
+*          On entry, the symmetric matrix A.  If UPLO = 'U', the leading
+*          N-by-N upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading N-by-N lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*          On exit, if iterative refinement has been successfully used
+*          (INFO.EQ.0 and ITER.GE.0, see description below), then A is
+*          unchanged, if double precision factorization has been used
+*          (INFO.EQ.0 and ITER.LT.0, see description below), then the
+*          array A contains the factor U or L from the Cholesky
+*          factorization A = U**T*U or A = L*L**T.
+*
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input) DOUBLE PRECISION array, dimension (LDB,NRHS)
+*          The N-by-NRHS right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (output) DOUBLE PRECISION array, dimension (LDX,NRHS)
+*          If INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (N,NRHS)
+*          This array is used to hold the residual vectors.
+*
+*  SWORK   (workspace) REAL array, dimension (N*(N+NRHS))
+*          This array is used to use the single precision matrix and the
+*          right-hand sides or solutions in single precision.
+*
+*  ITER    (output) INTEGER
+*          < 0: iterative refinement has failed, double precision
+*               factorization has been performed
+*               -1 : the routine fell back to full precision for
+*                    implementation- or machine-specific reasons
+*               -2 : narrowing the precision induced an overflow,
+*                    the routine fell back to full precision
+*               -3 : failure of SPOTRF
+*               -31: stop the iterative refinement after the 30th
+*                    iterations
+*          > 0: iterative refinement has been sucessfully used.
+*               Returns the number of iterations
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the leading minor of order i of (DOUBLE
+*                PRECISION) A is not positive definite, so the
+*                factorization could not be completed, and the solution
+*                has not been computed.
+*
+*  =========
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dsprfs"></A>
+  <H2>dsprfs</H2>
+  
+  <PRE>
 USAGE:
-  ferr, berr, info, x = NumRu::Lapack.dsprfs( uplo, ap, afp, ipiv, b, x)
-    or
-  NumRu::Lapack.dsprfs  # print help
+  ferr, berr, info, x = NumRu::Lapack.dsprfs( uplo, ap, afp, ipiv, b, x, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1169,10 +1813,85 @@ FORTRAN MANUAL
   <H2>dspsv</H2>
   
   <PRE>
+f the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrices B and X.  NRHS >= 0.
+*
+*  AP      (input) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+*          The upper or lower triangle of the symmetric matrix A, packed
+*          columnwise in a linear array.  The j-th column of A is stored
+*          in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2*n-j)/2) = A(i,j) for j<=i<=n.
+*
+*  AFP     (input) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+*          The factored form of the matrix A.  AFP contains the block
+*          diagonal matrix D and the multipliers used to obtain the
+*          factor U or L from the factorization A = U*D*U**T or
+*          A = L*D*L**T as computed by DSPTRF, stored as a packed
+*          triangular matrix.
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D
+*          as determined by DSPTRF.
+*
+*  B       (input) DOUBLE PRECISION array, dimension (LDB,NRHS)
+*          The right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (input/output) DOUBLE PRECISION array, dimension (LDX,NRHS)
+*          On entry, the solution matrix X, as computed by DSPTRS.
+*          On exit, the improved solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+*  Internal Parameters
+*  ===================
+*
+*  ITMAX is the maximum number of steps of iterative refinement.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dspsv"></A>
+  <H2>dspsv</H2>
+  
+  <PRE>
 USAGE:
-  ipiv, info, ap, b = NumRu::Lapack.dspsv( uplo, ap, b)
-    or
-  NumRu::Lapack.dspsv  # print help
+  ipiv, info, ap, b = NumRu::Lapack.dspsv( uplo, ap, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1288,10 +2007,89 @@ FORTRAN MANUAL
   <H2>dspsvx</H2>
   
   <PRE>
+f right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+*          On entry, the upper or lower triangle of the symmetric matrix
+*          A, packed columnwise in a linear array.  The j-th column of A
+*          is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;
+*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.
+*          See below for further details.
+*
+*          On exit, the block diagonal matrix D and the multipliers used
+*          to obtain the factor U or L from the factorization
+*          A = U*D*U**T or A = L*D*L**T as computed by DSPTRF, stored as
+*          a packed triangular matrix in the same storage format as A.
+*
+*  IPIV    (output) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D, as
+*          determined by DSPTRF.  If IPIV(k) > 0, then rows and columns
+*          k and IPIV(k) were interchanged, and D(k,k) is a 1-by-1
+*          diagonal block.  If UPLO = 'U' and IPIV(k) = IPIV(k-1) < 0,
+*          then rows and columns k-1 and -IPIV(k) were interchanged and
+*          D(k-1:k,k-1:k) is a 2-by-2 diagonal block.  If UPLO = 'L' and
+*          IPIV(k) = IPIV(k+1) < 0, then rows and columns k+1 and
+*          -IPIV(k) were interchanged and D(k:k+1,k:k+1) is a 2-by-2
+*          diagonal block.
+*
+*  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+*          On entry, the N-by-NRHS right hand side matrix B.
+*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, D(i,i) is exactly zero.  The factorization
+*                has been completed, but the block diagonal matrix D is
+*                exactly singular, so the solution could not be
+*                computed.
+*
+
+*  Further Details
+*  ===============
+*
+*  The packed storage scheme is illustrated by the following example
+*  when N = 4, UPLO = 'U':
+*
+*  Two-dimensional storage of the symmetric matrix A:
+*
+*     a11 a12 a13 a14
+*         a22 a23 a24
+*             a33 a34     (aij = aji)
+*                 a44
+*
+*  Packed storage of the upper triangle of A:
+*
+*  AP = [ a11, a12, a22, a13, a23, a33, a14, a24, a34, a44 ]
+*
+*  =====================================================================
+*
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           DSPTRF, DSPTRS, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dspsvx"></A>
+  <H2>dspsvx</H2>
+  
+  <PRE>
 USAGE:
-  x, rcond, ferr, berr, info, afp, ipiv = NumRu::Lapack.dspsvx( fact, uplo, ap, afp, ipiv, b)
-    or
-  NumRu::Lapack.dspsvx  # print help
+  x, rcond, ferr, berr, info, afp, ipiv = NumRu::Lapack.dspsvx( fact, uplo, ap, afp, ipiv, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1478,10 +2276,77 @@ FORTRAN MANUAL
   <H2>dsptrd</H2>
   
   <PRE>
+s less than the machine precision (in
+*          particular, if RCOND = 0), the matrix is singular to working
+*          precision.  This condition is indicated by a return code of
+*          INFO > 0.
+*
+*  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (3*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is
+*                <= N:  D(i,i) is exactly zero.  The factorization
+*                       has been completed but the factor D is exactly
+*                       singular, so the solution and error bounds could
+*                       not be computed. RCOND = 0 is returned.
+*                = N+1: D is nonsingular, but RCOND is less than machine
+*                       precision, meaning that the matrix is singular
+*                       to working precision.  Nevertheless, the
+*                       solution and error bounds are computed because
+*                       there are a number of situations where the
+*                       computed solution can be more accurate than the
+*                       value of RCOND would suggest.
+*
+
+*  Further Details
+*  ===============
+*
+*  The packed storage scheme is illustrated by the following example
+*  when N = 4, UPLO = 'U':
+*
+*  Two-dimensional storage of the symmetric matrix A:
+*
+*     a11 a12 a13 a14
+*         a22 a23 a24
+*             a33 a34     (aij = aji)
+*                 a44
+*
+*  Packed storage of the upper triangle of A:
+*
+*  AP = [ a11, a12, a22, a13, a23, a33, a14, a24, a34, a44 ]
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dsptrd"></A>
+  <H2>dsptrd</H2>
+  
+  <PRE>
 USAGE:
-  d, e, tau, info, ap = NumRu::Lapack.dsptrd( uplo, ap)
-    or
-  NumRu::Lapack.dsptrd  # print help
+  d, e, tau, info, ap = NumRu::Lapack.dsptrd( uplo, ap, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1579,10 +2444,71 @@ FORTRAN MANUAL
   <H2>dsptrf</H2>
   
   <PRE>
+over-
+*          written by the corresponding elements of the tridiagonal
+*          matrix T, and the elements below the first subdiagonal, with
+*          the array TAU, represent the orthogonal matrix Q as a product
+*          of elementary reflectors. See Further Details.
+*
+*  D       (output) DOUBLE PRECISION array, dimension (N)
+*          The diagonal elements of the tridiagonal matrix T:
+*          D(i) = A(i,i).
+*
+*  E       (output) DOUBLE PRECISION array, dimension (N-1)
+*          The off-diagonal elements of the tridiagonal matrix T:
+*          E(i) = A(i,i+1) if UPLO = 'U', E(i) = A(i+1,i) if UPLO = 'L'.
+*
+*  TAU     (output) DOUBLE PRECISION array, dimension (N-1)
+*          The scalar factors of the elementary reflectors (see Further
+*          Details).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  Further Details
+*  ===============
+*
+*  If UPLO = 'U', the matrix Q is represented as a product of elementary
+*  reflectors
+*
+*     Q = H(n-1) . . . H(2) H(1).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a real scalar, and v is a real vector with
+*  v(i+1:n) = 0 and v(i) = 1; v(1:i-1) is stored on exit in AP,
+*  overwriting A(1:i-1,i+1), and tau is stored in TAU(i).
+*
+*  If UPLO = 'L', the matrix Q is represented as a product of elementary
+*  reflectors
+*
+*     Q = H(1) H(2) . . . H(n-1).
+*
+*  Each H(i) has the form
+*
+*     H(i) = I - tau * v * v'
+*
+*  where tau is a real scalar, and v is a real vector with
+*  v(1:i) = 0 and v(i+1) = 1; v(i+2:n) is stored on exit in AP,
+*  overwriting A(i+2:n,i), and tau is stored in TAU(i).
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dsptrf"></A>
+  <H2>dsptrf</H2>
+  
+  <PRE>
 USAGE:
-  ipiv, info, ap = NumRu::Lapack.dsptrf( uplo, ap)
-    or
-  NumRu::Lapack.dsptrf  # print help
+  ipiv, info, ap = NumRu::Lapack.dsptrf( uplo, ap, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1692,10 +2618,183 @@ FORTRAN MANUAL
   <H2>dsptri</H2>
   
   <PRE>
+been completed, but the block diagonal matrix D is
+*               exactly singular, and division by zero will occur if it
+*               is used to solve a system of equations.
+*
+
+*  Further Details
+*  ===============
+*
+*  5-96 - Based on modifications by J. Lewis, Boeing Computer Services
+*         Company
+*
+*  If UPLO = 'U', then A = U*D*U', where
+*     U = P(n)*U(n)* ... *P(k)U(k)* ...,
+*  i.e., U is a product of terms P(k)*U(k), where k decreases from n to
+*  1 in steps of 1 or 2, and D is a block diagonal matrix with 1-by-1
+*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
+*  defined by IPIV(k), and U(k) is a unit upper triangular matrix, such
+*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
+*
+*             (   I    v    0   )   k-s
+*     U(k) =  (   0    I    0   )   s
+*             (   0    0    I   )   n-k
+*                k-s   s   n-k
+*
+*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(1:k-1,k).
+*  If s = 2, the upper triangle of D(k) overwrites A(k-1,k-1), A(k-1,k),
+*  and A(k,k), and v overwrites A(1:k-2,k-1:k).
+*
+*  If UPLO = 'L', then A = L*D*L', where
+*     L = P(1)*L(1)* ... *P(k)*L(k)* ...,
+*  i.e., L is a product of terms P(k)*L(k), where k increases from 1 to
+*  n in steps of 1 or 2, and D is a block diagonal matrix with 1-by-1
+*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
+*  defined by IPIV(k), and L(k) is a unit lower triangular matrix, such
+*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
+*
+*             (   I    0     0   )  k-1
+*     L(k) =  (   0    I     0   )  s
+*             (   0    v     I   )  n-k-s+1
+*                k-1   s  n-k-s+1
+*
+*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(k+1:n,k).
+*  If s = 2, the lower triangle of D(k) overwrites A(k,k), A(k+1,k),
+*  and A(k+1,k+1), and v overwrites A(k+2:n,k:k+1).
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dsptri"></A>
+  <H2>dsptri</H2>
+  
+  <PRE>
 USAGE:
-  info, ap = NumRu::Lapack.dsptri( uplo, ap, ipiv)
-    or
-  NumRu::Lapack.dsptri  # print help
+  info, ap = NumRu::Lapack.dsptri( uplo, ap, ipiv, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSPTRI( UPLO, N, AP, IPIV, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSPTRI computes the inverse of a real symmetric indefinite matrix
+*  A in packed storage using the factorization A = U*D*U**T or
+*  A = L*D*L**T computed by DSPTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the details of the factorization are stored
+*          as an upper or lower triangular matrix.
+*          = 'U':  Upper triangular, form is A = U*D*U**T;
+*          = 'L':  Lower triangular, form is A = L*D*L**T.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  AP      (input/output) DOUBLE PRECISION array, dimension (N*(N+1)/2)
+*          On entry, the block diagonal matrix D and the multipliers
+*          used to obtain the factor U or L as computed by DSPTRF,
+*          stored as a packed triangular matrix.
+*
+*          On exit, if INFO = 0, the (symmetric) inverse of the original
+*          matrix, stored as a packed triangular matrix. The j-th column
+*          of inv(A) is stored in the array AP as follows:
+*          if UPLO = 'U', AP(i + (j-1)*j/2) = inv(A)(i,j) for 1<=i<=j;
+*          if UPLO = 'L',
+*             AP(i + (j-1)*(2n-j)/2) = inv(A)(i,j) for j<=i<=n.
+*
+*  IPIV    (input) INTEGER array, dimension (N)
+*          Details of the interchanges and the block structure of D
+*          as determined by DSPTRF.
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, D(i,i) = 0; the matrix is singular and its
+*               inverse could not be computed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dsptrs"></A>
+  <H2>dsptrs</H2>
+  
+  <PRE>
+been completed, but the block diagonal matrix D is
+*               exactly singular, and division by zero will occur if it
+*               is used to solve a system of equations.
+*
+
+*  Further Details
+*  ===============
+*
+*  5-96 - Based on modifications by J. Lewis, Boeing Computer Services
+*         Company
+*
+*  If UPLO = 'U', then A = U*D*U', where
+*     U = P(n)*U(n)* ... *P(k)U(k)* ...,
+*  i.e., U is a product of terms P(k)*U(k), where k decreases from n to
+*  1 in steps of 1 or 2, and D is a block diagonal matrix with 1-by-1
+*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
+*  defined by IPIV(k), and U(k) is a unit upper triangular matrix, such
+*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
+*
+*             (   I    v    0   )   k-s
+*     U(k) =  (   0    I    0   )   s
+*             (   0    0    I   )   n-k
+*                k-s   s   n-k
+*
+*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(1:k-1,k).
+*  If s = 2, the upper triangle of D(k) overwrites A(k-1,k-1), A(k-1,k),
+*  and A(k,k), and v overwrites A(1:k-2,k-1:k).
+*
+*  If UPLO = 'L', then A = L*D*L', where
+*     L = P(1)*L(1)* ... *P(k)*L(k)* ...,
+*  i.e., L is a product of terms P(k)*L(k), where k increases from 1 to
+*  n in steps of 1 or 2, and D is a block diagonal matrix with 1-by-1
+*  and 2-by-2 diagonal blocks D(k).  P(k) is a permutation matrix as
+*  defined by IPIV(k), and L(k) is a unit lower triangular matrix, such
+*  that if the diagonal block D(k) is of order s (s = 1 or 2), then
+*
+*             (   I    0     0   )  k-1
+*     L(k) =  (   0    I     0   )  s
+*             (   0    v     I   )  n-k-s+1
+*                k-1   s  n-k-s+1
+*
+*  If s = 1, D(k) overwrites A(k,k), and v overwrites A(k+1:n,k).
+*  If s = 2, the lower triangle of D(k) overwrites A(k,k), A(k+1,k),
+*  and A(k+1,k+1), and v overwrites A(k+2:n,k:k+1).
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dsptri"></A>
+  <H2>dsptri</H2>
+  
+  <PRE>
+USAGE:
+  info, ap = NumRu::Lapack.dsptri( uplo, ap, ipiv, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1758,9 +2857,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  info, b = NumRu::Lapack.dsptrs( uplo, ap, ipiv, b)
-    or
-  NumRu::Lapack.dsptrs  # print help
+  info, b = NumRu::Lapack.dsptrs( uplo, ap, ipiv, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

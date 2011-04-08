@@ -23,10 +23,33 @@
   <H2>dstebz</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>DOUBLE PRECISION routines for (real) symmetric tridiagonal matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>DOUBLE PRECISION routines for (real) symmetric tridiagonal matrix</H1>
+    <UL>
+      <LI><A HREF="#dstebz">dstebz</A> : </LI>
+      <LI><A HREF="#dstedc">dstedc</A> : </LI>
+      <LI><A HREF="#dstegr">dstegr</A> : </LI>
+      <LI><A HREF="#dstein">dstein</A> : </LI>
+      <LI><A HREF="#dstemr">dstemr</A> : </LI>
+      <LI><A HREF="#dsteqr">dsteqr</A> : </LI>
+      <LI><A HREF="#dsterf">dsterf</A> : </LI>
+      <LI><A HREF="#dstev">dstev</A> : </LI>
+      <LI><A HREF="#dstevd">dstevd</A> : </LI>
+      <LI><A HREF="#dstevr">dstevr</A> : </LI>
+      <LI><A HREF="#dstevx">dstevx</A> : </LI>
+    </UL>
+
+  <A NAME="dstebz"></A>
+  <H2>dstebz</H2>
+  
+  <PRE>
 USAGE:
-  m, nsplit, w, iblock, isplit, info = NumRu::Lapack.dstebz( range, order, vl, vu, il, iu, abstol, d, e)
-    or
-  NumRu::Lapack.dstebz  # print help
+  m, nsplit, w, iblock, isplit, info = NumRu::Lapack.dstebz( range, order, vl, vu, il, iu, abstol, d, e, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -196,10 +219,19 @@ FORTRAN MANUAL
   <H2>dstedc</H2>
   
   <PRE>
+
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dstedc"></A>
+  <H2>dstedc</H2>
+  
+  <PRE>
 USAGE:
-  work, iwork, info, d, e, z = NumRu::Lapack.dstedc( compz, d, e, z, lwork, liwork)
-    or
-  NumRu::Lapack.dstedc  # print help
+  work, iwork, info, d, e, z = NumRu::Lapack.dstedc( compz, d, e, z, lwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -325,10 +357,48 @@ FORTRAN MANUAL
   <H2>dstegr</H2>
   
   <PRE>
+t least
+*                         ( 6 + 6*N + 5*N*lg N ).
+*          If COMPZ = 'I' and N > 1 then LIWORK must be at least
+*                         ( 3 + 5*N ).
+*          Note that for COMPZ = 'I' or 'V', then if N is less than or
+*          equal to the minimum divide size, usually 25, then LIWORK
+*          need only be 1.
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal size of the IWORK array,
+*          returns this value as the first entry of the IWORK array, and
+*          no error message related to LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  The algorithm failed to compute an eigenvalue while
+*                working on the submatrix lying in rows and columns
+*                INFO/(N+1) through mod(INFO,N+1).
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Jeff Rutter, Computer Science Division, University of California
+*     at Berkeley, USA
+*  Modified by Francoise Tisseur, University of Tennessee.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dstegr"></A>
+  <H2>dstegr</H2>
+  
+  <PRE>
 USAGE:
-  m, w, z, isuppz, work, iwork, info, d, e = NumRu::Lapack.dstegr( jobz, range, d, e, vl, vu, il, iu, abstol, lwork, liwork)
-    or
-  NumRu::Lapack.dstegr  # print help
+  m, w, z, isuppz, work, iwork, info, d, e = NumRu::Lapack.dstegr( jobz, range, d, e, vl, vu, il, iu, abstol, lwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -492,10 +562,105 @@ FORTRAN MANUAL
   <H2>dstein</H2>
   
   <PRE>
+N > 0.
+*          Not referenced if RANGE = 'A' or 'V'.
+*
+*  ABSTOL  (input) DOUBLE PRECISION
+*          Unused.  Was the absolute error tolerance for the
+*          eigenvalues/eigenvectors in previous versions.
+*
+*  M       (output) INTEGER
+*          The total number of eigenvalues found.  0 <= M <= N.
+*          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          The first M elements contain the selected eigenvalues in
+*          ascending order.
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, max(1,M) )
+*          If JOBZ = 'V', and if INFO = 0, then the first M columns of Z
+*          contain the orthonormal eigenvectors of the matrix T
+*          corresponding to the selected eigenvalues, with the i-th
+*          column of Z holding the eigenvector associated with W(i).
+*          If JOBZ = 'N', then Z is not referenced.
+*          Note: the user must ensure that at least max(1,M) columns are
+*          supplied in the array Z; if RANGE = 'V', the exact value of M
+*          is not known in advance and an upper bound must be used.
+*          Supplying N columns is always safe.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', then LDZ >= max(1,N).
+*
+*  ISUPPZ  (output) INTEGER ARRAY, dimension ( 2*max(1,M) )
+*          The support of the eigenvectors in Z, i.e., the indices
+*          indicating the nonzero elements in Z. The i-th computed eigenvector
+*          is nonzero only in elements ISUPPZ( 2*i-1 ) through
+*          ISUPPZ( 2*i ). This is relevant in the case when the matrix
+*          is split. ISUPPZ is only accessed when JOBZ is 'V' and N > 0.
+*
+*  WORK    (workspace/output) DOUBLE PRECISION array, dimension (LWORK)
+*          On exit, if INFO = 0, WORK(1) returns the optimal
+*          (and minimal) LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK. LWORK >= max(1,18*N)
+*          if JOBZ = 'V', and LWORK >= max(1,12*N) if JOBZ = 'N'.
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal size of the WORK array, returns
+*          this value as the first entry of the WORK array, and no error
+*          message related to LWORK is issued by XERBLA.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (LIWORK)
+*          On exit, if INFO = 0, IWORK(1) returns the optimal LIWORK.
+*
+*  LIWORK  (input) INTEGER
+*          The dimension of the array IWORK.  LIWORK >= max(1,10*N)
+*          if the eigenvectors are desired, and LIWORK >= max(1,8*N)
+*          if only the eigenvalues are to be computed.
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal size of the IWORK array,
+*          returns this value as the first entry of the IWORK array, and
+*          no error message related to LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          On exit, INFO
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = 1X, internal error in DLARRE,
+*                if INFO = 2X, internal error in DLARRV.
+*                Here, the digit X = ABS( IINFO ) < 10, where IINFO is
+*                the nonzero error code returned by DLARRE or
+*                DLARRV, respectively.
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Inderjit Dhillon, IBM Almaden, USA
+*     Osni Marques, LBNL/NERSC, USA
+*     Christof Voemel, LBNL/NERSC, USA
+*
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL TRYRAC
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL DSTEMR
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dstein"></A>
+  <H2>dstein</H2>
+  
+  <PRE>
 USAGE:
-  z, ifail, info = NumRu::Lapack.dstein( d, e, w, iblock, isplit)
-    or
-  NumRu::Lapack.dstein  # print help
+  z, ifail, info = NumRu::Lapack.dstein( d, e, w, iblock, isplit, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -597,10 +762,106 @@ FORTRAN MANUAL
   <H2>dstemr</H2>
   
   <PRE>
+IT, Z, LDZ, WORK, IWORK, IFAIL, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSTEIN computes the eigenvectors of a real symmetric tridiagonal
+*  matrix T corresponding to specified eigenvalues, using inverse
+*  iteration.
+*
+*  The maximum number of iterations allowed for each eigenvector is
+*  specified by an internal parameter MAXITS (currently set to 5).
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix.  N >= 0.
+*
+*  D       (input) DOUBLE PRECISION array, dimension (N)
+*          The n diagonal elements of the tridiagonal matrix T.
+*
+*  E       (input) DOUBLE PRECISION array, dimension (N-1)
+*          The (n-1) subdiagonal elements of the tridiagonal matrix
+*          T, in elements 1 to N-1.
+*
+*  M       (input) INTEGER
+*          The number of eigenvectors to be found.  0 <= M <= N.
+*
+*  W       (input) DOUBLE PRECISION array, dimension (N)
+*          The first M elements of W contain the eigenvalues for
+*          which eigenvectors are to be computed.  The eigenvalues
+*          should be grouped by split-off block and ordered from
+*          smallest to largest within the block.  ( The output array
+*          W from DSTEBZ with ORDER = 'B' is expected here. )
+*
+*  IBLOCK  (input) INTEGER array, dimension (N)
+*          The submatrix indices associated with the corresponding
+*          eigenvalues in W; IBLOCK(i)=1 if eigenvalue W(i) belongs to
+*          the first submatrix from the top, =2 if W(i) belongs to
+*          the second submatrix, etc.  ( The output array IBLOCK
+*          from DSTEBZ is expected here. )
+*
+*  ISPLIT  (input) INTEGER array, dimension (N)
+*          The splitting points, at which T breaks up into submatrices.
+*          The first submatrix consists of rows/columns 1 to
+*          ISPLIT( 1 ), the second of rows/columns ISPLIT( 1 )+1
+*          through ISPLIT( 2 ), etc.
+*          ( The output array ISPLIT from DSTEBZ is expected here. )
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, M)
+*          The computed eigenvectors.  The eigenvector associated
+*          with the eigenvalue W(i) is stored in the i-th column of
+*          Z.  Any vector which fails to converge is set to its current
+*          iterate after MAXITS iterations.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= max(1,N).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (5*N)
+*
+*  IWORK   (workspace) INTEGER array, dimension (N)
+*
+*  IFAIL   (output) INTEGER array, dimension (M)
+*          On normal exit, all elements of IFAIL are zero.
+*          If one or more eigenvectors fail to converge after
+*          MAXITS iterations, then their indices are stored in
+*          array IFAIL.
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit.
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, then i eigenvectors failed to converge
+*               in MAXITS iterations.  Their indices are stored in
+*               array IFAIL.
+*
+*  Internal Parameters
+*  ===================
+*
+*  MAXITS  INTEGER, default = 5
+*          The maximum number of iterations performed.
+*
+*  EXTRA   INTEGER, default = 2
+*          The number of iterations performed after norm growth
+*          criterion is satisfied, should be at least 1.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dstemr"></A>
+  <H2>dstemr</H2>
+  
+  <PRE>
 USAGE:
-  m, w, z, isuppz, work, iwork, info, d, e, tryrac = NumRu::Lapack.dstemr( jobz, range, d, e, vl, vu, il, iu, nzc, tryrac, lwork, liwork)
-    or
-  NumRu::Lapack.dstemr  # print help
+  m, w, z, isuppz, work, iwork, info, d, e, tryrac = NumRu::Lapack.dstemr( jobz, range, d, e, vl, vu, il, iu, nzc, tryrac, lwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -811,10 +1072,158 @@ FORTRAN MANUAL
   <H2>dsteqr</H2>
   
   <PRE>
+no error message related to LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          On exit, INFO
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = 1X, internal error in DLARRE,
+*                if INFO = 2X, internal error in DLARRV.
+*                Here, the digit X = ABS( IINFO ) < 10, where IINFO is
+*                the nonzero error code returned by DLARRE or
+*                DLARRV, respectively.
+*
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Beresford Parlett, University of California, Berkeley, USA
+*     Jim Demmel, University of California, Berkeley, USA
+*     Inderjit Dhillon, University of Texas, Austin, USA
+*     Osni Marques, LBNL/NERSC, USA
+*     Christof Voemel, University of California, Berkeley, USA
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dsteqr"></A>
+  <H2>dsteqr</H2>
+  
+  <PRE>
 USAGE:
-  info, d, e, z = NumRu::Lapack.dsteqr( compz, d, e, z)
-    or
-  NumRu::Lapack.dsteqr  # print help
+  info, d, e, z = NumRu::Lapack.dsteqr( compz, d, e, z, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSTEQR( COMPZ, N, D, E, Z, LDZ, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSTEQR computes all eigenvalues and, optionally, eigenvectors of a
+*  symmetric tridiagonal matrix using the implicit QL or QR method.
+*  The eigenvectors of a full or band symmetric matrix can also be found
+*  if DSYTRD or DSPTRD or DSBTRD has been used to reduce this matrix to
+*  tridiagonal form.
+*
+
+*  Arguments
+*  =========
+*
+*  COMPZ   (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only.
+*          = 'V':  Compute eigenvalues and eigenvectors of the original
+*                  symmetric matrix.  On entry, Z must contain the
+*                  orthogonal matrix used to reduce the original matrix
+*                  to tridiagonal form.
+*          = 'I':  Compute eigenvalues and eigenvectors of the
+*                  tridiagonal matrix.  Z is initialized to the identity
+*                  matrix.
+*
+*  N       (input) INTEGER
+*          The order of the matrix.  N >= 0.
+*
+*  D       (input/output) DOUBLE PRECISION array, dimension (N)
+*          On entry, the diagonal elements of the tridiagonal matrix.
+*          On exit, if INFO = 0, the eigenvalues in ascending order.
+*
+*  E       (input/output) DOUBLE PRECISION array, dimension (N-1)
+*          On entry, the (n-1) subdiagonal elements of the tridiagonal
+*          matrix.
+*          On exit, E has been destroyed.
+*
+*  Z       (input/output) DOUBLE PRECISION array, dimension (LDZ, N)
+*          On entry, if  COMPZ = 'V', then Z contains the orthogonal
+*          matrix used in the reduction to tridiagonal form.
+*          On exit, if INFO = 0, then if  COMPZ = 'V', Z contains the
+*          orthonormal eigenvectors of the original symmetric matrix,
+*          and if COMPZ = 'I', Z contains the orthonormal eigenvectors
+*          of the symmetric tridiagonal matrix.
+*          If COMPZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          eigenvectors are desired, then  LDZ >= max(1,N).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (max(1,2*N-2))
+*          If COMPZ = 'N', then WORK is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  the algorithm has failed to find all the eigenvalues in
+*                a total of 30*N iterations; if INFO = i, then i
+*                elements of E have not converged to zero; on exit, D
+*                and E contain the elements of a symmetric tridiagonal
+*                matrix which is orthogonally similar to the original
+*                matrix.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dsterf"></A>
+  <H2>dsterf</H2>
+  
+  <PRE>
+no error message related to LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          On exit, INFO
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = 1X, internal error in DLARRE,
+*                if INFO = 2X, internal error in DLARRV.
+*                Here, the digit X = ABS( IINFO ) < 10, where IINFO is
+*                the nonzero error code returned by DLARRE or
+*                DLARRV, respectively.
+*
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Beresford Parlett, University of California, Berkeley, USA
+*     Jim Demmel, University of California, Berkeley, USA
+*     Inderjit Dhillon, University of Texas, Austin, USA
+*     Osni Marques, LBNL/NERSC, USA
+*     Christof Voemel, University of California, Berkeley, USA
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dsteqr"></A>
+  <H2>dsteqr</H2>
+  
+  <PRE>
+USAGE:
+  info, d, e, z = NumRu::Lapack.dsteqr( compz, d, e, z, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -894,9 +1303,54 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  info, d, e = NumRu::Lapack.dsterf( d, e)
-    or
-  NumRu::Lapack.dsterf  # print help
+  info, d, e = NumRu::Lapack.dsterf( d, e, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSTERF( N, D, E, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSTERF computes all eigenvalues of a symmetric tridiagonal matrix
+*  using the Pal-Walker-Kahan variant of the QL or QR algorithm.
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix.  N >= 0.
+*
+*  D       (input/output) DOUBLE PRECISION array, dimension (N)
+*          On entry, the n diagonal elements of the tridiagonal matrix.
+*          On exit, if INFO = 0, the eigenvalues in ascending order.
+*
+*  E       (input/output) DOUBLE PRECISION array, dimension (N-1)
+*          On entry, the (n-1) subdiagonal elements of the tridiagonal
+*          matrix.
+*          On exit, E has been destroyed.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  the algorithm failed to find all of the eigenvalues in
+*                a total of 30*N iterations; if INFO = i, then i
+*                elements of E have not converged to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dstev"></A>
+  <H2>dstev</H2>
+  
+  <PRE>
+> usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -944,9 +1398,119 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  z, info, d, e = NumRu::Lapack.dstev( jobz, d, e)
-    or
-  NumRu::Lapack.dstev  # print help
+  z, info, d, e = NumRu::Lapack.dstev( jobz, d, e, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSTEV( JOBZ, N, D, E, Z, LDZ, WORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSTEV computes all eigenvalues and, optionally, eigenvectors of a
+*  real symmetric tridiagonal matrix A.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  N       (input) INTEGER
+*          The order of the matrix.  N >= 0.
+*
+*  D       (input/output) DOUBLE PRECISION array, dimension (N)
+*          On entry, the n diagonal elements of the tridiagonal matrix
+*          A.
+*          On exit, if INFO = 0, the eigenvalues in ascending order.
+*
+*  E       (input/output) DOUBLE PRECISION array, dimension (N-1)
+*          On entry, the (n-1) subdiagonal elements of the tridiagonal
+*          matrix A, stored in elements 1 to N-1 of E.
+*          On exit, the contents of E are destroyed.
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
+*          eigenvectors of the matrix A, with the i-th column of Z
+*          holding the eigenvector associated with D(i).
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (max(1,2*N-2))
+*          If JOBZ = 'N', WORK is not referenced.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the algorithm failed to converge; i
+*                off-diagonal elements of E did not converge to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dstevd"></A>
+  <H2>dstevd</H2>
+  
+  <PRE>
+> usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE DSTERF( N, D, E, INFO )
+
+*  Purpose
+*  =======
+*
+*  DSTERF computes all eigenvalues of a symmetric tridiagonal matrix
+*  using the Pal-Walker-Kahan variant of the QL or QR algorithm.
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix.  N >= 0.
+*
+*  D       (input/output) DOUBLE PRECISION array, dimension (N)
+*          On entry, the n diagonal elements of the tridiagonal matrix.
+*          On exit, if INFO = 0, the eigenvalues in ascending order.
+*
+*  E       (input/output) DOUBLE PRECISION array, dimension (N-1)
+*          On entry, the (n-1) subdiagonal elements of the tridiagonal
+*          matrix.
+*          On exit, E has been destroyed.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  the algorithm failed to find all of the eigenvalues in
+*                a total of 30*N iterations; if INFO = i, then i
+*                elements of E have not converged to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dstev"></A>
+  <H2>dstev</H2>
+  
+  <PRE>
+USAGE:
+  z, info, d, e = NumRu::Lapack.dstev( jobz, d, e, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1011,9 +1575,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  z, work, iwork, info, d, e = NumRu::Lapack.dstevd( jobz, d, e, lwork, liwork)
-    or
-  NumRu::Lapack.dstevd  # print help
+  z, work, iwork, info, d, e = NumRu::Lapack.dstevd( jobz, d, e, lwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1112,10 +1674,89 @@ FORTRAN MANUAL
   <H2>dstevr</H2>
   
   <PRE>
+igits, but we know of none.
+*
+
+*  Arguments
+*  =========
+*
+*  JOBZ    (input) CHARACTER*1
+*          = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*
+*  N       (input) INTEGER
+*          The order of the matrix.  N >= 0.
+*
+*  D       (input/output) DOUBLE PRECISION array, dimension (N)
+*          On entry, the n diagonal elements of the tridiagonal matrix
+*          A.
+*          On exit, if INFO = 0, the eigenvalues in ascending order.
+*
+*  E       (input/output) DOUBLE PRECISION array, dimension (N-1)
+*          On entry, the (n-1) subdiagonal elements of the tridiagonal
+*          matrix A, stored in elements 1 to N-1 of E.
+*          On exit, the contents of E are destroyed.
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, N)
+*          If JOBZ = 'V', then if INFO = 0, Z contains the orthonormal
+*          eigenvectors of the matrix A, with the i-th column of Z
+*          holding the eigenvector associated with D(i).
+*          If JOBZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  WORK    (workspace/output) DOUBLE PRECISION array,
+*                                         dimension (LWORK)
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.
+*          If JOBZ  = 'N' or N <= 1 then LWORK must be at least 1.
+*          If JOBZ  = 'V' and N > 1 then LWORK must be at least
+*                         ( 1 + 4*N + N**2 ).
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal sizes of the WORK and IWORK
+*          arrays, returns these values as the first entries of the WORK
+*          and IWORK arrays, and no error message related to LWORK or
+*          LIWORK is issued by XERBLA.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
+*          On exit, if INFO = 0, IWORK(1) returns the optimal LIWORK.
+*
+*  LIWORK  (input) INTEGER
+*          The dimension of the array IWORK.
+*          If JOBZ  = 'N' or N <= 1 then LIWORK must be at least 1.
+*          If JOBZ  = 'V' and N > 1 then LIWORK must be at least 3+5*N.
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal sizes of the WORK and
+*          IWORK arrays, returns these values as the first entries of
+*          the WORK and IWORK arrays, and no error message related to
+*          LWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the algorithm failed to converge; i
+*                off-diagonal elements of E did not converge to zero.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dstevr"></A>
+  <H2>dstevr</H2>
+  
+  <PRE>
 USAGE:
-  m, w, z, isuppz, work, iwork, info, d, e = NumRu::Lapack.dstevr( jobz, range, d, e, vl, vu, il, iu, abstol, lwork, liwork)
-    or
-  NumRu::Lapack.dstevr  # print help
+  m, w, z, isuppz, work, iwork, info, d, e = NumRu::Lapack.dstevr( jobz, range, d, e, vl, vu, il, iu, abstol, lwork, liwork, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1317,10 +1958,96 @@ FORTRAN MANUAL
   <H2>dstevx</H2>
   
   <PRE>
+       possible in future releases.  The current code does not
+*          make any guarantees about high relative accuracy, but
+*          future releases will. See J. Barlow and J. Demmel,
+*          "Computing Accurate Eigensystems of Scaled Diagonally
+*          Dominant Matrices", LAPACK Working Note #7, for a discussion
+*          of which matrices define their eigenvalues to high relative
+*          accuracy.
+*
+*  M       (output) INTEGER
+*          The total number of eigenvalues found.  0 <= M <= N.
+*          If RANGE = 'A', M = N, and if RANGE = 'I', M = IU-IL+1.
+*
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          The first M elements contain the selected eigenvalues in
+*          ascending order.
+*
+*  Z       (output) DOUBLE PRECISION array, dimension (LDZ, max(1,M) )
+*          If JOBZ = 'V', then if INFO = 0, the first M columns of Z
+*          contain the orthonormal eigenvectors of the matrix A
+*          corresponding to the selected eigenvalues, with the i-th
+*          column of Z holding the eigenvector associated with W(i).
+*          Note: the user must ensure that at least max(1,M) columns are
+*          supplied in the array Z; if RANGE = 'V', the exact value of M
+*          is not known in advance and an upper bound must be used.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          JOBZ = 'V', LDZ >= max(1,N).
+*
+*  ISUPPZ  (output) INTEGER array, dimension ( 2*max(1,M) )
+*          The support of the eigenvectors in Z, i.e., the indices
+*          indicating the nonzero elements in Z. The i-th eigenvector
+*          is nonzero only in elements ISUPPZ( 2*i-1 ) through
+*          ISUPPZ( 2*i ).
+********** Implemented only for RANGE = 'A' or 'I' and IU - IL = N - 1
+*
+*  WORK    (workspace/output) DOUBLE PRECISION array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal (and
+*          minimal) LWORK.
+*
+*  LWORK   (input) INTEGER
+*          The dimension of the array WORK.  LWORK >= max(1,20*N).
+*
+*          If LWORK = -1, then a workspace query is assumed; the routine
+*          only calculates the optimal sizes of the WORK and IWORK
+*          arrays, returns these values as the first entries of the WORK
+*          and IWORK arrays, and no error message related to LWORK or
+*          LIWORK is issued by XERBLA.
+*
+*  IWORK   (workspace/output) INTEGER array, dimension (MAX(1,LIWORK))
+*          On exit, if INFO = 0, IWORK(1) returns the optimal (and
+*          minimal) LIWORK.
+*
+*  LIWORK  (input) INTEGER
+*          The dimension of the array IWORK.  LIWORK >= max(1,10*N).
+*
+*          If LIWORK = -1, then a workspace query is assumed; the
+*          routine only calculates the optimal sizes of the WORK and
+*          IWORK arrays, returns these values as the first entries of
+*          the WORK and IWORK arrays, and no error message related to
+*          LWORK or LIWORK is issued by XERBLA.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  Internal error
+*
+
+*  Further Details
+*  ===============
+*
+*  Based on contributions by
+*     Inderjit Dhillon, IBM Almaden, USA
+*     Osni Marques, LBNL/NERSC, USA
+*     Ken Stanley, Computer Science Division, University of
+*       California at Berkeley, USA
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="dstevx"></A>
+  <H2>dstevx</H2>
+  
+  <PRE>
 USAGE:
-  m, w, z, ifail, info, d, e = NumRu::Lapack.dstevx( jobz, range, d, e, vl, vu, il, iu, abstol)
-    or
-  NumRu::Lapack.dstevx  # print help
+  m, w, z, ifail, info, d, e = NumRu::Lapack.dstevx( jobz, range, d, e, vl, vu, il, iu, abstol, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

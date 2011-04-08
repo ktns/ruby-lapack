@@ -24,10 +24,123 @@
   <H2>cpocon</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX routines for symmetric or Hermitian positive definite matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX routines for symmetric or Hermitian positive definite matrix</H1>
+    <UL>
+      <LI><A HREF="#cpocon">cpocon</A> : </LI>
+      <LI><A HREF="#cpoequ">cpoequ</A> : </LI>
+      <LI><A HREF="#cpoequb">cpoequb</A> : </LI>
+      <LI><A HREF="#cporfs">cporfs</A> : </LI>
+      <LI><A HREF="#cporfsx">cporfsx</A> : </LI>
+      <LI><A HREF="#cposv">cposv</A> : </LI>
+      <LI><A HREF="#cposvx">cposvx</A> : </LI>
+      <LI><A HREF="#cposvxx">cposvxx</A> : </LI>
+      <LI><A HREF="#cpotf2">cpotf2</A> : </LI>
+      <LI><A HREF="#cpotrf">cpotrf</A> : </LI>
+      <LI><A HREF="#cpotri">cpotri</A> : </LI>
+      <LI><A HREF="#cpotrs">cpotrs</A> : </LI>
+    </UL>
+
+  <A NAME="cpocon"></A>
+  <H2>cpocon</H2>
+  
+  <PRE>
 USAGE:
-  rcond, info = NumRu::Lapack.cpocon( uplo, a, anorm)
-    or
-  NumRu::Lapack.cpocon  # print help
+  rcond, info = NumRu::Lapack.cpocon( uplo, a, anorm, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPOCON( UPLO, N, A, LDA, ANORM, RCOND, WORK, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPOCON estimates the reciprocal of the condition number (in the
+*  1-norm) of a complex Hermitian positive definite matrix using the
+*  Cholesky factorization A = U**H*U or A = L*L**H computed by CPOTRF.
+*
+*  An estimate is obtained for norm(inv(A)), and the reciprocal of the
+*  condition number is computed as RCOND = 1 / (ANORM * norm(inv(A))).
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input) COMPLEX array, dimension (LDA,N)
+*          The triangular factor U or L from the Cholesky factorization
+*          A = U**H*U or A = L*L**H, as computed by CPOTRF.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  ANORM   (input) REAL
+*          The 1-norm (or infinity-norm) of the Hermitian matrix A.
+*
+*  RCOND   (output) REAL
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is an
+*          estimate of the 1-norm of inv(A) computed in this routine.
+*
+*  WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*  RWORK   (workspace) REAL array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cpoequ"></A>
+  <H2>cpoequ</H2>
+  
+  <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX routines for symmetric or Hermitian positive definite matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX routines for symmetric or Hermitian positive definite matrix</H1>
+    <UL>
+      <LI><A HREF="#cpocon">cpocon</A> : </LI>
+      <LI><A HREF="#cpoequ">cpoequ</A> : </LI>
+      <LI><A HREF="#cpoequb">cpoequb</A> : </LI>
+      <LI><A HREF="#cporfs">cporfs</A> : </LI>
+      <LI><A HREF="#cporfsx">cporfsx</A> : </LI>
+      <LI><A HREF="#cposv">cposv</A> : </LI>
+      <LI><A HREF="#cposvx">cposvx</A> : </LI>
+      <LI><A HREF="#cposvxx">cposvxx</A> : </LI>
+      <LI><A HREF="#cpotf2">cpotf2</A> : </LI>
+      <LI><A HREF="#cpotrf">cpotrf</A> : </LI>
+      <LI><A HREF="#cpotri">cpotri</A> : </LI>
+      <LI><A HREF="#cpotrs">cpotrs</A> : </LI>
+    </UL>
+
+  <A NAME="cpocon"></A>
+  <H2>cpocon</H2>
+  
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.cpocon( uplo, a, anorm, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -90,9 +203,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  s, scond, amax, info = NumRu::Lapack.cpoequ( a)
-    or
-  NumRu::Lapack.cpoequ  # print help
+  s, scond, amax, info = NumRu::Lapack.cpoequ( a, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -155,10 +266,120 @@ FORTRAN MANUAL
   <H2>cpoequb</H2>
   
   <PRE>
+      large nor too small, it is not worth scaling by S.
+*
+*  AMAX    (output) REAL
+*          Absolute value of largest matrix element.  If AMAX is very
+*          close to overflow or very close to underflow, the matrix
+*          should be scaled.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the i-th diagonal element is nonpositive.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cpoequb"></A>
+  <H2>cpoequb</H2>
+  
+  <PRE>
 USAGE:
-  s, scond, amax, info = NumRu::Lapack.cpoequb( a)
-    or
-  NumRu::Lapack.cpoequb  # print help
+  s, scond, amax, info = NumRu::Lapack.cpoequb( a, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPOEQUB( N, A, LDA, S, SCOND, AMAX, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPOEQUB computes row and column scalings intended to equilibrate a
+*  symmetric positive definite matrix A and reduce its condition number
+*  (with respect to the two-norm).  S contains the scale factors,
+*  S(i) = 1/sqrt(A(i,i)), chosen so that the scaled matrix B with
+*  elements B(i,j) = S(i)*A(i,j)*S(j) has ones on the diagonal.  This
+*  choice of S puts the condition number of B within a factor N of the
+*  smallest possible condition number over all possible diagonal
+*  scalings.
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input) COMPLEX array, dimension (LDA,N)
+*          The N-by-N symmetric positive definite matrix whose scaling
+*          factors are to be computed.  Only the diagonal elements of A
+*          are referenced.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  S       (output) REAL array, dimension (N)
+*          If INFO = 0, S contains the scale factors for A.
+*
+*  SCOND   (output) REAL
+*          If INFO = 0, S contains the ratio of the smallest S(i) to
+*          the largest S(i).  If SCOND >= 0.1 and AMAX is neither too
+*          large nor too small, it is not worth scaling by S.
+*
+*  AMAX    (output) REAL
+*          Absolute value of largest matrix element.  If AMAX is very
+*          close to overflow or very close to underflow, the matrix
+*          should be scaled.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the i-th diagonal element is nonpositive.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cporfs"></A>
+  <H2>cporfs</H2>
+  
+  <PRE>
+      large nor too small, it is not worth scaling by S.
+*
+*  AMAX    (output) REAL
+*          Absolute value of largest matrix element.  If AMAX is very
+*          close to overflow or very close to underflow, the matrix
+*          should be scaled.
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the i-th diagonal element is nonpositive.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cpoequb"></A>
+  <H2>cpoequb</H2>
+  
+  <PRE>
+USAGE:
+  s, scond, amax, info = NumRu::Lapack.cpoequb( a, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -222,9 +443,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  ferr, berr, info, x = NumRu::Lapack.cporfs( uplo, a, af, b, x)
-    or
-  NumRu::Lapack.cporfs  # print help
+  ferr, berr, info, x = NumRu::Lapack.cporfs( uplo, a, af, b, x, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -325,10 +544,70 @@ FORTRAN MANUAL
   <H2>cporfsx</H2>
   
   <PRE>
+imension of the array A.  LDA >= max(1,N).
+*
+*  AF      (input) COMPLEX array, dimension (LDAF,N)
+*          The triangular factor U or L from the Cholesky factorization
+*          A = U**H*U or A = L*L**H, as computed by CPOTRF.
+*
+*  LDAF    (input) INTEGER
+*          The leading dimension of the array AF.  LDAF >= max(1,N).
+*
+*  B       (input) COMPLEX array, dimension (LDB,NRHS)
+*          The right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (input/output) COMPLEX array, dimension (LDX,NRHS)
+*          On entry, the solution matrix X, as computed by CPOTRS.
+*          On exit, the improved solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  FERR    (output) REAL array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) REAL array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*  RWORK   (workspace) REAL array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+*  Internal Parameters
+*  ===================
+*
+*  ITMAX is the maximum number of steps of iterative refinement.
+*
+
+*  ====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cporfsx"></A>
+  <H2>cporfsx</H2>
+  
+  <PRE>
 USAGE:
-  rcond, berr, err_bnds_norm, err_bnds_comp, info, s, x, params = NumRu::Lapack.cporfsx( uplo, equed, a, af, s, b, x, params)
-    or
-  NumRu::Lapack.cporfsx  # print help
+  rcond, berr, err_bnds_norm, err_bnds_comp, info, s, x, params = NumRu::Lapack.cporfsx( uplo, equed, a, af, s, b, x, params, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -610,10 +889,75 @@ FORTRAN MANUAL
   <H2>cposv</H2>
   
   <PRE>
+ perform iterative
+*            refinement or not.
+*         Default: 1.0
+*            = 0.0 : No refinement is performed, and no error bounds are
+*                    computed.
+*            = 1.0 : Use the double-precision refinement algorithm,
+*                    possibly with doubled-single computations if the
+*                    compilation environment does not support DOUBLE
+*                    PRECISION.
+*              (other values are reserved for future use)
+*
+*       PARAMS(LA_LINRX_ITHRESH_I = 2) : Maximum number of residual
+*            computations allowed for refinement.
+*         Default: 10
+*         Aggressive: Set to 100 to permit convergence using approximate
+*                     factorizations or factorizations other than LU. If
+*                     the factorization uses a technique other than
+*                     Gaussian elimination, the guarantees in
+*                     err_bnds_norm and err_bnds_comp may no longer be
+*                     trustworthy.
+*
+*       PARAMS(LA_LINRX_CWISE_I = 3) : Flag determining if the code
+*            will attempt to find a solution with small componentwise
+*            relative error in the double-precision algorithm.  Positive
+*            is true, 0.0 is false.
+*         Default: 1.0 (attempt componentwise convergence)
+*
+*     WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*     RWORK   (workspace) REAL array, dimension (2*N)
+*
+*     INFO    (output) INTEGER
+*       = 0:  Successful exit. The solution to every right-hand side is
+*         guaranteed.
+*       < 0:  If INFO = -i, the i-th argument had an illegal value
+*       > 0 and <= N:  U(INFO,INFO) is exactly zero.  The factorization
+*         has been completed, but the factor U is exactly singular, so
+*         the solution and error bounds could not be computed. RCOND = 0
+*         is returned.
+*       = N+J: The solution corresponding to the Jth right-hand side is
+*         not guaranteed. The solutions corresponding to other right-
+*         hand sides K with K > J may not be guaranteed as well, but
+*         only the first such right-hand side is reported. If a small
+*         componentwise error is not requested (PARAMS(3) = 0.0) then
+*         the Jth right-hand side is the first with a normwise error
+*         bound that is not guaranteed (the smallest J such
+*         that ERR_BNDS_NORM(J,1) = 0.0). By default (PARAMS(3) = 1.0)
+*         the Jth right-hand side is the first with either a normwise or
+*         componentwise error bound that is not guaranteed (the smallest
+*         J such that either ERR_BNDS_NORM(J,1) = 0.0 or
+*         ERR_BNDS_COMP(J,1) = 0.0). See the definition of
+*         ERR_BNDS_NORM(:,1) and ERR_BNDS_COMP(:,1). To get information
+*         about all of the right-hand sides check ERR_BNDS_NORM or
+*         ERR_BNDS_COMP.
+*
+
+*     ==================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cposv"></A>
+  <H2>cposv</H2>
+  
+  <PRE>
 USAGE:
-  info, a, b = NumRu::Lapack.cposv( uplo, a, b)
-    or
-  NumRu::Lapack.cposv  # print help
+  info, a, b = NumRu::Lapack.cposv( uplo, a, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -701,10 +1045,61 @@ FORTRAN MANUAL
   <H2>cposvx</H2>
   
   <PRE>
+atrix B.  NRHS >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
+*          N-by-N upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading N-by-N lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*
+*          On exit, if INFO = 0, the factor U or L from the Cholesky
+*          factorization A = U**H*U or A = L*L**H.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  B       (input/output) COMPLEX array, dimension (LDB,NRHS)
+*          On entry, the N-by-NRHS right hand side matrix B.
+*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the leading minor of order i of A is not
+*                positive definite, so the factorization could not be
+*                completed, and the solution has not been computed.
+*
+
+*  =====================================================================
+*
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CPOTRF, CPOTRS, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cposvx"></A>
+  <H2>cposvx</H2>
+  
+  <PRE>
 USAGE:
-  x, rcond, ferr, berr, info, a, af, equed, s, b = NumRu::Lapack.cposvx( fact, uplo, a, af, equed, s, b)
-    or
-  NumRu::Lapack.cposvx  # print help
+  x, rcond, ferr, berr, info, a, af, equed, s, b = NumRu::Lapack.cposvx( fact, uplo, a, af, equed, s, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -912,10 +1307,70 @@ FORTRAN MANUAL
   <H2>cposvxx</H2>
   
   <PRE>
+ INFO = N+1, the N-by-NRHS solution matrix X to
+*          the original system of equations.  Note that if EQUED = 'Y',
+*          A and B are modified on exit, and the solution to the
+*          equilibrated system is inv(diag(S))*X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  RCOND   (output) REAL
+*          The estimate of the reciprocal condition number of the matrix
+*          A after equilibration (if done).  If RCOND is less than the
+*          machine precision (in particular, if RCOND = 0), the matrix
+*          is singular to working precision.  This condition is
+*          indicated by a return code of INFO > 0.
+*
+*  FERR    (output) REAL array, dimension (NRHS)
+*          The estimated forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).  The estimate is as reliable as
+*          the estimate for RCOND, and is almost always a slight
+*          overestimate of the true error.
+*
+*  BERR    (output) REAL array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*  RWORK   (workspace) REAL array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -i, the i-th argument had an illegal value
+*          > 0: if INFO = i, and i is
+*                <= N:  the leading minor of order i of A is
+*                       not positive definite, so the factorization
+*                       could not be completed, and the solution has not
+*                       been computed. RCOND = 0 is returned.
+*                = N+1: U is nonsingular, but RCOND is less than machine
+*                       precision, meaning that the matrix is singular
+*                       to working precision.  Nevertheless, the
+*                       solution and error bounds are computed because
+*                       there are a number of situations where the
+*                       computed solution can be more accurate than the
+*                       value of RCOND would suggest.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cposvxx"></A>
+  <H2>cposvxx</H2>
+  
+  <PRE>
 USAGE:
-  x, rcond, rpvgrw, berr, err_bnds_norm, err_bnds_comp, info, a, af, equed, s, b, params = NumRu::Lapack.cposvxx( fact, uplo, a, af, equed, s, b, params)
-    or
-  NumRu::Lapack.cposvxx  # print help
+  x, rcond, rpvgrw, berr, err_bnds_norm, err_bnds_comp, info, a, af, equed, s, b, params = NumRu::Lapack.cposvxx( fact, uplo, a, af, equed, s, b, params, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1291,10 +1746,95 @@ FORTRAN MANUAL
   <H2>cpotf2</H2>
   
   <PRE>
+ (norm(Z^{-1},inf) * norm(Z,inf)) for some
+*              appropriately scaled matrix Z.
+*              Let Z = S*(A*diag(x)), where x is the solution for the
+*              current right-hand side and S scales each row of
+*              A*diag(x) by a power of the radix so all absolute row
+*              sums of Z are approximately 1.
+*
+*     See Lapack Working Note 165 for further details and extra
+*     cautions.
+*
+*     NPARAMS (input) INTEGER
+*     Specifies the number of parameters set in PARAMS.  If .LE. 0, the
+*     PARAMS array is never referenced and default values are used.
+*
+*     PARAMS  (input / output) REAL array, dimension NPARAMS
+*     Specifies algorithm parameters.  If an entry is .LT. 0.0, then
+*     that entry will be filled with default value used for that
+*     parameter.  Only positions up to NPARAMS are accessed; defaults
+*     are used for higher-numbered parameters.
+*
+*       PARAMS(LA_LINRX_ITREF_I = 1) : Whether to perform iterative
+*            refinement or not.
+*         Default: 1.0
+*            = 0.0 : No refinement is performed, and no error bounds are
+*                    computed.
+*            = 1.0 : Use the double-precision refinement algorithm,
+*                    possibly with doubled-single computations if the
+*                    compilation environment does not support DOUBLE
+*                    PRECISION.
+*              (other values are reserved for future use)
+*
+*       PARAMS(LA_LINRX_ITHRESH_I = 2) : Maximum number of residual
+*            computations allowed for refinement.
+*         Default: 10
+*         Aggressive: Set to 100 to permit convergence using approximate
+*                     factorizations or factorizations other than LU. If
+*                     the factorization uses a technique other than
+*                     Gaussian elimination, the guarantees in
+*                     err_bnds_norm and err_bnds_comp may no longer be
+*                     trustworthy.
+*
+*       PARAMS(LA_LINRX_CWISE_I = 3) : Flag determining if the code
+*            will attempt to find a solution with small componentwise
+*            relative error in the double-precision algorithm.  Positive
+*            is true, 0.0 is false.
+*         Default: 1.0 (attempt componentwise convergence)
+*
+*     WORK    (workspace) COMPLEX array, dimension (2*N)
+*
+*     RWORK   (workspace) REAL array, dimension (2*N)
+*
+*     INFO    (output) INTEGER
+*       = 0:  Successful exit. The solution to every right-hand side is
+*         guaranteed.
+*       < 0:  If INFO = -i, the i-th argument had an illegal value
+*       > 0 and <= N:  U(INFO,INFO) is exactly zero.  The factorization
+*         has been completed, but the factor U is exactly singular, so
+*         the solution and error bounds could not be computed. RCOND = 0
+*         is returned.
+*       = N+J: The solution corresponding to the Jth right-hand side is
+*         not guaranteed. The solutions corresponding to other right-
+*         hand sides K with K > J may not be guaranteed as well, but
+*         only the first such right-hand side is reported. If a small
+*         componentwise error is not requested (PARAMS(3) = 0.0) then
+*         the Jth right-hand side is the first with a normwise error
+*         bound that is not guaranteed (the smallest J such
+*         that ERR_BNDS_NORM(J,1) = 0.0). By default (PARAMS(3) = 1.0)
+*         the Jth right-hand side is the first with either a normwise or
+*         componentwise error bound that is not guaranteed (the smallest
+*         J such that either ERR_BNDS_NORM(J,1) = 0.0 or
+*         ERR_BNDS_COMP(J,1) = 0.0). See the definition of
+*         ERR_BNDS_NORM(:,1) and ERR_BNDS_COMP(:,1). To get information
+*         about all of the right-hand sides check ERR_BNDS_NORM or
+*         ERR_BNDS_COMP.
+*
+
+*     ==================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cpotf2"></A>
+  <H2>cpotf2</H2>
+  
+  <PRE>
 USAGE:
-  info, a = NumRu::Lapack.cpotf2( uplo, a)
-    or
-  NumRu::Lapack.cpotf2  # print help
+  info, a = NumRu::Lapack.cpotf2( uplo, a, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1360,10 +1900,197 @@ FORTRAN MANUAL
   <H2>cpotrf</H2>
   
   <PRE>
+OTF2( UPLO, N, A, LDA, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPOTF2 computes the Cholesky factorization of a complex Hermitian
+*  positive definite matrix A.
+*
+*  The factorization has the form
+*     A = U' * U ,  if UPLO = 'U', or
+*     A = L  * L',  if UPLO = 'L',
+*  where U is an upper triangular matrix and L is lower triangular.
+*
+*  This is the unblocked version of the algorithm, calling Level 2 BLAS.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the upper or lower triangular part of the
+*          Hermitian matrix A is stored.
+*          = 'U':  Upper triangular
+*          = 'L':  Lower triangular
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
+*          n by n upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading n by n lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*
+*          On exit, if INFO = 0, the factor U or L from the Cholesky
+*          factorization A = U'*U  or A = L*L'.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*          > 0: if INFO = k, the leading minor of order k is not
+*               positive definite, and the factorization could not be
+*               completed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cpotrf"></A>
+  <H2>cpotrf</H2>
+  
+  <PRE>
 USAGE:
-  info, a = NumRu::Lapack.cpotrf( uplo, a)
-    or
-  NumRu::Lapack.cpotrf  # print help
+  info, a = NumRu::Lapack.cpotrf( uplo, a, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE CPOTRF( UPLO, N, A, LDA, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPOTRF computes the Cholesky factorization of a complex Hermitian
+*  positive definite matrix A.
+*
+*  The factorization has the form
+*     A = U**H * U,  if UPLO = 'U', or
+*     A = L  * L**H,  if UPLO = 'L',
+*  where U is an upper triangular matrix and L is lower triangular.
+*
+*  This is the block version of the algorithm, calling Level 3 BLAS.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
+*          N-by-N upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading N-by-N lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*
+*          On exit, if INFO = 0, the factor U or L from the Cholesky
+*          factorization A = U**H*U or A = L*L**H.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the leading minor of order i is not
+*                positive definite, and the factorization could not be
+*                completed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cpotri"></A>
+  <H2>cpotri</H2>
+  
+  <PRE>
+OTF2( UPLO, N, A, LDA, INFO )
+
+*  Purpose
+*  =======
+*
+*  CPOTF2 computes the Cholesky factorization of a complex Hermitian
+*  positive definite matrix A.
+*
+*  The factorization has the form
+*     A = U' * U ,  if UPLO = 'U', or
+*     A = L  * L',  if UPLO = 'L',
+*  where U is an upper triangular matrix and L is lower triangular.
+*
+*  This is the unblocked version of the algorithm, calling Level 2 BLAS.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies whether the upper or lower triangular part of the
+*          Hermitian matrix A is stored.
+*          = 'U':  Upper triangular
+*          = 'L':  Lower triangular
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the Hermitian matrix A.  If UPLO = 'U', the leading
+*          n by n upper triangular part of A contains the upper
+*          triangular part of the matrix A, and the strictly lower
+*          triangular part of A is not referenced.  If UPLO = 'L', the
+*          leading n by n lower triangular part of A contains the lower
+*          triangular part of the matrix A, and the strictly upper
+*          triangular part of A is not referenced.
+*
+*          On exit, if INFO = 0, the factor U or L from the Cholesky
+*          factorization A = U'*U  or A = L*L'.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*          > 0: if INFO = k, the leading minor of order k is not
+*               positive definite, and the factorization could not be
+*               completed.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cpotrf"></A>
+  <H2>cpotrf</H2>
+  
+  <PRE>
+USAGE:
+  info, a = NumRu::Lapack.cpotrf( uplo, a, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1428,9 +2155,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  info, a = NumRu::Lapack.cpotri( uplo, a)
-    or
-  NumRu::Lapack.cpotri  # print help
+  info, a = NumRu::Lapack.cpotri( uplo, a, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -1492,10 +2217,64 @@ FORTRAN MANUAL
   <H2>cpotrs</H2>
   
   <PRE>
+ Purpose
+*  =======
+*
+*  CPOTRI computes the inverse of a complex Hermitian positive definite
+*  matrix A using the Cholesky factorization A = U**H*U or A = L*L**H
+*  computed by CPOTRF.
+*
+
+*  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  A       (input/output) COMPLEX array, dimension (LDA,N)
+*          On entry, the triangular factor U or L from the Cholesky
+*          factorization A = U**H*U or A = L*L**H, as computed by
+*          CPOTRF.
+*          On exit, the upper or lower triangle of the (Hermitian)
+*          inverse of A, overwriting the input factor U or L.
+*
+*  LDA     (input) INTEGER
+*          The leading dimension of the array A.  LDA >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the (i,i) element of the factor U or L is
+*                zero, and the inverse could not be computed.
+*
+
+*  =====================================================================
+*
+*     .. External Functions ..
+      LOGICAL            LSAME
+      EXTERNAL           LSAME
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           CLAUUM, CTRTRI, XERBLA
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="cpotrs"></A>
+  <H2>cpotrs</H2>
+  
+  <PRE>
 USAGE:
-  info, b = NumRu::Lapack.cpotrs( uplo, a, b)
-    or
-  NumRu::Lapack.cpotrs  # print help
+  info, b = NumRu::Lapack.cpotrs( uplo, a, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL

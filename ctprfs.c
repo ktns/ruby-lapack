@@ -2,25 +2,27 @@
 
 extern VOID ctprfs_(char *uplo, char *trans, char *diag, integer *n, integer *nrhs, complex *ap, complex *b, integer *ldb, complex *x, integer *ldx, real *ferr, real *berr, complex *work, real *rwork, integer *info);
 
+static VALUE sHelp, sUsage;
+
 static VALUE
-rb_ctprfs(int argc, VALUE *argv, VALUE self){
-  VALUE rb_uplo;
+rblapack_ctprfs(int argc, VALUE *argv, VALUE self){
+  VALUE rblapack_uplo;
   char uplo; 
-  VALUE rb_trans;
+  VALUE rblapack_trans;
   char trans; 
-  VALUE rb_diag;
+  VALUE rblapack_diag;
   char diag; 
-  VALUE rb_ap;
+  VALUE rblapack_ap;
   complex *ap; 
-  VALUE rb_b;
+  VALUE rblapack_b;
   complex *b; 
-  VALUE rb_x;
+  VALUE rblapack_x;
   complex *x; 
-  VALUE rb_ferr;
+  VALUE rblapack_ferr;
   real *ferr; 
-  VALUE rb_berr;
+  VALUE rblapack_berr;
   real *berr; 
-  VALUE rb_info;
+  VALUE rblapack_info;
   integer info; 
   complex *work;
   real *rwork;
@@ -30,63 +32,75 @@ rb_ctprfs(int argc, VALUE *argv, VALUE self){
   integer ldx;
   integer n;
 
-  if (argc == 0) {
-    printf("%s\n", "USAGE:\n  ferr, berr, info = NumRu::Lapack.ctprfs( uplo, trans, diag, ap, b, x)\n    or\n  NumRu::Lapack.ctprfs  # print help\n\n\nFORTRAN MANUAL\n      SUBROUTINE CTPRFS( UPLO, TRANS, DIAG, N, NRHS, AP, B, LDB, X, LDX, FERR, BERR, WORK, RWORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  CTPRFS provides error bounds and backward error estimates for the\n*  solution to a system of linear equations with a triangular packed\n*  coefficient matrix.\n*\n*  The solution matrix X must be computed by CTPTRS or some other\n*  means before entering this routine.  CTPRFS does not do iterative\n*  refinement because doing so cannot improve the backward error.\n*\n\n*  Arguments\n*  =========\n*\n*  UPLO    (input) CHARACTER*1\n*          = 'U':  A is upper triangular;\n*          = 'L':  A is lower triangular.\n*\n*  TRANS   (input) CHARACTER*1\n*          Specifies the form of the system of equations:\n*          = 'N':  A * X = B     (No transpose)\n*          = 'T':  A**T * X = B  (Transpose)\n*          = 'C':  A**H * X = B  (Conjugate transpose)\n*\n*  DIAG    (input) CHARACTER*1\n*          = 'N':  A is non-unit triangular;\n*          = 'U':  A is unit triangular.\n*\n*  N       (input) INTEGER\n*          The order of the matrix A.  N >= 0.\n*\n*  NRHS    (input) INTEGER\n*          The number of right hand sides, i.e., the number of columns\n*          of the matrices B and X.  NRHS >= 0.\n*\n*  AP      (input) COMPLEX array, dimension (N*(N+1)/2)\n*          The upper or lower triangular matrix A, packed columnwise in\n*          a linear array.  The j-th column of A is stored in the array\n*          AP as follows:\n*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;\n*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.\n*          If DIAG = 'U', the diagonal elements of A are not referenced\n*          and are assumed to be 1.\n*\n*  B       (input) COMPLEX array, dimension (LDB,NRHS)\n*          The right hand side matrix B. \n*\n*  LDB     (input) INTEGER\n*          The leading dimension of the array B.  LDB >= max(1,N).\n*\n*  X       (input) COMPLEX array, dimension (LDX,NRHS)\n*          The solution matrix X.\n*\n*  LDX     (input) INTEGER\n*          The leading dimension of the array X.  LDX >= max(1,N).\n*\n*  FERR    (output) REAL array, dimension (NRHS)\n*          The estimated forward error bound for each solution vector\n*          X(j) (the j-th column of the solution matrix X).\n*          If XTRUE is the true solution corresponding to X(j), FERR(j)\n*          is an estimated upper bound for the magnitude of the largest\n*          element in (X(j) - XTRUE) divided by the magnitude of the\n*          largest element in X(j).  The estimate is as reliable as\n*          the estimate for RCOND, and is almost always a slight\n*          overestimate of the true error.\n*\n*  BERR    (output) REAL array, dimension (NRHS)\n*          The componentwise relative backward error of each solution\n*          vector X(j) (i.e., the smallest relative change in\n*          any element of A or B that makes X(j) an exact solution).\n*\n*  WORK    (workspace) COMPLEX array, dimension (2*N)\n*\n*  RWORK   (workspace) REAL array, dimension (N)\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*\n\n*  =====================================================================\n*\n\n");
-    return Qnil;
-  }
+  VALUE rb_options;
+  if (argc > 0 && TYPE(argv[argc-1]) == T_HASH) {
+    argc--;
+    rb_options = argv[argc];
+    if (rb_hash_aref(rb_options, sHelp) == Qtrue) {
+      printf("%s\n", "USAGE:\n  ferr, berr, info = NumRu::Lapack.ctprfs( uplo, trans, diag, ap, b, x, [:usage => usage, :help => help])\n\n\nFORTRAN MANUAL\n      SUBROUTINE CTPRFS( UPLO, TRANS, DIAG, N, NRHS, AP, B, LDB, X, LDX, FERR, BERR, WORK, RWORK, INFO )\n\n*  Purpose\n*  =======\n*\n*  CTPRFS provides error bounds and backward error estimates for the\n*  solution to a system of linear equations with a triangular packed\n*  coefficient matrix.\n*\n*  The solution matrix X must be computed by CTPTRS or some other\n*  means before entering this routine.  CTPRFS does not do iterative\n*  refinement because doing so cannot improve the backward error.\n*\n\n*  Arguments\n*  =========\n*\n*  UPLO    (input) CHARACTER*1\n*          = 'U':  A is upper triangular;\n*          = 'L':  A is lower triangular.\n*\n*  TRANS   (input) CHARACTER*1\n*          Specifies the form of the system of equations:\n*          = 'N':  A * X = B     (No transpose)\n*          = 'T':  A**T * X = B  (Transpose)\n*          = 'C':  A**H * X = B  (Conjugate transpose)\n*\n*  DIAG    (input) CHARACTER*1\n*          = 'N':  A is non-unit triangular;\n*          = 'U':  A is unit triangular.\n*\n*  N       (input) INTEGER\n*          The order of the matrix A.  N >= 0.\n*\n*  NRHS    (input) INTEGER\n*          The number of right hand sides, i.e., the number of columns\n*          of the matrices B and X.  NRHS >= 0.\n*\n*  AP      (input) COMPLEX array, dimension (N*(N+1)/2)\n*          The upper or lower triangular matrix A, packed columnwise in\n*          a linear array.  The j-th column of A is stored in the array\n*          AP as follows:\n*          if UPLO = 'U', AP(i + (j-1)*j/2) = A(i,j) for 1<=i<=j;\n*          if UPLO = 'L', AP(i + (j-1)*(2n-j)/2) = A(i,j) for j<=i<=n.\n*          If DIAG = 'U', the diagonal elements of A are not referenced\n*          and are assumed to be 1.\n*\n*  B       (input) COMPLEX array, dimension (LDB,NRHS)\n*          The right hand side matrix B. \n*\n*  LDB     (input) INTEGER\n*          The leading dimension of the array B.  LDB >= max(1,N).\n*\n*  X       (input) COMPLEX array, dimension (LDX,NRHS)\n*          The solution matrix X.\n*\n*  LDX     (input) INTEGER\n*          The leading dimension of the array X.  LDX >= max(1,N).\n*\n*  FERR    (output) REAL array, dimension (NRHS)\n*          The estimated forward error bound for each solution vector\n*          X(j) (the j-th column of the solution matrix X).\n*          If XTRUE is the true solution corresponding to X(j), FERR(j)\n*          is an estimated upper bound for the magnitude of the largest\n*          element in (X(j) - XTRUE) divided by the magnitude of the\n*          largest element in X(j).  The estimate is as reliable as\n*          the estimate for RCOND, and is almost always a slight\n*          overestimate of the true error.\n*\n*  BERR    (output) REAL array, dimension (NRHS)\n*          The componentwise relative backward error of each solution\n*          vector X(j) (i.e., the smallest relative change in\n*          any element of A or B that makes X(j) an exact solution).\n*\n*  WORK    (workspace) COMPLEX array, dimension (2*N)\n*\n*  RWORK   (workspace) REAL array, dimension (N)\n*\n*  INFO    (output) INTEGER\n*          = 0:  successful exit\n*          < 0:  if INFO = -i, the i-th argument had an illegal value\n*\n\n*  =====================================================================\n*\n\n");
+      rb_exit(0);
+    }
+    if (rb_hash_aref(rb_options, sUsage) == Qtrue) {
+      printf("%s\n", "USAGE:\n  ferr, berr, info = NumRu::Lapack.ctprfs( uplo, trans, diag, ap, b, x, [:usage => usage, :help => help])\n");
+      rb_exit(0);
+    } 
+  } else
+    rb_options = Qnil;
   if (argc != 6)
     rb_raise(rb_eArgError,"wrong number of arguments (%d for 6)", argc);
-  rb_uplo = argv[0];
-  rb_trans = argv[1];
-  rb_diag = argv[2];
-  rb_ap = argv[3];
-  rb_b = argv[4];
-  rb_x = argv[5];
+  rblapack_uplo = argv[0];
+  rblapack_trans = argv[1];
+  rblapack_diag = argv[2];
+  rblapack_ap = argv[3];
+  rblapack_b = argv[4];
+  rblapack_x = argv[5];
+  if (rb_options != Qnil) {
+  }
 
-  if (!NA_IsNArray(rb_x))
+  if (!NA_IsNArray(rblapack_x))
     rb_raise(rb_eArgError, "x (6th argument) must be NArray");
-  if (NA_RANK(rb_x) != 2)
+  if (NA_RANK(rblapack_x) != 2)
     rb_raise(rb_eArgError, "rank of x (6th argument) must be %d", 2);
-  nrhs = NA_SHAPE1(rb_x);
-  ldx = NA_SHAPE0(rb_x);
-  if (NA_TYPE(rb_x) != NA_SCOMPLEX)
-    rb_x = na_change_type(rb_x, NA_SCOMPLEX);
-  x = NA_PTR_TYPE(rb_x, complex*);
-  if (!NA_IsNArray(rb_b))
+  nrhs = NA_SHAPE1(rblapack_x);
+  ldx = NA_SHAPE0(rblapack_x);
+  if (NA_TYPE(rblapack_x) != NA_SCOMPLEX)
+    rblapack_x = na_change_type(rblapack_x, NA_SCOMPLEX);
+  x = NA_PTR_TYPE(rblapack_x, complex*);
+  if (!NA_IsNArray(rblapack_b))
     rb_raise(rb_eArgError, "b (5th argument) must be NArray");
-  if (NA_RANK(rb_b) != 2)
+  if (NA_RANK(rblapack_b) != 2)
     rb_raise(rb_eArgError, "rank of b (5th argument) must be %d", 2);
-  if (NA_SHAPE1(rb_b) != nrhs)
+  if (NA_SHAPE1(rblapack_b) != nrhs)
     rb_raise(rb_eRuntimeError, "shape 1 of b must be the same as shape 1 of x");
-  ldb = NA_SHAPE0(rb_b);
-  if (NA_TYPE(rb_b) != NA_SCOMPLEX)
-    rb_b = na_change_type(rb_b, NA_SCOMPLEX);
-  b = NA_PTR_TYPE(rb_b, complex*);
-  diag = StringValueCStr(rb_diag)[0];
-  trans = StringValueCStr(rb_trans)[0];
-  uplo = StringValueCStr(rb_uplo)[0];
+  ldb = NA_SHAPE0(rblapack_b);
+  if (NA_TYPE(rblapack_b) != NA_SCOMPLEX)
+    rblapack_b = na_change_type(rblapack_b, NA_SCOMPLEX);
+  b = NA_PTR_TYPE(rblapack_b, complex*);
+  diag = StringValueCStr(rblapack_diag)[0];
+  trans = StringValueCStr(rblapack_trans)[0];
+  uplo = StringValueCStr(rblapack_uplo)[0];
   n = ldb;
-  if (!NA_IsNArray(rb_ap))
+  if (!NA_IsNArray(rblapack_ap))
     rb_raise(rb_eArgError, "ap (4th argument) must be NArray");
-  if (NA_RANK(rb_ap) != 1)
+  if (NA_RANK(rblapack_ap) != 1)
     rb_raise(rb_eArgError, "rank of ap (4th argument) must be %d", 1);
-  if (NA_SHAPE0(rb_ap) != (n*(n+1)/2))
+  if (NA_SHAPE0(rblapack_ap) != (n*(n+1)/2))
     rb_raise(rb_eRuntimeError, "shape 0 of ap must be %d", n*(n+1)/2);
-  if (NA_TYPE(rb_ap) != NA_SCOMPLEX)
-    rb_ap = na_change_type(rb_ap, NA_SCOMPLEX);
-  ap = NA_PTR_TYPE(rb_ap, complex*);
+  if (NA_TYPE(rblapack_ap) != NA_SCOMPLEX)
+    rblapack_ap = na_change_type(rblapack_ap, NA_SCOMPLEX);
+  ap = NA_PTR_TYPE(rblapack_ap, complex*);
   {
     int shape[1];
     shape[0] = nrhs;
-    rb_ferr = na_make_object(NA_SFLOAT, 1, shape, cNArray);
+    rblapack_ferr = na_make_object(NA_SFLOAT, 1, shape, cNArray);
   }
-  ferr = NA_PTR_TYPE(rb_ferr, real*);
+  ferr = NA_PTR_TYPE(rblapack_ferr, real*);
   {
     int shape[1];
     shape[0] = nrhs;
-    rb_berr = na_make_object(NA_SFLOAT, 1, shape, cNArray);
+    rblapack_berr = na_make_object(NA_SFLOAT, 1, shape, cNArray);
   }
-  berr = NA_PTR_TYPE(rb_berr, real*);
+  berr = NA_PTR_TYPE(rblapack_berr, real*);
   work = ALLOC_N(complex, (2*n));
   rwork = ALLOC_N(real, (n));
 
@@ -94,11 +108,13 @@ rb_ctprfs(int argc, VALUE *argv, VALUE self){
 
   free(work);
   free(rwork);
-  rb_info = INT2NUM(info);
-  return rb_ary_new3(3, rb_ferr, rb_berr, rb_info);
+  rblapack_info = INT2NUM(info);
+  return rb_ary_new3(3, rblapack_ferr, rblapack_berr, rblapack_info);
 }
 
 void
 init_lapack_ctprfs(VALUE mLapack){
-  rb_define_module_function(mLapack, "ctprfs", rb_ctprfs, -1);
+  rb_define_module_function(mLapack, "ctprfs", rblapack_ctprfs, -1);
+  sHelp = ID2SYM(rb_intern("help"));
+  sUsage = ID2SYM(rb_intern("usage"));
 }

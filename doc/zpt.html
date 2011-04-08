@@ -20,10 +20,119 @@
   <H2>zptcon</H2>
   
   <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX*16 or DOUBLE COMPLEX routines for symmetric or Hermitian positive definite tridiagonal matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX*16 or DOUBLE COMPLEX routines for symmetric or Hermitian positive definite tridiagonal matrix</H1>
+    <UL>
+      <LI><A HREF="#zptcon">zptcon</A> : </LI>
+      <LI><A HREF="#zpteqr">zpteqr</A> : </LI>
+      <LI><A HREF="#zptrfs">zptrfs</A> : </LI>
+      <LI><A HREF="#zptsv">zptsv</A> : </LI>
+      <LI><A HREF="#zptsvx">zptsvx</A> : </LI>
+      <LI><A HREF="#zpttrf">zpttrf</A> : </LI>
+      <LI><A HREF="#zpttrs">zpttrs</A> : </LI>
+      <LI><A HREF="#zptts2">zptts2</A> : </LI>
+    </UL>
+
+  <A NAME="zptcon"></A>
+  <H2>zptcon</H2>
+  
+  <PRE>
 USAGE:
-  rcond, info = NumRu::Lapack.zptcon( d, e, anorm)
-    or
-  NumRu::Lapack.zptcon  # print help
+  rcond, info = NumRu::Lapack.zptcon( d, e, anorm, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZPTCON( N, D, E, ANORM, RCOND, RWORK, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZPTCON computes the reciprocal of the condition number (in the
+*  1-norm) of a complex Hermitian positive definite tridiagonal matrix
+*  using the factorization A = L*D*L**H or A = U**H*D*U computed by
+*  ZPTTRF.
+*
+*  Norm(inv(A)) is computed by a direct method, and the reciprocal of
+*  the condition number is computed as
+*                   RCOND = 1 / (ANORM * norm(inv(A))).
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  D       (input) DOUBLE PRECISION array, dimension (N)
+*          The n diagonal elements of the diagonal matrix D from the
+*          factorization of A, as computed by ZPTTRF.
+*
+*  E       (input) COMPLEX*16 array, dimension (N-1)
+*          The (n-1) off-diagonal elements of the unit bidiagonal factor
+*          U or L from the factorization of A, as computed by ZPTTRF.
+*
+*  ANORM   (input) DOUBLE PRECISION
+*          The 1-norm of the original matrix A.
+*
+*  RCOND   (output) DOUBLE PRECISION
+*          The reciprocal of the condition number of the matrix A,
+*          computed as RCOND = 1/(ANORM * AINVNM), where AINVNM is the
+*          1-norm of inv(A) computed in this routine.
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+
+*  Further Details
+*  ===============
+*
+*  The method used is described in Nicholas J. Higham, "Efficient
+*  Algorithms for Computing the Condition Number of a Tridiagonal
+*  Matrix", SIAM J. Sci. Stat. Comput., Vol. 7, No. 1, January 1986.
+*
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zpteqr"></A>
+  <H2>zpteqr</H2>
+  
+  <PRE>
+<HTML>
+  <HEAD>
+    <TITLE>COMPLEX*16 or DOUBLE COMPLEX routines for symmetric or Hermitian positive definite tridiagonal matrix</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>COMPLEX*16 or DOUBLE COMPLEX routines for symmetric or Hermitian positive definite tridiagonal matrix</H1>
+    <UL>
+      <LI><A HREF="#zptcon">zptcon</A> : </LI>
+      <LI><A HREF="#zpteqr">zpteqr</A> : </LI>
+      <LI><A HREF="#zptrfs">zptrfs</A> : </LI>
+      <LI><A HREF="#zptsv">zptsv</A> : </LI>
+      <LI><A HREF="#zptsvx">zptsvx</A> : </LI>
+      <LI><A HREF="#zpttrf">zpttrf</A> : </LI>
+      <LI><A HREF="#zpttrs">zpttrs</A> : </LI>
+      <LI><A HREF="#zptts2">zptts2</A> : </LI>
+    </UL>
+
+  <A NAME="zptcon"></A>
+  <H2>zptcon</H2>
+  
+  <PRE>
+USAGE:
+  rcond, info = NumRu::Lapack.zptcon( d, e, anorm, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -90,9 +199,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  info, d, e, z = NumRu::Lapack.zpteqr( compz, d, e, z)
-    or
-  NumRu::Lapack.zpteqr  # print help
+  info, d, e, z = NumRu::Lapack.zpteqr( compz, d, e, z, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -184,10 +291,67 @@ FORTRAN MANUAL
   <H2>zptrfs</H2>
   
   <PRE>
+nvectors of original Hermitian
+*                  matrix also.  Array Z contains the unitary matrix
+*                  used to reduce the original matrix to tridiagonal
+*                  form.
+*          = 'I':  Compute eigenvectors of tridiagonal matrix also.
+*
+*  N       (input) INTEGER
+*          The order of the matrix.  N >= 0.
+*
+*  D       (input/output) DOUBLE PRECISION array, dimension (N)
+*          On entry, the n diagonal elements of the tridiagonal matrix.
+*          On normal exit, D contains the eigenvalues, in descending
+*          order.
+*
+*  E       (input/output) DOUBLE PRECISION array, dimension (N-1)
+*          On entry, the (n-1) subdiagonal elements of the tridiagonal
+*          matrix.
+*          On exit, E has been destroyed.
+*
+*  Z       (input/output) COMPLEX*16 array, dimension (LDZ, N)
+*          On entry, if COMPZ = 'V', the unitary matrix used in the
+*          reduction to tridiagonal form.
+*          On exit, if COMPZ = 'V', the orthonormal eigenvectors of the
+*          original Hermitian matrix;
+*          if COMPZ = 'I', the orthonormal eigenvectors of the
+*          tridiagonal matrix.
+*          If INFO > 0 on exit, Z contains the eigenvectors associated
+*          with only the stored eigenvalues.
+*          If  COMPZ = 'N', then Z is not referenced.
+*
+*  LDZ     (input) INTEGER
+*          The leading dimension of the array Z.  LDZ >= 1, and if
+*          COMPZ = 'V' or 'I', LDZ >= max(1,N).
+*
+*  WORK    (workspace) DOUBLE PRECISION array, dimension (4*N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit.
+*          < 0:  if INFO = -i, the i-th argument had an illegal value.
+*          > 0:  if INFO = i, and i is:
+*                <= N  the Cholesky factorization of the matrix could
+*                      not be performed because the i-th principal minor
+*                      was not positive definite.
+*                > N   the SVD algorithm failed to converge;
+*                      if INFO = N+i, i off-diagonal elements of the
+*                      bidiagonal factor did not converge to zero.
+*
+
+*  ====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zptrfs"></A>
+  <H2>zptrfs</H2>
+  
+  <PRE>
 USAGE:
-  ferr, berr, info, x = NumRu::Lapack.zptrfs( uplo, d, e, df, ef, b, x)
-    or
-  NumRu::Lapack.zptrfs  # print help
+  ferr, berr, info, x = NumRu::Lapack.zptrfs( uplo, d, e, df, ef, b, x, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -287,10 +451,183 @@ FORTRAN MANUAL
   <H2>zptsv</H2>
   
   <PRE>
+B,NRHS)
+*          The right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (input/output) COMPLEX*16 array, dimension (LDX,NRHS)
+*          On entry, the solution matrix X, as computed by ZPTTRS.
+*          On exit, the improved solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).
+*
+*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (N)
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+*  Internal Parameters
+*  ===================
+*
+*  ITMAX is the maximum number of steps of iterative refinement.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zptsv"></A>
+  <H2>zptsv</H2>
+  
+  <PRE>
 USAGE:
-  info, d, e, b = NumRu::Lapack.zptsv( nrhs, d, e, b)
-    or
-  NumRu::Lapack.zptsv  # print help
+  info, d, e, b = NumRu::Lapack.zptsv( nrhs, d, e, b, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZPTSV( N, NRHS, D, E, B, LDB, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZPTSV computes the solution to a complex system of linear equations
+*  A*X = B, where A is an N-by-N Hermitian positive definite tridiagonal
+*  matrix, and X and B are N-by-NRHS matrices.
+*
+*  A is factored as A = L*D*L**H, and the factored form of A is then
+*  used to solve the system of equations.
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  D       (input/output) DOUBLE PRECISION array, dimension (N)
+*          On entry, the n diagonal elements of the tridiagonal matrix
+*          A.  On exit, the n diagonal elements of the diagonal matrix
+*          D from the factorization A = L*D*L**H.
+*
+*  E       (input/output) COMPLEX*16 array, dimension (N-1)
+*          On entry, the (n-1) subdiagonal elements of the tridiagonal
+*          matrix A.  On exit, the (n-1) subdiagonal elements of the
+*          unit bidiagonal factor L from the L*D*L**H factorization of
+*          A.  E can also be regarded as the superdiagonal of the unit
+*          bidiagonal factor U from the U**H*D*U factorization of A.
+*
+*  B       (input/output) COMPLEX*16 array, dimension (LDB,N)
+*          On entry, the N-by-NRHS right hand side matrix B.
+*          On exit, if INFO = 0, the N-by-NRHS solution matrix X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the leading minor of order i is not
+*                positive definite, and the solution has not been
+*                computed.  The factorization has not been completed
+*                unless i = N.
+*
+
+*  =====================================================================
+*
+*     .. External Subroutines ..
+      EXTERNAL           XERBLA, ZPTTRF, ZPTTRS
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zptsvx"></A>
+  <H2>zptsvx</H2>
+  
+  <PRE>
+B,NRHS)
+*          The right hand side matrix B.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  X       (input/output) COMPLEX*16 array, dimension (LDX,NRHS)
+*          On entry, the solution matrix X, as computed by ZPTTRS.
+*          On exit, the improved solution matrix X.
+*
+*  LDX     (input) INTEGER
+*          The leading dimension of the array X.  LDX >= max(1,N).
+*
+*  FERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).
+*
+*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in
+*          any element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (N)
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*
+*  Internal Parameters
+*  ===================
+*
+*  ITMAX is the maximum number of steps of iterative refinement.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zptsv"></A>
+  <H2>zptsv</H2>
+  
+  <PRE>
+USAGE:
+  info, d, e, b = NumRu::Lapack.zptsv( nrhs, d, e, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -363,9 +700,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  x, rcond, ferr, berr, info, df, ef = NumRu::Lapack.zptsvx( fact, d, e, df, ef, b)
-    or
-  NumRu::Lapack.zptsvx  # print help
+  x, rcond, ferr, berr, info, df, ef = NumRu::Lapack.zptsvx( fact, d, e, df, ef, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -511,10 +846,151 @@ FORTRAN MANUAL
   <H2>zpttrf</H2>
   
   <PRE>
+SION array, dimension (NRHS)
+*          The forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).
+*
+*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in any
+*          element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (N)
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is
+*                <= N:  the leading minor of order i of A is
+*                       not positive definite, so the factorization
+*                       could not be completed, and the solution has not
+*                       been computed. RCOND = 0 is returned.
+*                = N+1: U is nonsingular, but RCOND is less than machine
+*                       precision, meaning that the matrix is singular
+*                       to working precision.  Nevertheless, the
+*                       solution and error bounds are computed because
+*                       there are a number of situations where the
+*                       computed solution can be more accurate than the
+*                       value of RCOND would suggest.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zpttrf"></A>
+  <H2>zpttrf</H2>
+  
+  <PRE>
 USAGE:
-  info, d, e = NumRu::Lapack.zpttrf( d, e)
-    or
-  NumRu::Lapack.zpttrf  # print help
+  info, d, e = NumRu::Lapack.zpttrf( d, e, [:usage => usage, :help => help])
+
+
+FORTRAN MANUAL
+      SUBROUTINE ZPTTRF( N, D, E, INFO )
+
+*  Purpose
+*  =======
+*
+*  ZPTTRF computes the L*D*L' factorization of a complex Hermitian
+*  positive definite tridiagonal matrix A.  The factorization may also
+*  be regarded as having the form A = U'*D*U.
+*
+
+*  Arguments
+*  =========
+*
+*  N       (input) INTEGER
+*          The order of the matrix A.  N >= 0.
+*
+*  D       (input/output) DOUBLE PRECISION array, dimension (N)
+*          On entry, the n diagonal elements of the tridiagonal matrix
+*          A.  On exit, the n diagonal elements of the diagonal matrix
+*          D from the L*D*L' factorization of A.
+*
+*  E       (input/output) COMPLEX*16 array, dimension (N-1)
+*          On entry, the (n-1) subdiagonal elements of the tridiagonal
+*          matrix A.  On exit, the (n-1) subdiagonal elements of the
+*          unit bidiagonal factor L from the L*D*L' factorization of A.
+*          E can also be regarded as the superdiagonal of the unit
+*          bidiagonal factor U from the U'*D*U factorization of A.
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*          > 0: if INFO = k, the leading minor of order k is not
+*               positive definite; if k < N, the factorization could not
+*               be completed, while if k = N, the factorization was
+*               completed, but D(N) <= 0.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zpttrs"></A>
+  <H2>zpttrs</H2>
+  
+  <PRE>
+SION array, dimension (NRHS)
+*          The forward error bound for each solution vector
+*          X(j) (the j-th column of the solution matrix X).
+*          If XTRUE is the true solution corresponding to X(j), FERR(j)
+*          is an estimated upper bound for the magnitude of the largest
+*          element in (X(j) - XTRUE) divided by the magnitude of the
+*          largest element in X(j).
+*
+*  BERR    (output) DOUBLE PRECISION array, dimension (NRHS)
+*          The componentwise relative backward error of each solution
+*          vector X(j) (i.e., the smallest relative change in any
+*          element of A or B that makes X(j) an exact solution).
+*
+*  WORK    (workspace) COMPLEX*16 array, dimension (N)
+*
+*  RWORK   (workspace) DOUBLE PRECISION array, dimension (N)
+*
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, and i is
+*                <= N:  the leading minor of order i of A is
+*                       not positive definite, so the factorization
+*                       could not be completed, and the solution has not
+*                       been computed. RCOND = 0 is returned.
+*                = N+1: U is nonsingular, but RCOND is less than machine
+*                       precision, meaning that the matrix is singular
+*                       to working precision.  Nevertheless, the
+*                       solution and error bounds are computed because
+*                       there are a number of situations where the
+*                       computed solution can be more accurate than the
+*                       value of RCOND would suggest.
+*
+
+*  =====================================================================
+*
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zpttrf"></A>
+  <H2>zpttrf</H2>
+  
+  <PRE>
+USAGE:
+  info, d, e = NumRu::Lapack.zpttrf( d, e, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -567,9 +1043,7 @@ FORTRAN MANUAL
   
   <PRE>
 USAGE:
-  info, b = NumRu::Lapack.zpttrs( uplo, d, e, b)
-    or
-  NumRu::Lapack.zpttrs  # print help
+  info, b = NumRu::Lapack.zpttrs( uplo, d, e, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
@@ -651,10 +1125,73 @@ FORTRAN MANUAL
   <H2>zptts2</H2>
   
   <PRE>
+  Arguments
+*  =========
+*
+*  UPLO    (input) CHARACTER*1
+*          Specifies the form of the factorization and whether the
+*          vector E is the superdiagonal of the upper bidiagonal factor
+*          U or the subdiagonal of the lower bidiagonal factor L.
+*          = 'U':  A = U'*D*U, E is the superdiagonal of U
+*          = 'L':  A = L*D*L', E is the subdiagonal of L
+*
+*  N       (input) INTEGER
+*          The order of the tridiagonal matrix A.  N >= 0.
+*
+*  NRHS    (input) INTEGER
+*          The number of right hand sides, i.e., the number of columns
+*          of the matrix B.  NRHS >= 0.
+*
+*  D       (input) DOUBLE PRECISION array, dimension (N)
+*          The n diagonal elements of the diagonal matrix D from the
+*          factorization A = U'*D*U or A = L*D*L'.
+*
+*  E       (input) COMPLEX*16 array, dimension (N-1)
+*          If UPLO = 'U', the (n-1) superdiagonal elements of the unit
+*          bidiagonal factor U from the factorization A = U'*D*U.
+*          If UPLO = 'L', the (n-1) subdiagonal elements of the unit
+*          bidiagonal factor L from the factorization A = L*D*L'.
+*
+*  B       (input/output) DOUBLE PRECISION array, dimension (LDB,NRHS)
+*          On entry, the right hand side vectors B for the system of
+*          linear equations.
+*          On exit, the solution vectors, X.
+*
+*  LDB     (input) INTEGER
+*          The leading dimension of the array B.  LDB >= max(1,N).
+*
+*  INFO    (output) INTEGER
+*          = 0: successful exit
+*          < 0: if INFO = -k, the k-th argument had an illegal value
+*
+
+*  =====================================================================
+*
+*     .. Local Scalars ..
+      LOGICAL            UPPER
+      INTEGER            IUPLO, J, JB, NB
+*     ..
+*     .. External Functions ..
+      INTEGER            ILAENV
+      EXTERNAL           ILAENV
+*     ..
+*     .. External Subroutines ..
+      EXTERNAL           XERBLA, ZPTTS2
+*     ..
+*     .. Intrinsic Functions ..
+      INTRINSIC          MAX, MIN
+*     ..
+
+
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+  <A NAME="zptts2"></A>
+  <H2>zptts2</H2>
+  
+  <PRE>
 USAGE:
-  b = NumRu::Lapack.zptts2( iuplo, d, e, b)
-    or
-  NumRu::Lapack.zptts2  # print help
+  b = NumRu::Lapack.zptts2( iuplo, d, e, b, [:usage => usage, :help => help])
 
 
 FORTRAN MANUAL
