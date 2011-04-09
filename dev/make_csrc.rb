@@ -358,36 +358,40 @@ FORTRAN MANUAL
 EOF
   ilen = inputs.length
   code << <<"EOF"
-  VALUE rb_options;
+  VALUE #{RBPREFIX}options;
   if (argc > 0 && TYPE(argv[argc-1]) == T_HASH) {
     argc--;
-    rb_options = argv[argc];
-    if (rb_hash_aref(rb_options, sHelp) == Qtrue) {
+    #{RBPREFIX}options = argv[argc];
+    if (rb_hash_aref(#{RBPREFIX}options, sHelp) == Qtrue) {
       printf("%s\\n", "#{help_code.gsub(/\\/,'\\\\\\').gsub(/\n/,'\n').gsub(/"/,'\"')}");
       rb_exit(0);
     }
-    if (rb_hash_aref(rb_options, sUsage) == Qtrue) {
+    if (rb_hash_aref(#{RBPREFIX}options, sUsage) == Qtrue) {
       printf("%s\\n", "#{usage_code.gsub(/\\/,'\\\\\\').gsub(/\n/,'\n').gsub(/"/,'\"')}");
       rb_exit(0);
     } 
   } else
-    rb_options = Qnil;
+    #{RBPREFIX}options = Qnil;
   if (argc != #{ilen})
     rb_raise(rb_eArgError,"wrong number of arguments (%d for #{ilen})", argc);
 EOF
   inputs.each_with_index{|arg,i|
     code << "  #{RBPREFIX}#{arg} = argv[#{i}];\n"
   }
-  code << "  if (rb_options != Qnil) {\n"
-  options.each_with_index do |opt|
-    code << "    #{RBPREFIX}#{opt} = rb_hash_aref(rb_options, ID2SYM(rb_intern(\"#{opt}\")));\n"
+  code << "  if (#{RBPREFIX}options != Qnil) {\n"
+  options.each do |opt|
+    code << "    #{RBPREFIX}#{opt} = rb_hash_aref(#{RBPREFIX}options, ID2SYM(rb_intern(\"#{opt}\")));\n"
+  end
+  code << "  } else {\n"
+  options.each do |opt|
+    code << "    #{RBPREFIX}#{opt} = Qnil;\n"
   end
   code << "  }\n"
 
   code << "\n"
 
   order = Hash.new
-  inputs.each_with_index do |arg,i|
+  (inputs+options).each_with_index do |arg,i|
     aryd = Array.new
     aryp = Array.new
     if dim = args[arg][:dims]
@@ -458,23 +462,22 @@ EOF
   order.each do |name, v|
     if v[:type] == :input
       arg = args[name]
-      code << get_input(name, arg[:type], arg[:dims], v[:order], varset, sub_name, subst)
+      if arg[:option]
+        code << <<EOF
+  if (#{RBPREFIX}options == Qnil || #{RBPREFIX}#{name} == Qnil)
+    #{name} = #{arg[:default] || "NULL"};
+  else
+  #{get_input(name, arg[:type], arg[:dims], :option, varset, sub_name, subst)}
+EOF
+      else
+        code << get_input(name, arg[:type], arg[:dims], v[:order], varset, sub_name, subst)
+      end
     else
       unless varset.include?(name)
         code << "  #{name} = #{v[:value]};\n"
       end
     end
     varset.push name
-  end
-
-  options.each do |name|
-    arg = args[name]
-    code << <<EOF
-  if (rb_options == Qnil || rb_#{name} == Qnil)
-    #{name} = NULL;
-  else
-#{get_input(name, arg[:type], arg[:dims], :option, varset, subst)}
-EOF
   end
 
   outputs.each{|name|
