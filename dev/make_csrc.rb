@@ -239,6 +239,9 @@ def create_code(name)
       inputs.delete(dim)
     }
   }
+  subst.keys.each do |k|
+    inputs.delete(k)
+  end
 
   if @@debug
     p "inputs"
@@ -397,11 +400,16 @@ EOF
     if dim = args[arg][:dims]
       dim.each do |d|
         vs = get_vars(d)
-        if vs.length==1 && vs[0] == d
+        if vs.length==1 && vs[0] == d && !subst.keys.include?(d)
           aryp.push d
         else
           aryd.push vs
         end
+      end
+    end
+    if vs = args[arg][:default]
+      get_vars(vs).each do |v|
+        aryd.push v
       end
     end
     aryd.flatten!
@@ -455,6 +463,7 @@ EOF
     end
   end
 
+  p "order"
   pp order if @@debug
 
   varset = Array.new
