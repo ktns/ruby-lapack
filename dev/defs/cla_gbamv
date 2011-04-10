@@ -34,7 +34,7 @@
     :type: real
     :intent: input
     :dims: 
-    - "((lsame_(&trans,\"N\")) || (lsame_(&trans,\"n\"))) ? 1 + ( n - 1 )*abs( incx ) : 1 + ( m - 1 )*abs( incx )"
+    - "trans == ilatrans_(\"N\") ? 1 + ( n - 1 )*abs( incx ) : 1 + ( m - 1 )*abs( incx )"
 - incx: 
     :type: integer
     :intent: input
@@ -45,7 +45,7 @@
     :type: real
     :intent: input/output
     :dims: 
-    - "((lsame_(&trans,\"N\")) || (lsame_(&trans,\"n\"))) ? 1 + ( m - 1 )*abs( incy ) : 1 + ( n - 1 )*abs( incy )"
+    - "trans == ilatrans_(\"N\") ? 1 + ( m - 1 )*abs( incy ) : 1 + ( n - 1 )*abs( incy )"
 - incy: 
     :type: integer
     :intent: input

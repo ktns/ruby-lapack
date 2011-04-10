@@ -755,6 +755,8 @@ def generate_code(fnames, names)
 #define LG(n) ((int)ceil(log((double)n)/log(2.0)))
 
 extern logical lsame_(char *ca, char *cb);
+extern integer ilatrans_(char*);
+
 
 VALUE sHelp, sUsage;
 VALUE #{RBPREFIX}ZERO;
