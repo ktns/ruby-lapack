@@ -129,8 +129,8 @@
     :type: integer
     :intent: output
 :substitutions: 
-  ldafb: ldafb = MAX(1,n)
-  ldab: ldab = MAX(1,n)
+  n: ldab
+  ldafb: MAX(1,n)
 :fortran_help: "      SUBROUTINE ZLA_GBRFSX_EXTENDED( PREC_TYPE, TRANS_TYPE, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB, IPIV, COLEQU, C, B, LDB, Y, LDY, BERR_OUT, N_NORMS, ERR_BNDS_NORM, ERR_BNDS_COMP, RES, AYB, DY, Y_TAIL, RCOND, ITHRESH, RTHRESH, DZ_UB, IGNORE_CWISE, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\

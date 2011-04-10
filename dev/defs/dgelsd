@@ -58,6 +58,7 @@
     :type: integer
     :intent: output
 :substitutions: 
+  m: lda
   c__9: "9"
   c__0: "0"
   liwork: 3*(MIN(m,n))*nlvl+11*(MIN(m,n))

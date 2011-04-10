@@ -41,7 +41,7 @@
     :type: integer
     :intent: output
 :substitutions: 
-  lda: m
+  m: lda
 :fortran_help: "      SUBROUTINE CGEEQUB( M, N, A, LDA, R, C, ROWCND, COLCND, AMAX, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\

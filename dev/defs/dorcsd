@@ -124,7 +124,7 @@
   ldv1t: "lsame_(&jobv1t,\"Y\") ? MAX(1,q) : 0"
   ldu1: "lsame_(&jobu1,\"Y\") ? MAX(1,p) : 0"
   ldu2: "lsame_(&jobu2,\"Y\") ? MAX(1,m-p) : 0"
-  ldx11: p
+  p: ldx11
   ldx12: p
   ldx21: p
   ldx22: p

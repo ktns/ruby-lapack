@@ -96,7 +96,7 @@
     :type: integer
     :intent: output
 :substitutions: 
-  ldx11: p
+  p: ldx11
   ldx12: p
   ldx21: p
   ldx22: p

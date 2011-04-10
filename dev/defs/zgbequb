@@ -47,7 +47,7 @@
     :type: integer
     :intent: output
 :substitutions: 
-  ldab: m
+  m: ldab
 :fortran_help: "      SUBROUTINE ZGBEQUB( M, N, KL, KU, AB, LDAB, R, C, ROWCND, COLCND, AMAX, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\
