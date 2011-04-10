@@ -142,7 +142,7 @@ end
 
 
 
-def create_code(name)
+def create_code(name, flag)
   def_fname = File.join(File.dirname(__FILE__), "defs", name)
   hash = nil
   begin
@@ -179,6 +179,10 @@ def create_code(name)
   end
   unless args && !args.empty?
     raise "no args (#{name})"
+  end
+
+  unless flag
+    return true, sub_name
   end
 
 
@@ -463,8 +467,10 @@ EOF
     end
   end
 
-  p "order"
-  pp order if @@debug
+ if @@debug
+   p "order"
+   pp order
+ end
 
   varset = Array.new
   @shape = Hash.new
@@ -664,18 +670,21 @@ EOF
   return [code_all, sub_name]
 end
 
-def generate_code(fnames)
+def generate_code(fnames, names)
   nfnames = fnames.length
   sub_names = Array.new
   fnames.each_with_index{|fname,i|
     print "#{i+1}/#{nfnames}\n" if (i+1)%100==0
     name = File.basename(fname)
-    code, sub_name = create_code(name)
+    flag = names.nil? || names.include?(name)
+    code, sub_name = create_code(name, flag)
     if code
       sub_names.push sub_name
-      File.open(sub_name+".c","w"){|file|
-        file.print code
-      }
+      if flag
+        File.open(sub_name+".c","w"){|file|
+          file.print code
+        }
+      end
     end
   }
 
@@ -731,15 +740,19 @@ end
 
 @@debug = ARGV.delete("--debug")
 
-dname = ARGV[0] || raise("Usage: ruby #$0 path_to_lapack_src")
-if File.directory?(dname)
-  reg = File.join(dname, "[a-z]*[a-z0-9]")
-  fnames = Dir[reg]
-else
-  fnames = [dname]
-  @@debug = true
+dname = ARGV.shift || raise("Usage: ruby #$0 path_to_lapack_src [name0, name1, ..]")
+unless File.directory?(dname)
+  raise "the first argument must be directory"
 end
 
-generate_code(fnames)
+unless ARGV.empty?
+  names = ARGV
+#  @@debug = true
+else
+  names = nil
+end
 
+reg = File.join(dname, "[a-z]*[a-z0-9]")
+fnames = Dir[reg]
 
+generate_code(fnames, names)
