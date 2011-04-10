@@ -13,6 +13,7 @@ class GelsyTest < Test::Unit::TestCase
     @b = NVector[[7.4, 4.2, -8.3, 1.8, 8.6, 2.1]]
     @rcond = 0.01
     @n = @a.shape[1]
+    @jpvt = NArray.int(@n)
 
     @lss = NArray[[0.6344, 0.9699, -1.4403, 3.3678, 3.3992]]
   end
@@ -20,7 +21,6 @@ class GelsyTest < Test::Unit::TestCase
   %w(s d).each do |sd|
     method = "#{sd}gelsy"
     define_method("test_#{method}") do
-      @jpvt = NArray.int(@n)
       rank, work, info, a, b, jpvt = NumRu::Lapack.send(method, @a, @b, @jpvt, @rcond, :lwork => -1)
       assert_equal(0, info)
       lwork = work[0].to_i
