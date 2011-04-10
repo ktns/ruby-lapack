@@ -14,20 +14,6 @@ class GelsTest < Test::Unit::TestCase
     @b = NVector[[-2.67, -0.55, 3.34, -0.77, 0.48, 4.10]]
   end
 
-  def test_dgels
-    work, info, a, b = NumRu::Lapack.dgels("N", @a.to_lm, @b)
-    assert_equal(0, info)
-    lwork = work[0].to_i
-    work, info, a, b = NumRu::Lapack.dgels("N", @a.to_lm, @b, :lwork => -1)
-    assert_equal(0, info)
-    assert_equal(lwork, work[0].to_i)
-    work, info, a, b = NumRu::Lapack.dgels("N", @a.to_lm, @b, :lwork => lwork)
-    assert_equal(0, info)
-    assert_equal(12, work[0])
-    n = @a.shape[0]
-    assert( (NArray[[1.5339, 1.8707, -1.5241, 0.0392]]-b[0...n,true]).abs.max < 1.0e-4 )
-  end
-
   def test_sgels
     work, info, a, b = NumRu::Lapack.sgels("N", @a.to_lm, @b)
     assert_equal(0, info)
@@ -36,6 +22,20 @@ class GelsTest < Test::Unit::TestCase
     assert_equal(0, info)
     assert_equal(lwork, work[0].to_i)
     work, info, a, b = NumRu::Lapack.sgels("N", @a.to_lm, @b, :lwork => lwork)
+    assert_equal(0, info)
+    assert_equal(12, work[0])
+    n = @a.shape[0]
+    assert( (NArray[[1.5339, 1.8707, -1.5241, 0.0392]]-b[0...n,true]).abs.max < 1.0e-4 )
+  end
+
+  def test_dgels
+    work, info, a, b = NumRu::Lapack.dgels("N", @a.to_lm, @b)
+    assert_equal(0, info)
+    lwork = work[0].to_i
+    work, info, a, b = NumRu::Lapack.dgels("N", @a.to_lm, @b, :lwork => -1)
+    assert_equal(0, info)
+    assert_equal(lwork, work[0].to_i)
+    work, info, a, b = NumRu::Lapack.dgels("N", @a.to_lm, @b, :lwork => lwork)
     assert_equal(0, info)
     assert_equal(12, work[0])
     n = @a.shape[0]
