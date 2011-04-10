@@ -28,7 +28,10 @@
     :type: complex
     :intent: input/output
     :dims: 
-    - ldb
+    - m
+    - nrhs
+    :outdims:
+    - n
     - nrhs
 - ldb: 
     :type: integer
@@ -41,11 +44,14 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: MIN(m,n) + MAX(MIN(m,n),nrhs)
 - info: 
     :type: integer
     :intent: output
-:substitutions: {}
-
+:substitutions: 
+  m: lda
+  ldb: MAX(m,n)
 :fortran_help: "      SUBROUTINE CGELS( TRANS, M, N, NRHS, A, LDA, B, LDB, WORK, LWORK, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\
