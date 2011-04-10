@@ -41,11 +41,14 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: MIN(m,n) + MAX(MIN(m,n),nrhs)
 - info: 
     :type: integer
     :intent: output
-:substitutions: {}
-
+:substitutions: 
+  m: lda
+  ldb: MAX(m,n)
 :fortran_help: "      SUBROUTINE SGELS( TRANS, M, N, NRHS, A, LDA, B, LDB, WORK, LWORK, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\
