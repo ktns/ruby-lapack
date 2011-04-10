@@ -28,8 +28,8 @@ class GelssTest < Test::Unit::TestCase
         s, rank, work, info, a, b = NumRu::Lapack.send(method, @a, @b, @rcond, :lwork => lw)
         assert_equal(0, info)
         assert_equal(lwork, work[0].to_i)
-        assert (@lss - b).abs.max < 1e-4
-        assert (@sv - s).abs.max < 1e-4
+        assert_in_delta 0.0, (@lss - b).abs.max, 1e-4
+        assert_in_delta 0.0, (@sv - s).abs.max, 1e-4
         assert 4, rank
       end
     end

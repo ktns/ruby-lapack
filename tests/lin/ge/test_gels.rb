@@ -11,22 +11,24 @@ class GelsTest < Test::Unit::TestCase
                  [ 0.15,  0.30,  0.15, -2.13],
                  [-0.02,  1.03, -1.43,  0.50]]
     @b = NVector[[-2.67, -0.55, 3.34, -0.77, 0.48, 4.10]]
+
+    @bout = NArray[[1.5339, 1.8707, -1.5241, 0.0392]]
   end
 
   %w(s d).each do |sd|
     method = "#{sd}gels"
     define_method("test_#{method}") do
       work, info, a, b = NumRu::Lapack.send(method, "N", @a.to_lm, @b)
-      assert_equal(0, info)
+      assert_equal 0, info
       lwork = work[0].to_i
       work, info, a, b = NumRu::Lapack.send(method, "N", @a.to_lm, @b, :lwork => -1)
-      assert_equal(0, info)
-      assert_equal(lwork, work[0].to_i)
+      assert_equal 0, info
+      assert_equal lwork, work[0].to_i
       work, info, a, b = NumRu::Lapack.send(method, "N", @a.to_lm, @b, :lwork => lwork)
-      assert_equal(0, info)
-      assert_equal(12, work[0])
+      assert_equal 0, info
+      assert_equal 12, work[0]
       n = @a.shape[0]
-      assert( (NArray[[1.5339, 1.8707, -1.5241, 0.0392]]-b).abs.max < 1.0e-4 )
+      assert_in_delta 0.0, (@bout - b).abs.max, 1.0e-4
     end
   end
 

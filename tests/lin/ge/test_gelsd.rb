@@ -27,8 +27,8 @@ class GelsdTest < Test::Unit::TestCase
       assert_equal 0, info
       assert_equal lwork, work[0].to_i
       assert_equal 4, rank
-      assert (@bout-b).abs.max < 10e-4
-      assert (@s-s).abs.max  < 10e-4
+      assert_in_delta 0.0, (@bout-b).abs.max, 10e-4
+      assert_in_delta 0.0, (@s-s).abs.max, 10e-4
     end
   end
 
