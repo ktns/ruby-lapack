@@ -264,16 +264,21 @@ def create_code(name, flag)
 
   code = ""
 
+  cargs = arg_names.map do |an|
+    arg = args[an]
+    t = arg[:type]
+    t + (t=="L_fp" ? " " : "* ") + an
+  end.join(", ")
   case sub_type
   when :subroutine
-    code << "extern VOID #{sub_name}_(#{arg_names.collect{|an|t = args[an][:type];t+' *'+an}.join(', ')});\n\n"
+    code << "extern VOID #{sub_name}_(#{cargs});\n\n"
   when:function
     outputs.push "__out__"
     args["__out__"] = {:type => func_type}
     if /complex/ =~ func_type || func_type == "char"
-      code << "extern VOID #{sub_name}_(#{func_type} *__out__, #{arg_names.collect{|an|t = args[an][:type];t+' *'+an}.join(', ')});\n\n"
+      code << "extern VOID #{sub_name}_(#{func_type} *__out__, #{cargs});\n\n"
     else
-      code << "extern #{func_type} #{sub_name}_(#{arg_names.collect{|an|t = args[an][:type];t+' *'+an}.join(', ')});\n\n"
+      code << "extern #{func_type} #{sub_name}_(#{cargs});\n\n"
     end
   else
     raise "category is invalid: #{sub_type} (#{sub_name})"
