@@ -49,11 +49,13 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: MAX(MIN(m,n)+3*n+1, 2*MIN(m,n)+nrhs)
 - info: 
     :type: integer
     :intent: output
-:substitutions: {}
-
+:substitutions: 
+  m: lda
 :fortran_help: "      SUBROUTINE SGELSY( M, N, NRHS, A, LDA, B, LDB, JPVT, RCOND, RANK, WORK, LWORK, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\
