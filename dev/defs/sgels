@@ -28,7 +28,10 @@
     :type: real
     :intent: input/output
     :dims: 
-    - ldb
+    - m
+    - nrhs
+    :outdims:
+    - n
     - nrhs
 - ldb: 
     :type: integer

@@ -25,7 +25,10 @@
     :type: real
     :intent: input/output
     :dims: 
-    - ldb
+    - m
+    - nrhs
+    :outdims:
+    - n
     - nrhs
 - ldb: 
     :type: integer
@@ -56,6 +59,7 @@
     :intent: output
 :substitutions: 
   m: lda
+  ldb: MAX(m,n)
 :fortran_help: "      SUBROUTINE SGELSS( M, N, NRHS, A, LDA, B, LDB, S, RCOND, RANK, WORK, LWORK, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\

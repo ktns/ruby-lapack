@@ -25,7 +25,10 @@
     :type: doublereal
     :intent: input/output
     :dims: 
-    - ldb
+    - m
+    - nrhs
+    :outdims:
+    - n
     - nrhs
 - ldb: 
     :type: integer
@@ -59,6 +62,7 @@
     :intent: output
 :substitutions: 
   m: lda
+  ldb: MAX(m,n)
   c__9: "9"
   c__0: "0"
   liwork: 3*(MIN(m,n))*nlvl+11*(MIN(m,n))

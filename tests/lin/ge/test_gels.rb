@@ -25,7 +25,7 @@ class GelsTest < Test::Unit::TestCase
     assert_equal(0, info)
     assert_equal(12, work[0])
     n = @a.shape[0]
-    assert( (NArray[[1.5339, 1.8707, -1.5241, 0.0392]]-b[0...n,true]).abs.max < 1.0e-4 )
+    assert( (NArray[[1.5339, 1.8707, -1.5241, 0.0392]]-b).abs.max < 1.0e-4 )
   end
 
   def test_dgels
@@ -39,6 +39,6 @@ class GelsTest < Test::Unit::TestCase
     assert_equal(0, info)
     assert_equal(12, work[0])
     n = @a.shape[0]
-    assert( (NArray[[1.5339, 1.8707, -1.5241, 0.0392]]-b[0...n,true]).abs.max < 1.0e-4 )
+    assert( (NArray[[1.5339, 1.8707, -1.5241, 0.0392]]-b).abs.max < 1.0e-4 )
   end
 end
