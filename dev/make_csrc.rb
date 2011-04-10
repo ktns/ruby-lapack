@@ -522,23 +522,61 @@ EOF
     arg = args[name]
     type = arg[:type]
     if dims = arg[:dims]
+      if outdims = arg[:outdims]
+        if outdims.length != dims.length
+          raise "dimensions for input and output are different: #{dims.join(",")} and #{outdims.join(",")}"
+        end
+      end
       code << <<"EOF"
   {
     int shape[#{dims.length}];
 EOF
       dims.each_with_index{|dim,k|
-        get_vars(dim).each{|d|
+        ds = get_vars(dim)
+        if outdims
+          od = outdims[k]
+          ds += get_vars(od)
+        end
+        ds.each{|d|
           unless varset.include?(d) || @shape[d]
             raise "undefined #{d}  #{name} #{sub_name}"
           end
         }
-        code << "    shape[#{k}] = #{dim};\n"
+        d = outdims && dim != od ? "MAX(#{dim}, #{od})" : dim
+        code << "    shape[#{k}] = #{d};\n"
       }
       code << <<"EOF"
     #{RBPREFIX}#{name}_out__ = na_make_object(#{NATYPES[type]}, #{dims.length}, shape, cNArray);
   }
   #{name}_out__ = NA_PTR_TYPE(#{RBPREFIX}#{name}_out__, #{type}*);
+EOF
+      if outdims
+        sh = Array.new
+        ndims = dims.length
+        code << <<EOF
+  {
+    VALUE __shape__[#{ndims+1}];
+EOF
+        ndims.times do |n|
+          d = dims[n]
+          od = outdims[n]
+          if d == od
+            code << "    __shape__[#{n}] = Qtrue;\n"
+          else
+            code << "    __shape__[#{n}] = #{d} < #{od} ? rb_range_new(#{RBPREFIX}ZERO, INT2NUM(#{d}), Qtrue) : Qtrue;\n"
+          end # if d == od
+        end # ndims.times do
+        code << <<"EOF"
+    __shape__[#{ndims}] = #{RBPREFIX}#{name};
+    na_aset(#{ndims+1}, __shape__, #{RBPREFIX}#{name}_out__);
+  }
+EOF
+      else
+        code << <<"EOF"
   MEMCPY(#{name}_out__, #{name}, #{type}, NA_TOTAL(#{RBPREFIX}#{name}));
+EOF
+      end
+      code << <<"EOF"
   #{RBPREFIX}#{name} = #{RBPREFIX}#{name}_out__;
   #{name} = #{name}_out__;
 EOF
@@ -589,9 +627,28 @@ EOF
 
   out.each{|name|
     arg = args[name]
-    if arg[:dims]
+    if dims = arg[:dims]
       if arg[:type] == "char"
         code << "  #{RBPREFIX}#{name} = rb_str_new2(&#{name});\n"
+      elsif outdims = arg[:outdims]
+        ndims = dims.length
+        code << <<EOF
+  {
+    VALUE __shape__[#{ndims}];
+EOF
+        ndims.times do |n|
+          d = dims[n]
+          od = outdims[n]
+          if d == od
+            code << "    __shape__[#{n}] = Qtrue;\n"
+          else
+            code << "    __shape__[#{n}] = #{d} < #{od} ? Qtrue : rb_range_new(#{RBPREFIX}ZERO, INT2NUM(#{od}), Qtrue);\n"
+          end # if d == od
+        end # ndims.times do
+        code << <<"EOF"
+    #{RBPREFIX}#{name} = na_aref(#{ndims}, __shape__, #{RBPREFIX}#{name});
+  }
+EOF
       end
     else
       if name == "__out__" && arg[:type].nil?
@@ -700,6 +757,7 @@ def generate_code(fnames, names)
 extern logical lsame_(char *ca, char *cb);
 
 VALUE sHelp, sUsage;
+VALUE #{RBPREFIX}ZERO;
 
 EOF
   }
@@ -729,6 +787,8 @@ void Init_lapack(){
 
   sHelp = ID2SYM(rb_intern("help"));
   sUsage = ID2SYM(rb_intern("usage"));
+
+  #{RBPREFIX}ZERO = INT2NUM(0);
 
 EOF
     sub_names.each{|sname|
