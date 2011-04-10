@@ -280,7 +280,6 @@ def create_code(name, flag)
   end
 
   code << <<"EOF"
-static VALUE sHelp, sUsage;
 
 static VALUE
 #{RBPREFIX}#{sub_name}(int argc, VALUE *argv, VALUE self){
@@ -622,8 +621,6 @@ EOF
 void
 init_lapack_#{sub_name}(VALUE mLapack){
   rb_define_module_function(mLapack, \"#{sub_name}\", #{RBPREFIX}#{sub_name}, -1);
-  sHelp = ID2SYM(rb_intern("help"));
-  sUsage = ID2SYM(rb_intern("usage"));
 }
 EOF
 
@@ -701,6 +698,9 @@ def generate_code(fnames, names)
 #define LG(n) ((int)ceil(log((double)n)/log(2.0)))
 
 extern logical lsame_(char *ca, char *cb);
+
+VALUE sHelp, sUsage;
+
 EOF
   }
 
@@ -708,6 +708,7 @@ EOF
   File.open("rb_lapack.c","w"){|file|
     file.print <<"EOF"
 #include "ruby.h"
+#include "rb_lapack.h"
 
 EOF
 
@@ -725,6 +726,9 @@ void Init_lapack(){
 
   mNumRu = rb_define_module("NumRu");
   mLapack = rb_define_module_under(mNumRu, "Lapack");
+
+  sHelp = ID2SYM(rb_intern("help"));
+  sUsage = ID2SYM(rb_intern("usage"));
 
 EOF
     sub_names.each{|sname|
