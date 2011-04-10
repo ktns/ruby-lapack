@@ -9,7 +9,7 @@ class GelsTest < Test::Unit::TestCase
                  [ 2.30,  0.24,  0.40, -0.35],
                  [-1.93,  0.64, -0.66,  0.08],
                  [ 0.15,  0.30,  0.15, -2.13],
-                 [-0.02,  1.03, -1.43,  0.50]]
+                 [-0.02,  1.03, -1.43,  0.50]].to_lm
     @b = NVector[[-2.67, -0.55, 3.34, -0.77, 0.48, 4.10]]
 
     @bout = NArray[[1.5339, 1.8707, -1.5241, 0.0392]]
@@ -18,13 +18,13 @@ class GelsTest < Test::Unit::TestCase
   %w(s d).each do |sd|
     method = "#{sd}gels"
     define_method("test_#{method}") do
-      work, info, a, b = NumRu::Lapack.send(method, "N", @a.to_lm, @b)
+      work, info, a, b = NumRu::Lapack.send(method, "N", @a, @b)
       assert_equal 0, info
       lwork = work[0].to_i
-      work, info, a, b = NumRu::Lapack.send(method, "N", @a.to_lm, @b, :lwork => -1)
+      work, info, a, b = NumRu::Lapack.send(method, "N", @a, @b, :lwork => -1)
       assert_equal 0, info
       assert_equal lwork, work[0].to_i
-      work, info, a, b = NumRu::Lapack.send(method, "N", @a.to_lm, @b, :lwork => lwork)
+      work, info, a, b = NumRu::Lapack.send(method, "N", @a, @b, :lwork => lwork)
       assert_equal 0, info
       assert_equal 12, work[0]
       n = @a.shape[0]
