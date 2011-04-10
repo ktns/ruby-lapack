@@ -1,7 +1,7 @@
 require "test/unit"
 require "numru/lapack"
 
-class DelsTest < Test::Unit::TestCase
+class GelsTest < Test::Unit::TestCase
 
   def setup
     @a = NMatrix[[-0.57, -1.28, -0.39,  0.25],
