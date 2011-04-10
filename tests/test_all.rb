@@ -1,5 +1,7 @@
 require "test/unit"
 
-Test::Unit::AutoRunner.run(true, "./lin")
+dir = File.dirname(__FILE__)
 
-Test::Unit::AutoRunner.run(true, "./eig")
+Test::Unit::AutoRunner.run(true, File.join(dir, "lin"))
+
+Test::Unit::AutoRunner.run(true, File.join(dir, "eig"))
