@@ -34,7 +34,7 @@
     :type: real
     :intent: input
     :dims: 
-    - ldab
+    - ldafb
     - n
 - ldafb: 
     :type: integer

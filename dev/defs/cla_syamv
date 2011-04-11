@@ -41,7 +41,7 @@
     :type: integer
     :intent: input
 :substitutions: 
-  lda: MAX(1, n)
+  n: lda
 :fortran_help: "      SUBROUTINE CLA_SYAMV( UPLO, N, ALPHA, A, LDA, X, INCX, BETA, Y, INCY )\n\n\
   *  Purpose\n\
   *  =======\n\

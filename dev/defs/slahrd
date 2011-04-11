@@ -45,6 +45,7 @@
     :type: integer
     :intent: input
 :substitutions: 
+  lda: n
   ldy: n
   ldt: nb
 :fortran_help: "      SUBROUTINE SLAHRD( N, K, NB, A, LDA, TAU, T, LDT, Y, LDY )\n\n\

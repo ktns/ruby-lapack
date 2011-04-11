@@ -16,12 +16,12 @@
     :type: complex
     :intent: input
     :dims: 
-    - ( n*( n + 1 ) )/2
+    - ldap
 - x: 
     :type: complex
     :intent: input
     :dims: 
-    - 1 + ( n - 1 )*abs( incx )
+    - 1 + (n-1)*abs(incx)
 - incx: 
     :type: integer
     :intent: input
@@ -32,12 +32,14 @@
     :type: complex
     :intent: input/output
     :dims: 
-    - 1 + ( n - 1 )*abs( incy )
+    - 1 + (n-1)*abs(incy)
 - incy: 
     :type: integer
     :intent: input
-:substitutions: {}
-
+:substitutions: 
+  n: ((integer)sqrtf(8*ldap+1.0f)-1)/2
+:extras:
+  ldap: integer
 :fortran_help: "      SUBROUTINE CSPMV( UPLO, N, ALPHA, AP, X, INCX, BETA, Y, INCY )\n\n\
   *  Purpose\n\
   *  =======\n\

@@ -34,7 +34,7 @@
     :type: doublereal
     :intent: input
     :dims:
-    - ldab
+    - ldafb
     - n
 - ldafb: 
     :type: integer
