@@ -1,7 +1,9 @@
-require "test/unit"
+$:.push File.dirname(__FILE__) + "/../.."
+require "lapack_test"
 require "numru/lapack"
 
 class GelsyTest < Test::Unit::TestCase
+  include LapackTest
 
   def setup
     @a = NMatrix[[-0.09,  0.14, -0.46,  0.68,  1.29],
@@ -28,7 +30,7 @@ class GelsyTest < Test::Unit::TestCase
       rank, work, info, a, b, jpvt = NumRu::Lapack.send(method, @a, @b, @jpvt, @rcond, :lwork => lw)
         assert_equal(0, info)
         assert_equal(lwork, work[0].to_i)
-        assert_in_delta 0.0, (@lss - b).abs.max, 1e-4
+        assert_narray @lss, b, 1e-4
         assert 4, rank
       end
     end

@@ -1,7 +1,9 @@
-require "test/unit"
+$:.push File.dirname(__FILE__) + "/../.."
+require "lapack_test"
 require "numru/lapack"
 
 class GelsdTest < Test::Unit::TestCase
+  include LapackTest
 
   def setup
     @a = NMatrix[[-0.09, -1.56, -1.48, -1.09,  0.08, -1.59],
@@ -37,8 +39,8 @@ class GelsdTest < Test::Unit::TestCase
       assert_equal 0, info
       assert_equal lwork, work[0].to_i
       assert_equal 4, rank
-      assert_in_delta 0.0, (@bout-b).abs.max, 10e-4
-      assert_in_delta 0.0, (@s-s).abs.max, 10e-4
+      assert_narray @bout, b, 10e-4
+      assert_narray @s, s, 10e-4
     end
   end
 
@@ -52,8 +54,8 @@ class GelsdTest < Test::Unit::TestCase
       assert_equal 0, info
       assert_equal lwork, work[0].real.to_i
       assert_equal 3, rank
-      assert_in_delta 0.0, (@bcout-b).abs.max, 10e-4
-      assert_in_delta 0.0, (@sc-s).abs.max, 10e-4
+      assert_narray @bcout, b, 10e-4
+      assert_narray @sc, s, 10e-4
     end
   end
 

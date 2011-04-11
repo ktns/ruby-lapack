@@ -1,7 +1,9 @@
-require "test/unit"
+$:.push File.dirname(__FILE__) + "/../.."
+require "lapack_test"
 require "numru/lapack"
 
 class GelsTest < Test::Unit::TestCase
+  include LapackTest
 
   def setup
     @a = NMatrix[[-0.57, -1.28, -0.39,  0.25],
@@ -39,7 +41,7 @@ class GelsTest < Test::Unit::TestCase
       [lwork, nil].each do |lw|
         work, info, a, b = NumRu::Lapack.send(method, "N", @a, @b, :lwork => lw)
         assert_equal 0, info
-        assert_in_delta 0.0, (@bout - b).abs.max, 1.0e-4
+        assert_narray @bout, b, 1.0e-4
       end
     end
   end
@@ -55,7 +57,7 @@ class GelsTest < Test::Unit::TestCase
       assert_equal lwork, work[0].real.to_i
       work, info, a, b = NumRu::Lapack.send(method, "N", @ac, @bc, :lwork => lwork)
       assert_equal 0, info
-      assert_in_delta 0.0, (@bcout - b).abs.max, 1.0e-4
+      assert_narray @bcout, b, 1.0e-4
     end
   end
 
