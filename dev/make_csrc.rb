@@ -819,7 +819,7 @@ end
 
 unless ARGV.empty?
   names = ARGV
-#  @@debug = true
+  @@debug = true
 else
   names = nil
 end
