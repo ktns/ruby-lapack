@@ -49,7 +49,7 @@
     :type: integer
     :intent: input
 :substitutions: 
-  lda: max( 1, m )
+  lda: MAX( 1, m )
 :fortran_help: "      SUBROUTINE DLA_GBAMV( TRANS, M, N, KL, KU, ALPHA, AB, LDAB, X, INCX, BETA, Y, INCY )\n\n\
   *  Purpose\n\
   *  =======\n\

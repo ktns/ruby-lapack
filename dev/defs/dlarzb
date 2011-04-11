@@ -64,7 +64,7 @@
     :type: integer
     :intent: input
 :substitutions: 
-  ldwork: "max(1,n) ? side = 'l' : max(1,m) ? side = 'r' : 0"
+  ldwork: "MAX(1,n) ? side = 'l' : MAX(1,m) ? side = 'r' : 0"
 :fortran_help: "      SUBROUTINE DLARZB( SIDE, TRANS, DIRECT, STOREV, M, N, K, L, V, LDV, T, LDT, C, LDC, WORK, LDWORK )\n\n\
   *  Purpose\n\
   *  =======\n\
