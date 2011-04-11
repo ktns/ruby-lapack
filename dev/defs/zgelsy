@@ -25,7 +25,10 @@
     :type: doublecomplex
     :intent: input/output
     :dims: 
-    - ldb
+    - m
+    - nrhs
+    :outdims:
+    - n
     - nrhs
 - ldb: 
     :type: integer
@@ -49,6 +52,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: MAX(MIN(m,n)+3*n+1, 2*MIN(m,n)+nrhs)
 - rwork: 
     :type: doublereal
     :intent: workspace
@@ -57,8 +62,9 @@
 - info: 
     :type: integer
     :intent: output
-:substitutions: {}
-
+:substitutions: 
+  m: lda
+  ldb: MAX(m,n)
 :fortran_help: "      SUBROUTINE ZGELSY( M, N, NRHS, A, LDA, B, LDB, JPVT, RCOND, RANK, WORK, LWORK, RWORK, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\
