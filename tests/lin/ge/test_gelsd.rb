@@ -33,7 +33,6 @@ class GelsdTest < Test::Unit::TestCase
       s, rank, work, info, b = NumRu::Lapack.send(method, @a, @b, @rcond, -1)
       assert_equal 0, info
       lwork = work[0].to_i
-      assert_equal 991, lwork
       s, rank, work, info, b = NumRu::Lapack.send(method, @a, @b, @rcond, lwork)
       assert_equal 0, info
       assert_equal lwork, work[0].to_i
@@ -49,7 +48,6 @@ class GelsdTest < Test::Unit::TestCase
       s, rank, work, info, b = NumRu::Lapack.send(method, @ac, @bc, @rcond, -1)
       assert_equal 0, info
       lwork = work[0].real.to_i
-      assert_equal 26, lwork
       s, rank, work, info, b = NumRu::Lapack.send(method, @ac, @bc, @rcond, lwork)
       assert_equal 0, info
       assert_equal lwork, work[0].real.to_i

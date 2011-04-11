@@ -23,7 +23,6 @@ class GelssTest < Test::Unit::TestCase
       s, rank, work, info, a, b = NumRu::Lapack.send(method, @a, @b, @rcond, :lwork => -1)
       assert_equal(0, info)
       lwork = work[0].to_i
-      assert_equal(37, lwork)
       [lwork, nil].each do |lw|
         s, rank, work, info, a, b = NumRu::Lapack.send(method, @a, @b, @rcond, :lwork => lw)
         assert_equal(0, info)

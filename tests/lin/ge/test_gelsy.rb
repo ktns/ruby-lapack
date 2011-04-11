@@ -24,7 +24,6 @@ class GelsyTest < Test::Unit::TestCase
       rank, work, info, a, b, jpvt = NumRu::Lapack.send(method, @a, @b, @jpvt, @rcond, :lwork => -1)
       assert_equal(0, info)
       lwork = work[0].to_i
-      assert_equal(27, lwork)
       [lwork, nil].each do |lw|
       rank, work, info, a, b, jpvt = NumRu::Lapack.send(method, @a, @b, @jpvt, @rcond, :lwork => lw)
         assert_equal(0, info)

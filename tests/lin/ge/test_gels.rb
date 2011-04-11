@@ -39,7 +39,6 @@ class GelsTest < Test::Unit::TestCase
       [lwork, nil].each do |lw|
         work, info, a, b = NumRu::Lapack.send(method, "N", @a, @b, :lwork => lw)
         assert_equal 0, info
-        assert_equal 12, work[0]
         assert_in_delta 0.0, (@bout - b).abs.max, 1.0e-4
       end
     end
@@ -56,7 +55,6 @@ class GelsTest < Test::Unit::TestCase
       assert_equal lwork, work[0].real.to_i
       work, info, a, b = NumRu::Lapack.send(method, "N", @ac, @bc, :lwork => lwork)
       assert_equal 0, info
-      assert_equal 12, work[0]
       assert_in_delta 0.0, (@bcout - b).abs.max, 1.0e-4
     end
   end
