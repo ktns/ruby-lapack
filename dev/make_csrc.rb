@@ -760,7 +760,8 @@ def generate_code(fnames, names)
 #define LG(n) ((int)ceil(log((double)n)/log(2.0)))
 
 extern logical lsame_(char *ca, char *cb);
-extern integer ilatrans_(char*);
+extern integer ilatrans_(char* trans);
+extern integer ilaenv_(integer* ispec, char* name, char* opts, integer* n1, integer* n2, integer* n3, integer* n4);
 
 
 VALUE sHelp, sUsage;
