@@ -91,10 +91,11 @@ def get_input(name, type, dims, i, varset, sub_name, subst)
   if (NA_RANK(#{RBPREFIX}#{name}) != #{dims.length})
     rb_raise(rb_eArgError, "rank of #{name} (#{arg}) must be %d", #{dims.length});
 EOF
-    ndim = dims.length
-    ndim.times do |jj|
-      j = ndim - jj - 1
-      dim = dims[j]
+#    ndim = dims.length
+#    ndim.times do |jj|
+#      j = ndim - jj - 1
+#      dim = dims[j]
+    dims.each_with_index do |dim, j|
       raise "bug: NA_SHAPE? cannot use {#{dim} in #{name}: #{sub_name}" if j>2
       if varset.include?(dim)
         code << <<"EOF"
@@ -120,13 +121,14 @@ EOF
         code << "  #{dim} = NA_SHAPE#{j}(#{RBPREFIX}#{name});\n"
         @shape[dim] = {:name => name, :index => j}
         if s = subst[dim]
-          code << <<EOF
+          if /^[a-z][a-z_\d]*$/ =~ s && !varset.include?(s)
+            code << "  #{s} = #{dim};\n"
+            varset.push s
+          else
+            code << <<EOF
   if (#{dim} != (#{s}))
     rb_raise(rb_eRuntimeError, "shape #{j} of #{name} must be %d", #{s});
 EOF
-          if /^[a-z][a-z_\d]*$/ =~ s
-            code << "  #{s} = #{dim};\n"
-            varset.push s
           end
         end
       end
@@ -428,23 +430,23 @@ EOF
   subst.each do |k,v|
     order[k] = {:depends => get_vars(v).uniq, :type => :subst, :value => v}
   end
-  order = order.sort do |a0,a1|
-    k0, v0 = a0
-    k1, v1 = a1
+  order.each{|k,v| v[:precedent] = Array.new}
+  ks = order.keys
+  no = order.length
+  for i in 0...no
+    k0 = ks[i]
+    v0 = order[k0]
     d0 = v0[:depends]
-    d1 = v1[:depends]
     p0 = v0[:provides]
-    p1 = v1[:provides]
-    if d0.empty? && d1.empty?
-      0
-    elsif d0.empty?
-      -1
-    elsif d1.empty?
-      1
-    else
-      flag0 = d0.include?(k1)
-      flag1 = d1.include?(k0)
-      if p0
+    for j in i+1...no
+      k1 = ks[j]
+      v1 = order[k1]
+      d1 = v1[:depends]
+      p1 = v1[:provides]
+      flag1 = false
+      if d1.include?(k0)
+        flag1 = true
+      elsif p0
         p0.each do |p|
           if d1.include?(p)
             flag1 = true
@@ -452,7 +454,10 @@ EOF
           end
         end
       end
-      if p1
+      flag0 = false
+      if d0.include?(k1)
+        flag0 = true
+      elsif p1
         p1.each do |p|
           if d0.include?(p)
             flag0 = true
@@ -461,15 +466,79 @@ EOF
         end
       end
       if flag0 && flag1
-        pp order
-        p [k0, k1]
-        pp v0
-        pp v1
-        raise "depends each other #{name}"
+        if d1.length==1 && d1[0]=="ld#{k0}" && p0.include?("ld#{k0}")
+          flag0 = false
+          d0.delete(k1)
+        elsif d0.length==1 && d0[0]=="ld#{k1}" && p1.include?("ld#{k1}")
+          flag1 = false
+          d1.delete(k0)
+        elsif k1 == "ld#{k0}"
+          flag0 = false
+          d0.delete(k1)
+        elsif k0 == "ld#{k1}"
+          flag1 = false
+          d1.delete(k0)
+        else
+          pp order
+          p [k0, k1]
+          pp v0
+          pp v1
+          raise "depends each other #{name}"
+        end
       end
-      flag0 ? 1 : flag1 ? -1 : 0
+      if flag1
+        v0[:precedent].push(k1) unless v0[:precedent].include?(k1)
+        v0[:depends].each do |d|
+          if od = order[d]
+            od[:precedent].push(k1) unless od[:precedent].include?(k1)
+          end
+        end
+        v1[:depends].push(k0) unless v1[:depends].include?(k0)
+        v1[:precedent].each do |p|
+          if op = order[p]
+            op[:depends].push(k0) unless op[:depends].include?(k0)
+          end
+        end
+      elsif flag0
+        v1[:precedent].push(k0) unless v1[:precedent].include?(k0)
+        v1[:depends].each do |d|
+          if od = order[d]
+            od[:precedent].push(k0) unless od[:precedent].include?(k0)
+          end
+        end
+        v0[:depends].push(k1) unless v0[:depends].include?(k1)
+        v0[:precedent].each do |p|
+          if op = order[p]
+            op[:depends].push(k1) unless op[:depends].include?(k1)
+          end
+        end
+      end
+    end # for j
+  end # for i
+
+  order0 = Array.new
+  order.each do |k,v|
+    if v[:depends].empty?
+      order0.push [k,v]
+      order.delete k
     end
   end
+  order = order.sort do |o0, o1|
+    k0, v0 = o0
+    k1, v1 = o1
+    d0 = v0[:depends]
+    d1 = v1[:depends]
+    flag0 = d0.include?(k1)
+    flag1 = d1.include?(k0)
+    if flag0 && flag1
+      p [k0, k1]
+      pp v0
+      pp v1
+      raise "depends each other #{name}"
+    end
+    flag0 ? 1 : -1
+  end
+  order = order0 + order
 
  if @@debug
    p "order"
