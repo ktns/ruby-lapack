@@ -36,6 +36,7 @@
     :dims: 
     - ldafb
     - n
+    :option: true
 - ldafb: 
     :type: integer
     :intent: input
@@ -44,19 +45,23 @@
     :intent: input/output
     :dims: 
     - n
+    :option: true
 - equed: 
     :type: char
     :intent: input/output
+    :option: true
 - r: 
     :type: doublereal
     :intent: input/output
     :dims: 
     - n
+    :option: true
 - c: 
     :type: doublereal
     :intent: input/output
     :dims: 
     - n
+    :option: true
 - b: 
     :type: doublecomplex
     :intent: input/output
@@ -102,7 +107,8 @@
     :type: integer
     :intent: output
 :substitutions: 
-  ldx: MAX(1,n)
+  ldx: n
+  ldafb: 2*kl+ku+1
 :fortran_help: "      SUBROUTINE ZGBSVX( FACT, TRANS, N, KL, KU, NRHS, AB, LDAB, AFB, LDAFB, IPIV, EQUED, R, C, B, LDB, X, LDX, RCOND, FERR, BERR, WORK, RWORK, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\
