@@ -897,7 +897,8 @@ end
 
 @@debug = ARGV.delete("--debug")
 
-dname = ARGV.shift || raise("Usage: ruby #$0 path_to_lapack_src [name0, name1, ..]")
+#dname = ARGV.shift || raise("Usage: ruby #$0 path_to_lapack_src [name0, name1, ..]")
+dname = File.join( File.dirname(__FILE__), "defs")
 unless File.directory?(dname)
   raise "the first argument must be directory"
 end
