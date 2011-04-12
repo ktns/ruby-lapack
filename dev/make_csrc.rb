@@ -17,18 +17,19 @@ NATYPES = {
 
 
 
-def get_cobj(name, type, sub_name)
+def get_cobj(name, type, sub_name, indent=2)
+  indent = " "*indent
   case type
   when "integer"
-    return "  #{name} = NUM2INT(#{RBPREFIX}#{name});\n"
+    return "#{indent}#{name} = NUM2INT(#{RBPREFIX}#{name});\n"
   when "real"
-    return "  #{name} = (real)NUM2DBL(#{RBPREFIX}#{name});\n"
+    return "#{indent}#{name} = (real)NUM2DBL(#{RBPREFIX}#{name});\n"
   when "doublereal"
-    return "  #{name} = NUM2DBL(#{RBPREFIX}#{name});\n"
+    return "#{indent}#{name} = NUM2DBL(#{RBPREFIX}#{name});\n"
   when "complex"
     code =<<"EOF"
-  #{name}.r = (real)NUM2DBL(rb_funcall(#{RBPREFIX}#{name}, rb_intern("real"), 0));
-  #{name}.i = (real)NUM2DBL(rb_funcall(#{RBPREFIX}#{name}, rb_intern("imag"), 0));
+#{indent}#{name}.r = (real)NUM2DBL(rb_funcall(#{RBPREFIX}#{name}, rb_intern("real"), 0));
+#{indent}#{name}.i = (real)NUM2DBL(rb_funcall(#{RBPREFIX}#{name}, rb_intern("imag"), 0));
 EOF
     return code
   when "doublecomplex"
@@ -73,12 +74,13 @@ def get_robj(name, type, flag=false)
 end
 
 
-def get_input(name, type, dims, i, varset, sub_name, subst)
+def get_input(name, type, dims, i, varset, sub_name, subst, indent=2)
   if dims.nil?
-    return get_cobj(name, type, sub_name)
+    return get_cobj(name, type, sub_name, indent)
   else
+    indent = " "*indent
     if type == "char"
-      return "  #{name} = StringValueCStr(#{RBPREFIX}#{name});\n"
+      return "#{indent}#{name} = StringValueCStr(#{RBPREFIX}#{name});\n"
     end
     if i.kind_of?(Integer)
       arg = "#{i+1}th argument"
@@ -86,10 +88,10 @@ def get_input(name, type, dims, i, varset, sub_name, subst)
       arg = "option"
     end
     code =<<"EOF"
-  if (!NA_IsNArray(#{RBPREFIX}#{name}))
-    rb_raise(rb_eArgError, "#{name} (#{arg}) must be NArray");
-  if (NA_RANK(#{RBPREFIX}#{name}) != #{dims.length})
-    rb_raise(rb_eArgError, "rank of #{name} (#{arg}) must be %d", #{dims.length});
+#{indent}if (!NA_IsNArray(#{RBPREFIX}#{name}))
+#{indent}  rb_raise(rb_eArgError, "#{name} (#{arg}) must be NArray");
+#{indent}if (NA_RANK(#{RBPREFIX}#{name}) != #{dims.length})
+#{indent}  rb_raise(rb_eArgError, "rank of #{name} (#{arg}) must be %d", #{dims.length});
 EOF
 #    ndim = dims.length
 #    ndim.times do |jj|
@@ -98,14 +100,15 @@ EOF
     dims.each_with_index do |dim, j|
       raise "bug: NA_SHAPE? cannot use {#{dim} in #{name}: #{sub_name}" if j>2
       if varset.include?(dim)
+        dimo = subst[dim] || dim
         code << <<"EOF"
-  if (NA_SHAPE#{j}(#{RBPREFIX}#{name}) != #{dim})
-    rb_raise(rb_eRuntimeError, "shape #{j} of #{name} must be #{dim}");
+#{indent}if (NA_SHAPE#{j}(#{RBPREFIX}#{name}) != #{dim})
+#{indent}  rb_raise(rb_eRuntimeError, "shape #{j} of #{name} must be #{dimo}");
 EOF
       elsif (shape = @shape[dim])
         code << <<"EOF"
-  if (NA_SHAPE#{j}(#{RBPREFIX}#{name}) != #{dim})
-    rb_raise(rb_eRuntimeError, "shape #{j} of #{name} must be the same as shape #{shape[:index]} of #{shape[:name]}");
+#{indent}if (NA_SHAPE#{j}(#{RBPREFIX}#{name}) != #{dim})
+#{indent}  rb_raise(rb_eRuntimeError, "shape #{j} of #{name} must be the same as shape #{shape[:index]} of #{shape[:name]}");
 EOF
       elsif /^[a-z][a-z_\d]*$/ !~ dim
         get_vars(dim).each{|d|
@@ -114,20 +117,20 @@ EOF
           end
         }
         code << <<"EOF"
-  if (NA_SHAPE#{j}(#{RBPREFIX}#{name}) != (#{dim}))
-    rb_raise(rb_eRuntimeError, "shape #{j} of #{name} must be %d", #{dim});
+#{indent}if (NA_SHAPE#{j}(#{RBPREFIX}#{name}) != (#{dim}))
+#{indent}  rb_raise(rb_eRuntimeError, "shape #{j} of #{name} must be %d", #{dim});
 EOF
       else
-        code << "  #{dim} = NA_SHAPE#{j}(#{RBPREFIX}#{name});\n"
+        code << "#{indent}#{dim} = NA_SHAPE#{j}(#{RBPREFIX}#{name});\n"
         @shape[dim] = {:name => name, :index => j}
         if s = subst[dim]
           if /^[a-z][a-z_\d]*$/ =~ s && !varset.include?(s)
-            code << "  #{s} = #{dim};\n"
+            code << "#{indent}#{s} = #{dim};\n"
             varset.push s
           else
             code << <<EOF
-  if (#{dim} != (#{s}))
-    rb_raise(rb_eRuntimeError, "shape #{j} of #{name} must be %d", #{s});
+#{indent}if (#{dim} != (#{s}))
+#{indent}  rb_raise(rb_eRuntimeError, "shape #{j} of #{name} must be %d", #{s});
 EOF
           end
         end
@@ -135,9 +138,9 @@ EOF
     end
     natype =  NATYPES[type] || raise("na type is not deifned (#{type})")
     code << <<"EOF"
-  if (NA_TYPE(#{RBPREFIX}#{name}) != #{natype})
-    #{RBPREFIX}#{name} = na_change_type(#{RBPREFIX}#{name}, #{natype});
-  #{name} = NA_PTR_TYPE(#{RBPREFIX}#{name}, #{type}*);
+#{indent}if (NA_TYPE(#{RBPREFIX}#{name}) != #{natype})
+#{indent}  #{RBPREFIX}#{name} = na_change_type(#{RBPREFIX}#{name}, #{natype});
+#{indent}#{name} = NA_PTR_TYPE(#{RBPREFIX}#{name}, #{type}*);
 EOF
   end
 end
@@ -410,7 +413,7 @@ EOF
     if dim = args[arg][:dims]
       dim.each do |d|
         vs = get_vars(d)
-        if vs.length==1 && vs[0] == d && !subst.keys.include?(d)
+        if vs.length==1 && vs[0] == d && !subst.keys.include?(d) && !args[arg][:option]
           aryp.push d
         else
           aryd.push vs
@@ -551,12 +554,21 @@ EOF
     if v[:type] == :input
       arg = args[name]
       if arg[:option]
-        code << <<EOF
-  if (#{RBPREFIX}options == Qnil || #{RBPREFIX}#{name} == Qnil)
-    #{name} = #{arg[:default] || "NULL"};
-  else
-  #{get_input(name, arg[:type], arg[:dims], :option, varset, sub_name, subst)}
+        if arg[:default]
+          code << <<EOF
+  if (#{RBPREFIX}#{name} == Qnil)
+    #{name} = #{arg[:default]};
+  else {
+#{get_input(name, arg[:type], arg[:dims], :option, varset, sub_name, subst, 4).chop}
+  }
 EOF
+        else
+          code << <<EOF
+  if (#{RBPREFIX}#{name} != Qnil) {
+#{get_input(name, arg[:type], arg[:dims], :option, varset, sub_name, subst, 4).chop}
+  }
+EOF
+        end
       else
         code << get_input(name, arg[:type], arg[:dims], v[:order], varset, sub_name, subst)
       end
@@ -646,9 +658,13 @@ EOF
   }
 EOF
       else
-        code << <<"EOF"
-  MEMCPY(#{name}_out__, #{name}, #{type}, NA_TOTAL(#{RBPREFIX}#{name}));
-EOF
+        if arg[:option] && arg[:default].nil?
+          code << "  if (#{RBPREFIX}#{name} != Qnil) {\n  "
+        end
+        code << "  MEMCPY(#{name}_out__, #{name}, #{type}, NA_TOTAL(#{RBPREFIX}#{name}));\n"
+        if arg[:option] && arg[:default].nil?
+          code << "  }\n"
+        end
       end
       code << <<"EOF"
   #{RBPREFIX}#{name} = #{RBPREFIX}#{name}_out__;
