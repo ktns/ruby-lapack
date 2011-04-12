@@ -1,7 +1,7 @@
 $:.push File.dirname(__FILE__) + "/../.."
 require "lapack_test"
 
-class GelsvTest < Test::Unit::TestCase
+class GesvTest < Test::Unit::TestCase
   include LapackTest
 
   def setup
