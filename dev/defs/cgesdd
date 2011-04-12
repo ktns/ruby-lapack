@@ -52,11 +52,13 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "lsame_(&jobz,\"N\") ? 2*MIN(m,n)+MAX(m,n) : lsame_(&jobz,\"O\") ? 2*MIN(m,n)*MIN(m,n)+2*MIN(m,n)+MAX(m,n) : (lsame_(&jobz,\"S\")||lsame_(&jobz,\"A\")) ? MIN(m,n)*MIN(m,n)+2*MIN(m,n)+MAX(m,n) : 0"
 - rwork: 
     :type: real
     :intent: workspace
     :dims: 
-    - "MAX(1, lsame_(&jobz,\"N\") ? 5*MIN(m,n) : MIN(m,n)*MAX(5*MIN(m,n)+7,2*MAX(m,n)+2*MIN(m,n)+1))"
+    - "MAX(1, (lsame_(&jobz,\"N\") ? 5*MIN(m,n) : MIN(m,n)*MAX(5*MIN(m,n)+7,2*MAX(m,n)+2*MIN(m,n)+1)))"
 - iwork: 
     :type: integer
     :intent: workspace
@@ -66,9 +68,10 @@
     :type: integer
     :intent: output
 :substitutions: 
+  m: lda
   ucol: "((lsame_(&jobz,\"A\")) || (((lsame_(&jobz,\"O\")) && (m < n)))) ? m : lsame_(&jobz,\"S\") ? MIN(m,n) : 0"
-  ldvt: "((lsame_(&jobz,\"A\")) || (((lsame_(&jobz,\"O\")) && (m == n)))) ? n : lsame_(&jobz,\"S\") ? MIN(m,n) : 1"
-  ldu: "((lsame_(&jobz,\"S\")) || ((('a') || (((lsame_(&jobz,\"O\")) && (m < n)))))) ? m : 1"
+  ldvt: "((lsame_(&jobz,\"A\")) || (((lsame_(&jobz,\"O\")) && (m >= n)))) ? n : lsame_(&jobz,\"S\") ? MIN(m,n) : 1"
+  ldu: "(lsame_(&jobz,\"S\") || lsame_(&jobz,\"A\") || (lsame_(&jobz,\"O\") && m < n)) ? m : 1"
 :fortran_help: "      SUBROUTINE CGESDD( JOBZ, M, N, A, LDA, S, U, LDU, VT, LDVT, WORK, LWORK, RWORK, IWORK, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\

@@ -30,6 +30,7 @@
     :dims: 
     - ldaf
     - n
+    :option: true
 - ldaf: 
     :type: integer
     :intent: input
@@ -38,19 +39,23 @@
     :intent: input/output
     :dims: 
     - n
+    :option: true
 - equed: 
     :type: char
     :intent: input/output
+    :option: true
 - r: 
     :type: real
     :intent: input/output
     :dims: 
     - n
+    :option: true
 - c: 
     :type: real
     :intent: input/output
     :dims: 
     - n
+    :option: true
 - b: 
     :type: complex
     :intent: input/output
@@ -96,7 +101,8 @@
     :type: integer
     :intent: output
 :substitutions: 
-  ldx: MAX(1,n)
+  ldx: n
+  ldaf: n
 :fortran_help: "      SUBROUTINE CGESVX( FACT, TRANS, N, NRHS, A, LDA, AF, LDAF, IPIV, EQUED, R, C, B, LDB, X, LDX, RCOND, FERR, BERR, WORK, RWORK, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\
