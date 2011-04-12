@@ -840,9 +840,9 @@ def generate_code(fnames, names)
 #include "narray.h"
 #include "f2c_minimal.h"
 
-#define MAX(a,b) (a > b ? a : b)
-#define MIN(a,b) (a < b ? a : b)
-#define LG(n) ((int)ceil(log((double)n)/log(2.0)))
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
+#define LG(n) ((int)ceil(log((double)(n))/log(2.0)))
 
 extern logical lsame_(char *ca, char *cb);
 extern integer ilatrans_(char* trans);
