@@ -11,10 +11,10 @@ class NMatrix
   end
 
   # to lapack band matrix
-  def to_lb(kl, ku)
+  def to_lb(kl, ku, shift=0)
     n = shape[0]
     na = NArray.ref(self)
-    lb = NArray.new(typecode, 2*kl+ku+1, n)
+    lb = NArray.new(typecode, kl+ku+1+shift, n)
     n.times do |j|
       i0 = [n-1,j+kl].min
       i1 = [0,j-ku].max
