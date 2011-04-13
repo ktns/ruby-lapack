@@ -35,6 +35,12 @@ EOF
     x.to_i
   end
 
+  def comp_sign(a, b)
+    a = a.real if a.respond_to?(:real)
+    b = b.real if b.respond_to?(:real)
+    a*b < 0
+  end
+
   def get_rc(x)
     /\A[sd]/ =~ x ? :r : :c
   end

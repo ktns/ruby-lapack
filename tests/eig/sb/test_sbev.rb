@@ -28,7 +28,7 @@ class SbevTest < Test::Unit::TestCase
         assert_equal 0, info
         assert_narray @w_exp, w, 1.0e-4
         for n in 0...z.shape[1]
-          z[true,n] *= -1 if @z_exp[0,n]*z[0,n] < 0
+          z[true,n] *= -1 if comp_sign(@z_exp[0,n], z[0,n])
         end
         assert_narray @z_exp, z, 1.0e-4
       end

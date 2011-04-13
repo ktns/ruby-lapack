@@ -49,11 +49,11 @@ class GesddTest < Test::Unit::TestCase
       assert_equal 0, info
       assert_narray @s_exp[rc], s, 1.0e-4
       u.shape[1].times do |i|
-        u[true,i] *= -1 if u[0,i]*@u_exp[rc][0,i] < 0
+        u[true,i] *= -1 if comp_sign(u[0,i], @u_exp[rc][0,i])
       end
       assert_narray @u_exp[rc], u, 1.0e-4
       a.shape[0].times do |i|
-        a[i,true] *= -1 if a[i,0]*@a_exp[rc][i,0] < 0
+        a[i,true] *= -1 if comp_sign(a[i,0], @a_exp[rc][i,0])
       end
       assert_narray @a_exp[rc], a, 1.0e-4
     end
@@ -67,11 +67,11 @@ class GesddTest < Test::Unit::TestCase
       assert_equal lwork, get_int(work[0])
       assert_narray @s_exp[rc], s, 1.0e-4
       u.shape[1].times do |i|
-        u[true,i] *= -1 if u[0,i]*@u_exp[rc][0,i] < 0
+        u[true,i] *= -1 if comp_sign(u[0,i], @u_exp[rc][0,i])
       end
       assert_narray @u_exp[rc], u, 1.0e-4
       a.shape[0].times do |i|
-        a[i,true] *= -1 if a[i,0]*@a_exp[rc][i,0] < 0
+        a[i,true] *= -1 if comp_sign(a[i,0], @a_exp[rc][i,0])
       end
       assert_narray @a_exp[rc], a, 1.0e-4
     end
