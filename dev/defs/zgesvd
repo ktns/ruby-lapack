@@ -21,6 +21,9 @@
     :dims: 
     - lda
     - n
+    :outdims:
+    - lda
+    - MIN(m,n)
 - lda: 
     :type: integer
     :intent: input
@@ -55,6 +58,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: MAX(1, 2*MIN(m,n)+MAX(m,n))
 - rwork: 
     :type: doublereal
     :intent: workspace
@@ -64,6 +69,7 @@
     :type: integer
     :intent: output
 :substitutions: 
+  m: lda
   ldvt: "lsame_(&jobvt,\"A\") ? n : lsame_(&jobvt,\"S\") ? MIN(m,n) : 1"
   ldu: "((lsame_(&jobu,\"S\")) || (lsame_(&jobu,\"A\"))) ? m : 1"
 :fortran_help: "      SUBROUTINE ZGESVD( JOBU, JOBVT, M, N, A, LDA, S, U, LDU, VT, LDVT, WORK, LWORK, RWORK, INFO )\n\n\

@@ -21,6 +21,9 @@
     :dims: 
     - lda
     - n
+    :outdims:
+    - lda
+    - MIN(m,n)
 - lda: 
     :type: integer
     :intent: input
@@ -55,10 +58,13 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: MAX(MAX(1, 3*MIN(m,n)+MAX(m,n)), 5*MIN(m,n))
 - info: 
     :type: integer
     :intent: output
 :substitutions: 
+  m: lda
   ldvt: "lsame_(&jobvt,\"A\") ? n : lsame_(&jobvt,\"S\") ? MIN(m,n) : 1"
   ldu: "((lsame_(&jobu,\"S\")) || (lsame_(&jobu,\"A\"))) ? m : 1"
 :fortran_help: "      SUBROUTINE SGESVD( JOBU, JOBVT, M, N, A, LDA, S, U, LDU, VT, LDVT, WORK, LWORK, INFO )\n\n\
