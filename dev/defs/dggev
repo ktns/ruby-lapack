@@ -71,6 +71,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: MAX(1,8*n)
 - info: 
     :type: integer
     :intent: output

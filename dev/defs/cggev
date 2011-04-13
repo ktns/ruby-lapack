@@ -66,6 +66,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: MAX(1,2*n)
 - rwork: 
     :type: real
     :intent: output
