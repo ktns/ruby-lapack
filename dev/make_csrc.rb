@@ -388,19 +388,23 @@ EOF
     } 
   } else
     #{RBPREFIX}options = Qnil;
-  if (argc != #{ilen})
+  if (argc != #{ilen} && argc != #{ilen+options.length})
     rb_raise(rb_eArgError,"wrong number of arguments (%d for #{ilen})", argc);
 EOF
   inputs.each_with_index{|arg,i|
     code << "  #{RBPREFIX}#{arg} = argv[#{i}];\n"
   }
-  code << "  if (#{RBPREFIX}options != Qnil) {\n"
+  code << "  if (argc == #{ilen+options.length}) {\n"
+  options.each_with_index do |arg,i|
+    code << "    #{RBPREFIX}#{arg} = argv[#{i+ilen}];\n"
+  end
+  code << "  } else if (#{RBPREFIX}options != Qnil) {\n"
   options.each do |opt|
     code << "    #{RBPREFIX}#{opt} = rb_hash_aref(#{RBPREFIX}options, ID2SYM(rb_intern(\"#{opt}\")));\n"
   end
   code << "  } else {\n"
-  options.each do |opt|
-    code << "    #{RBPREFIX}#{opt} = Qnil;\n"
+  options.each_with_index do |arg,i|
+    code << "    #{RBPREFIX}#{arg} = Qnil;\n"
   end
   code << "  }\n"
 
