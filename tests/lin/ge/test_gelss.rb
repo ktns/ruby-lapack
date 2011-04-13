@@ -52,6 +52,7 @@ class GelssTest < Test::Unit::TestCase
       assert_equal 0, info
       lwork = get_int(work[0])
       s, rank, work, info, a, b = NumRu::Lapack.send(method, @a[rc], @b[rc], @rcond, :lwork => lwork)
+      assert_equal 0, info
       assert_equal lwork, get_int(work[0])
       assert_narray @b_exp[rc], b, 1e-4
       assert_narray @s_exp[rc], s, 1e-4
@@ -62,11 +63,9 @@ class GelssTest < Test::Unit::TestCase
       s, rank, work, info, a, b = NumRu::Lapack.send(method, @a[rc], @b[rc], @rcond, :lwork => -1)
       assert_equal 0, info
       lwork = get_int(work[0])
-      s, rank, work, info, a, b = NumRu::Lapack.send(method, @a[rc], @b[rc], @rcond, :lwork => lwork)
+      s, rank, work, info, a, b = NumRu::Lapack.send(method, @a[rc], @b[rc], @rcond, -1)
+      assert_equal 0, info
       assert_equal lwork, get_int(work[0])
-      assert_narray @b_exp[rc], b, 1e-4
-      assert_narray @s_exp[rc], s, 1e-4
-      assert @rank_exp[rc], rank
     end
 
   end
