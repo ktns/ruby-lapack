@@ -825,9 +825,9 @@ def generate_code(fnames, names)
     if code
       sub_names.push sub_name
       if flag
-        File.open(sub_name+".c","w"){|file|
-          file.print code
-        }
+        cfname = "#{sub_name}.c"
+        code_org = File.read(cfname)
+        File.open(cfname,"w"){|file| file.print code} if code_org != code
       end
     end
   }
