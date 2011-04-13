@@ -58,6 +58,17 @@ class GelssTest < Test::Unit::TestCase
       assert @rank_exp[rc], rank
     end
 
+    define_method("test_#{method}_inquiring_lwork_oldargstyle") do
+      s, rank, work, info, a, b = NumRu::Lapack.send(method, @a[rc], @b[rc], @rcond, :lwork => -1)
+      assert_equal 0, info
+      lwork = get_int(work[0])
+      s, rank, work, info, a, b = NumRu::Lapack.send(method, @a[rc], @b[rc], @rcond, :lwork => lwork)
+      assert_equal lwork, get_int(work[0])
+      assert_narray @b_exp[rc], b, 1e-4
+      assert_narray @s_exp[rc], s, 1e-4
+      assert @rank_exp[rc], rank
+    end
+
   end
 
 end

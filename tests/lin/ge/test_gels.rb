@@ -49,6 +49,16 @@ class GelsTest < Test::Unit::TestCase
       assert_narray @b_exp[rc], b, 1.0e-4
     end
 
+    define_method("test_#{method}_inquiring_lwork_oldargstyle") do
+      work, info, a, b = NumRu::Lapack.send(method, "N", @a[rc], @b[rc], -1)
+      assert_equal 0, info
+      lwork = get_int(work[0])
+      work, info, a, b = NumRu::Lapack.send(method, "N", @a[rc], @b[rc], lwork)
+      assert_equal 0, info
+      assert_equal lwork, get_int(work[0])
+      assert_narray @b_exp[rc], b, 1.0e-4
+    end
+
   end
 
 end

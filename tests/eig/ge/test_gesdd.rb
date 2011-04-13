@@ -76,6 +76,24 @@ class GesddTest < Test::Unit::TestCase
       assert_narray @a_exp[rc], a, 1.0e-4
     end
 
+    define_method("test_#{method}_inquireing_lwork_oldargstyle") do
+      s, u, vt, work, info, = NumRu::Lapack.send(method, "O", @a[rc], :lwork => -1)
+      assert_equal 0, info
+      lwork = get_int(work[0])
+      s, u, vt, work, info, a = NumRu::Lapack.send(method, "O", @a[rc], :lwork => lwork)
+      assert_equal 0, info
+      assert_equal lwork, get_int(work[0])
+      assert_narray @s_exp[rc], s, 1.0e-4
+      u.shape[1].times do |i|
+        u[true,i] *= -1 if u[0,i]*@u_exp[rc][0,i] < 0
+      end
+      assert_narray @u_exp[rc], u, 1.0e-4
+      a.shape[0].times do |i|
+        a[i,true] *= -1 if a[i,0]*@a_exp[rc][i,0] < 0
+      end
+      assert_narray @a_exp[rc], a, 1.0e-4
+    end
+
   end
 
 end
