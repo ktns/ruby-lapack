@@ -103,7 +103,7 @@ EOF
         dimo = subst[dim] || dim
         code << <<"EOF"
 #{indent}if (NA_SHAPE#{j}(#{RBPREFIX}#{name}) != #{dim})
-#{indent}  rb_raise(rb_eRuntimeError, "shape #{j} of #{name} must be #{dimo}");
+#{indent}  rb_raise(rb_eRuntimeError, "shape #{j} of #{name} must be #{dimo.gsub(/"/,'\"')}");
 EOF
       elsif (shape = @shape[dim])
         code << <<"EOF"
