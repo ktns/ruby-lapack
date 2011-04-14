@@ -39,45 +39,24 @@ MatrixTypes = [
 ]
 
 
-def parse_html(fname)
-  hash = Hash.new
-  name = nil
-  File.foreach(fname){|line|
-    if /^file <a href=".+">([a-z_\d]+)\.f<\/a>/ =~ line
-      name = $1
-    elsif name
-      if /^for\s+(.*)$/ =~ line
-        hash[name] = $1
-      elsif /^,\s+(.*)$/ =~ line
-        hash[name] ||= ""
-        hash[name] << $1
-      elsif /^gams/ =~ line
-        name = nil
-      end
-    end
-  }
-  return hash
-end
-
 require "numru/lapack"
 include NumRu
 
 prefix = File.dirname(__FILE__)+"/../doc"
 
-path = ARGV[0] || raise("Usage: ruby #$0 path_to_document_html")
 desc = Hash.new
-%w(s d c z ds zc).each{|tn|
-  fname =  File.join(path, tn+".html")
-  desc.update parse_html(fname)
-}
 
 methods = Lapack.singleton_methods
+dts = Hash.new
 DataTypes.each{|cdt, dt|
   cdt = cdt.downcase
   dmethods = Array.new
   methods.each{|m|
     dmethods.push m if /^#{cdt}/ =~ m
   }
+  dmethods.each do |m|
+    methods.delete m
+  end
   mts = Array.new
   MatrixTypes.each{|cmt, mt|
     cmt = cmt.downcase
@@ -90,6 +69,8 @@ DataTypes.each{|cdt, dt|
     ms.sort!
     unless ms.empty?
       mts.push [cmt,mt]
+      dts[cmt] ||= Array.new
+      dts[cmt].push [cdt, dt]
       File.open(File.join(prefix,"#{cdt}#{cmt}.html"),"w"){|file|
         file.print <<"EOF"
 <HTML>
@@ -103,7 +84,7 @@ DataTypes.each{|cdt, dt|
 EOF
         ms.each{|m|
           file.print <<"EOF"
-      <LI><A HREF=\"##{m}\">#{m}</A> : #{desc[m]}</LI>
+      <LI><A HREF=\"##{m}\">#{m}</A></LI>
 EOF
         }
         file.print <<"EOF"
@@ -112,10 +93,9 @@ EOF
 EOF
         ms.each{|m|
           file.print <<"EOF"
-  <A NAME="#{m}"></A>
-  <H2>#{m}</H2>
-  #{desc[m]}
-  <PRE>
+    <A NAME="#{m}"></A>
+    <H2>#{m}</H2>
+    <PRE>
 EOF
           IO.popen("-") do |io|
             if io # parent
@@ -132,7 +112,8 @@ EOF
         }
         file.print <<"EOF"
     <HR />
-    <A HREF="#{cdt}.html">back to matrix types</A>
+    <A HREF="#{cdt}.html">back to matrix types</A><BR>
+    <A HREF="#{cdt}.html">back to data types</A>
   </BODY>
 </HTML>
 EOF
@@ -157,13 +138,89 @@ EOF
       file.print <<"EOF"
     </UL>
     <HR />
-    <A HREF="index.html">back to data types</A>
+    <A HREF="index.html">back to index.html</A>
   </BODY>
 </HTML>
 EOF
     }
   end
 }
+
+MatrixTypes.each do |cmt,mt|
+  cmt = cmt.downcase
+  if dts[cmt]
+    File.open(File.join(prefix,"#{cmt}.html"),"w") do |file|
+      file.print <<"EOF"
+<HTML>
+  <HEAD>
+    <TITLE>#{mt} routines</TITLE>
+  </HEAD>
+  <BODY>
+    <H1>#{mt} routines</H1>
+    <UL>
+EOF
+      dts[cmt].each{|cdt,dt|
+        file.print "      <LI><A HREF=\"#{cdt}#{cmt}.html\">#{cdt.upcase}: #{dt}</A></LI>\n"
+      }
+      file.print <<"EOF"
+    </UL>
+    <HR />
+    <A HREF="index.html">back to index.html</A>
+  </BODY>
+</HTML>
+EOF
+    end
+  end
+end
+
+if methods.any?
+  File.open(File.join(prefix,"others.html"),"w") do |file|
+    file.print <<EOF
+<HTML>
+  <HEAD>
+    <TITLE>other routines</TITLE>
+  </HEAD>
+  <BODY>
+    <A NAME="top"></A>
+    <H1>other routines</H1>
+    <UL>
+EOF
+    methods.each do |m|
+      file.print <<EOF
+      <LI><A HREF=\"##{m}\">#{m}</A></LI>
+EOF
+    end
+    file.print <<EOF
+    </UL>
+
+EOF
+    methods.each do |m|
+      file.print <<EOF
+    <A NAME="#{m}"></A>
+    <H2>#{m}</H2>
+    <PRE>
+EOF
+      IO.popen("-") do |io|
+        if io # parent
+          file.print io.read
+        else # child
+          Lapack.send(m, :help => true)
+        end
+      end
+      file.print <<EOF
+    </PRE>
+    <A HREF="#top">go to the page top</A>
+
+EOF
+    end
+    file.print <<"EOF"
+    <HR />
+    <A HREF="index.html">back to index</A>
+  </BODY>
+</HTML>
+EOF
+  end
+end
 
 File.open(File.join(prefix,"index.html"),"w"){|file|
   file.print <<"EOF"
@@ -180,6 +237,28 @@ EOF
   }
   file.print <<"EOF"
     </UL>
+
+    <H1>Matrix types</H1>
+    <UL>
+EOF
+  MatrixTypes.each do |cmt,mt|
+    if dts[cmt.downcase]
+      file.print "     <LI><A HREF=\"#{cmt.downcase}.html\">#{cmt}: #{mt}</A></LI>\n"
+    end
+  end
+  file.print <<"EOF"
+    </UL>
+EOF
+  if methods.any?
+    file.print <<EOF
+
+    <H1>others</H1>
+    <UL>
+      <LI><A HREF=\"others.html\">others</A></LI>
+    </UL>
+EOF
+  end
+  file.print <<"EOF"
   </BODY>
 </HTML>
 EOF
