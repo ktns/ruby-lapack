@@ -79,6 +79,8 @@
 - liwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: 10*n
 - info: 
     :type: integer
     :intent: output
