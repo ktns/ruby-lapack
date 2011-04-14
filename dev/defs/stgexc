@@ -62,6 +62,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "n<=1 ? 1 : 4*n+16"
 - info: 
     :type: integer
     :intent: output

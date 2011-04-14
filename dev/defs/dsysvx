@@ -77,6 +77,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: 3*n
 - iwork: 
     :type: integer
     :intent: workspace

@@ -46,6 +46,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "n<=1 ? 1 : lsame_(&jobz,\"N\") ? 2*n+1 : lsame_(&jobz,\"V\") ? 1+6*n+2*n*n : 1"
 - iwork: 
     :type: integer
     :intent: output
@@ -54,6 +56,8 @@
 - liwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "n<=1 ? 1 : lsame_(&jobz,\"N\") ? 1 : lsame_(&jobz,\"V\") ? 3+5*n : 0"
 - info: 
     :type: integer
     :intent: output

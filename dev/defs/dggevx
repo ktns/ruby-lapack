@@ -109,6 +109,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "(lsame_(&balanc,\"S\")||lsame_(&balanc,\"B\")||lsame_(&jobvl,\"V\")||lsame_(&jobvr,\"V\")) ? 6*n : lsame_(&sense,\"E\") ? 10*n : (lsame_(&sense,\"V\")||lsame_(&sense,\"B\")) ? 2*n*n+8*n+16 : 2*n"
 - iwork: 
     :type: integer
     :intent: workspace

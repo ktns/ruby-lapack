@@ -52,6 +52,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: MAX(6,m+n)
 - info: 
     :type: integer
     :intent: output

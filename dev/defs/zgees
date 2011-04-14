@@ -51,6 +51,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: 2*n
 - rwork: 
     :type: doublereal
     :intent: workspace

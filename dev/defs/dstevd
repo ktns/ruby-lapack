@@ -36,6 +36,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "(lsame_(&jobz,\"N\")||n<=1) ? 1 : (lsame_(&jobz,\"V\")&&n>1) ? 1+4*n+n*n : 0"
 - iwork: 
     :type: integer
     :intent: output
@@ -44,6 +46,8 @@
 - liwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "(lsame_(&jobz,\"N\")||n<=1) ? 1 : (lsame_(&jobz,\"V\")&&n>1) ? 3+5*n : 0"
 - info: 
     :type: integer
     :intent: output

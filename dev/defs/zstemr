@@ -70,6 +70,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "lsame_(&jobz,\"V\") ? 18*n : lsame_(&jobz,\"N\") ? 12*n : 0"
 - iwork: 
     :type: integer
     :intent: output
@@ -78,6 +80,8 @@
 - liwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "lsame_(&jobz,\"V\") ? 10*n : lsame_(&jobz,\"N\") ? 8*n : 0"
 - info: 
     :type: integer
     :intent: output

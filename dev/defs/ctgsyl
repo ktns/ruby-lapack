@@ -83,6 +83,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "((ijob==1||ijob==2)&&lsame_(&trans,\"N\")) ? 2*m*n : 1"
 - iwork: 
     :type: integer
     :intent: workspace

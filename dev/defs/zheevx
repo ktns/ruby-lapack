@@ -64,6 +64,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "n<=1 ? 1 : 2*n"
 - rwork: 
     :type: doublereal
     :intent: workspace

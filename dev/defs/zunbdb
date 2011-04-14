@@ -92,6 +92,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: m-q
 - info: 
     :type: integer
     :intent: output

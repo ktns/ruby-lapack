@@ -52,6 +52,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "m>=n ? 2*n+n*nrhs : 2*m+m*nrhs"
 - rwork: 
     :type: doublereal
     :intent: workspace

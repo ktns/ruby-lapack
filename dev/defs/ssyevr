@@ -69,6 +69,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: 26*n
 - iwork: 
     :type: integer
     :intent: output

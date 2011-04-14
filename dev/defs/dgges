@@ -82,6 +82,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: MAX(8*n,6*n+16)
 - bwork: 
     :type: logical
     :intent: workspace

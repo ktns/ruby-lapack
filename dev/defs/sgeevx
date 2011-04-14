@@ -87,6 +87,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "(lsame_(&sense,\"N\")||lsame_(&sense,\"E\")) ? 2*n : (lsame_(&jobvl,\"V\")||lsame_(&jobvr,\"V\")) ? 3*n : (lsame_(&sense,\"V\")||lsame_(&sense,\"B\")) ? n*(n+6) : 0"
 - iwork: 
     :type: integer
     :intent: workspace

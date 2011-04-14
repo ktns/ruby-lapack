@@ -31,6 +31,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: n-1
 - info: 
     :type: integer
     :intent: output

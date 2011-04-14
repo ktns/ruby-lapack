@@ -69,6 +69,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: 2*n
 - rwork: 
     :type: real
     :intent: output
@@ -77,6 +79,8 @@
 - lrwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: 24*n
 - iwork: 
     :type: integer
     :intent: output
@@ -85,6 +89,8 @@
 - liwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: 10*n
 - info: 
     :type: integer
     :intent: output

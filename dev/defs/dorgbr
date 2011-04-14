@@ -37,6 +37,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: MIN(m,n)
 - info: 
     :type: integer
     :intent: output

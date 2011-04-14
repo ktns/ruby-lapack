@@ -65,6 +65,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "(lsame_(&sense,\"E\")||lsame_(&sense,\"V\")||lsame_(&sense,\"B\")) ? n+n*n/2 : 3*n"
 - iwork: 
     :type: integer
     :intent: output

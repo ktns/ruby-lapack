@@ -57,6 +57,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "(lsame_(&jobvl,\"V\")||lsame_(&jobvr,\"V\")) ? 4*n : 3*n"
 - info: 
     :type: integer
     :intent: output

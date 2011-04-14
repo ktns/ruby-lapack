@@ -36,6 +36,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "(lsame_(&compz,\"N\")||n<=1) ? 1 : lsame_(&compz,\"V\") ? 1+3*n+2*n*LG(n)+3*n*n : lsame_(&compz,\"I\") ? 1+4*n+2*n*n : 0"
 - iwork: 
     :type: integer
     :intent: output
@@ -44,6 +46,8 @@
 - liwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "(lsame_(&compz,\"N\")||n<=1) ? 1 : lsame_(&compz,\"V\") ? 6+6*n+5*n*LG(n) : lsame_(&compz,\"I\") ? 3+5*n : 0"
 - info: 
     :type: integer
     :intent: output

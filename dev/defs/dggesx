@@ -95,6 +95,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "n==0 ? 1 : (lsame_(&sense,\"E\")||lsame_(&sense,\"V\")||lsame_(&sense,\"B\")) ? MAX(MAX(8*n,6*n+16),n*n/2) : MAX(8*n,6*n+16)"
 - iwork: 
     :type: integer
     :intent: workspace
@@ -103,6 +105,8 @@
 - liwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "(lsame_(&sense,\"N\")||n==0) ? 1 : n+6"
 - bwork: 
     :type: logical
     :intent: workspace

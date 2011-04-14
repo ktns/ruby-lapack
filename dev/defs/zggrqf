@@ -48,6 +48,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: MAX(MAX(n,m),p)
 - info: 
     :type: integer
     :intent: output

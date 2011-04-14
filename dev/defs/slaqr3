@@ -102,6 +102,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: 2*nw
 :substitutions: 
   ldwv: nw
   ldt: nw

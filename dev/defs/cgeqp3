@@ -36,6 +36,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: n+1
 - rwork: 
     :type: real
     :intent: workspace

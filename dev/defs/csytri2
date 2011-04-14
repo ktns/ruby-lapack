@@ -27,10 +27,12 @@
     :type: complex
     :intent: workspace
     :dims: 
-    - (n+nb+1)*(nb+3)
+    - lwork
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: (n+nb+1)*(nb+3)
 - info: 
     :type: integer
     :intent: output

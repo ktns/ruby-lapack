@@ -52,6 +52,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "m>=n ? 12*n + 2*n*smlsiz + 8*n*nlvl + n*nrhs + (smlsiz+1)*(smlsiz+1) : 12*m + 2*m*smlsiz + 8*m*nlvl + m*nrhs + (smlsiz+1)*(smlsiz+1)"
 - iwork: 
     :type: integer
     :intent: workspace

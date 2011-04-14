@@ -52,6 +52,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "lsame_(&side,\"L\") ? n : lsame_(&side,\"R\") ? m : 0"
 - info: 
     :type: integer
     :intent: output

@@ -53,6 +53,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: m+n+p
 - info: 
     :type: integer
     :intent: output

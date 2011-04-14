@@ -121,6 +121,8 @@
 - lrwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: 8*q
 - info: 
     :type: integer
     :intent: output

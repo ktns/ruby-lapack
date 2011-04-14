@@ -64,6 +64,8 @@
 - lwork: 
     :type: integer
     :intent: input
+    :option: true
+    :default: "n<=1 ? 1 : 8*n"
 - iwork: 
     :type: integer
     :intent: workspace
