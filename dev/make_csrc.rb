@@ -425,8 +425,13 @@ EOF
       end
     end
     if vs = args[arg][:default]
-      get_vars(vs).each do |v|
-        aryd.push v
+      begin
+        get_vars(vs).each do |v|
+          aryd.push v
+        end
+      rescue
+        p sub_name
+        raise $!
       end
     end
     aryd.flatten!
