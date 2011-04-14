@@ -380,11 +380,11 @@ EOF
     #{RBPREFIX}options = argv[argc];
     if (rb_hash_aref(#{RBPREFIX}options, sHelp) == Qtrue) {
       printf("%s\\n", "#{help_code.gsub(/\\/,'\\\\\\').gsub(/\n/,'\n').gsub(/"/,'\"')}");
-      rb_exit(0);
+      return Qnil;
     }
     if (rb_hash_aref(#{RBPREFIX}options, sUsage) == Qtrue) {
       printf("%s\\n", "#{usage_code.gsub(/\\/,'\\\\\\').gsub(/\n/,'\n').gsub(/"/,'\"')}");
-      rb_exit(0);
+      return Qnil;
     } 
   } else
     #{RBPREFIX}options = Qnil;
