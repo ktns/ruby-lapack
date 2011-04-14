@@ -37,9 +37,12 @@
     :type: complex
     :intent: input/output
     :dims: 
-    - n*(n+1)/2
+    - ldc
 :substitutions: 
   lda: "lsame_(&trans,\"N\") ? MAX(1,n) : MAX(1,k)"
+  n: ((int)sqrtf(ldc*8+1.0f)-1)/2
+:extra:
+  ldc: integer
 :fortran_help: "      SUBROUTINE CHFRK( TRANSR, UPLO, TRANS, N, K, ALPHA, A, LDA, BETA, C )\n\n\
   *  Purpose\n\
   *  =======\n\

@@ -101,7 +101,7 @@
 :substitutions: 
   ldz: "lsame_(&jobz,\"V\") ? MAX(1,n) : 1"
   m: "lsame_(&range,\"A\") ? n : lsame_(&range,\"I\") ? iu-il+1 : 0"
-  ldq: "1 ? jobz = 'n' : max(1,n) ? jobz = 'v' : 0"
+  ldq: "1 ? jobz = 'n' : MAX(1,n) ? jobz = 'v' : 0"
 :fortran_help: "      SUBROUTINE DSBGVX( JOBZ, RANGE, UPLO, N, KA, KB, AB, LDAB, BB, LDBB, Q, LDQ, VL, VU, IL, IU, ABSTOL, M, W, Z, LDZ, WORK, IWORK, IFAIL, INFO )\n\n\
   *  Purpose\n\
   *  =======\n\

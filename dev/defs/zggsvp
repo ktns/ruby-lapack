@@ -104,7 +104,7 @@
     :intent: output
 :substitutions: 
   m: lda
-  ldb: p
+  p: ldb
   ldq: "lsame_(&jobq,\"Q\") ? MAX(1,n) : 1"
   ldu: "lsame_(&jobu,\"U\") ? MAX(1,m) : 1"
   ldv: "lsame_(&jobv,\"V\") ? MAX(1,p) : 1"
