@@ -13,7 +13,7 @@ liwork = 30
 
 m, w, z, isuppz, work, iwork, info, a =
   NumRu::Lapack.dsyevr(jobz, range, uplo,
-                       a, vl, vu, il, iu, abstol, lwork, liwork)
+                       a, vl, vu, il, iu, abstol, :lwork => lwork, :liwork => liwork)
 
 p m
 p w
