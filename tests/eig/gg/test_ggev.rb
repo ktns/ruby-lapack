@@ -50,8 +50,8 @@ class GgevTest < Test::Unit::TestCase
     define_method("test_#{method}") do
       alphar, alphai, beta, vl, vr, work, info, a, b = NumRu::Lapack.send(method, "N", "V", @a[rc], @b[rc])
       assert_equal 0, info
-      assert_narray @evr_exp, alphar/beta
-      assert_narray @evi_exp, alphai/beta
+      assert_narray @evr_exp, alphar/beta, 1.0e-4
+      assert_narray @evi_exp, alphai/beta, 1.0e-4
       vr.shape[1].times do |i|
         vr[true,i] *= -1 if comp_sign(@vr_exp[rc][0,i], vr[0,i])
       end
@@ -64,8 +64,8 @@ class GgevTest < Test::Unit::TestCase
       lwork = get_int(work[0])
       alphar, alphai, beta, vl, vr, work, info, a, b = NumRu::Lapack.send(method, "N", "V", @a[rc], @b[rc], :lwork => lwork)
       assert_equal 0, info
-      assert_narray @evr_exp, alphar/beta
-      assert_narray @evi_exp, alphai/beta
+      assert_narray @evr_exp, alphar/beta, 1.0e-4
+      assert_narray @evi_exp, alphai/beta, 1.0e-4
       vr.shape[1].times do |i|
         vr[true,i] *= -1 if comp_sign(@vr_exp[rc][0,i], vr[0,i])
       end

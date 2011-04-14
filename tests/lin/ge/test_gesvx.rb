@@ -42,7 +42,7 @@ class GesvxTest < Test::Unit::TestCase
     define_method("test_#{method}") do 
       x, rcond, ferr, berr, work, info, a, af, ipiv, equed, r, c, b = NumRu::Lapack.send(method, "E", "N", @a[rc], @b[rc])
       assert_equal 0, info
-      assert_narray @x_exp[rc], x
+      assert_narray @x_exp[rc], x, 1.0e-4
       assert_in_delta @rcond_exp[rc], rcond, 1e-3
       assert_in_delta @rpgf_exp[rc], work[0], 1e-2
     end
