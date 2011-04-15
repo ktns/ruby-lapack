@@ -16,6 +16,9 @@ NATYPES = {
 }
 
 
+TOPDIR = File.join(File.dirname(__FILE__), "..")
+
+
 
 def get_cobj(name, type, sub_name, indent=2)
   indent = " "*indent
@@ -148,7 +151,7 @@ end
 
 
 def create_code(name, flag)
-  def_fname = File.join(File.dirname(__FILE__), "defs", name)
+  def_fname = File.join(TOPDIR, "dev", "defs", name)
   hash = nil
   begin
     File.open(def_fname) do |file|
@@ -760,7 +763,7 @@ def generate_code(fnames, names)
     if code
       sub_names.push sub_name
       if flag
-        cfname = "#{sub_name}.c"
+        cfname = File.join(TOPDIR, "ext","#{sub_name}.c")
         if File.exists?(cfname)
           code_org = File.read(cfname)
           next if code_org == code
@@ -770,7 +773,7 @@ def generate_code(fnames, names)
     end
   }
 
-  File.open("rb_lapack.h","w"){|file|
+  File.open(File.join(TOPDIR, "ext", "rb_lapack.h"),"w"){|file|
     file.print <<"EOF"
 #include <string.h>
 #include <math.h>
@@ -794,7 +797,7 @@ EOF
   }
 
 
-  File.open("rb_lapack.c","w"){|file|
+  File.open(File.join(TOPDIR,"ext","rb_lapack.c"), "w"){|file|
     file.print <<"EOF"
 #include "ruby.h"
 #include "rb_lapack.h"
@@ -836,7 +839,7 @@ end
 @@debug = ARGV.delete("--debug")
 
 #dname = ARGV.shift || raise("Usage: ruby #$0 path_to_lapack_src [name0, name1, ..]")
-dname = File.join( File.dirname(__FILE__), "defs")
+dname = File.join(TOPDIR, "dev", "defs")
 unless File.directory?(dname)
   raise "the first argument must be directory"
 end
