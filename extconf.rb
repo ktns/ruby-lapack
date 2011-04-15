@@ -89,7 +89,7 @@ end
 
 unless File.exist?("rb_lapack.c")
   print "making c source files\n"
-  unless system("ruby dev/make_csrc.rb dev/defs/ > /dev/null")
+  unless system("ruby dev/make_csrc.rb > /dev/null")
     raise "error occure in making c source files"
   end
 end
