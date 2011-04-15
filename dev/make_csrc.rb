@@ -761,8 +761,11 @@ def generate_code(fnames, names)
       sub_names.push sub_name
       if flag
         cfname = "#{sub_name}.c"
-        code_org = File.read(cfname)
-        File.open(cfname,"w"){|file| file.print code} if code_org != code
+        if File.exists?(cfname)
+          code_org = File.read(cfname)
+          next if code_org == code
+        end
+        File.open(cfname,"w"){|file| file.print code}
       end
     end
   }
