@@ -43,7 +43,11 @@ desc "building extensions"
 file DLLIB do
   system("cd ext; make")
 end
-
+so_file = File.join("lib", target_prefix, "#{NAME}.so")
+file so_file => DLLIB do
+  mkdir File.dirname(so_file)
+  cp DLLIB, so_file
+end
 
 desc "install files to system"
 task :install => [:install_so, :install_rb]
@@ -63,7 +67,7 @@ CLEAN.include("ext/*.o")
 CLOBBER.include("ext/lapack.so")
 
 
-PKG_FILES = FileList["lib/numru/*rb"]
+PKG_FILES = FileList["lib/#{target_prefix}/*rb"]
 PKG_FILES.include("ext/*.c", "ext/*h")
 PKG_FILES.include("Rakefile")
 PKG_FILES.include("COPYING", "GPL", "README.rdoc")
@@ -92,4 +96,20 @@ end
 Rake::GemPackageTask.new(spec) do |pkg|
   pkg.need_tar_gz = true
   pkg.need_tar_bz2 = true
+end
+
+
+
+binary_pkg = "pkg/#{spec.name}-#{spec.version}-#{Config::CONFIG["arch"]}.gem"
+desc "Build binary package"
+task :binary_package => binary_pkg
+
+file binary_pkg => so_file do
+  files = PKG_FILES.dup
+  files.include so_file
+  spec.platform = Gem::Platform::CURRENT
+  spec.files = files
+  spec.extensions = []
+  Gem::Builder.new(spec).build
+  mv File.basename(binary_pkg), binary_pkg
 end
