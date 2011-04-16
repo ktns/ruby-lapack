@@ -1,4 +1,5 @@
 require "rubygems"
+require "rake/clean"
 require "rake/gempackagetask"
 
 target_prefix = "numru"
@@ -56,6 +57,11 @@ task :install_rb => LIBS do
     install lib, File.join(destdir, libdir, target_prefix), 644
   end
 end
+
+
+CLEAN.include("ext/*.o")
+CLOBBER.include("ext/lapack.so")
+
 
 PKG_FILES = FileList["lib/numru/*rb"]
 PKG_FILES.include("ext/*.c", "ext/*h")
