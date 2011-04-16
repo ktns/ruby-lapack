@@ -89,7 +89,8 @@ end
 
 unless File.exist?("rb_lapack.c")
   print "making c source files\n"
-  unless system("ruby dev/make_csrc.rb > /dev/null")
+  cmd = File.join( File.dirname(__FILE__), "..", "dev", "make_csrc.rb")
+  unless system("ruby #{cmd} > /dev/null")
     raise "error occure in making c source files"
   end
 end
