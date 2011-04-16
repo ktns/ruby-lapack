@@ -58,11 +58,11 @@ task :install_rb => LIBS do
 end
 
 PKG_FILES = FileList["lib/numru/*rb"]
-PKG_FILES.include("ext/rb_lapack.c", "ext/dsyevx.c", "ext/*h")
-#PKG_FILES.include("ext/*.c", "ext/*h")
+PKG_FILES.include("ext/*.c", "ext/*h")
+PKG_FILES.include("Rakefile")
+PKG_FILES.include("COPYING", "GPL", "README.rdoc")
 PKG_FILES.include("doc/*.html", "samples/**/*rb")
 PKG_FILES.include("dev/*.rb", "dev/defs/*")
-PKG_FILES.include("COPYING", "GPL", "README.rdoc")
 TEST_FILES = FileList["tests/**/*.rb"]
 
 spec = Gem::Specification.new do |s|
