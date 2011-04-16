@@ -1,3 +1,6 @@
+require "rubygems"
+require "rake/gempackagetask"
+
 target_prefix = "numru"
 
 # get destdir
@@ -44,7 +47,7 @@ end
 desc "install files to system"
 task :install => [:install_so, :install_rb]
 
-task :install_so => DLLLIB do
+task :install_so => DLLIB do
   install DLLIB, File.join(destdir, archdir, target_prefix), 0755
 end
 
@@ -52,4 +55,35 @@ task :install_rb => LIBS do
   LIB.each do |lib|
     install lib, File.join(destdir, libdir, target_prefix), 644
   end
+end
+
+PKG_FILES = FileList["lib/numru/*rb"]
+PKG_FILES.include("ext/rb_lapack.c", "ext/dsyevx.c", "ext/*h")
+#PKG_FILES.include("ext/*.c", "ext/*h")
+PKG_FILES.include("doc/*.html", "samples/**/*rb")
+PKG_FILES.include("dev/*.rb", "dev/defs/*")
+PKG_FILES.include("COPYING", "GPL", "README.rdoc")
+TEST_FILES = FileList["tests/**/*.rb"]
+
+spec = Gem::Specification.new do |s|
+  s.name = "ruby-lapack"
+  s.version = "1.3"
+  s.summary = "A Ruby wrapper of Lapack"
+  s.description = <<EOL
+Ruby-LAPACK is a Ruby wrapper of Lapack, which is a linear algebra package (http://www.netlib.org/lapack/).
+EOL
+  s.author = "Seiya Nishizawa"
+  s.email = "seiya@gfd-dennou.org"
+  s.homepage = "http://ruby.gfd-dennou.org/products/ruby-lapack/"
+  s.has_rdoc = false
+  s.files = PKG_FILES
+  s.test_files = TEST_FILES
+  s.add_dependency('narray')
+  s.extensions = %w(ext/extconf.rb)
+end
+
+
+Rake::GemPackageTask.new(spec) do |pkg|
+  pkg.need_tar_gz = true
+  pkg.need_tar_bz2 = true
 end
