@@ -704,7 +704,11 @@ EOF
 
   code << <<"EOF"
 void
-init_lapack_#{sub_name}(VALUE mLapack){
+init_lapack_#{sub_name}(VALUE mLapack, VALUE sH, VALUE sU, VALUE zero){
+  sHelp = sH;
+  sUsage = sU;
+  #{RBPREFIX}ZERO = zero;
+
   rb_define_module_function(mLapack, \"#{sub_name}\", #{RBPREFIX}#{sub_name}, -1);
 }
 EOF
@@ -790,8 +794,8 @@ extern integer ilatrans_(char* trans);
 extern integer ilaenv_(integer* ispec, char* name, char* opts, integer* n1, integer* n2, integer* n3, integer* n4);
 
 
-VALUE sHelp, sUsage;
-VALUE #{RBPREFIX}ZERO;
+static VALUE sHelp, sUsage;
+static VALUE #{RBPREFIX}ZERO;
 
 EOF
   }
@@ -805,7 +809,7 @@ EOF
 EOF
 
     sub_names.each{|sname|
-      file.print "extern void init_lapack_#{sname}(VALUE mLapack);\n"
+      file.print "extern void init_lapack_#{sname}(VALUE mLapack, VALUE sHelp, VALUE sUsage, VALUE #{RBPREFIX}ZERO);\n"
     }
 
     file.print <<"EOF"
@@ -826,7 +830,7 @@ void Init_lapack(){
 
 EOF
     sub_names.each{|sname|
-      file.print "  init_lapack_#{sname}(mLapack);\n"
+      file.print "  init_lapack_#{sname}(mLapack, sHelp, sUsage, #{RBPREFIX}ZERO);\n"
     }
     file.print "}\n"
   }
