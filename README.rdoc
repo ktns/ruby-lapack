@@ -1,11 +1,23 @@
 = What's Ruby-LAPACK
 
 Ruby-LAPACK is a Ruby wrapper of LAPACK.
-Requires
+
+= Requires
 
     * Ruby   (http://www.ruby-lang.org/)
     * LAPACK (http://www.netlib.org/lapack/)
     * NArray (http://narray.rubyforge.org/index.html.en)
+
+
+= Install
+
+== with gem
+ # gem install ruby-lapack
+
+== build from source
+ % rake
+ % rake tests
+ % sudo rake install
 
 
 = Usage
