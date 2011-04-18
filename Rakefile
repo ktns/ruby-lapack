@@ -45,7 +45,7 @@ file DLLIB => "ext/Makefile" do
 end
 so_file = File.join("lib", target_prefix, "#{NAME}.so")
 file so_file => DLLIB do
-  mkdir File.dirname(so_file)
+  mkdir_p File.dirname(so_file)
   cp DLLIB, so_file
 end
 file "ext/Makefile" do
