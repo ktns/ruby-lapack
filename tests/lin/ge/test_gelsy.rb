@@ -45,7 +45,7 @@ class GelsyTest < Test::Unit::TestCase
       rank, work, info, a, b, jpvt = NumRu::Lapack.send(method, @a[rc], @b[rc], @jpvt[rc], @rcond)
       assert_equal 0, info
       assert_narray @b_exp[rc], b, 1e-4
-      assert @rank_exp[rc], rank
+      assert_equal @rank_exp[rc], rank
     end
 
     define_method("test_#{method}_inquiring_lwork") do
@@ -56,7 +56,7 @@ class GelsyTest < Test::Unit::TestCase
       assert_equal 0, info
       assert_equal lwork, get_int(work[0])
       assert_narray @b_exp[rc], b, 1e-4
-      assert @rank_exp[rc], rank
+      assert_equal @rank_exp[rc], rank
     end
 
     define_method("test_#{method}_inquiring_lwork_oldargstyle") do
