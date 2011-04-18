@@ -1,13 +1,27 @@
-* What's Ruby-LAPACK
+= What's Ruby-LAPACK
+
 Ruby-LAPACK is a Ruby wrapper of LAPACK.
-Requires
+
+= Requires
 
     * Ruby   (http://www.ruby-lang.org/)
     * LAPACK (http://www.netlib.org/lapack/)
     * NArray (http://narray.rubyforge.org/index.html.en)
 
 
-* Usage
+= Install
+
+== with gem
+ # gem install ruby-lapack
+
+== build from source
+ % rake
+ % rake tests
+ % sudo rake install
+
+
+= Usage
+
 You need require numru/lapack to use Ruby-lapack
  require 'numru/lapack'
 
@@ -24,11 +38,13 @@ If you call methods with the argument of :help=>true, or :usage=>true, help or u
  NumRu::Lapack.method_name(:usage => true)
 
 
-* Documents
+= Documents
+
 Documents for individual methods are "doc" directory in the source
 
 
-* Example
+= Example
+
 DSYEVR: Compultes selected eigenvalues, and optinally, eigenvectors of a real symmetric matrix.
 The following script calculats the leading eigenvalue and corresponding eigenvector of the matrix (x_11 = 1, x_12 = x_21 = 2, x_22 = 3).
 Ruby method is NumRu::Lapack.dsyevr.

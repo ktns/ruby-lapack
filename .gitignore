@@ -1,7 +1,1 @@
-*.o
 *~
-/*.c
-/Makefile
-/mkmf.log
-/lapack.so
-/rb_lapack.h

@@ -31,72 +31,18 @@ EOF
   end
 end
 
-def try_func(func, libs, headers = nil, &b)
-  headers = cpp_include(headers)
-    try_link(<<"SRC", libs, &b) or try_link(<<"SRC", libs, &b)
-#{COMMON_HEADERS}
-#{headers}
-/*top*/
-int main() { return 0; }
-int MAIN__() { return main(); }
-int t() { void ((*volatile p)()); p = (void ((*)()))#{func}; return 0; }
-SRC
-#{headers}
-/*top*/
-int main() { return 0; }
-int MAIN__() { return main(); }
-int t() { #{func}(); return 0; }
-SRC
-end
-    
-
-def find_library(lib, func=nil, name=nil)
-  func = "main" if !func or func.empty?
-  ldir = with_config(lib+'-lib')
-  ldirs = ldir ? Array === ldir ? ldir : ldir.split(File::PATH_SEPARATOR) : []
-  $LIBPATH = ldirs | $LIBPATH
-  if /\.(a|so)$/ =~ name
-    libs = $libs
-    $LIBPATH.each{|path|
-      f = File.join(path,name)
-      if File.exist?(f)
-        libs = f + " " + $libs
-        break
-      end
-    }
-  else
-    name = LIBARG%lib
-    libs = append_library($libs, lib)
-  end
-  paths = {}
-  checking_for "#{func}() in #{name}" do
-    libpath = $LIBPATH
-    begin
-      until r = try_func(func, libs) or paths.empty?
-        $LIBPATH = libpath | [paths.shift]
-      end
-      if r
-        $libs = libs
-        libpath = nil
-      end
-    ensure
-      $LIBPATH = libpath if libpath
-    end
-    r
-  end
-end
-
 
 unless File.exist?("rb_lapack.c")
   print "making c source files\n"
-  unless system("ruby dev/make_csrc.rb > /dev/null")
+  cmd = File.join( File.dirname(__FILE__), "..", "dev", "make_csrc.rb")
+  unless system("ruby #{cmd} > /dev/null")
     raise "error occure in making c source files"
   end
 end
 
 
 dir_config("lapack")
-unless find_library("lapack")
+unless find_library("lapack", nil)
   library_not_found("lapack",nil)
 
   warn "LAPACK will be tried to find"
@@ -127,9 +73,6 @@ sitearchdir = Config::CONFIG["sitearchdir"]
 dir_config("narray", sitearchdir, sitearchdir)
 unless find_header("narray.h") && have_header("narray_config.h")
   header_not_found("narray")
-end
-unless find_library("narray", nil, "narray.so")
-  library_not_found("narray","narray.so")
 end
 
 create_makefile("numru/lapack")
