@@ -46,7 +46,8 @@
 - work: 
     :type: real
     :intent: workspace
-    :dims: "(lsame_(&job,\"S\")||lsame_(&job,\"B\")) ? MAX(1,6*n) : (lsame_(&job,\"N\")||lsame_(&job,\"P\")) ? 1 : 0"
+    :dims: 
+    - "(lsame_(&job,\"S\")||lsame_(&job,\"B\")) ? MAX(1,6*n) : (lsame_(&job,\"N\")||lsame_(&job,\"P\")) ? 1 : 0"
 - info: 
     :type: integer
     :intent: output
