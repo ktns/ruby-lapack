@@ -2,7 +2,7 @@ require "rubygems"
 require "rake/clean"
 require "rake/gempackagetask"
 
-VERSION = 1.5
+version = 1.5
 target_prefix = "numru"
 
 # get destdir
@@ -91,7 +91,7 @@ TEST_FILES = FileList["tests/**/*.rb"]
 
 spec = Gem::Specification.new do |s|
   s.name = "ruby-lapack"
-  s.version = VERSION
+  s.version = version
   s.summary = "A Ruby wrapper of Lapack"
   s.description = <<EOL
 Ruby-LAPACK is a Ruby wrapper of Lapack, which is a linear algebra package (http://www.netlib.org/lapack/).
