@@ -9,7 +9,7 @@ module LapackTest
     unless delta
       case actual.typecode
       when NArray::SFLOAT, NArray::SCOMPLEX
-        delta = 1.0e-5
+        delta = 5.0e-5
       when NArray::DFLOAT, NArray::DCOMPLEX
         delta = 1.0e-13
       when NArray::INT, NArray::LINT
