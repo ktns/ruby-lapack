@@ -40,13 +40,16 @@ DLLIB = "ext/#{NAME}.so"
 task :default => DLLIB
 
 desc "building extensions"
-file DLLIB do
+file DLLIB => "ext/Makefile" do
   system("cd ext; make")
 end
 so_file = File.join("lib", target_prefix, "#{NAME}.so")
 file so_file => DLLIB do
   mkdir File.dirname(so_file)
   cp DLLIB, so_file
+end
+file "ext/Makefile" do
+  system("cd ext; ruby extconf.rb")
 end
 
 desc "install files to system"
