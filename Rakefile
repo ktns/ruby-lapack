@@ -68,6 +68,11 @@ task :install_rb => LIBS do
   end
 end
 
+desc "execute tests"
+task :tests => so_file do
+  system("testrb tests")
+end
+
 
 CLEAN.include("ext/*.o")
 CLOBBER.include("ext/lapack.so")
