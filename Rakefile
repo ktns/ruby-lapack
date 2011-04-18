@@ -35,15 +35,15 @@ end
 NAME = "lapack"
 LIBS = FileList["lib/#{target_prefix}/*rb"]
 DLLIB = "ext/#{NAME}.so"
+so_file = File.join("lib", target_prefix, "#{NAME}.so")
 
 
-task :default => DLLIB
+task :default => so_file
 
 desc "building extensions"
 file DLLIB => "ext/Makefile" do
   system("cd ext; make")
 end
-so_file = File.join("lib", target_prefix, "#{NAME}.so")
 file so_file => DLLIB do
   mkdir_p File.dirname(so_file)
   cp DLLIB, so_file
