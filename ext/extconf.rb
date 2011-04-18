@@ -32,14 +32,6 @@ EOF
 end
 
 
-unless File.exist?("rb_lapack.c")
-  print "making c source files\n"
-  cmd = File.join( File.dirname(__FILE__), "..", "dev", "make_csrc.rb")
-  unless system("ruby #{cmd} > /dev/null")
-    raise "error occure in making c source files"
-  end
-end
-
 
 dir_config("lapack")
 unless find_library("lapack", nil)
