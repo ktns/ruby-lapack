@@ -71,7 +71,13 @@ end
 
 sitearchdir = Config::CONFIG["sitearchdir"]
 dir_config("narray", sitearchdir, sitearchdir)
-unless find_header("narray.h") && have_header("narray_config.h")
+gem_path = nil
+begin
+  require "rubygems"
+  gem_path = Gem.latest_load_paths.find_all{|s| /narray/=~s}[0]
+rescue LoadError
+end
+unless find_header("narray.h",gem_path) && have_header("narray_config.h")
   header_not_found("narray")
 end
 
