@@ -48,8 +48,11 @@ file so_file => DLLIB do
   mkdir_p File.dirname(so_file)
   cp DLLIB, so_file
 end
-file "ext/Makefile" do
+file "ext/Makefile" => "ext/rb_lapack.h" do
   system("cd ext; ruby extconf.rb")
+end
+file "ext/rb_lapack.h" => "dev/make_csrc.rb" do
+  system("ruby dev/make_csrc.rb")
 end
 
 desc "install files to system"
@@ -71,7 +74,9 @@ CLOBBER.include("ext/lapack.so")
 
 
 PKG_FILES = FileList["lib/#{target_prefix}/*rb"]
-PKG_FILES.include("ext/*.c", "ext/*h")
+PKG_FILES.include("ext/rb_lapack.h")
+PKG_FILES.include("ext/f2c_minimal.h")
+PKG_FILES.include("ext/*.c")
 PKG_FILES.include("Rakefile")
 PKG_FILES.include("COPYING", "GPL", "README.rdoc")
 PKG_FILES.include("doc/*.html", "samples/**/*rb")
