@@ -60,12 +60,16 @@ desc "install files to system"
 task :install => [:install_so, :install_rb]
 
 task :install_so => DLLIB do
-  install DLLIB, File.join(destdir, archdir, target_prefix), 0755
+  dst = File.join(destdir, archdir, target_prefix)
+  mkdir_p dst
+  install DLLIB, dst, :mode => 0755
 end
 
 task :install_rb => LIBS do
-  LIB.each do |lib|
-    install lib, File.join(destdir, libdir, target_prefix), 644
+  dst = File.join(destdir, libdir, target_prefix)
+  mkdir_p dst
+  LIBS.each do |lib|
+    install lib, dst, :mode => 644
   end
 end
 
