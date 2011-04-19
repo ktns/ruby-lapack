@@ -66,7 +66,9 @@ dir_config("narray", sitearchdir, sitearchdir)
 gem_path = nil
 begin
   require "rubygems"
-  gem_path = Gem.source_index.find_name("narray").last.full_gem_path
+  if (spec = Gem.source_index.find_name("narray")).any?
+    gem_path = spec.last.full_gem_path
+  end
 rescue LoadError
 end
 unless find_header("narray.h",gem_path) && have_header("narray_config.h")
