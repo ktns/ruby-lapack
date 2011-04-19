@@ -41,13 +41,14 @@ so_file = File.join("lib", target_prefix, "#{NAME}.so")
 
 task :default => so_file
 
-desc "building extensions"
-file DLLIB => "ext/Makefile" do
-  system("cd ext; make")
-end
+desc "Building extensions"
 file so_file => DLLIB do
   mkdir_p File.dirname(so_file)
-  cp DLLIB, so_file
+  rm_f so_file
+  ln_s DLLIB, so_file
+end
+file DLLIB => "ext/Makefile" do
+  system("cd ext; make")
 end
 file "ext/Makefile" => "ext/rb_lapack.h" do
   system("cd ext; ruby extconf.rb")
@@ -56,7 +57,7 @@ file "ext/rb_lapack.h" => "dev/make_csrc.rb" do
   system("ruby dev/make_csrc.rb")
 end
 
-desc "install files to system"
+desc "Install files to system"
 task :install => [:install_so, :install_rb]
 
 task :install_so => DLLIB do
