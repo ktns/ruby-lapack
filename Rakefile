@@ -81,7 +81,8 @@ end
 
 
 CLEAN.include("ext/*.o")
-CLOBBER.include("ext/lapack.so")
+CLOBBER.include(DLLIB, so_file)
+CLOBBER.include("ext/Makefile")
 
 
 PKG_FILES = FileList["lib/#{target_prefix}/*rb"]
