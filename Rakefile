@@ -45,7 +45,7 @@ desc "Building extensions"
 file so_file => DLLIB do
   mkdir_p File.dirname(so_file)
   rm_f so_file
-  ln_s DLLIB, so_file
+  cp DLLIB, so_file
 end
 file DLLIB => "ext/Makefile" do
   system("cd ext; make")
