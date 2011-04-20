@@ -5,32 +5,10 @@ require "rake/gempackagetask"
 version = 1.5
 target_prefix = "numru"
 
-# get destdir
-if i = ARGV.index{|arg| /\ADESTDIR=/ =~ arg}
-  destdir = ARGV[i].sub(/\ADESTDIR=/,"")
-else
-  destdir = ""
-end
-
-# get sitelibdir
-if i = ARGV.index{|arg| /\ASITELIBDIR=/ =~ arg}
-  libdir = ARGV[i].sub(/\ASITELIBDIR=/,"")
-  unless File.exist?(libdir) && File.directory?(libdir)
-    raise "SITELIBDIR is invalid: #{sitelibdir}"
-  end
-else
-  libdir = Config::CONFIG["sitelibdir"]
-end
-# get sitearchdir
-if i = ARGV.index{|arg| /\ASITEARCHDIR=/ =~ arg}
-  archdir = ARGV[i].sub(/\ASITEARCHLIBDIR=/,"")
-  unless File.exist?(archdir) && File.directory?(archdir)
-    raise "SITEARCHDIR is invalid: #{sitearchdir}"
-  end
-else
-  archdir = Config::CONFIG["sitearchdir"]
-end
-
+# get options
+destdir = ENV["DESTDIR"]
+libdir = ENV["SITELIBDIR"] || Config::CONFIG["sitelibdir"]
+archdir = ENV["SITEARCHDIR"] || Config::CONFIG["sitearchdir"]
 
 
 NAME = "lapack"
