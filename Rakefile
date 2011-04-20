@@ -9,7 +9,7 @@ target_prefix = "numru"
 destdir = ENV["DESTDIR"]
 libdir = ENV["SITELIBDIR"] || Config::CONFIG["sitelibdir"]
 archdir = ENV["SITEARCHDIR"] || Config::CONFIG["sitearchdir"]
-
+config_opts = ENV["CONFIG_OPTIONS"]
 
 NAME = "lapack"
 LIBS = FileList["lib/#{target_prefix}/*rb"]
@@ -29,7 +29,14 @@ file DLLIB => "ext/Makefile" do
   system("cd ext; make")
 end
 file "ext/Makefile" => "ext/rb_lapack.h" do
-  system("cd ext; ruby extconf.rb")
+  unless system("cd ext; ruby extconf.rb #{config_opts}")
+    warn <<-EOL
+
+To give options to extconf.rb, set the options to CONFIG_OPTIONS
+e.g.
+% rake CONFIG_OPTIONS="--with-lapack=/opt/lapack"
+    EOL
+  end
 end
 file "ext/rb_lapack.h" => "dev/make_csrc.rb" do
   system("ruby dev/make_csrc.rb")
