@@ -1,6 +1,7 @@
 require "rubygems"
 require "rake/clean"
 require "rake/gempackagetask"
+require "rake/testtask"
 
 version = 1.5
 target_prefix = "numru"
@@ -59,12 +60,6 @@ task :install_rb => LIBS do
   end
 end
 
-desc "execute tests"
-task :tests => so_file do
-  system("testrb tests")
-end
-
-
 CLEAN.include("ext/*.o")
 CLOBBER.include(DLLIB, so_file)
 CLOBBER.include("ext/Makefile")
@@ -79,6 +74,12 @@ PKG_FILES.include("COPYING", "GPL", "README.rdoc")
 PKG_FILES.include("doc/*.html", "samples/**/*rb")
 PKG_FILES.include("dev/*.rb", "dev/defs/*")
 TEST_FILES = FileList["tests/**/*.rb"]
+
+Rake::TestTask.new do |t|
+  t.libs << "lib"
+  t.libs << "tests"
+  t.test_files = TEST_FILES
+end
 
 spec = Gem::Specification.new do |s|
   s.name = "ruby-lapack"
