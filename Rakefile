@@ -63,7 +63,7 @@ task :install_rb => LIBS do
   dst = File.join(destdir, libdir, target_prefix)
   mkdir_p dst
   LIBS.each do |lib|
-    install lib, dst, :mode => 644
+    install lib, dst, :mode => 0644
   end
 end
 
