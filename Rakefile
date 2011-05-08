@@ -14,8 +14,15 @@ config_opts = ENV["CONFIG_OPTIONS"]
 
 NAME = "lapack"
 LIBS = FileList["lib/#{target_prefix}/*rb"]
-DLLIB = "ext/#{NAME}.so"
-so_file = File.join("lib", target_prefix, "#{NAME}.so")
+
+case Config::CONFIG["host_os"]
+when /darwin/
+  extension = "bundle"
+else
+  extension = "so"
+end
+DLLIB = "ext/#{NAME}.#{extension}"
+so_file = File.join("lib", target_prefix, "#{NAME}.#{extension}")
 
 
 task :default => so_file
