@@ -7,7 +7,7 @@ version = "1.5"
 target_prefix = "numru"
 
 # get options
-destdir = ENV["DESTDIR"]
+destdir = ENV["DESTDIR"] || ""
 libdir = ENV["SITELIBDIR"] || Config::CONFIG["sitelibdir"]
 archdir = ENV["SITEARCHDIR"] || Config::CONFIG["sitearchdir"]
 config_opts = ENV["CONFIG_OPTIONS"]
