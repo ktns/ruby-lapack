@@ -3,7 +3,7 @@ require "rake/clean"
 require "rake/gempackagetask"
 require "rake/testtask"
 
-version = 1.5
+version = "1.5"
 target_prefix = "numru"
 
 # get options
@@ -107,15 +107,10 @@ end
 
 
 binary_pkg = "pkg/#{spec.name}-#{spec.version}-#{Config::CONFIG["arch"]}.gem"
+gem_pkg = "pkg/#{spec.name}-#{spec.version}.gem"
 desc "Build binary package"
 task :binary_package => binary_pkg
 
-file binary_pkg => so_file do
-  files = PKG_FILES.dup
-  files.include so_file
-  spec.platform = Gem::Platform::CURRENT
-  spec.files = files
-  spec.extensions = []
-  Gem::Builder.new(spec).build
-  mv File.basename(binary_pkg), binary_pkg
+file binary_pkg => gem_pkg do
+  system "gem compile --fat 1.8:ruby1.8,1.9:ruby1.9 #{gem_pkg}"
 end
